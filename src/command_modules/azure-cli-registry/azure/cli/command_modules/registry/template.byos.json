@@ -1,0 +1,58 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "registryName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the registry service"
+            }
+        },
+        "registryLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the registry service"
+            }
+        },
+        "registryApiVersion": {
+            "type": "string",
+            "metadata": {
+                "description": "Api version of the registry service"
+            }
+        },        
+        "storageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the storage account"
+            }
+        },
+        "storageAccountKey": {
+            "type": "string",
+            "metadata": {
+                "description": "Key of the storage account"
+            }
+        },
+        "storageEndPointUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "End point URL of the storage account"
+            }
+        }
+    },
+    "resources": [
+        {
+            "comments": "# Registry",
+            "name": "[parameters('registryName')]",
+            "type": "Microsoft.Krater/registries",
+            "location": "[parameters('registryLocation')]",
+            "apiVersion": "[parameters('registryApiVersion')]",
+            "properties": {
+                "storageAccount": {
+                    "name": "[parameters('storageAccountName')]",
+                    "accessKey": "[parameters('storageAccountKey')]",
+                    "endPointUrl": "[parameters('storageEndPointUrl')]"
+                }
+            }
+        }
+    ]
+}
