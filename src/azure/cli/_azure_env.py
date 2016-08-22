@@ -5,9 +5,7 @@
 
 CLIENT_ID = '04b07795-8ddb-461a-bbee-02f9e1bf7b46'
 
-ENV_DEFAULT = 'AzureCloud'
-ENV_US_GOVERNMENT = 'AzureUSGovernment'
-ENV_CHINA = 'AzureChinaCloud'
+ENV_DEFAULT = 'dogfood'
 
 COMMON_TENANT = 'common'
 
@@ -16,22 +14,14 @@ class ENDPOINT_URLS: #pylint: disable=too-few-public-methods,old-style-class,no-
     MANAGEMENT = 'management'
     ACTIVE_DIRECTORY_AUTHORITY = 'active_directory_authority'
     ACTIVE_DIRECTORY_GRAPH_RESOURCE_ID = 'active_directory_graph_resource_id'
+    RESOURCE_MANAGER = 'resource_manager'
 
 _environments = {
     ENV_DEFAULT: {
         ENDPOINT_URLS.MANAGEMENT: 'https://management.core.windows.net/',
-        ENDPOINT_URLS.ACTIVE_DIRECTORY_AUTHORITY : 'https://login.microsoftonline.com',
-        ENDPOINT_URLS.ACTIVE_DIRECTORY_GRAPH_RESOURCE_ID: 'https://graph.windows.net/'
-        },
-    ENV_CHINA: {
-        ENDPOINT_URLS.MANAGEMENT: 'https://management.core.chinacloudapi.cn/',
-        ENDPOINT_URLS.ACTIVE_DIRECTORY_AUTHORITY: 'https://login.chinacloudapi.cn',
-        ENDPOINT_URLS.ACTIVE_DIRECTORY_GRAPH_RESOURCE_ID: 'https://graph.chinacloudapi.cn/'
-        },
-    ENV_US_GOVERNMENT: {
-        ENDPOINT_URLS.MANAGEMENT: 'https://management.core.usgovcloudapi.net/',
-        ENDPOINT_URLS.ACTIVE_DIRECTORY_AUTHORITY: 'https://login.microsoftonline.com',
-        ENDPOINT_URLS.ACTIVE_DIRECTORY_GRAPH_RESOURCE_ID: 'https://graph.windows.net/'
+        ENDPOINT_URLS.ACTIVE_DIRECTORY_AUTHORITY : 'https://login.windows-ppe.net',
+        ENDPOINT_URLS.ACTIVE_DIRECTORY_GRAPH_RESOURCE_ID: 'https://graph.ppe.windows.net/',
+        ENDPOINT_URLS.RESOURCE_MANAGER: 'https://api-dogfood.resources.windows-int.net/',
         }
 }
 
