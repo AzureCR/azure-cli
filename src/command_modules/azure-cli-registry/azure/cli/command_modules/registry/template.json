@@ -1,0 +1,42 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "registryName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "westus",
+            "apiVersion": "2015-05-01-preview",
+            "properties": {
+                "accountType": "Standard_LRS"
+            }
+        },
+        {
+            "name": "[parameters('registryName')]",
+            "type": "Microsoft.Krater/registries",
+            "location": "[parameters('location')]",
+            "apiVersion": "2016-06-27-preview",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+            ],
+            "properties": {
+                "storageAccount": {
+                    "name": "[parameters('storageAccountName')]",
+                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2015-05-01-preview').key1]",
+                    "endPoint": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), '2015-05-01-preview').primaryEndpoints.blob]"
+                }
+            }
+        }
+    ]
+}

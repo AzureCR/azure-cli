@@ -52,4 +52,5 @@ setup(
         'azure.cli.command_modules.registry.mgmt_cr.operations',
     ],
     install_requires=DEPENDENCIES,
+    package_data={'azure.cli.command_modules.registry': ['template.json']},
 )
