@@ -23,10 +23,10 @@ def get_registry_by_name(registry_name):
     :param str registry_name: The name of container registry
     '''
     registries = _get_registries_in_subscription()
-    elements = [item for item in registries if item.name == registry_name]
+    elements = [item for item in registries if item.name.lower() == registry_name.lower()]
 
     if len(elements) == 0:
-        raise ValueError('No container registry can be found with name: ' + registry_name)
+        return None
     elif len(elements) == 1:
         return elements[0]
     else:
