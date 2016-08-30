@@ -3,20 +3,25 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 #---------------------------------------------------------------------------------------------
 
+import re
+
 from azure.cli.command_modules.registry.mgmt_cr.models import RegistryParameters
 
-from ._factory import get_mgmt_service_client
+from ._factory import get_registry_service_client
+
+import azure.cli._logging as _logging
+logger = _logging.get_az_logger(__name__)
 
 def _get_registries_in_subscription():
     '''Returns the list of container registries in the current subscription.
     '''
-    return get_mgmt_service_client().list().value # pylint: disable=E1101
+    return get_registry_service_client().list().value # pylint: disable=E1101
 
 def _get_registries_in_resource_group(resource_group):
     '''Returns the list of container registries in the resource group.
     :param str resource_group: The name of resource group
     '''
-    return get_mgmt_service_client().list_by_resource_group(resource_group).value # pylint: disable=E1101
+    return get_registry_service_client().list_by_resource_group(resource_group).value # pylint: disable=E1101
 
 def get_registry_by_name(registry_name):
     '''Returns the container registry that matches the registry name.
@@ -69,3 +74,17 @@ def _get_resource_group_keyword(resource_id):
         return '/resourceGroups/'
     else:
         raise ValueError('Invalid resource id: ' + resource_id)
+
+def validate_registry_name(registry_name):
+    '''Returns if the registry name is allowed.
+    :param str registry_name: The name of container registry
+    '''
+    if len(registry_name) < 5 or len(registry_name) > 60:
+        logger.error('The registry name must be between 5 and 60 characters.')
+        raise SystemExit(1)
+    
+    p = re.compile('^([A-Za-z0-9]+)$')
+
+    if not p.match(registry_name):
+        logger.error('The registry name can contain only letters and numbers.')
+        raise SystemExit(1)

@@ -8,4 +8,4 @@
 import azure.cli.command_modules.registry._help
 import azure.cli.command_modules.registry._params
 import azure.cli.command_modules.registry.custom
-import azure.cli.command_modules.registry.container
+import azure.cli.command_modules.registry.repository

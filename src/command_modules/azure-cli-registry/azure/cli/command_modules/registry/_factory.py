@@ -4,7 +4,10 @@
 #---------------------------------------------------------------------------------------------
 
 from azure.cli._profile import Profile
-from azure.cli.commands.client_factory import configure_common_settings
+from azure.cli.commands.client_factory import (
+    configure_common_settings,
+    get_mgmt_service_client
+)
 
 from azure.cli._azure_env import (
     get_env,
@@ -20,18 +23,11 @@ from azure.cli.command_modules.registry.mgmt_cr import (
 from azure.mgmt.resource.resources import ResourceManagementClient
 
 def get_arm_service_client():
-    '''Returns the client for managing resource.
+    '''Returns the client for managing ARM resources.
     '''
-    profile = Profile()
-    cred, subscription_id, _ = profile.get_login_credentials()
+    return get_mgmt_service_client(ResourceManagementClient)
 
-    client = ResourceManagementClient(cred, subscription_id, base_url=get_env()[ENDPOINT_URLS.RESOURCE_MANAGER])
-
-    configure_common_settings(client)
-
-    return client
-
-def get_mgmt_service_client():
+def get_registry_service_client():
     '''Returns the client for managing container registries.
     '''
     profile = Profile()
@@ -43,3 +39,9 @@ def get_mgmt_service_client():
     configure_common_settings(client)
 
     return client.registries
+
+def get_storage_end_point_url(storage_account_name):
+    '''Returns the end point url for the storage account name
+    :param str storage_account_name: The name of storage account
+    '''
+    return 'https://' + storage_account_name + '.' + get_env()[ENDPOINT_URLS.STORAGE_END_POINT_SUFFIX]

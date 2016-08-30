@@ -15,19 +15,17 @@ from azure.cli.commands.parameters import (
     tags_type
 )
 
-storage_account_type = CliArgumentType(
-    options_list=('--storage-account-name', '-s'),
+storage_account_name_type = CliArgumentType(
     help='Name of storage account.'
 )
 
-deployment_name_type = CliArgumentType(
-    options_list=('--deployment-name', '-d'),
-    help='Name of deployment.'
+storage_account_key_type = CliArgumentType(
+    help='Key of storage account.'
 )
 
 register_cli_argument('registry', 'registry_name', arg_type=name_type)
 register_cli_argument('registry', 'resource_group', arg_type=resource_group_name_type)
 register_cli_argument('registry', 'location', arg_type=location_type)
 register_cli_argument('registry', 'tags', arg_type=tags_type)
-register_cli_argument('registry', 'storage_account_name', arg_type=storage_account_type)
-register_cli_argument('registry', 'deployment_name', arg_type=deployment_name_type)
+register_cli_argument('registry', 'storage_account_name', arg_type=storage_account_name_type)
+register_cli_argument('registry', 'storage_account_key', arg_type=storage_account_key_type)

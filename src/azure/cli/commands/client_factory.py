@@ -9,6 +9,11 @@ import azure.cli as cli
 import azure.cli._logging as _logging
 from azure.cli.application import APPLICATION
 
+from azure.cli._azure_env import (
+    get_env,
+    ENDPOINT_URLS
+)
+
 logger = _logging.get_az_logger(__name__)
 
 def get_mgmt_service_client(client_type):
@@ -40,7 +45,7 @@ def _get_mgmt_service_client(client_type, subscription_bound=True):
     profile = Profile()
     cred, subscription_id, _ = profile.get_login_credentials()
     if subscription_bound:
-        client = client_type(cred, subscription_id)
+        client = client_type(cred, subscription_id, base_url=get_env()[ENDPOINT_URLS.RESOURCE_MANAGER])
     else:
         client = client_type(cred)
 

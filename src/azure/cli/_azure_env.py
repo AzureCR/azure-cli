@@ -15,6 +15,7 @@ class ENDPOINT_URLS: #pylint: disable=too-few-public-methods,old-style-class,no-
     ACTIVE_DIRECTORY_AUTHORITY = 'active_directory_authority'
     ACTIVE_DIRECTORY_GRAPH_RESOURCE_ID = 'active_directory_graph_resource_id'
     RESOURCE_MANAGER = 'resource_manager'
+    STORAGE_END_POINT_SUFFIX = 'storage end point suffix'
 
 _environments = {
     ENV_DEFAULT: {
@@ -22,6 +23,7 @@ _environments = {
         ENDPOINT_URLS.ACTIVE_DIRECTORY_AUTHORITY : 'https://login.windows-ppe.net',
         ENDPOINT_URLS.ACTIVE_DIRECTORY_GRAPH_RESOURCE_ID: 'https://graph.ppe.windows.net/',
         ENDPOINT_URLS.RESOURCE_MANAGER: 'https://api-dogfood.resources.windows-int.net/',
+        ENDPOINT_URLS.STORAGE_END_POINT_SUFFIX: 'blob.core.test-cint.azure-test.net/'
         }
 }
 
