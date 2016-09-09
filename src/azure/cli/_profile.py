@@ -245,7 +245,7 @@ class SubscriptionFinder(object):
         self._auth_context_factory = auth_context_factory
         self.user_id = None # will figure out after log user in
         self._arm_client_factory = arm_client_factory or \
-             (lambda config: SubscriptionClient(config, base_url=get_env()[ENDPOINT_URLS.RESOURCE_MANAGER])) #pylint: disable=unnecessary-lambda
+             (lambda config: SubscriptionClient(config)) #pylint: disable=unnecessary-lambda
 
     def find_from_user_account(self, username, password, resource):
         context = self._create_auth_context(COMMON_TENANT)
