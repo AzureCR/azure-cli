@@ -45,7 +45,7 @@ class ContainerRegistryConfiguration(Configuration):
         if credentials is None:
             raise ValueError("Parameter 'credentials' must not be None.")
         if not base_url:
-            base_url = 'http://krater-rp-dogfood.azurewebsites.net'
+            base_url = 'https://management.azure.com'
 
         super(ContainerRegistryConfiguration, self).__init__(base_url, filepath)
 

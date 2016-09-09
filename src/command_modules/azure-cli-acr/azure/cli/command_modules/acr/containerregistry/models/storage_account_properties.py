@@ -8,20 +8,28 @@
 from msrest.serialization import Model
 
 
-class StorageProperties(Model):
-    """StorageProperties
+class StorageAccountProperties(Model):
+    """StorageAccountProperties
 
     :param name:
     :type name: str
     :param access_key:
     :type access_key: str
+    :param end_point_url:
+    :type end_point_url: str
+    :param endpoint_suffix:
+    :type endpoint_suffix: str
     """ 
 
     _attribute_map = {
         'name': {'key': 'name', 'type': 'str'},
         'access_key': {'key': 'accessKey', 'type': 'str'},
+        'end_point_url': {'key': 'endPointUrl', 'type': 'str'},
+        'endpoint_suffix': {'key': 'endpointSuffix', 'type': 'str'},
     }
 
-    def __init__(self, name=None, access_key=None):
+    def __init__(self, name=None, access_key=None, end_point_url=None, endpoint_suffix=None):
         self.name = name
         self.access_key = access_key
+        self.end_point_url = end_point_url
+        self.endpoint_suffix = endpoint_suffix

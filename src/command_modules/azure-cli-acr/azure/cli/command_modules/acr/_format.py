@@ -56,7 +56,7 @@ def _format(item):
     '''
     if isinstance(item, dict) and 'id' in item and '/providers/Microsoft.Resources/deployments/' in item['id']:
         return _format_deployment(item)
-    elif isinstance(item, dict) and 'id' in item and '/providers/Microsoft.Krater/registries/' in item['id']:
+    elif isinstance(item, dict) and 'id' in item and '/providers/Microsoft.ContainerRegistry/registries/' in item['id']:
         return _format_registry(item)
     else:
         raise ValueError('Unknown item: ' + str(item))

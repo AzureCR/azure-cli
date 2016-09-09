@@ -5,11 +5,11 @@
 
 import re
 
-from azure.cli.command_modules.registry.mgmt_cr.models import RegistryParameters
+from azure.cli.command_modules.acr.containerregistry.models import RegistryParameters
 
 from ._factory import get_registry_service_client
 
-import azure.cli._logging as _logging
+import azure.cli.core._logging as _logging
 logger = _logging.get_az_logger(__name__)
 
 def _get_registries_in_subscription():

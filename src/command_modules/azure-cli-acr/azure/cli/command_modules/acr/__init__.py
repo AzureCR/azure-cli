@@ -5,7 +5,7 @@
 
 # pylint: disable=unused-import
 
-import azure.cli.command_modules.registry._help
-import azure.cli.command_modules.registry._params
-import azure.cli.command_modules.registry.custom
-import azure.cli.command_modules.registry.repository
+import azure.cli.command_modules.acr._help
+import azure.cli.command_modules.acr._params
+import azure.cli.command_modules.acr.custom
+import azure.cli.command_modules.acr.repository

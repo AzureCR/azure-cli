@@ -7,12 +7,12 @@
 
 from .registry_parameters import RegistryParameters
 from .registry_properties import RegistryProperties
-from .storage_properties import StorageProperties
+from .storage_account_properties import StorageAccountProperties
 from .resource_list_registry_parameters import ResourceListRegistryParameters
 
 __all__ = [
     'RegistryParameters',
     'RegistryProperties',
-    'StorageProperties',
+    'StorageAccountProperties',
     'ResourceListRegistryParameters',
 ]

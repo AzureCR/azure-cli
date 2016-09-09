@@ -5,14 +5,14 @@
 
 import requests
 
-from azure.cli.commands import cli_command
+from azure.cli.core.commands import cli_command
 
 from ._utils import (
     get_registry_by_name,
     validate_registry_name
 )
 
-import azure.cli._logging as _logging
+import azure.cli.core._logging as _logging
 logger = _logging.get_az_logger(__name__)
 
 def _obtain_data_from_registry(registry_name, path, resultIndex, username, password):
@@ -57,7 +57,7 @@ def _validate_user_credentials(registry_name, path, resultIndex, username=None, 
         logger.error('Please switch subscription or enter username/password')
         raise SystemExit(1)
 
-def cr_catalog(registry_name, username=None, password=None):
+def acr_catalog(registry_name, username=None, password=None):
     '''Returns the catalog of repositories in the specified registry.
     :param str registry_name: The name of your Azure container registry
     :param str username: The username used to log into the container registry
@@ -67,7 +67,7 @@ def cr_catalog(registry_name, username=None, password=None):
     path = '/v2/_catalog'
     return _validate_user_credentials(registry_name, path, 'repositories', username, password)
 
-def cr_tags(registry_name, repository, username=None, password=None):
+def acr_tags(registry_name, repository, username=None, password=None):
     '''Returns the list of tags for a given repository in the specified registry.
     :param str registry_name: The name of your Azure container registry
     :param str repository: The repository to obtain tags from
@@ -78,5 +78,5 @@ def cr_tags(registry_name, repository, username=None, password=None):
     path = '/v2/' + repository + '/tags/list'
     return _validate_user_credentials(registry_name, path, 'tags', username, password)
 
-cli_command('registry catalog', cr_catalog)
-cli_command('registry tags', cr_tags)
+cli_command('acr catalog', acr_catalog)
+cli_command('acr tags', acr_tags)

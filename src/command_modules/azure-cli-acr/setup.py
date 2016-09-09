@@ -31,7 +31,7 @@ with open('README.rst', 'r', encoding='utf-8') as f:
     README = f.read()
 
 setup(
-    name='azure-cli-registry',
+    name='azure-cli-acr',
     version=VERSION,
     description='Microsoft Azure Command-Line Tools',
     long_description=README,
@@ -46,11 +46,11 @@ setup(
         'azure.cli.command_modules',
     ],
     packages=[
-        'azure.cli.command_modules.registry',
-        'azure.cli.command_modules.registry.mgmt_cr',
-        'azure.cli.command_modules.registry.mgmt_cr.models',
-        'azure.cli.command_modules.registry.mgmt_cr.operations',
+        'azure.cli.command_modules.acr',
+        'azure.cli.command_modules.acr.containerregistry',
+        'azure.cli.command_modules.acr.containerregistry.models',
+        'azure.cli.command_modules.acr.containerregistry.operations',
     ],
     install_requires=DEPENDENCIES,
-    package_data={'azure.cli.command_modules.registry': ['template.dedicated.json', 'template.byos.json']},
+    package_data={'azure.cli.command_modules.acr': ['template.json']},
 )

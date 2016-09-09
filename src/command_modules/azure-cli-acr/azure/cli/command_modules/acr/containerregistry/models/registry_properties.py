@@ -12,8 +12,8 @@ class RegistryProperties(Model):
     """RegistryProperties
 
     :param storage_account:
-    :type storage_account: :class:`StorageProperties
-     <containerregistry.models.StorageProperties>`
+    :type storage_account: :class:`StorageAccountProperties
+     <containerregistry.models.StorageAccountProperties>`
     :param login_server:
     :type login_server: str
     :param username:
@@ -25,7 +25,7 @@ class RegistryProperties(Model):
     """ 
 
     _attribute_map = {
-        'storage_account': {'key': 'storageAccount', 'type': 'StorageProperties'},
+        'storage_account': {'key': 'storageAccount', 'type': 'StorageAccountProperties'},
         'login_server': {'key': 'loginServer', 'type': 'str'},
         'username': {'key': 'username', 'type': 'str'},
         'key': {'key': 'key', 'type': 'str'},

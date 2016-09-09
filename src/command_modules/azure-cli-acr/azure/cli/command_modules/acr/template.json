@@ -53,7 +53,7 @@
         {
             "comments": "# Registry",
             "name": "[parameters('registryName')]",
-            "type": "Microsoft.Krater/registries",
+            "type": "Microsoft.ContainerRegistry/registries",
             "location": "[parameters('registryLocation')]",
             "apiVersion": "[parameters('registryApiVersion')]",
             "dependsOn": [
@@ -68,7 +68,7 @@
             }
         },
         {
-            "type": "Microsoft.Krater/registries/providers/links",
+            "type": "Microsoft.ContainerRegistry/registries/providers/links",
             "apiVersion": "2015-01-01",
             "name": "[concat(parameters('registryName'),'/Microsoft.Resources/RegistryToStorage')]",
             "dependsOn": [
