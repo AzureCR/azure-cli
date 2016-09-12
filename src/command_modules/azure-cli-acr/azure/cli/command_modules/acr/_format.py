@@ -21,11 +21,11 @@ _properties_map = {
     'creationDate': 'CREATION DATE',
 }
 
-_storage_account_map  = {
+_storage_account_map = {
     'name': 'STORAGE ACCOUNT NAME'
 }
 
-_parameters_map  = {
+_parameters_map = {
     'registryName': 'NAME',
     'location': 'LOCATION',
     'storageAccountName': 'STORAGE ACCOUNT NAME'
@@ -44,43 +44,51 @@ _order_map = {
 }
 
 def output_format(result):
-    '''Returns the list of container registries each of which is an ordered dictionary 
+    '''Returns the list of container registries each of which is an ordered dictionary.
     :param list/dict result: The container registry object(s) or deployment result(s)
     '''
     obj_list = result if isinstance(result, list) else [result]
     return [_format(item) for item in obj_list]
 
 def _format(item):
-    '''Returns an ordered dictionary of the container registry or deployment result
+    '''Returns an ordered dictionary of the container registry or deployment result.
     :param dict item: The container registry object or deployment result
     '''
-    if isinstance(item, dict) and 'id' in item and '/providers/Microsoft.Resources/deployments/' in item['id']:
+    if isinstance(item, dict) and \
+       'id' in item and \
+       '/providers/Microsoft.Resources/deployments/' in item['id']:
         return _format_deployment(item)
-    elif isinstance(item, dict) and 'id' in item and '/providers/Microsoft.ContainerRegistry/registries/' in item['id']:
+    elif isinstance(item, dict) and \
+         'id' in item and \
+         '/providers/Microsoft.ContainerRegistry/registries/' in item['id']:
         return _format_registry(item)
     else:
         raise ValueError('Unknown item: ' + str(item))
 
 def _format_deployment(item):
-    '''Returns an ordered dictionary of the deployment result
+    '''Returns an ordered dictionary of the deployment result.
     :param dict item: The deployment result
     '''
-    basic_info = { _basic_map[key]: str(item[key]) for key in item if key in _basic_map}
+    basic_info = {_basic_map[key]: str(item[key]) for key in item if key in _basic_map}
 
     parameters_info = {}
-    if 'properties' in item and item['properties'] and 'parameters' in item['properties'] and item['properties']['parameters']:
+    if 'properties' in item and \
+       item['properties'] and \
+       'parameters' in item['properties'] and \
+       item['properties']['parameters']:
         parameters = item['properties']['parameters']
-        parameters_info = { _parameters_map[key]: str(parameters[key]['value']) for key in parameters if key in _parameters_map}
+        parameters_info = {_parameters_map[key]: str(parameters[key]['value'])
+                           for key in parameters if key in _parameters_map}
 
     all_info = {**basic_info, **parameters_info}
 
     return OrderedDict(sorted(all_info.items(), key=lambda t: _order_map[t[0]]))
 
 def _format_registry(item):
-    '''Returns an ordered dictionary of the container registry
+    '''Returns an ordered dictionary of the container registry.
     :param dict item: The container registry object
     '''
-    basic_info = { _basic_map[key]: str(item[key]) for key in item if key in _basic_map}
+    basic_info = {_basic_map[key]: str(item[key]) for key in item if key in _basic_map}
 
     resource_group = get_resource_group_by_registry(item)
     if resource_group:
@@ -90,12 +98,14 @@ def _format_registry(item):
     storage_account_info = {}
     if 'properties' in item and item['properties']:
         properties = item['properties']
-        properties_info = { _properties_map[key]: str(properties[key]) for key in properties if key in _properties_map}
+        properties_info = {_properties_map[key]: str(properties[key])
+                           for key in properties if key in _properties_map}
 
         if 'storageAccount' in properties and properties['storageAccount']:
             storage_account = properties['storageAccount']
-            storage_account_info = { _storage_account_map[key]: str(storage_account[key]) for key in storage_account if key in _storage_account_map}
-    
+            storage_account_info = {_storage_account_map[key]: str(storage_account[key])
+                                    for key in storage_account if key in _storage_account_map}
+
     all_info = {**basic_info, **properties_info, **storage_account_info}
 
     return OrderedDict(sorted(all_info.items(), key=lambda t: _order_map[t[0]]))

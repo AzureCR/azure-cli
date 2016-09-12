@@ -22,10 +22,11 @@ def _obtain_data_from_registry(registry_name, path, resultIndex, username, passw
 
     while executeNextHttpCall:
         executeNextHttpCall = False
-        response = requests.get(registryEndpoint + path,
+        response = requests.get(
+            registryEndpoint + path,
             auth=requests.auth.HTTPBasicAuth(
-               username,
-               password
+                username,
+                password
             )
         )
 
@@ -33,8 +34,9 @@ def _obtain_data_from_registry(registry_name, path, resultIndex, username, passw
             resultList += response.json()[resultIndex]
             if 'link' in response.headers and response.headers['link']:
                 linkHeader = response.headers['link']
-                # the registry is telling us there's more items in the list, and another call is needed
-                # the link header looks something like `Link: </v2/_catalog?last=hello-world&n=1>; rel="next"`
+                # The registry is telling us there's more items in the list,
+                # and another call is needed. The link header looks something
+                # like `Link: </v2/_catalog?last=hello-world&n=1>; rel="next"`
                 # we should follow the next path indicated in the link header
                 path = linkHeader[(linkHeader.index('<')+1):linkHeader.index('>')]
                 executeNextHttpCall = True
@@ -52,7 +54,7 @@ def _validate_user_credentials(registry_name, path, resultIndex, username=None, 
         username = registry.properties.username
         password = registry.properties.key
         return _obtain_data_from_registry(registry_name, path, resultIndex, username, password)
-    except: # pylint: disable=W0702
+    except: #pylint: disable=W0702
         logger.error('No container registry can be found with name: ' + registry_name)
         logger.error('Please switch subscription or enter username/password')
         raise SystemExit(1)

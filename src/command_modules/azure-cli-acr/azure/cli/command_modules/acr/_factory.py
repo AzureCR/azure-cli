@@ -28,7 +28,7 @@ def get_registry_service_client():
     '''
     profile = Profile()
     credentials, subscription_id, _ = profile.get_login_credentials()
-    
+
     config = ContainerRegistryConfiguration(subscription_id, VERSION, credentials)
     client = ContainerRegistry(config)
 
@@ -37,6 +37,6 @@ def get_registry_service_client():
     return client.registries
 
 def get_storage_end_point_suffix():
-    '''Returns storage account end point suffix
+    '''Returns storage account end point suffix.
     '''
     return SERVICE_HOST_BASE

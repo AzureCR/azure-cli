@@ -17,7 +17,7 @@ def arm_get_registries_in_subscription():
     client = get_arm_service_client()
     filter_str = "resourceType eq '{}'".format(resource_type)
     result = list(client.resources.list(filter=filter_str))
-    
+
     return [RegistryParameters(item.id, item.name, item.location, item.tags) for item in result]
 
 def arm_get_registries_in_resource_group(resource_group):
@@ -44,8 +44,9 @@ def arm_get_registry_by_name(registry_name):
     else:
         raise ValueError('More than one container registries are found with name: ' + registry_name)
 
-def arm_deploy_template(resource_group, registry_name, location, storage_account_name, deployment_name, mode='incremental'):
-    '''Deploys ARM template to create a container registry using the storage account in the current subscription.
+def arm_deploy_template(resource_group, registry_name, location, #pylint: disable=too-many-arguments
+                        storage_account_name, deployment_name, mode='incremental'):
+    '''Deploys ARM template to create a container registry.
     :param str resource_group: The name of resource group
     :param str registry_name: The name of container registry
     :param str location: The name of location
@@ -61,13 +62,13 @@ def arm_deploy_template(resource_group, registry_name, location, storage_account
     template = get_file_json(file_path)
     parameters = _parameters(registry_name, location, storage_account_name)
     properties = DeploymentProperties(template=template, parameters=parameters, mode=mode)
-    
+
     client = get_arm_service_client()
-    
+
     return client.deployments.create_or_update(resource_group, deployment_name, properties)
 
 def _parameters(registry_name, location, storage_account_name):
-    '''Returns a dict of deployment parameters
+    '''Returns a dict of deployment parameters.
     :param str registry_name: The name of container registry
     :param str location: The name of location
     :param str storage_account_name: The name of storage account

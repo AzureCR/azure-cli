@@ -15,13 +15,13 @@ logger = _logging.get_az_logger(__name__)
 def _get_registries_in_subscription():
     '''Returns the list of container registries in the current subscription.
     '''
-    return get_registry_service_client().list().value # pylint: disable=E1101
+    return get_registry_service_client().list().value #pylint: disable=E1101
 
 def _get_registries_in_resource_group(resource_group):
     '''Returns the list of container registries in the resource group.
     :param str resource_group: The name of resource group
     '''
-    return get_registry_service_client().list_by_resource_group(resource_group).value # pylint: disable=E1101
+    return get_registry_service_client().list_by_resource_group(resource_group).value #pylint: disable=E1101
 
 def get_registry_by_name(registry_name):
     '''Returns the container registry that matches the registry name.
@@ -37,7 +37,7 @@ def get_registry_by_name(registry_name):
     else:
         raise ValueError('More than one container registries are found with name: ' + registry_name)
 
-def _get_resource_id (registry):
+def _get_resource_id(registry):
     '''Returns the resource id of a container registry.
     :param RegistryParameters/dict registry: The container registry object
     '''
@@ -54,7 +54,8 @@ def get_subscription_id_by_registry(registry):
     '''
     resource_id = _get_resource_id(registry)
     resource_group_keyword = _get_resource_group_keyword(resource_id)
-    return resource_id[resource_id.index('/subscriptions/') + len('/subscriptions/') : resource_id.index(resource_group_keyword)]
+    return resource_id[resource_id.index('/subscriptions/') + len('/subscriptions/'):
+                       resource_id.index(resource_group_keyword)]
 
 def get_resource_group_by_registry(registry):
     '''Returns the resource group of a container registry.
@@ -62,7 +63,8 @@ def get_resource_group_by_registry(registry):
     '''
     resource_id = _get_resource_id(registry)
     resource_group_keyword = _get_resource_group_keyword(resource_id)
-    return resource_id[resource_id.index(resource_group_keyword) + len(resource_group_keyword) : resource_id.index('/providers/')]
+    return resource_id[resource_id.index(resource_group_keyword) + len(resource_group_keyword):
+                       resource_id.index('/providers/')]
 
 def _get_resource_group_keyword(resource_id):
     '''Returns the resource group keyword for parsing resource id.
@@ -82,7 +84,7 @@ def validate_registry_name(registry_name):
     if len(registry_name) < 5 or len(registry_name) > 60:
         logger.error('The registry name must be between 5 and 60 characters.')
         raise SystemExit(1)
-    
+
     p = re.compile('^([A-Za-z0-9]+)$')
 
     if not p.match(registry_name):
