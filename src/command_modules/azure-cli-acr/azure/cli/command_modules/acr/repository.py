@@ -6,17 +6,12 @@
 import requests
 
 from azure.cli.core.commands import cli_command
+from azure.cli.core._util import CLIError
 
-from ._utils import (
-    get_registry_by_name,
-    validate_registry_name
-)
+from ._utils import get_registry_by_name
 
-import azure.cli.core._logging as _logging
-logger = _logging.get_az_logger(__name__)
-
-def _obtain_data_from_registry(registry_name, path, resultIndex, username, password):
-    registryEndpoint = 'https://' + registry_name + '.azurecr.io'
+def _obtain_data_from_registry(login_server, path, resultIndex, username, password):
+    registryEndpoint = 'https://' + login_server
     resultList = []
     executeNextHttpCall = True
 
@@ -45,40 +40,38 @@ def _obtain_data_from_registry(registry_name, path, resultIndex, username, passw
 
     return {resultIndex: resultList}
 
-def _validate_user_credentials(registry_name, path, resultIndex, username=None, password=None):
+def _validate_user_credentials(login_server, path, resultIndex, username=None, password=None):
     if username and password:
-        return _obtain_data_from_registry(registry_name, path, resultIndex, username, password)
+        return _obtain_data_from_registry(login_server, path, resultIndex, username, password)
 
     try:
+        registry_name = login_server[0:login_server.index('.')]
         registry = get_registry_by_name(registry_name)
         username = registry.properties.username
         password = registry.properties.key
-        return _obtain_data_from_registry(registry_name, path, resultIndex, username, password)
+        return _obtain_data_from_registry(login_server, path, resultIndex, username, password)
     except: #pylint: disable=W0702
-        logger.error('No container registry can be found with name: ' + registry_name)
-        logger.error('Please switch subscription or enter username/password')
-        raise SystemExit(1)
+        raise CLIError('No container registry can be found with name: ' + registry_name +
+                       '\nPlease switch subscription or enter username/password')
 
-def acr_catalog(registry_name, username=None, password=None):
+def acr_catalog(login_server, username=None, password=None):
     '''Returns the catalog of repositories in the specified registry.
-    :param str registry_name: The name of your Azure container registry
+    :param str login_server: The URL of registry login server
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     '''
-    validate_registry_name(registry_name)
     path = '/v2/_catalog'
-    return _validate_user_credentials(registry_name, path, 'repositories', username, password)
+    return _validate_user_credentials(login_server, path, 'repositories', username, password)
 
-def acr_tags(registry_name, repository, username=None, password=None):
+def acr_tags(login_server, repository, username=None, password=None):
     '''Returns the list of tags for a given repository in the specified registry.
-    :param str registry_name: The name of your Azure container registry
+    :param str login_server: The URL of registry login server
     :param str repository: The repository to obtain tags from
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     '''
-    validate_registry_name(registry_name)
     path = '/v2/' + repository + '/tags/list'
-    return _validate_user_credentials(registry_name, path, 'tags', username, password)
+    return _validate_user_credentials(login_server, path, 'tags', username, password)
 
 cli_command('acr catalog', acr_catalog)
 cli_command('acr tags', acr_tags)

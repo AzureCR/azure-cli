@@ -4,6 +4,9 @@
 #---------------------------------------------------------------------------------------------
 
 from azure.cli.core._profile import Profile
+from azure.mgmt.resource.resources import ResourceManagementClient
+from azure.storage._constants import SERVICE_HOST_BASE
+
 from azure.cli.core.commands.client_factory import (
     configure_common_settings,
     get_mgmt_service_client
@@ -14,9 +17,6 @@ from azure.cli.command_modules.acr.containerregistry import (
     ContainerRegistryConfiguration,
     VERSION
 )
-
-from azure.mgmt.resource.resources import ResourceManagementClient
-from azure.storage._constants import SERVICE_HOST_BASE
 
 def get_arm_service_client():
     '''Returns the client for managing ARM resources.

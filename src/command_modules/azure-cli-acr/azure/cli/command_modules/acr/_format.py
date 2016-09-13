@@ -5,6 +5,7 @@
 
 from collections import OrderedDict
 
+from ._constants import RESOURCE_TYPE
 from ._utils import get_resource_group_by_registry
 
 _basic_map = {
@@ -60,7 +61,7 @@ def _format(item):
         return _format_deployment(item)
     elif isinstance(item, dict) and \
          'id' in item and \
-         '/providers/Microsoft.ContainerRegistry/registries/' in item['id']:
+         ('/providers/' + RESOURCE_TYPE + '/') in item['id']:
         return _format_registry(item)
     else:
         raise ValueError('Unknown item: ' + str(item))

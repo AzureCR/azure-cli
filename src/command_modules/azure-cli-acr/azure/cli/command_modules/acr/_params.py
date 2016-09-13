@@ -9,10 +9,17 @@ from azure.cli.core.commands import (
 )
 
 from azure.cli.core.commands.parameters import (
-    name_type,
     resource_group_name_type,
     location_type,
     tags_type
+)
+
+from ._validators import validate_registry_name
+
+registry_name_type = CliArgumentType(
+    options_list=('--name', '-n'),
+    help='Name of container registry',
+    validator=validate_registry_name
 )
 
 storage_account_name_type = CliArgumentType(
@@ -25,7 +32,7 @@ storage_account_key_type = CliArgumentType(
     help='Key of storage account.'
 )
 
-register_cli_argument('acr', 'registry_name', arg_type=name_type)
+register_cli_argument('acr', 'registry_name', arg_type=registry_name_type)
 register_cli_argument('acr', 'resource_group', arg_type=resource_group_name_type)
 register_cli_argument('acr', 'location', arg_type=location_type)
 register_cli_argument('acr', 'tags', arg_type=tags_type)

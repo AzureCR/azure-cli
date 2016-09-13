@@ -3,14 +3,9 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 #---------------------------------------------------------------------------------------------
 
-import re
-
 from azure.cli.command_modules.acr.containerregistry.models import RegistryParameters
 
 from ._factory import get_registry_service_client
-
-import azure.cli.core._logging as _logging
-logger = _logging.get_az_logger(__name__)
 
 def _get_registries_in_subscription():
     '''Returns the list of container registries in the current subscription.
@@ -76,17 +71,3 @@ def _get_resource_group_keyword(resource_id):
         return '/resourceGroups/'
     else:
         raise ValueError('Invalid resource id: ' + resource_id)
-
-def validate_registry_name(registry_name):
-    '''Returns if the registry name is allowed.
-    :param str registry_name: The name of container registry
-    '''
-    if len(registry_name) < 5 or len(registry_name) > 60:
-        logger.error('The registry name must be between 5 and 60 characters.')
-        raise SystemExit(1)
-
-    p = re.compile('^([A-Za-z0-9]+)$')
-
-    if not p.match(registry_name):
-        logger.error('The registry name can contain only letters and numbers.')
-        raise SystemExit(1)
