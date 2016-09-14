@@ -3,7 +3,7 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 #---------------------------------------------------------------------------------------------
 
-from azure.cli.command_modules.acr.containerregistry.models import RegistryParameters
+from azure.cli.command_modules.acr.mgmt_acr.models import RegistryParameters
 
 from ._factory import get_registry_service_client
 
@@ -52,7 +52,7 @@ def get_subscription_id_by_registry(registry):
     return resource_id[resource_id.index('/subscriptions/') + len('/subscriptions/'):
                        resource_id.index(resource_group_keyword)]
 
-def get_resource_group_by_registry(registry):
+def get_resource_group_name_by_registry(registry):
     '''Returns the resource group of a container registry.
     :param RegistryParameters/dict registry: The container registry object
     '''

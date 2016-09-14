@@ -54,18 +54,18 @@ def _validate_user_credentials(login_server, path, resultIndex, username=None, p
         raise CLIError('No container registry can be found with name: ' + registry_name +
                        '\nPlease switch subscription or enter username/password')
 
-def acr_catalog(login_server, username=None, password=None):
-    '''Returns the catalog of repositories in the specified registry.
-    :param str login_server: The URL of registry login server
+def acr_repository_list(login_server, username=None, password=None):
+    '''List repositories in a given container registry.
+    :param str login_server: The URL of a container registry login server
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     '''
     path = '/v2/_catalog'
     return _validate_user_credentials(login_server, path, 'repositories', username, password)
 
-def acr_tags(login_server, repository, username=None, password=None):
-    '''Returns the list of tags for a given repository in the specified registry.
-    :param str login_server: The URL of registry login server
+def acr_repository_show_tags(login_server, repository, username=None, password=None):
+    '''Show tags of a given repository in a given container registry.
+    :param str login_server: The URL of a container registry login server
     :param str repository: The repository to obtain tags from
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
@@ -73,5 +73,5 @@ def acr_tags(login_server, repository, username=None, password=None):
     path = '/v2/' + repository + '/tags/list'
     return _validate_user_credentials(login_server, path, 'tags', username, password)
 
-cli_command('acr catalog', acr_catalog)
-cli_command('acr tags', acr_tags)
+cli_command('acr repository list', acr_repository_list)
+cli_command('acr repository show-tags', acr_repository_show_tags)

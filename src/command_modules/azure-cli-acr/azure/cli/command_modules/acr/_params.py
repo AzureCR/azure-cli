@@ -11,30 +11,31 @@ from azure.cli.core.commands import (
 from azure.cli.core.commands.parameters import (
     resource_group_name_type,
     location_type,
-    tags_type
+    tags_type,
+    get_resource_name_completion_list
 )
 
+from ._constants import RESOURCE_TYPE
 from ._validators import validate_registry_name
 
 registry_name_type = CliArgumentType(
     options_list=('--name', '-n'),
     help='Name of container registry',
+    completer=get_resource_name_completion_list(RESOURCE_TYPE),
     validator=validate_registry_name
 )
 
-storage_account_name_type = CliArgumentType(
-    options_list=('--storage-account-name', '-s'),
-    help='Name of storage account.'
-)
-
-storage_account_key_type = CliArgumentType(
-    options_list=('--storage-account-key', '-k'),
-    help='Key of storage account.'
-)
-
-register_cli_argument('acr', 'registry_name', arg_type=registry_name_type)
-register_cli_argument('acr', 'resource_group', arg_type=resource_group_name_type)
+register_cli_argument('acr', 'registry_name', registry_name_type)
+register_cli_argument('acr', 'resource_group_name', arg_type=resource_group_name_type)
 register_cli_argument('acr', 'location', arg_type=location_type)
 register_cli_argument('acr', 'tags', arg_type=tags_type)
-register_cli_argument('acr', 'storage_account_name', arg_type=storage_account_name_type)
-register_cli_argument('acr', 'storage_account_key', arg_type=storage_account_key_type)
+register_cli_argument('acr', 'storage_account_name',
+                      options_list=('--storage-account-name', '-s'),
+                      help='Name of storage account.',
+                      completer=get_resource_name_completion_list(
+                          'Microsoft.Storage/storageAccounts'))
+register_cli_argument('acr', 'storage_account_key',
+                      options_list=('--storage-account-key', '-k'),
+                      help='Key of storage account.')
+
+register_cli_argument('acr create', 'registry_name', registry_name_type, completer=None)

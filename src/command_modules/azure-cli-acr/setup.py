@@ -24,7 +24,7 @@ CLASSIFIERS = [
 ]
 
 DEPENDENCIES = [
-    'azure==2.0.0rc5',
+    'azure==2.0.0rc6',
 ]
 
 with open('README.rst', 'r', encoding='utf-8') as f:
@@ -47,9 +47,9 @@ setup(
     ],
     packages=[
         'azure.cli.command_modules.acr',
-        'azure.cli.command_modules.acr.containerregistry',
-        'azure.cli.command_modules.acr.containerregistry.models',
-        'azure.cli.command_modules.acr.containerregistry.operations',
+        'azure.cli.command_modules.acr.mgmt_acr',
+        'azure.cli.command_modules.acr.mgmt_acr.models',
+        'azure.cli.command_modules.acr.mgmt_acr.operations',
     ],
     install_requires=DEPENDENCIES,
     package_data={'azure.cli.command_modules.acr': ['template.json']},

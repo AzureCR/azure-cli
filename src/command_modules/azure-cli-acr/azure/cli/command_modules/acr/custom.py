@@ -6,7 +6,7 @@
 from azure.cli.core.commands import cli_command
 from azure.cli.core._util import CLIError
 
-from azure.cli.command_modules.acr.containerregistry.models import (
+from azure.cli.command_modules.acr.mgmt_acr.models import (
     RegistryParameters,
     RegistryProperties,
     StorageAccountProperties
@@ -26,24 +26,24 @@ from ._arm_utils import (
 
 from ._utils import (
     get_registry_by_name,
-    get_resource_group_by_registry
+    get_resource_group_name_by_registry
 )
 
 from ._format import output_format
 
-def acr_list(resource_group=None):
-    '''Returns the list of container registries.
+def acr_list(resource_group_name=None):
+    '''List container registries.
     :param str resource_group: The name of resource group
     '''
-    if resource_group:
-        return arm_get_registries_in_resource_group(resource_group)
+    if resource_group_name:
+        return arm_get_registries_in_resource_group(resource_group_name)
     else:
         return arm_get_registries_in_subscription()
 
-def acr_create(resource_group, registry_name, location, #pylint: disable=too-many-arguments
+def acr_create(resource_group_name, registry_name, location, #pylint: disable=too-many-arguments
                storage_account_name=None, storage_account_key=None):
-    '''Returns the created container registry.
-    :param str resource_group: The name of resource group
+    '''Create a container registry.
+    :param str resource_group_name: The name of resource group
     :param str registry_name: The name of container registry
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
@@ -61,45 +61,45 @@ def acr_create(resource_group, registry_name, location, #pylint: disable=too-man
             RegistryParameters(location=location,
                                properties=registry_properties)
             return get_registry_service_client().create(
-                resource_group, registry_name, registry_parameters)
+                resource_group_name, registry_name, registry_parameters)
         else:
             return arm_deploy_template(
-                resource_group, registry_name, location, storage_account_name)
+                resource_group_name, registry_name, location, storage_account_name)
     else:
         return get_registry_service_client().create(
-            resource_group, registry_name, RegistryParameters(location=location))
+            resource_group_name, registry_name, RegistryParameters(location=location))
 
 def acr_delete(registry_name):
-    '''Deletes the container registry that matches the registry name.
+    '''Delete a container registry.
     :param str registry_name: The name of container registry
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
         raise CLIError('No container registry can be found with name: ' + registry_name)
 
-    resource_group = get_resource_group_by_registry(registry)
-    return get_registry_service_client().delete(resource_group, registry_name)
+    resource_group_name = get_resource_group_name_by_registry(registry)
+    return get_registry_service_client().delete(resource_group_name, registry_name)
 
 def acr_show(registry_name):
-    '''Returns the container registry that matches the registry name.
+    '''Get a container registry.
     :param str registry_name: The name of container registry
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
         raise CLIError('No container registry can be found with name: ' + registry_name)
 
-    resource_group = get_resource_group_by_registry(registry)
-    return get_registry_service_client().get_properties(resource_group, registry_name)
+    resource_group_name = get_resource_group_name_by_registry(registry)
+    return get_registry_service_client().get_properties(resource_group_name, registry_name)
 
 def acr_update(registry_name, tags=None):
-    '''Returns the updated container registry that matches the registry name.
+    '''Update a container registry.
     :param str registry_name: The name of container registry
     '''
     registry = get_registry_by_name(registry_name)
     if registry is None:
         raise CLIError('No container registry can be found with name: ' + registry_name)
 
-    resource_group = get_resource_group_by_registry(registry)
+    resource_group_name = get_resource_group_name_by_registry(registry)
     newTags = registry.tags
 
     if isinstance(tags, dict):
@@ -113,7 +113,9 @@ def acr_update(registry_name, tags=None):
             newTags = {}
 
     return get_registry_service_client().update(
-        resource_group, registry_name, RegistryParameters(location=registry.location, tags=newTags))
+        resource_group_name, registry_name,
+        RegistryParameters(location=registry.location,
+                           tags=newTags))
 
 cli_command('acr list', acr_list, table_transformer=output_format)
 cli_command('acr create', acr_create, table_transformer=output_format)

@@ -6,7 +6,7 @@
 from collections import OrderedDict
 
 from ._constants import RESOURCE_TYPE
-from ._utils import get_resource_group_by_registry
+from ._utils import get_resource_group_name_by_registry
 
 _basic_map = {
     'name': 'NAME',
@@ -92,9 +92,9 @@ def _format_registry(item):
     '''
     basic_info = {_basic_map[key]: str(item[key]) for key in item if key in _basic_map}
 
-    resource_group = get_resource_group_by_registry(item)
-    if resource_group:
-        basic_info['RESOURCE GROUP'] = resource_group
+    resource_group_name = get_resource_group_name_by_registry(item)
+    if resource_group_name:
+        basic_info['RESOURCE GROUP'] = resource_group_name
 
     properties_info = {}
     storage_account_info = {}
