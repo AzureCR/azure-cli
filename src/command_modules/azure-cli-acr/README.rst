@@ -29,17 +29,13 @@ Create a container registry
         --location -l       [Required]: Location.
         --name -n           [Required]: Name of container registry.
         --resource-group -g [Required]: Name of resource group.
-        --storage-account-key -k      : Key of storage account.
         --storage-account-name -s     : Name of storage account.
 
     Examples
-        Create a container registry with managed storage account
+        Create a container registry with a new storage account
             az acr create -n <registry-name> -g <resource-group> -l <location>
-        Create a container registry with new/existing storage account in the current subscription
+        Create a container registry with a new/existing storage account
             az acr create -n <registry-name> -g <resource-group> -l <location> -s <storage-account-name>
-        Create a container registry with your own storage account in any subscription
-            az acr create -n <registry-name> -g <resource-group> -l <location> -s <storage-account-name>
-            -k <storage-account-key>
 
 Delete a container registry
 -------------

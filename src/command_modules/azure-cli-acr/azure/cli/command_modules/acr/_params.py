@@ -16,7 +16,10 @@ from azure.cli.core.commands.parameters import (
 )
 
 from ._constants import RESOURCE_TYPE
-from ._validators import validate_registry_name
+from ._validators import (
+    validate_registry_name,
+    validate_storage_account_name
+)
 
 registry_name_type = CliArgumentType(
     options_list=('--name', '-n'),
@@ -33,9 +36,7 @@ register_cli_argument('acr', 'storage_account_name',
                       options_list=('--storage-account-name', '-s'),
                       help='Name of storage account.',
                       completer=get_resource_name_completion_list(
-                          'Microsoft.Storage/storageAccounts'))
-register_cli_argument('acr', 'storage_account_key',
-                      options_list=('--storage-account-key', '-k'),
-                      help='Key of storage account.')
+                          'Microsoft.Storage/storageAccounts'),
+                      validator=validate_storage_account_name)
 
 register_cli_argument('acr create', 'registry_name', registry_name_type, completer=None)

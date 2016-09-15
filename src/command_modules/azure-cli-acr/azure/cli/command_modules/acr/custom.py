@@ -6,16 +6,9 @@
 from azure.cli.core.commands import cli_command
 from azure.cli.core._util import CLIError
 
-from azure.cli.command_modules.acr.mgmt_acr.models import (
-    RegistryParameters,
-    RegistryProperties,
-    StorageAccountProperties
-)
+from azure.cli.command_modules.acr.mgmt_acr.models import RegistryParameters
 
-from ._factory import (
-    get_registry_service_client,
-    get_storage_end_point_suffix
-)
+from ._factory import get_registry_service_client
 
 from ._arm_utils import (
     arm_get_registries_in_subscription,
@@ -40,34 +33,14 @@ def acr_list(resource_group_name=None):
     else:
         return arm_get_registries_in_subscription()
 
-def acr_create(resource_group_name, registry_name, location, #pylint: disable=too-many-arguments
-               storage_account_name=None, storage_account_key=None):
+def acr_create(resource_group_name, registry_name, location, storage_account_name=None):
     '''Create a container registry.
     :param str resource_group_name: The name of resource group
     :param str registry_name: The name of container registry
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
-    :param str storage_account_key: The key of storage account
     '''
-    if storage_account_name:
-        if storage_account_key:
-            storage_account_properties = \
-            StorageAccountProperties(name=storage_account_name,
-                                     access_key=storage_account_key,
-                                     endpoint_suffix=get_storage_end_point_suffix())
-            registry_properties = \
-            RegistryProperties(storage_account=storage_account_properties)
-            registry_parameters = \
-            RegistryParameters(location=location,
-                               properties=registry_properties)
-            return get_registry_service_client().create(
-                resource_group_name, registry_name, registry_parameters)
-        else:
-            return arm_deploy_template(
-                resource_group_name, registry_name, location, storage_account_name)
-    else:
-        return get_registry_service_client().create(
-            resource_group_name, registry_name, RegistryParameters(location=location))
+    return arm_deploy_template(resource_group_name, registry_name, location, storage_account_name)
 
 def acr_delete(registry_name):
     '''Delete a container registry.

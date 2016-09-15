@@ -26,15 +26,12 @@ helps['acr list'] = """
 helps['acr create'] = """
             type: command
             examples:
-                - name: Create a container registry with managed storage account
+                - name: Create a container registry with a new storage account
                   text:
                     az acr create -n <registry-name> -g <resource-group> -l <location>
-                - name: Create a container registry with new/existing storage account in the current subscription
+                - name: Create a container registry with a new/existing storage account
                   text:
                     az acr create -n <registry-name> -g <resource-group> -l <location> -s <storage-account-name>
-                - name: Create a container registry with your own storage account in any subscription
-                  text:
-                    az acr create -n <registry-name> -g <resource-group> -l <location> -s <storage-account-name> -k <storage-account-key>
             """
 
 helps['acr update'] = """
