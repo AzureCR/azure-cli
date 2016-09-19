@@ -5,13 +5,19 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-from msrest.exceptions import (
-    ClientException,
-    SerializationError,
-    DeserializationError,
-    TokenExpiredError,
-    ClientRequestError,
-    AuthenticationError,
-    HttpOperationError,
-    ValidationError,
-)
+from msrest.serialization import Model
+
+
+class StorageAccountBaseProperties(Model):
+    """StorageAccountBaseProperties
+
+    :param name:
+    :type name: str
+    """ 
+
+    _attribute_map = {
+        'name': {'key': 'name', 'type': 'str'},
+    }
+
+    def __init__(self, name=None):
+        self.name = name

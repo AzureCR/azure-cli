@@ -5,9 +5,14 @@
 
 import re
 import uuid
+import getpass
+
+from azure.mgmt.resource.resources.models.resource_group import ResourceGroup
 
 from azure.cli.core._util import CLIError
 from azure.cli.command_modules.storage._factory import storage_client_factory
+
+from ._factory import get_arm_service_client
 
 def validate_registry_name(namespace):
     if namespace.registry_name:
@@ -29,3 +34,19 @@ def validate_storage_account_name(namespace):
             if client.check_name_availability(storage_account_name).name_available is True: #pylint: disable=E1101
                 namespace.storage_account_name = storage_account_name
                 break
+
+def validate_resource_group_name(namespace):
+    client = get_arm_service_client()
+
+    if namespace.resource_group_name:
+        if not client.resource_groups.check_existence(namespace.resource_group_name):
+            parameters = ResourceGroup(location=namespace.location)
+            client.resource_groups.create_or_update(namespace.resource_group_name, parameters)
+    else:
+        # Create a default resource group if the user does not provide a resource group name
+        try:
+            namespace.resource_group_name = '{}_ACR_RG'.format(str(getpass.getuser()))
+        except: #pylint: disable=W0702
+            namespace.resource_group_name = '{}_ACR_RG'.format('Default')
+        parameters = ResourceGroup(location=namespace.location)
+        client.resource_groups.create_or_update(namespace.resource_group_name, parameters)

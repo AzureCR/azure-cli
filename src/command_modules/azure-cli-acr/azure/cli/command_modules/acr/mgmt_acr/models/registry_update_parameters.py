@@ -5,13 +5,19 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-from msrest.exceptions import (
-    ClientException,
-    SerializationError,
-    DeserializationError,
-    TokenExpiredError,
-    ClientRequestError,
-    AuthenticationError,
-    HttpOperationError,
-    ValidationError,
-)
+from msrest.serialization import Model
+
+
+class RegistryUpdateParameters(Model):
+    """RegistryUpdateParameters
+
+    :param tags:
+    :type tags: dict
+    """ 
+
+    _attribute_map = {
+        'tags': {'key': 'tags', 'type': '{str}'},
+    }
+
+    def __init__(self, tags=None):
+        self.tags = tags

@@ -52,5 +52,5 @@ setup(
         'azure.cli.command_modules.acr.mgmt_acr.operations',
     ],
     install_requires=DEPENDENCIES,
-    package_data={'azure.cli.command_modules.acr': ['template.json']},
+    package_data={'azure.cli.command_modules.acr': ['template.new.json', 'template.existing.json']},
 )

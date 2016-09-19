@@ -5,24 +5,28 @@
 
 from azure.cli.core.commands import cli_command
 from azure.cli.core._util import CLIError
+from azure.cli.command_modules.role.custom import _create_role_assignment
 
-from azure.cli.command_modules.acr.mgmt_acr.models import RegistryParameters
+from azure.cli.command_modules.acr.mgmt_acr.models import RegistryUpdateParameters
 
-from ._factory import get_registry_service_client
-
+from ._factory import get_acr_service_client
 from ._arm_utils import (
     arm_get_registries_in_subscription,
     arm_get_registries_in_resource_group,
     arm_get_registry_by_name,
-    arm_deploy_template
+    arm_deploy_template,
+    add_tags_storage_account
 )
-
 from ._utils import (
     get_registry_by_name,
-    get_resource_group_name_by_registry
+    get_resource_group_name_by_registry,
+    create_service_principal
 )
 
 from ._format import output_format
+
+import azure.cli.core._logging as _logging
+logger = _logging.get_az_logger(__name__)
 
 def acr_list(resource_group_name=None):
     '''List container registries.
@@ -33,14 +37,51 @@ def acr_list(resource_group_name=None):
     else:
         return arm_get_registries_in_subscription()
 
-def acr_create(resource_group_name, registry_name, location, storage_account_name=None):
+def acr_create(registry_name, #pylint: disable=too-many-arguments
+               resource_group_name=None,
+               location='West US',
+               storage_account_name=None,
+               new_service_principal=None,
+               app_id=None):
     '''Create a container registry.
-    :param str resource_group_name: The name of resource group
     :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
+    :param str new_service_principal: The new service principal with the specified password
+    :param str app_id: The app id of an existing service principal
     '''
-    return arm_deploy_template(resource_group_name, registry_name, location, storage_account_name)
+    if new_service_principal and app_id:
+        raise CLIError('new-service-principal and app-id should not be specified together.')
+
+    password = new_service_principal
+    session_key = None
+    # Create a service principal
+    if new_service_principal:
+        (app_id,
+         password,
+         session_key) = create_service_principal(registry_name, new_service_principal)
+
+    # Create a container registry
+    arm_deploy_template(resource_group_name,
+                        registry_name,
+                        location,
+                        storage_account_name).wait() # wait for the template deployment to finish
+    registry = get_acr_service_client().get_properties(resource_group_name, registry_name)
+    add_tags_storage_account(storage_account_name, 'acr', registry_name)
+
+    # Create role assignment
+    if app_id:
+        _create_role_assignment('Owner',
+                                app_id,
+                                resource_id=registry.id, #pylint: disable=E1101
+                                ocp_aad_session_key=session_key)
+        logger.warning("Service principal has been configured.")
+        logger.warning("  id(client_id):           " + app_id)
+        if password:
+            logger.warning("  password(client_secret): " + password)
+
+    return registry
 
 def acr_delete(registry_name):
     '''Delete a container registry.
@@ -48,10 +89,10 @@ def acr_delete(registry_name):
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
-        raise CLIError('No container registry can be found with name: ' + registry_name)
+        raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
     resource_group_name = get_resource_group_name_by_registry(registry)
-    return get_registry_service_client().delete(resource_group_name, registry_name)
+    return get_acr_service_client().delete(resource_group_name, registry_name)
 
 def acr_show(registry_name):
     '''Get a container registry.
@@ -59,18 +100,19 @@ def acr_show(registry_name):
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
-        raise CLIError('No container registry can be found with name: ' + registry_name)
+        raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
     resource_group_name = get_resource_group_name_by_registry(registry)
-    return get_registry_service_client().get_properties(resource_group_name, registry_name)
+    return get_acr_service_client().get_properties(resource_group_name, registry_name)
 
-def acr_update(registry_name, tags=None):
+def acr_update(registry_name, tags=None, app_id=None):
     '''Update a container registry.
     :param str registry_name: The name of container registry
+    :param str app_id: The app id of an existing service principal
     '''
     registry = get_registry_by_name(registry_name)
     if registry is None:
-        raise CLIError('No container registry can be found with name: ' + registry_name)
+        raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
     resource_group_name = get_resource_group_name_by_registry(registry)
     newTags = registry.tags
@@ -85,10 +127,12 @@ def acr_update(registry_name, tags=None):
         else:
             newTags = {}
 
-    return get_registry_service_client().update(
+    if app_id:
+        _create_role_assignment('Owner', app_id, resource_id=registry.id) #pylint: disable=E1101
+
+    return get_acr_service_client().update(
         resource_group_name, registry_name,
-        RegistryParameters(location=registry.location,
-                           tags=newTags))
+        RegistryUpdateParameters(tags=newTags))
 
 cli_command('acr list', acr_list, table_transformer=output_format)
 cli_command('acr create', acr_create, table_transformer=output_format)

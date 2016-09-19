@@ -26,38 +26,52 @@
                 "description": "Name of the storage account"
             }
         },
+        "storageAccountType": {
+            "type": "string",
+            "metadata": {
+                "description": "Type of the storage account"
+            }
+        },
         "storageAccountApiVersion": {
             "type": "string",
             "metadata": {
                 "description": "Api version of the storage account"
             }
-        }
+        },
+        "tenantId": {
+             "type": "string",
+             "metadata": {
+                 "description": "Tenant Id"
+             }
+         }
     },
     "resources": [
         {
-            "comments": "# Storage Account",
             "name": "[parameters('storageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
             "location": "[parameters('registryLocation')]",
             "apiVersion": "[parameters('storageAccountApiVersion')]",
             "properties": {
-                "accountType": "Standard_LRS"
+                "accountType": "[parameters('storageAccountType')]"
             }
         },
         {
-            "comments": "# Registry",
             "name": "[parameters('registryName')]",
             "type": "Microsoft.ContainerRegistry/registries",
             "location": "[parameters('registryLocation')]",
             "apiVersion": "[parameters('registryApiVersion')]",
+            "tags": {
+                "storageaccount": "[parameters('storageAccountName')]"
+            },
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
             ],
             "properties": {
+                "tenantId": "[parameters('tenantId')]",
                 "storageAccount": {
                     "name": "[parameters('storageAccountName')]",
                     "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), parameters('storageAccountApiVersion')).key1]",
-                    "endPointUrl": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), parameters('storageAccountApiVersion')).primaryEndpoints.blob]"
+                    "endPointUrl": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), parameters('storageAccountApiVersion')).primaryEndpoints.blob]"
                 }
             }
         },

@@ -18,7 +18,8 @@ from azure.cli.core.commands.parameters import (
 from ._constants import RESOURCE_TYPE
 from ._validators import (
     validate_registry_name,
-    validate_storage_account_name
+    validate_storage_account_name,
+    validate_resource_group_name
 )
 
 registry_name_type = CliArgumentType(
@@ -38,5 +39,10 @@ register_cli_argument('acr', 'storage_account_name',
                       completer=get_resource_name_completion_list(
                           'Microsoft.Storage/storageAccounts'),
                       validator=validate_storage_account_name)
+register_cli_argument('acr', 'new_service_principal',
+                      options_list=('--new-service-principal', '-p'),
+                      help='New service principal with the specified password. Use "" to generate a random password')
 
 register_cli_argument('acr create', 'registry_name', registry_name_type, completer=None)
+register_cli_argument('acr create', 'resource_group_name', resource_group_name_type,
+                      validator=validate_resource_group_name)
