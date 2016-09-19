@@ -5,7 +5,10 @@
 
 from azure.cli.command_modules.acr.mgmt_acr.models import RegistryParameters
 
-from ._constants import RESOURCE_TYPE
+from ._constants import (
+    RESOURCE_PROVIDER,
+    RESOURCE_TYPE
+)
 from ._factory import get_arm_service_client
 
 from azure.cli.command_modules.acr.mgmt_acr import VERSION
@@ -59,10 +62,26 @@ def arm_deploy_template(resource_group_name, registry_name, location, storage_ac
     parameters = _parameters(registry_name, location, storage_account_name)
     properties = DeploymentProperties(template=template, parameters=parameters, mode='incremental')
 
-    client = get_arm_service_client()
-    deployment_name = 'Deployment.' + registry_name
+    return _arm_deploy_template(resource_group_name, properties)
 
-    return client.deployments.create_or_update(resource_group_name, deployment_name, properties)
+def _arm_deploy_template(resource_group_name, properties, index=0):
+    '''Deploys ARM template to create a container registry.
+    :param str resource_group_name: The name of resource group
+    :param DeploymentProperties properties: The properties of a deployment
+    :param int index: The index added to deployment name to avoid conflict
+    '''
+    if index == 0:
+        deployment_name = RESOURCE_PROVIDER
+    else:
+        deployment_name = RESOURCE_PROVIDER + '_' + str(index)
+
+    client = get_arm_service_client()
+
+    try:
+        client.deployments.validate(resource_group_name, deployment_name, properties)
+        return client.deployments.create_or_update(resource_group_name, deployment_name, properties)
+    except: #pylint: disable=W0702
+        return _arm_deploy_template(resource_group_name, properties, index + 1)
 
 def _parameters(registry_name, location, storage_account_name):
     '''Returns a dict of deployment parameters.
@@ -75,7 +94,6 @@ def _parameters(registry_name, location, storage_account_name):
         'registryLocation': {'value': location},
         'registryApiVersion': {'value': VERSION},
         'storageAccountName': {'value': storage_account_name},
-        'storageAccountLocation': {'value': 'westus'},
         'storageAccountApiVersion': {'value': '2015-05-01-preview'}
     }
     return parameters

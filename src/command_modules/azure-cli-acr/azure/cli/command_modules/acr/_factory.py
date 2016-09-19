@@ -6,7 +6,6 @@
 from azure.cli.core._profile import Profile
 from azure.cli.core._config import az_config
 from azure.mgmt.resource.resources import ResourceManagementClient
-from azure.storage._constants import SERVICE_HOST_BASE
 
 from azure.cli.core.commands.client_factory import (
     configure_common_settings,
@@ -45,8 +44,3 @@ def get_registry_service_client():
     configure_common_settings(client)
 
     return client.registries
-
-def get_storage_end_point_suffix():
-    '''Returns storage account end point suffix.
-    '''
-    return SERVICE_HOST_BASE

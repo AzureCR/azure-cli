@@ -26,12 +26,6 @@
                 "description": "Name of the storage account"
             }
         },
-        "storageAccountLocation": {
-            "type": "string",
-            "metadata": {
-                "description": "Location of the storage account"
-            }
-        },
         "storageAccountApiVersion": {
             "type": "string",
             "metadata": {
@@ -44,7 +38,7 @@
             "comments": "# Storage Account",
             "name": "[parameters('storageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "location": "[parameters('storageAccountLocation')]",
+            "location": "[parameters('registryLocation')]",
             "apiVersion": "[parameters('storageAccountApiVersion')]",
             "properties": {
                 "accountType": "Standard_LRS"

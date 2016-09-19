@@ -3,4 +3,5 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 #---------------------------------------------------------------------------------------------
 
-RESOURCE_TYPE = 'Microsoft.ContainerRegistry/registries'
+RESOURCE_PROVIDER = 'Microsoft.ContainerRegistry'
+RESOURCE_TYPE = RESOURCE_PROVIDER + '/registries'
