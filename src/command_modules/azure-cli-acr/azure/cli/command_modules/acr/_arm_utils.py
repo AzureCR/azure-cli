@@ -157,19 +157,17 @@ def add_tag_storage_account(storage_account_name, key, value):
                          StorageAccountUpdateParameters(tags=tags))
 
 def delete_tag_storage_account(storage_account_name, registry_name):
-    '''Delete a tag (key, value) from the storage account.
+    '''Delete a tag (key, value) from the storage account, if value matches registry_name.
     :param str storage_account_name: The name of storage account
     :param str registry_name: The name of container registry
     '''
     from azure.mgmt.storage.models import StorageAccountUpdateParameters
     storage_account_resource_group, tags = _arm_get_storage_account(storage_account_name)
 
-    for key, value in tags.items():
-        if value == registry_name:
-            del tags[key]
-
+    newTags = {key: value for key, value in tags.items() if
+               not (value.lower() == registry_name.lower() and key.startswith('acr'))}
     client = get_storage_service_client().storage_accounts
 
     return client.update(storage_account_resource_group,
                          storage_account_name,
-                         StorageAccountUpdateParameters(tags=tags))
+                         StorageAccountUpdateParameters(tags=newTags))
