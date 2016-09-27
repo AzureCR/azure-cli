@@ -131,7 +131,7 @@ def _arm_get_storage_account(storage_account_name):
         raise CLIError(
             'More than one storage accounts are found with name: {}'.format(storage_account_name))
 
-def add_tags_storage_account(storage_account_name, key, value):
+def add_tag_storage_account(storage_account_name, key, value):
     '''Add a new tag (key, value) to the storage account.
     :param str storage_account_name: The name of storage account
     :param str key: The key of the new tag
@@ -150,6 +150,24 @@ def add_tags_storage_account(storage_account_name, key, value):
                 'The storage account {} has too many tags'.format(storage_account_name))
 
     tags[newKey] = value
+    client = get_storage_service_client().storage_accounts
+
+    return client.update(storage_account_resource_group,
+                         storage_account_name,
+                         StorageAccountUpdateParameters(tags=tags))
+
+def delete_tag_storage_account(storage_account_name, registry_name):
+    '''Delete a tag (key, value) from the storage account.
+    :param str storage_account_name: The name of storage account
+    :param str registry_name: The name of container registry
+    '''
+    from azure.mgmt.storage.models import StorageAccountUpdateParameters
+    storage_account_resource_group, tags = _arm_get_storage_account(storage_account_name)
+
+    for key, value in tags.items():
+        if value == registry_name:
+            del tags[key]
+
     client = get_storage_service_client().storage_accounts
 
     return client.update(storage_account_resource_group,

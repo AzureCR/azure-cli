@@ -15,7 +15,8 @@ from ._arm_utils import (
     arm_get_registries_in_resource_group,
     arm_get_registry_by_name,
     arm_deploy_template,
-    add_tags_storage_account
+    add_tag_storage_account,
+    delete_tag_storage_account
 )
 from ._utils import (
     get_registry_by_name,
@@ -68,7 +69,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                         location,
                         storage_account_name).wait() # wait for the template deployment to finish
     registry = get_acr_service_client().get_properties(resource_group_name, registry_name)
-    add_tags_storage_account(storage_account_name, 'acr', registry_name)
+    add_tag_storage_account(storage_account_name, 'acr', registry_name)
 
     # Create role assignment
     if app_id:
@@ -92,6 +93,11 @@ def acr_delete(registry_name):
         raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
     resource_group_name = get_resource_group_name_by_registry(registry)
+
+    storage_account_name = get_acr_service_client().get_properties( #pylint: disable=E1101
+        resource_group_name, registry_name).properties.storage_account.name
+
+    delete_tag_storage_account(storage_account_name, registry_name)
     return get_acr_service_client().delete(resource_group_name, registry_name)
 
 def acr_show(registry_name):
