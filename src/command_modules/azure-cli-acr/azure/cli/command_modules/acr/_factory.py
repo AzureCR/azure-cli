@@ -39,13 +39,7 @@ def get_acr_service_client():
     profile = Profile()
     credentials, subscription_id, _ = profile.get_login_credentials()
 
-    customized_api_version = az_config.get('acr', 'apiversion', None)
-    if customized_api_version:
-        logger.warning('Customized api-version is used: ' + customized_api_version)
-
-    api_version = customized_api_version or VERSION
-
-    config = ContainerRegistryConfiguration(subscription_id, api_version, credentials)
+    config = ContainerRegistryConfiguration(subscription_id, get_acr_api_version(), credentials)
     client = ContainerRegistry(config)
 
     configure_common_settings(client)
@@ -66,3 +60,9 @@ def get_tenant_id():
     _, _, tenant_id = profile.get_login_credentials()
 
     return tenant_id
+
+def get_acr_api_version():
+    customized_api_version = az_config.get('acr', 'apiversion', None)
+    if customized_api_version:
+        logger.warning('Customized api-version is used: %s', customized_api_version)
+    return customized_api_version or VERSION

@@ -9,7 +9,6 @@ from azure.cli.core.commands.parameters import (
     get_resources_in_resource_group
 )
 
-from azure.cli.command_modules.acr.mgmt_acr import VERSION
 from azure.cli.command_modules.acr.mgmt_acr.models import Registry
 
 from ._constants import (
@@ -19,7 +18,8 @@ from ._constants import (
 from ._factory import (
     get_arm_service_client,
     get_storage_service_client,
-    get_tenant_id
+    get_tenant_id,
+    get_acr_api_version
 )
 from ._utils import get_resource_group_name_by_resource_id
 
@@ -108,7 +108,7 @@ def _parameters(registry_name, location, storage_account_name):
     parameters = {
         'registryName': {'value': registry_name},
         'registryLocation': {'value': location},
-        'registryApiVersion': {'value': VERSION},
+        'registryApiVersion': {'value': get_acr_api_version()},
         'storageAccountName': {'value': storage_account_name},
         'storageAccountApiVersion': {'value': '2015-05-01-preview'},
         'tenantId': {'value': get_tenant_id()}
