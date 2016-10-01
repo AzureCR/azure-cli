@@ -31,7 +31,7 @@ logger = _logging.get_az_logger(__name__)
 
 def acr_list(resource_group_name=None):
     '''List container registries.
-    :param str resource_group: The name of resource group
+    :param str resource_group_name: The name of resource group
     '''
     if resource_group_name:
         return arm_get_registries_in_resource_group(resource_group_name)
@@ -39,29 +39,32 @@ def acr_list(resource_group_name=None):
         return arm_get_registries_in_subscription()
 
 def acr_create(registry_name, #pylint: disable=too-many-arguments
-               resource_group_name=None,
-               location='West US',
+               resource_group_name,
+               location,
                storage_account_name=None,
-               new_service_principal=None,
-               app_id=None):
+               new_sp=None,
+               app_id=None,
+               password=None,
+               role='Owner'):
     '''Create a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
-    :param str new_service_principal: The new service principal with the specified password
+    :param bool new_sp: Create a new service principal
     :param str app_id: The app id of an existing service principal
+    :param str password: The password used to log into the container registry
+    :param str role: The name of role
     '''
-    if new_service_principal and app_id:
+    if new_sp and app_id:
         raise CLIError('new-service-principal and app-id should not be specified together.')
 
-    password = new_service_principal
     session_key = None
     # Create a service principal
-    if new_service_principal:
+    if new_sp:
         (app_id,
          password,
-         session_key) = create_service_principal(registry_name, new_service_principal)
+         session_key) = create_service_principal(registry_name, password)
 
     # Create a container registry
     arm_deploy_template(resource_group_name,
@@ -73,7 +76,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
 
     # Create role assignment
     if app_id:
-        _create_role_assignment('Owner',
+        _create_role_assignment(role,
                                 app_id,
                                 resource_id=registry.id, #pylint: disable=E1101
                                 ocp_aad_session_key=session_key)
@@ -84,15 +87,17 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
 
     return registry
 
-def acr_delete(registry_name):
+def acr_delete(registry_name, resource_group_name=None):
     '''Delete a container registry.
     :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
         raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
-    resource_group_name = get_resource_group_name_by_registry(registry)
+    if resource_group_name is None:
+        resource_group_name = get_resource_group_name_by_registry(registry)
 
     storage_account_name = get_acr_service_client().get_properties( #pylint: disable=E1101
         resource_group_name, registry_name).properties.storage_account.name
@@ -100,29 +105,65 @@ def acr_delete(registry_name):
     delete_tag_storage_account(storage_account_name, registry_name)
     return get_acr_service_client().delete(resource_group_name, registry_name)
 
-def acr_show(registry_name):
+def acr_show(registry_name, resource_group_name=None):
     '''Get a container registry.
     :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
         raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
-    resource_group_name = get_resource_group_name_by_registry(registry)
+    if resource_group_name is None:
+        resource_group_name = get_resource_group_name_by_registry(registry)
+
     return get_acr_service_client().get_properties(resource_group_name, registry_name)
 
-def acr_update(registry_name, tags=None, app_id=None):
+def acr_update(registry_name, #pylint: disable=too-many-arguments
+               resource_group_name=None,
+               tags=None,
+               new_sp=None,
+               app_id=None,
+               password=None,
+               role='Owner'):
     '''Update a container registry.
     :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    :param dict tags: The set of tags
+    :param bool new_sp: Create a new service principal
     :param str app_id: The app id of an existing service principal
+    :param str password: The password used to log into the container registry
+    :param str role: The name of role
     '''
+    if new_sp and app_id:
+        raise CLIError('new-service-principal and app-id should not be specified together.')
+
     registry = get_registry_by_name(registry_name)
     if registry is None:
         raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
-    resource_group_name = get_resource_group_name_by_registry(registry)
-    newTags = registry.tags
+    session_key = None
+    # Create a service principal
+    if new_sp:
+        (app_id,
+         password,
+         session_key) = create_service_principal(registry_name, password)
 
+    # Create role assignment
+    if app_id:
+        _create_role_assignment(role,
+                                app_id,
+                                resource_id=registry.id, #pylint: disable=E1101
+                                ocp_aad_session_key=session_key)
+        logger.warning("Service principal has been configured.")
+        logger.warning("  id(client_id):           " + app_id)
+        if password:
+            logger.warning("  password(client_secret): " + password)
+
+    if resource_group_name is None:
+        resource_group_name = get_resource_group_name_by_registry(registry)
+
+    newTags = registry.tags
     if isinstance(tags, dict):
         if tags:
             for key in tags:
@@ -132,9 +173,6 @@ def acr_update(registry_name, tags=None, app_id=None):
                     del newTags[key]
         else:
             newTags = {}
-
-    if app_id:
-        _create_role_assignment('Owner', app_id, resource_id=registry.id) #pylint: disable=E1101
 
     return get_acr_service_client().update(
         resource_group_name, registry_name,

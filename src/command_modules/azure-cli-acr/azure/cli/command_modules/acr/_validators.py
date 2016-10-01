@@ -5,7 +5,6 @@
 
 import re
 import uuid
-import getpass
 
 from azure.mgmt.resource.resources.models.resource_group import ResourceGroup
 
@@ -42,11 +41,7 @@ def validate_resource_group_name(namespace):
         if not client.resource_groups.check_existence(namespace.resource_group_name):
             parameters = ResourceGroup(location=namespace.location)
             client.resource_groups.create_or_update(namespace.resource_group_name, parameters)
-    else:
-        # Create a default resource group if the user does not provide a resource group name
-        try:
-            namespace.resource_group_name = '{}_ACR_RG'.format(str(getpass.getuser()))
-        except: #pylint: disable=W0702
-            namespace.resource_group_name = '{}_ACR_RG'.format('Default')
-        parameters = ResourceGroup(location=namespace.location)
-        client.resource_groups.create_or_update(namespace.resource_group_name, parameters)
+
+def validate_password(namespace):
+    if namespace.password and not namespace.new_sp:
+        raise CLIError('--password has to be used with a new service principal')

@@ -29,13 +29,23 @@ Create a container registry
         --location -l       [Required]: Location.
         --name -n           [Required]: Name of container registry.
         --resource-group -g [Required]: Name of resource group.
+        --app-id                      : The app id of an existing service principal.
+        --new-sp                      : Create a new service principal. Optional: use -p to specify a
+                                        password.
+        --password -p                 : Password used to log into a container registry.
+        --role -r                     : Name of role.  Default: Owner.
         --storage-account-name -s     : Name of storage account.
 
     Examples
         Create a container registry with a new storage account
-            az acr create -n <registry-name> -g <resource-group> -l <location>
+            az acr create -n myRegistry -g myResourceGroup -l southus
         Create a container registry with a new/existing storage account
-            az acr create -n <registry-name> -g <resource-group> -l <location> -s <storage-account-name>
+            az acr create -n myRegistry -g myResourceGroup -l southus -s myStorageAccount
+        Create a container registry with a new service principal
+            az acr create -n myRegistry -g myResourceGroup -l southus --new-sp -p myPassword --role
+            Owner
+        Create a container registry with an existing service principal
+            az acr create -n myRegistry -g myResourceGroup -l southus --app-id myAppId --role Owner
 
 Delete a container registry
 -------------
@@ -46,6 +56,7 @@ Delete a container registry
 
     Arguments
         --name -n [Required]: Name of container registry.
+        --resource-group -g : Name of resource group.
 
 List container registries
 -------------
@@ -61,7 +72,7 @@ List container registries
         List container registries and show result in a table
             az acr list -o table
         List container registries in a resource group and show result in a table
-            az acr list -g <resource-group> -o table
+            az acr list -g myResourceGroup -o table
 
 Get a container registry
 -------------
@@ -72,6 +83,7 @@ Get a container registry
 
     Arguments
         --name -n [Required]: Name of container registry.
+        --resource-group -g : Name of resource group.
 
 Update a container registry
 -------------
@@ -82,11 +94,21 @@ Update a container registry
 
     Arguments
         --name -n [Required]: Name of container registry.
+        --app-id            : The app id of an existing service principal.
+        --new-sp            : Create a new service principal. Optional: use -p to specify a password.
+        --password -p       : Password used to log into a container registry.
+        --resource-group -g : Name of resource group.
+        --role -r           : Name of role.  Default: Owner.
         --tags              : Multiple semicolon separated tags in 'key[=value]' format.  Use "" to
                             clear existing tags.
+
     Examples
-        Update tags of a container registry and show result in a table
-            az acr update -n <registry-name> --tags key1=value1;key2=value2 -o table
+        Update tags of a container registry
+            az acr update -n myRegistry --tags key1=value1;key2=value2
+        Update a container registry with a new service principal
+            az acr update -n myRegistry --new-sp -p myPassword --role Owner
+        Update a container registry with an existing service principal
+            az acr update -n myRegistry --app-id myAppId --role Owner
 
 List repositories in a given container registry
 -------------
@@ -97,15 +119,14 @@ List repositories in a given container registry
 
     Arguments
         --login-server [Required]: The URL of a container registry login server.
-        --password               : The password used to log into the container registry.
-        --username               : The username used to log into the container registry.
+        --password -p            : Password used to log into a container registry.
+        --username -u            : Username used to log into a container registry.
 
     Examples
         List repositories in a given container registry under the current subscription
-            az acr repository list --login-server <login-server>
+            az acr repository list --login-server myRegistry.azurecr.io
         List repositories in a given container registry with credentials
-            az acr repository list --login-server <login-server> --username <username> --password
-            <password>
+            az acr repository list --login-server myRegistry.azurecr.io -u myUsername -p myPassword
 
 Show tags of a given repository in a given container registry
 -------------
@@ -117,12 +138,12 @@ Show tags of a given repository in a given container registry
     Arguments
         --login-server [Required]: The URL of a container registry login server.
         --repository   [Required]: The repository to obtain tags from.
-        --password               : The password used to log into the container registry.
-        --username               : The username used to log into the container registry.
+        --password -p            : Password used to log into a container registry.
+        --username -u            : Username used to log into a container registry.
 
     Examples
         Show tags of a given repository in a given container registry under the current subscription
-            az acr repository show-tags --login-server <login-server> --repository <repository>
+            az acr repository show-tags --login-server myRegistry.azurecr.io --repository myRepository
         Show tags of a given repository in a given container registry with credentials
-            az acr repository show-tags --login-server <login-server> --repository <repository>
-            --username <username> --password <password>
+            az acr repository show-tags --login-server myRegistry.azurecr.io --repository myRepository
+            -u myUsername -p myPassword
