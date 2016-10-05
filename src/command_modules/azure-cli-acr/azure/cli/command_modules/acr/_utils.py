@@ -6,8 +6,6 @@
 import uuid
 import datetime
 
-from azure.cli.command_modules.acr.mgmt_acr.models import Registry
-
 from ._factory import (
     get_acr_service_client,
     get_graph_mgmt_client
@@ -39,35 +37,12 @@ def get_registry_by_name(registry_name):
     else:
         raise ValueError('More than one container registries are found with name: ' + registry_name)
 
-def _get_resource_id(registry):
-    '''Returns the resource id of a container registry.
-    :param Registry/dict registry: The container registry object
-    '''
-    if isinstance(registry, Registry):
-        return registry.id
-    elif isinstance(registry, dict):
-        return registry['id']
-    else:
-        raise ValueError('Unknown registry: ' + str(registry))
-
-def get_resource_group_name_by_registry(registry):
-    '''Returns the resource group of a container registry.
-    :param RegistryCreateParameters/dict registry: The container registry object
-    '''
-    resource_id = _get_resource_id(registry)
-    return get_resource_group_name_by_resource_id(resource_id)
-
 def get_resource_group_name_by_resource_id(resource_id):
     '''Returns the resource group name from parsing the resource id.
     :param str resource_id: The resource id
     '''
-    if '/resourcegroups/' in resource_id:
-        resource_group_keyword = '/resourcegroups/'
-    elif '/resourceGroups/' in resource_id:
-        resource_group_keyword = '/resourceGroups/'
-    else:
-        raise ValueError('Invalid resource id: {}'.format(resource_id))
-
+    resource_id = resource_id.lower()
+    resource_group_keyword = '/resourcegroups/'
     return resource_id[resource_id.index(resource_group_keyword) + len(resource_group_keyword):
                        resource_id.index('/providers/')]
 

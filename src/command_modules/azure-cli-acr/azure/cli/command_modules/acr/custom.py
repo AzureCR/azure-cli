@@ -20,7 +20,7 @@ from ._arm_utils import (
 )
 from ._utils import (
     get_registry_by_name,
-    get_resource_group_name_by_registry,
+    get_resource_group_name_by_resource_id,
     create_service_principal
 )
 
@@ -72,7 +72,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                         location,
                         storage_account_name).wait() # wait for the template deployment to finish
     registry = get_acr_service_client().get_properties(resource_group_name, registry_name)
-    add_tag_storage_account(storage_account_name, 'acr', registry_name)
+    add_tag_storage_account(storage_account_name, registry_name)
 
     # Create role assignment
     if app_id:
@@ -97,7 +97,7 @@ def acr_delete(registry_name, resource_group_name=None):
         raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
     if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry(registry)
+        resource_group_name = get_resource_group_name_by_resource_id(registry.id)
 
     storage_account_name = get_acr_service_client().get_properties( #pylint: disable=E1101
         resource_group_name, registry_name).properties.storage_account.name
@@ -115,7 +115,7 @@ def acr_show(registry_name, resource_group_name=None):
         raise CLIError('No container registry can be found with name: {}'.format(registry_name))
 
     if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry(registry)
+        resource_group_name = get_resource_group_name_by_resource_id(registry.id)
 
     return get_acr_service_client().get_properties(resource_group_name, registry_name)
 
@@ -161,7 +161,7 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
             logger.warning("  password(client_secret): " + password)
 
     if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry(registry)
+        resource_group_name = get_resource_group_name_by_resource_id(registry.id)
 
     newTags = registry.tags
     if isinstance(tags, dict):

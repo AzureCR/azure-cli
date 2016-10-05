@@ -131,25 +131,15 @@ def _arm_get_storage_account(storage_account_name):
         raise CLIError(
             'More than one storage accounts are found with name: {}'.format(storage_account_name))
 
-def add_tag_storage_account(storage_account_name, key, value):
+def add_tag_storage_account(storage_account_name, registry_name):
     '''Add a new tag (key, value) to the storage account.
     :param str storage_account_name: The name of storage account
-    :param str key: The key of the new tag
-    :param str value: The value of the new tag
+    :param str registry_name: The name of container registry
     '''
     from azure.mgmt.storage.models import StorageAccountUpdateParameters
     storage_account_resource_group, tags = _arm_get_storage_account(storage_account_name)
 
-    newKey = key
-    index = 1
-    while newKey in tags:
-        newKey = key + '_' + str(index)
-        index += 1
-        if index > 99: # Just a number to avoid infinite loops
-            raise CLIError(
-                'The storage account {} has too many tags'.format(storage_account_name))
-
-    tags[newKey] = value
+    tags[registry_name] = 'acr'
     client = get_storage_service_client().storage_accounts
 
     return client.update(storage_account_resource_group,
@@ -164,10 +154,10 @@ def delete_tag_storage_account(storage_account_name, registry_name):
     from azure.mgmt.storage.models import StorageAccountUpdateParameters
     storage_account_resource_group, tags = _arm_get_storage_account(storage_account_name)
 
-    newTags = {key: value for key, value in tags.items() if
-               not (value.lower() == registry_name.lower() and key.startswith('acr'))}
-    client = get_storage_service_client().storage_accounts
+    if registry_name in tags and tags[registry_name] == 'acr':
+        del tags[registry_name]
+        client = get_storage_service_client().storage_accounts
 
-    return client.update(storage_account_resource_group,
-                         storage_account_name,
-                         StorageAccountUpdateParameters(tags=newTags))
+        return client.update(storage_account_resource_group,
+                             storage_account_name,
+                             StorageAccountUpdateParameters(tags=tags))

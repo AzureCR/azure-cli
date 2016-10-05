@@ -3,11 +3,7 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 #---------------------------------------------------------------------------------------------
 
-from azure.cli.core.commands import (
-    register_cli_argument,
-    CliArgumentType
-)
-
+from azure.cli.core.commands import register_cli_argument
 from azure.cli.core.commands.parameters import (
     resource_group_name_type,
     location_type,
@@ -23,17 +19,15 @@ from ._validators import (
     validate_password
 )
 
-registry_name_type = CliArgumentType(
-    options_list=('--name', '-n'),
-    help='Name of container registry',
-    completer=get_resource_name_completion_list(RESOURCE_TYPE),
-    validator=validate_registry_name
-)
+register_cli_argument('acr', 'registry_name',
+                      options_list=('--name', '-n'),
+                      help='Name of container registry',
+                      completer=get_resource_name_completion_list(RESOURCE_TYPE),
+                      validator=validate_registry_name)
 
-register_cli_argument('acr', 'registry_name', registry_name_type)
-register_cli_argument('acr', 'resource_group_name', arg_type=resource_group_name_type)
-register_cli_argument('acr', 'location', arg_type=location_type)
-register_cli_argument('acr', 'tags', arg_type=tags_type)
+register_cli_argument('acr', 'resource_group_name', resource_group_name_type)
+register_cli_argument('acr', 'location', location_type)
+register_cli_argument('acr', 'tags', tags_type)
 
 register_cli_argument('acr', 'storage_account_name',
                       options_list=('--storage-account-name', '-s'),
@@ -41,20 +35,24 @@ register_cli_argument('acr', 'storage_account_name',
                       completer=get_resource_name_completion_list(
                           'Microsoft.Storage/storageAccounts'),
                       validator=validate_storage_account_name)
+
 register_cli_argument('acr', 'username',
                       options_list=('--username', '-u'),
                       help='Username used to log into a container registry')
+
 register_cli_argument('acr', 'password',
                       options_list=('--password', '-p'),
-                      help='Password used to log into a container registry',
-                      validator=validate_password)
+                      help='Password used to log into a container registry')
+
 register_cli_argument('acr', 'role',
                       options_list=('--role', '-r'),
                       help='Name of role')
 
 register_cli_argument('acr', 'new_sp', action='store_true',
-                      help='Create a new service principal. Optional: use -p to specify a password')
+                      help='Create a new service principal. Optional: Use -p to specify a password')
 
-register_cli_argument('acr create', 'registry_name', registry_name_type, completer=None)
-register_cli_argument('acr create', 'resource_group_name', resource_group_name_type,
+register_cli_argument('acr create', 'registry_name', completer=None)
+register_cli_argument('acr create', 'password', validator=validate_password)
+register_cli_argument('acr update', 'password', validator=validate_password)
+register_cli_argument('acr create', 'resource_group_name',
                       validator=validate_resource_group_name)
