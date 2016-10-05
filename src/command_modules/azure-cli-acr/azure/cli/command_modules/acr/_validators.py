@@ -49,4 +49,5 @@ def validate_password(namespace):
 
 def validate_role(namespace):
     if namespace.role and not namespace.role.lower() in ALLOWED_ROLES:
-        raise CLIError('The role {} is not allowed. Allowed roles {}'.format(namespace.role, str(ALLOWED_ROLES)))
+        raise CLIError('The role {} is not allowed. Allowed roles {}'.format(
+            namespace.role, str(ALLOWED_ROLES)))

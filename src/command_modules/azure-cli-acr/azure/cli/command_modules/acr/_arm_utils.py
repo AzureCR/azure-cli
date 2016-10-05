@@ -110,7 +110,7 @@ def _parameters(registry_name, location, storage_account_name):
         'registryLocation': {'value': location},
         'registryApiVersion': {'value': get_acr_api_version()},
         'storageAccountName': {'value': storage_account_name},
-        'storageAccountApiVersion': {'value': '2015-05-01-preview'},
+        'storageAccountApiVersion': {'value': '2016-01-01'},
         'tenantId': {'value': get_tenant_id()}
     }
     return parameters
