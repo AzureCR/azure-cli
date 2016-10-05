@@ -9,6 +9,9 @@ from azure.cli.command_modules.role.custom import _create_role_assignment
 
 from azure.cli.command_modules.acr.mgmt_acr.models import RegistryUpdateParameters
 
+from ._constants import (
+    DEFAULT_ROLE
+)
 from ._factory import get_acr_service_client
 from ._arm_utils import (
     arm_get_registries_in_subscription,
@@ -45,7 +48,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                new_sp=None,
                app_id=None,
                password=None,
-               role='Owner'):
+               role=DEFAULT_ROLE):
     '''Create a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
@@ -125,7 +128,7 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
                new_sp=None,
                app_id=None,
                password=None,
-               role='Owner'):
+               role=DEFAULT_ROLE):
     '''Update a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group

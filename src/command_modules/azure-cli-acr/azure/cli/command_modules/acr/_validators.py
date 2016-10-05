@@ -11,6 +11,7 @@ from azure.mgmt.resource.resources.models.resource_group import ResourceGroup
 from azure.cli.core._util import CLIError
 from azure.cli.command_modules.storage._factory import storage_client_factory
 
+from ._constants import ALLOWED_ROLES
 from ._factory import get_arm_service_client
 
 def validate_registry_name(namespace):
@@ -45,3 +46,7 @@ def validate_resource_group_name(namespace):
 def validate_password(namespace):
     if namespace.password and not namespace.new_sp:
         raise CLIError('--password has to be used with a new service principal')
+
+def validate_role(namespace):
+    if namespace.role and not namespace.role.lower() in ALLOWED_ROLES:
+        raise CLIError('The role {} is not allowed. Allowed roles {}'.format(namespace.role, str(ALLOWED_ROLES)))

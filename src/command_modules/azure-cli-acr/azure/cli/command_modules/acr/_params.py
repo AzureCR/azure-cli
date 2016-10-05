@@ -16,7 +16,8 @@ from ._validators import (
     validate_registry_name,
     validate_storage_account_name,
     validate_resource_group_name,
-    validate_password
+    validate_password,
+    validate_role
 )
 
 register_cli_argument('acr', 'registry_name',
@@ -46,7 +47,8 @@ register_cli_argument('acr', 'password',
 
 register_cli_argument('acr', 'role',
                       options_list=('--role', '-r'),
-                      help='Name of role')
+                      help='Name of role',
+                      validator=validate_role)
 
 register_cli_argument('acr', 'new_sp', action='store_true',
                       help='Create a new service principal. Optional: Use -p to specify a password')

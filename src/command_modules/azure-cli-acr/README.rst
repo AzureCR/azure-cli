@@ -33,7 +33,7 @@ Create a container registry
         --new-sp                      : Create a new service principal. Optional: use -p to specify a
                                         password.
         --password -p                 : Password used to log into a container registry.
-        --role -r                     : Name of role.  Default: Owner.
+        --role -r                     : Name of role.  Default: Reader.
         --storage-account-name -s     : Name of storage account.
 
     Examples
@@ -43,9 +43,9 @@ Create a container registry
             az acr create -n myRegistry -g myResourceGroup -l southus -s myStorageAccount
         Create a container registry with a new service principal
             az acr create -n myRegistry -g myResourceGroup -l southus --new-sp -p myPassword --role
-            Owner
+            Reader
         Create a container registry with an existing service principal
-            az acr create -n myRegistry -g myResourceGroup -l southus --app-id myAppId --role Owner
+            az acr create -n myRegistry -g myResourceGroup -l southus --app-id myAppId --role Reader
 
 Delete a container registry
 -------------
@@ -98,7 +98,7 @@ Update a container registry
         --new-sp            : Create a new service principal. Optional: use -p to specify a password.
         --password -p       : Password used to log into a container registry.
         --resource-group -g : Name of resource group.
-        --role -r           : Name of role.  Default: Owner.
+        --role -r           : Name of role.  Default: Reader.
         --tags              : Multiple semicolon separated tags in 'key[=value]' format.  Use "" to
                             clear existing tags.
 
@@ -106,9 +106,9 @@ Update a container registry
         Update tags of a container registry
             az acr update -n myRegistry --tags key1=value1;key2=value2
         Update a container registry with a new service principal
-            az acr update -n myRegistry --new-sp -p myPassword --role Owner
+            az acr update -n myRegistry --new-sp -p myPassword --role Reader
         Update a container registry with an existing service principal
-            az acr update -n myRegistry --app-id myAppId --role Owner
+            az acr update -n myRegistry --app-id myAppId --role Reader
 
 List repositories in a given container registry
 -------------
