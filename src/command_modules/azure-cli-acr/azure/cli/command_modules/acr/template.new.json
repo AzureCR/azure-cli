@@ -32,12 +32,6 @@
                 "description": "Type of the storage account"
             }
         },
-        "storageAccountApiVersion": {
-            "type": "string",
-            "metadata": {
-                "description": "Api version of the storage account"
-            }
-        },
         "tenantId": {
              "type": "string",
              "metadata": {
@@ -50,9 +44,9 @@
             "name": "[parameters('storageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
             "location": "[parameters('registryLocation')]",
-            "apiVersion": "[parameters('storageAccountApiVersion')]",
-            "properties": {
-                "accountType": "[parameters('storageAccountType')]"
+            "apiVersion": "2016-01-01",
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
             }
         },
         {
@@ -70,8 +64,8 @@
                 "tenantId": "[parameters('tenantId')]",
                 "storageAccount": {
                     "name": "[parameters('storageAccountName')]",
-                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), parameters('storageAccountApiVersion')).key1]",
-                    "endPointUrl": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), parameters('storageAccountApiVersion')).primaryEndpoints.blob]"
+                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value]",
+                    "endPointUrl": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').primaryEndpoints.blob]"
                 }
             }
         },
