@@ -148,7 +148,7 @@ def add_tag_storage_account(storage_account_name, registry_name):
     from azure.mgmt.storage.models import StorageAccountUpdateParameters
     storage_account_resource_group, tags = _arm_get_storage_account(storage_account_name)
 
-    tags[registry_name] = 'acr'
+    tags[registry_name.lower()] = 'acr'
     client = get_storage_service_client().storage_accounts
 
     return client.update(storage_account_resource_group,
@@ -162,6 +162,7 @@ def delete_tag_storage_account(storage_account_name, registry_name):
     '''
     from azure.mgmt.storage.models import StorageAccountUpdateParameters
     storage_account_resource_group, tags = _arm_get_storage_account(storage_account_name)
+    registry_name = registry_name.lower()
 
     if registry_name in tags and tags[registry_name] == 'acr':
         del tags[registry_name]
