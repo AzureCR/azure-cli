@@ -19,11 +19,11 @@ def _get_registries_in_subscription():
     '''
     return get_acr_service_client().list().value #pylint: disable=E1101
 
-def _get_registries_in_resource_group(resource_group):
+def _get_registries_in_resource_group(resource_group_name):
     '''Returns the list of container registries in the resource group.
-    :param str resource_group: The name of resource group
+    :param str resource_group_name: The name of resource group
     '''
-    return get_acr_service_client().list_by_resource_group(resource_group).value #pylint: disable=E1101
+    return get_acr_service_client().list_by_resource_group(resource_group_name).value #pylint: disable=E1101
 
 def get_registry_by_name(registry_name):
     '''Returns the container registry that matches the registry name.

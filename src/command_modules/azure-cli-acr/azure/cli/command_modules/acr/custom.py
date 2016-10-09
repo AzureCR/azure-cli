@@ -81,7 +81,9 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                         location,
                         storage_account_name,
                         not disable_admin).wait() # wait for the template deployment to finish
-    registry = get_acr_service_client().get_properties(resource_group_name, registry_name)
+
+    client = get_acr_service_client()
+    registry = client.get_properties(resource_group_name, registry_name)
     add_tag_storage_account(storage_account_name, registry_name)
 
     # Create role assignment
@@ -109,11 +111,13 @@ def acr_delete(registry_name, resource_group_name=None):
     if resource_group_name is None:
         resource_group_name = get_resource_group_name_by_resource_id(registry.id)
 
-    storage_account_name = get_acr_service_client().get_properties( #pylint: disable=E1101
-        resource_group_name, registry_name).properties.storage_account.name
+    client = get_acr_service_client()
 
+    storage_account_name = client.get_properties( #pylint: disable=E1101
+        resource_group_name, registry_name).properties.storage_account.name
     delete_tag_storage_account(storage_account_name, registry_name)
-    return get_acr_service_client().delete(resource_group_name, registry_name)
+
+    return client.delete(resource_group_name, registry_name)
 
 def acr_show(registry_name, resource_group_name=None):
     '''Get a container registry.
@@ -127,7 +131,9 @@ def acr_show(registry_name, resource_group_name=None):
     if resource_group_name is None:
         resource_group_name = get_resource_group_name_by_resource_id(registry.id)
 
-    return get_acr_service_client().get_properties(resource_group_name, registry_name)
+    client = get_acr_service_client()
+
+    return client.get_properties(resource_group_name, registry_name)
 
 def acr_update(registry_name, #pylint: disable=too-many-arguments
                resource_group_name=None,
@@ -163,6 +169,8 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
 
     if resource_group_name is None:
         resource_group_name = get_resource_group_name_by_resource_id(registry.id)
+
+    client = get_acr_service_client()
 
     session_key = None
     # Create a service principal
@@ -203,7 +211,7 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
         else:
             newTags = {}
 
-    return get_acr_service_client().update(
+    return client.update(
         resource_group_name, registry_name,
         RegistryUpdateParameters(
             tags=newTags,

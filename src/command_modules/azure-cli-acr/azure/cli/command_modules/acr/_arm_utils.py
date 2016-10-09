@@ -79,12 +79,15 @@ def arm_deploy_template(resource_group_name,
     template = get_file_json(file_path)
     properties = DeploymentProperties(template=template, parameters=parameters, mode='incremental')
 
-    return _arm_deploy_template(resource_group_name, properties)
+    return _arm_deploy_template(
+        get_arm_service_client().deployments, resource_group_name, properties)
 
-def _arm_deploy_template(resource_group_name,
+def _arm_deploy_template(deployments_client,
+                         resource_group_name,
                          properties,
                          index=0):
     '''Deploys ARM template to create a container registry.
+    :param obj deployments_client: ARM deployments service client
     :param str resource_group_name: The name of resource group
     :param DeploymentProperties properties: The properties of a deployment
     :param int index: The index added to deployment name to avoid conflict
@@ -97,13 +100,14 @@ def _arm_deploy_template(resource_group_name,
     else:
         deployment_name = RESOURCE_PROVIDER + '_' + str(index)
 
-    client = get_arm_service_client()
-
     try:
-        client.deployments.validate(resource_group_name, deployment_name, properties)
-        return client.deployments.create_or_update(resource_group_name, deployment_name, properties)
+        deployments_client.validate(
+            resource_group_name, deployment_name, properties)
+        return deployments_client.create_or_update(
+            resource_group_name, deployment_name, properties)
     except: #pylint: disable=W0702
-        return _arm_deploy_template(resource_group_name, properties, index + 1)
+        return _arm_deploy_template(
+            deployments_client, resource_group_name, properties, index + 1)
 
 def _parameters(registry_name,
                 location,
