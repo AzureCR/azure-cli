@@ -7,7 +7,10 @@ from azure.cli.core.commands import cli_command
 from azure.cli.core._util import CLIError
 from azure.cli.command_modules.role.custom import _create_role_assignment
 
-from azure.cli.command_modules.acr.mgmt_acr.models import RegistryUpdateParameters
+from azure.cli.command_modules.acr.mgmt_acr.models import (
+    RegistryUpdateParameters,
+    RegistryPropertiesCreateParameters
+)
 
 from ._constants import (
     DEFAULT_ROLE
@@ -24,7 +27,8 @@ from ._arm_utils import (
 from ._utils import (
     get_registry_by_name,
     get_resource_group_name_by_resource_id,
-    create_service_principal
+    create_service_principal,
+    registry_not_found
 )
 
 from ._format import output_format
@@ -45,10 +49,11 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                resource_group_name,
                location,
                storage_account_name=None,
-               new_sp=None,
+               new_sp=False,
                app_id=None,
                password=None,
-               role=DEFAULT_ROLE):
+               role=DEFAULT_ROLE,
+               disable_admin=False):
     '''Create a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
@@ -58,6 +63,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     :param str app_id: The app id of an existing service principal
     :param str password: The password used to log into the container registry
     :param str role: The name of role
+    :param bool disable_admin: Disable admin user
     '''
     if new_sp and app_id:
         raise CLIError('new-service-principal and app-id should not be specified together.')
@@ -73,7 +79,8 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     arm_deploy_template(resource_group_name,
                         registry_name,
                         location,
-                        storage_account_name).wait() # wait for the template deployment to finish
+                        storage_account_name,
+                        not disable_admin).wait() # wait for the template deployment to finish
     registry = get_acr_service_client().get_properties(resource_group_name, registry_name)
     add_tag_storage_account(storage_account_name, registry_name)
 
@@ -97,7 +104,7 @@ def acr_delete(registry_name, resource_group_name=None):
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
-        raise CLIError('No container registry can be found with name: {}'.format(registry_name))
+        registry_not_found(registry_name)
 
     if resource_group_name is None:
         resource_group_name = get_resource_group_name_by_resource_id(registry.id)
@@ -115,7 +122,7 @@ def acr_show(registry_name, resource_group_name=None):
     '''
     registry = arm_get_registry_by_name(registry_name)
     if registry is None:
-        raise CLIError('No container registry can be found with name: {}'.format(registry_name))
+        registry_not_found(registry_name)
 
     if resource_group_name is None:
         resource_group_name = get_resource_group_name_by_resource_id(registry.id)
@@ -125,10 +132,13 @@ def acr_show(registry_name, resource_group_name=None):
 def acr_update(registry_name, #pylint: disable=too-many-arguments
                resource_group_name=None,
                tags=None,
-               new_sp=None,
+               new_sp=False,
                app_id=None,
                password=None,
-               role=DEFAULT_ROLE):
+               role=DEFAULT_ROLE,
+               disable_admin=False,
+               enable_admin=False,
+               tenant_id=None):
     '''Update a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
@@ -137,13 +147,22 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
     :param str app_id: The app id of an existing service principal
     :param str password: The password used to log into the container registry
     :param str role: The name of role
+    :param bool disable_admin: Disable admin user
+    :param bool enable_admin: Enable admin user
+    :param str tenant_id: Tenant id for service principal login
     '''
     if new_sp and app_id:
-        raise CLIError('new-service-principal and app-id should not be specified together.')
+        raise CLIError('new_sp and app-id should not be specified together.')
+
+    if disable_admin and enable_admin:
+        raise CLIError('disable_admin and enable_admin should not be specified together.')
 
     registry = get_registry_by_name(registry_name)
     if registry is None:
-        raise CLIError('No container registry can be found with name: {}'.format(registry_name))
+        registry_not_found(registry_name)
+
+    if resource_group_name is None:
+        resource_group_name = get_resource_group_name_by_resource_id(registry.id)
 
     session_key = None
     # Create a service principal
@@ -163,9 +182,16 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
         if password:
             logger.warning("  password(client_secret): " + password)
 
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_resource_id(registry.id)
+    # Set admin_user_enabled
+    admin_user_enabled = None
+    if disable_admin:
+        admin_user_enabled = False
+    if enable_admin:
+        admin_user_enabled = True
+    if admin_user_enabled is None:
+        admin_user_enabled = registry.properties.admin_user_enabled
 
+    # Set tags
     newTags = registry.tags
     if isinstance(tags, dict):
         if tags:
@@ -179,7 +205,14 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
 
     return get_acr_service_client().update(
         resource_group_name, registry_name,
-        RegistryUpdateParameters(tags=newTags))
+        RegistryUpdateParameters(
+            tags=newTags,
+            properties=RegistryPropertiesCreateParameters(
+                tenant_id=tenant_id,
+                admin_user_enabled=admin_user_enabled
+            )
+        )
+    )
 
 cli_command('acr list', acr_list, table_transformer=output_format)
 cli_command('acr create', acr_create, table_transformer=output_format)

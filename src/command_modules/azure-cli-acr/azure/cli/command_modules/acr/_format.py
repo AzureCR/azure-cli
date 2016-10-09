@@ -16,13 +16,17 @@ _basic_map = {
 
 _properties_map = {
     'loginServer': 'LOGIN SERVER',
-    'username': 'USERNAME',
-    'key': 'PASSWORD',
     'creationDate': 'CREATION DATE',
+    'adminUserEnabled': 'ADMIN USER ENABLED'
 }
 
 _storage_account_map = {
     'name': 'STORAGE ACCOUNT NAME'
+}
+
+_admin_user_map = {
+    'userName': 'USERNAME',
+    'passWord': 'PASSWORD'
 }
 
 _order_map = {
@@ -31,10 +35,11 @@ _order_map = {
     'LOCATION': 3,
     'TAGS': 4,
     'LOGIN SERVER': 11,
-    'USERNAME': 12,
-    'PASSWORD': 13,
-    'CREATION DATE': 14,
-    'STORAGE ACCOUNT NAME': 21
+    'CREATION DATE': 12,
+    'ADMIN USER ENABLED': 13,
+    'STORAGE ACCOUNT NAME': 21,
+    'USERNAME': 31,
+    'PASSWORD': 32
 }
 
 def output_format(result):
@@ -66,8 +71,12 @@ def _format_registry(item):
             storage_account_info = {_storage_account_map[key]: str(storage_account[key])
                                     for key in storage_account if key in _storage_account_map}
 
+    admin_user_info = {_admin_user_map[key]: str(item[key])
+                       for key in item if key in _admin_user_map}
+
     all_info = basic_info.copy()
     all_info.update(properties_info)
     all_info.update(storage_account_info)
+    all_info.update(admin_user_info)
 
     return OrderedDict(sorted(all_info.items(), key=lambda t: _order_map[t[0]]))

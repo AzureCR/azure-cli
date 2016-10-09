@@ -13,11 +13,16 @@ class RegistryUpdateParameters(Model):
 
     :param tags:
     :type tags: dict
+    :param properties:
+    :type properties: :class:`RegistryPropertiesCreateParameters
+     <containerregistry.models.RegistryPropertiesCreateParameters>`
     """ 
 
     _attribute_map = {
         'tags': {'key': 'tags', 'type': '{str}'},
+        'properties': {'key': 'properties', 'type': 'RegistryPropertiesCreateParameters'},
     }
 
-    def __init__(self, tags=None):
+    def __init__(self, tags=None, properties=None):
         self.tags = tags
+        self.properties = properties

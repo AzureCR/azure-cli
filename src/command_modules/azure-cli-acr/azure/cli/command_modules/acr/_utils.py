@@ -6,6 +6,8 @@
 import uuid
 import datetime
 
+from azure.cli.core._util import CLIError
+
 from ._factory import (
     get_acr_service_client,
     get_graph_mgmt_client
@@ -72,3 +74,8 @@ def create_service_principal(registry_name, password=None):
     return (app_id,
             password_creds,
             session_key)
+
+def registry_not_found(registry_name):
+    raise CLIError(
+        'ERROR: Registry {} cannot be found in the current subscription.'\
+        .format(registry_name))

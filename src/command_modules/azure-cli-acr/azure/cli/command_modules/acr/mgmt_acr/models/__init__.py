@@ -5,6 +5,8 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
+from .registry_name_check_request import RegistryNameCheckRequest
+from .registry_name_status import RegistryNameStatus
 from .registry_move_request import RegistryMoveRequest
 from .registry import Registry
 from .registry_properties import RegistryProperties
@@ -14,10 +16,13 @@ from .registry_properties_create_parameters import RegistryPropertiesCreateParam
 from .storage_account_properties import StorageAccountProperties
 from .registry_update_parameters import RegistryUpdateParameters
 from .resource_list_registry import ResourceListRegistry
+from .registry_credentials import RegistryCredentials
 from .subscription_notification import SubscriptionNotification
 from .subscription_properties import SubscriptionProperties
 
 __all__ = [
+    'RegistryNameCheckRequest',
+    'RegistryNameStatus',
     'RegistryMoveRequest',
     'Registry',
     'RegistryProperties',
@@ -27,6 +32,7 @@ __all__ = [
     'StorageAccountProperties',
     'RegistryUpdateParameters',
     'ResourceListRegistry',
+    'RegistryCredentials',
     'SubscriptionNotification',
     'SubscriptionProperties',
 ]

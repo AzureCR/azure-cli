@@ -16,6 +16,7 @@
         },
         "registryApiVersion": {
             "type": "string",
+            "defaultValue": "2016-06-27-preview",
             "metadata": {
                 "description": "Api version of the registry service"
             }
@@ -32,12 +33,13 @@
                 "description": "Resource group of the storage account"
             }
         },
-        "tenantId": {
-             "type": "string",
-             "metadata": {
-                 "description": "Tenant Id"
-             }
-         }
+        "adminUserEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Enable admin user"
+            }
+        }
     },
     "resources": [
         {
@@ -49,24 +51,13 @@
                 "storageaccount": "[parameters('storageAccountName')]"
             },
             "properties": {
-                "tenantId": "[parameters('tenantId')]",
+                "tenantId": "[subscription().tenantId]",
+                "adminUserEnabled": "[parameters('adminUserEnabled')]",
                 "storageAccount": {
                     "name": "[parameters('storageAccountName')]",
                     "accessKey": "[listKeys(resourceId(parameters('storageAccountResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value]",
                     "endPointUrl": "[reference(resourceId(parameters('storageAccountResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').primaryEndpoints.blob]"
                 }
-            }
-        },
-        {
-            "type": "Microsoft.ContainerRegistry/registries/providers/links",
-            "apiVersion": "2015-01-01",
-            "name": "[concat(parameters('registryName'),'/Microsoft.Resources/RegistryToStorage')]",
-            "dependsOn": [
-                "[parameters('registryName')]"
-            ],
-            "properties": {
-                "targetId": "[resourceId(parameters('storageAccountResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
-                "notes": "This registry uses the storage account to store registry information."
             }
         }
     ]

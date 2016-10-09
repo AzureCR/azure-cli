@@ -32,7 +32,7 @@ register_cli_argument('acr', 'tags', tags_type)
 
 register_cli_argument('acr', 'storage_account_name',
                       options_list=('--storage-account-name', '-s'),
-                      help='Name of storage account',
+                      help='Name of new or existing storage account',
                       completer=get_resource_name_completion_list(
                           'Microsoft.Storage/storageAccounts'),
                       validator=validate_storage_account_name)
@@ -47,13 +47,28 @@ register_cli_argument('acr', 'password',
 
 register_cli_argument('acr', 'role',
                       options_list=('--role', '-r'),
-                      help='Name of role',
+                      help='Name of role. (Owner, Contributor, Reader)',
                       validator=validate_role)
 
-register_cli_argument('acr', 'new_sp', action='store_true',
-                      help='Create a new service principal. Optional: Use -p to specify a password')
+register_cli_argument('acr', 'new_sp',
+                      help='Create a new service principal. ' +\
+                      'If provided, no --app-id should be specified. ' +\
+                      'Optional: Use -p to specify a password.')
+
+register_cli_argument('acr', 'app_id',
+                      help='The app id of an existing service principal. ' +\
+                      'If provided, no --new-sp or -p should be specified.')
+
+register_cli_argument('acr', 'tenant_id',
+                      options_list=('--tenant-id', '-t'),
+                      help='Tenant id for service principal login. ' +\
+                      'Warning: Changing tenant id will invalidate ' +\
+                      'assigned access of existing service principals.')
 
 register_cli_argument('acr create', 'registry_name', completer=None)
+register_cli_argument('acr create', 'storage_account_name',
+                      help='Name of new or existing storage account. ' +\
+                      'If not provided, a random storage account name will be generated.')
 register_cli_argument('acr create', 'password', validator=validate_password)
 register_cli_argument('acr update', 'password', validator=validate_password)
 register_cli_argument('acr create', 'resource_group_name',

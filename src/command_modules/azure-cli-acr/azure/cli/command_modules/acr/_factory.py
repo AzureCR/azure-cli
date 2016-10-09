@@ -29,7 +29,7 @@ def get_arm_service_client():
     return get_mgmt_service_client(ResourceManagementClient)
 
 def get_storage_service_client():
-    '''Returns the client for managing ARM storage accounts.
+    '''Returns the client for managing storage accounts.
     '''
     return get_mgmt_service_client(StorageManagementClient)
 
@@ -47,6 +47,8 @@ def get_acr_service_client():
     return client.registries
 
 def get_graph_mgmt_client():
+    '''Returns the client for graph api.
+    '''
     profile = Profile()
     credentials, _, tenant_id = profile.get_login_credentials(True)
     client = GraphRbacManagementClient(credentials, tenant_id)
@@ -55,13 +57,9 @@ def get_graph_mgmt_client():
 
     return client
 
-def get_tenant_id():
-    profile = Profile()
-    _, _, tenant_id = profile.get_login_credentials()
-
-    return tenant_id
-
 def get_acr_api_version():
+    '''Returns the api version for container registry
+    '''
     customized_api_version = az_config.get('acr', 'apiversion', None)
     if customized_api_version:
         logger.warning('Customized api-version is used: %s', customized_api_version)

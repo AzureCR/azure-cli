@@ -18,7 +18,6 @@ from ._constants import (
 from ._factory import (
     get_arm_service_client,
     get_storage_service_client,
-    get_tenant_id,
     get_acr_api_version
 )
 from ._utils import get_resource_group_name_by_resource_id
@@ -51,18 +50,23 @@ def arm_get_registry_by_name(registry_name):
         raise CLIError(
             'More than one container registries are found with name: {}'.format(registry_name))
 
-def arm_deploy_template(resource_group_name, registry_name, location, storage_account_name):
-    '''Deploys ARM template to create a container registry.
+def arm_deploy_template(resource_group_name,
+                        registry_name,
+                        location,
+                        storage_account_name,
+                        admin_user_enabled):
+    '''Deploys ARM template to create/update a container registry.
     :param str resource_group_name: The name of resource group
     :param str registry_name: The name of container registry
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
+    :param str admin_user_enabled: Enable admin user
     '''
     from azure.mgmt.resource.resources.models import DeploymentProperties
     from azure.cli.core._util import get_file_json
     import os
 
-    parameters = _parameters(registry_name, location, storage_account_name)
+    parameters = _parameters(registry_name, location, storage_account_name, admin_user_enabled)
     storage_account_resource_group, _ = _arm_get_storage_account(storage_account_name)
 
     if storage_account_resource_group:
@@ -77,7 +81,9 @@ def arm_deploy_template(resource_group_name, registry_name, location, storage_ac
 
     return _arm_deploy_template(resource_group_name, properties)
 
-def _arm_deploy_template(resource_group_name, properties, index=0):
+def _arm_deploy_template(resource_group_name,
+                         properties,
+                         index=0):
     '''Deploys ARM template to create a container registry.
     :param str resource_group_name: The name of resource group
     :param DeploymentProperties properties: The properties of a deployment
@@ -99,18 +105,22 @@ def _arm_deploy_template(resource_group_name, properties, index=0):
     except: #pylint: disable=W0702
         return _arm_deploy_template(resource_group_name, properties, index + 1)
 
-def _parameters(registry_name, location, storage_account_name):
+def _parameters(registry_name,
+                location,
+                storage_account_name,
+                admin_user_enabled):
     '''Returns a dict of deployment parameters.
     :param str registry_name: The name of container registry
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
+    :param str admin_user_enabled: Enable admin user
     '''
     parameters = {
         'registryName': {'value': registry_name},
         'registryLocation': {'value': location},
         'registryApiVersion': {'value': get_acr_api_version()},
         'storageAccountName': {'value': storage_account_name},
-        'tenantId': {'value': get_tenant_id()}
+        'adminUserEnabled': {'value': admin_user_enabled}
     }
     return parameters
 

@@ -16,21 +16,21 @@ class RegistryProperties(Model):
      <containerregistry.models.StorageAccountBaseProperties>`
     :param login_server:
     :type login_server: str
-    :param username:
-    :type username: str
     :param creation_date:
     :type creation_date: datetime
+    :param admin_user_enabled:
+    :type admin_user_enabled: bool
     """ 
 
     _attribute_map = {
         'storage_account': {'key': 'storageAccount', 'type': 'StorageAccountBaseProperties'},
         'login_server': {'key': 'loginServer', 'type': 'str'},
-        'username': {'key': 'username', 'type': 'str'},
         'creation_date': {'key': 'creationDate', 'type': 'iso-8601'},
+        'admin_user_enabled': {'key': 'adminUserEnabled', 'type': 'bool'},
     }
 
-    def __init__(self, storage_account=None, login_server=None, username=None, creation_date=None):
+    def __init__(self, storage_account=None, login_server=None, creation_date=None, admin_user_enabled=None):
         self.storage_account = storage_account
         self.login_server = login_server
-        self.username = username
         self.creation_date = creation_date
+        self.admin_user_enabled = admin_user_enabled

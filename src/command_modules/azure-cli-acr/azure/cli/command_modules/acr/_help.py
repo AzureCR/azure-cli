@@ -12,6 +12,21 @@ helps['acr'] = """
             short-summary: Commands to manage Azure container registries.
             """
 
+helps['acr storage'] = """
+            type: group
+            short-summary: Manage storage accounts for Azure container registries.
+            """
+
+helps['acr credential'] = """
+            type: group
+            short-summary: Manage admin user credential for Azure container registries.
+            """
+
+helps['acr repository'] = """
+            type: group
+            short-summary: Manage repositories for Azure container registries.
+            """
+
 helps['acr list'] = """
             type: command
             examples:
@@ -29,15 +44,15 @@ helps['acr create'] = """
                 - name: Create a container registry with a new storage account
                   text:
                     az acr create -n myRegistry -g myResourceGroup -l southus
-                - name: Create a container registry with a new/existing storage account
+                - name: Create a container registry with a specified new/existing storage account
                   text:
                     az acr create -n myRegistry -g myResourceGroup -l southus -s myStorageAccount
                 - name: Create a container registry with a new service principal
                   text:
-                    az acr create -n myRegistry -g myResourceGroup -l southus --new-sp -p myPassword --role Owner
+                    az acr create -n myRegistry -g myResourceGroup -l southus --new-sp -p myPassword -r Owner
                 - name: Create a container registry with an existing service principal
                   text:
-                    az acr create -n myRegistry -g myResourceGroup -l southus --app-id myAppId --role Owner
+                    az acr create -n myRegistry -g myResourceGroup -l southus --app-id myAppId -r Owner
             """
 
 helps['acr update'] = """
@@ -48,30 +63,30 @@ helps['acr update'] = """
                     az acr update -n myRegistry --tags key1=value1;key2=value2
                 - name: Update a container registry with a new service principal
                   text:
-                    az acr update -n myRegistry --new-sp -p myPassword --role Owner
+                    az acr update -n myRegistry --new-sp -p myPassword -r Owner
                 - name: Update a container registry with an existing service principal
                   text:
-                    az acr update -n myRegistry --app-id myAppId --role Owner
+                    az acr update -n myRegistry --app-id myAppId -r Owner
             """
 
 helps['acr repository list'] = """
             type: command
             examples:
-                - name: List repositories in a given container registry under the current subscription
+                - name: List repositories in a given container registry if admin user is enabled
                   text:
-                    az acr repository list --login-server myRegistry.azurecr.io
+                    az acr repository list -n myRegistry
                 - name: List repositories in a given container registry with credentials
                   text:
-                    az acr repository list --login-server myRegistry.azurecr.io -u myUsername -p myPassword
+                    az acr repository list -n myRegistry -u myUsername -p myPassword
             """
 
 helps['acr repository show-tags'] = """
             type: command
             examples:
-                - name: Show tags of a given repository in a given container registry under the current subscription
+                - name: Show tags of a given repository in a given container registry if admin user is enabled
                   text:
-                    az acr repository show-tags --login-server myRegistry.azurecr.io --repository myRepository
+                    az acr repository show-tags -n myRegistry --repository myRepository
                 - name: Show tags of a given repository in a given container registry with credentials
                   text:
-                    az acr repository show-tags --login-server myRegistry.azurecr.io --repository myRepository -u myUsername -p myPassword
+                    az acr repository show-tags -n myRegistry --repository myRepository -u myUsername -p myPassword
             """

@@ -13,6 +13,8 @@ class RegistryPropertiesCreateParameters(Model):
 
     :param tenant_id:
     :type tenant_id: str
+    :param admin_user_enabled:
+    :type admin_user_enabled: bool
     :param storage_account:
     :type storage_account: :class:`StorageAccountProperties
      <containerregistry.models.StorageAccountProperties>`
@@ -20,9 +22,11 @@ class RegistryPropertiesCreateParameters(Model):
 
     _attribute_map = {
         'tenant_id': {'key': 'tenantId', 'type': 'str'},
+        'admin_user_enabled': {'key': 'adminUserEnabled', 'type': 'bool'},
         'storage_account': {'key': 'storageAccount', 'type': 'StorageAccountProperties'},
     }
 
-    def __init__(self, tenant_id=None, storage_account=None):
+    def __init__(self, tenant_id=None, admin_user_enabled=None, storage_account=None):
         self.tenant_id = tenant_id
+        self.admin_user_enabled = admin_user_enabled
         self.storage_account = storage_account

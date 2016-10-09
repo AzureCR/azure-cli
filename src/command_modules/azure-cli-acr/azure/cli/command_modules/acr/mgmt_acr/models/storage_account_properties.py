@@ -15,6 +15,8 @@ class StorageAccountProperties(Model):
     :type access_key: str
     :param end_point_url:
     :type end_point_url: str
+    :param location:
+    :type location: str
     :param name:
     :type name: str
     """ 
@@ -22,10 +24,12 @@ class StorageAccountProperties(Model):
     _attribute_map = {
         'access_key': {'key': 'accessKey', 'type': 'str'},
         'end_point_url': {'key': 'endPointUrl', 'type': 'str'},
+        'location': {'key': 'location', 'type': 'str'},
         'name': {'key': 'name', 'type': 'str'},
     }
 
-    def __init__(self, access_key=None, end_point_url=None, name=None):
+    def __init__(self, access_key=None, end_point_url=None, location=None, name=None):
         self.access_key = access_key
         self.end_point_url = end_point_url
+        self.location = location
         self.name = name
