@@ -13,7 +13,9 @@
 from msrest.service_client import ServiceClient
 from msrest import Configuration, Serializer, Deserializer
 from .version import VERSION
+from .operations.operation import Operation
 from .operations.registries import Registries
+from .operations.subscriptions import Subscriptions
 from . import models
 
 
@@ -67,8 +69,12 @@ class ContainerRegistry(object):
     :param config: Configuration for client.
     :type config: ContainerRegistryConfiguration
 
+    :ivar operation: Operation operations
+    :vartype operation: .operations.Operation
     :ivar registries: Registries operations
     :vartype registries: .operations.Registries
+    :ivar subscriptions: Subscriptions operations
+    :vartype subscriptions: .operations.Subscriptions
     """
 
     def __init__(self, config):
@@ -80,5 +86,9 @@ class ContainerRegistry(object):
         self._deserialize = Deserializer(client_models)
 
         self.config = config
+        self.operation = Operation(
+            self._client, self.config, self._serialize, self._deserialize)
         self.registries = Registries(
+            self._client, self.config, self._serialize, self._deserialize)
+        self.subscriptions = Subscriptions(
             self._client, self.config, self._serialize, self._deserialize)

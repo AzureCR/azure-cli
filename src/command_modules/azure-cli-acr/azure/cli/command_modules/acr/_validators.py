@@ -6,8 +6,21 @@
 import re
 import uuid
 
+from azure.mgmt.resource.resources.models.resource_group import ResourceGroup
+
+from azure.cli.command_modules.acr.mgmt_acr.models import RegistryNameCheckRequest
+
 from azure.cli.core._util import CLIError
 from azure.cli.command_modules.storage._factory import storage_client_factory
+
+from ._constants import (
+    RESOURCE_TYPE,
+    ALLOWED_ROLES
+)
+from ._factory import (
+    get_acr_service_client,
+    get_arm_service_client
+)
 
 def validate_registry_name(namespace):
     if namespace.registry_name:
@@ -20,6 +33,20 @@ def validate_registry_name(namespace):
         if not p.match(registry_name):
             raise CLIError('The registry name can contain only letters and numbers.')
 
+def validate_registry_name_create(namespace):
+    if namespace.registry_name:
+        client = get_acr_service_client()
+
+        result = client.operation.check_name_availability(
+            RegistryNameCheckRequest(
+                namespace.registry_name,
+                RESOURCE_TYPE
+            )
+        )
+
+        if not result.name_available: #pylint: disable=E1101
+            raise CLIError(result.message) #pylint: disable=E1101
+
 def validate_storage_account_name(namespace):
     client = storage_client_factory().storage_accounts
 
@@ -29,3 +56,20 @@ def validate_storage_account_name(namespace):
             if client.check_name_availability(storage_account_name).name_available is True: #pylint: disable=E1101
                 namespace.storage_account_name = storage_account_name
                 break
+
+def validate_resource_group_name(namespace):
+    client = get_arm_service_client()
+
+    if namespace.resource_group_name:
+        if not client.resource_groups.check_existence(namespace.resource_group_name):
+            parameters = ResourceGroup(location=namespace.location)
+            client.resource_groups.create_or_update(namespace.resource_group_name, parameters)
+
+def validate_password(namespace):
+    if namespace.password and not namespace.new_sp:
+        raise CLIError('--password has to be used with --new-sp.')
+
+def validate_role(namespace):
+    if namespace.role and not namespace.role.lower() in ALLOWED_ROLES:
+        raise CLIError('The role {} is not allowed. Allowed roles (Owner, Contributor, Reader).'\
+        .format(namespace.role))

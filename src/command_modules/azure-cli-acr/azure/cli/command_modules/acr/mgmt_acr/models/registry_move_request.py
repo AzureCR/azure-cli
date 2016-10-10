@@ -13,17 +13,20 @@
 from msrest.serialization import Model
 
 
-class ResourceListRegistryParameters(Model):
-    """ResourceListRegistryParameters
+class RegistryMoveRequest(Model):
+    """RegistryMoveRequest
 
-    :param value:
-    :type value: list of :class:`RegistryParameters
-     <containerregistry.models.RegistryParameters>`
+    :param target_resource_group:
+    :type target_resource_group: str
+    :param resources:
+    :type resources: list of str
     """ 
 
     _attribute_map = {
-        'value': {'key': 'value', 'type': '[RegistryParameters]'},
+        'target_resource_group': {'key': 'targetResourceGroup', 'type': 'str'},
+        'resources': {'key': 'resources', 'type': '[str]'},
     }
 
-    def __init__(self, value=None):
-        self.value = value
+    def __init__(self, target_resource_group=None, resources=None):
+        self.target_resource_group = target_resource_group
+        self.resources = resources
