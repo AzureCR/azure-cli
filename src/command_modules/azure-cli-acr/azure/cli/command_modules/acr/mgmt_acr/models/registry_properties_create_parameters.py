@@ -13,29 +13,25 @@
 from msrest.serialization import Model
 
 
-class RegistryProperties(Model):
-    """RegistryProperties
+class RegistryPropertiesCreateParameters(Model):
+    """RegistryPropertiesCreateParameters
 
-    :param storage_account:
-    :type storage_account: :class:`StorageAccountBaseProperties
-     <containerregistry.models.StorageAccountBaseProperties>`
-    :param login_server:
-    :type login_server: str
-    :param creation_date:
-    :type creation_date: datetime
+    :param tenant_id:
+    :type tenant_id: str
     :param admin_user_enabled:
     :type admin_user_enabled: bool
+    :param storage_account:
+    :type storage_account: :class:`StorageAccountProperties
+     <containerregistry.models.StorageAccountProperties>`
     """ 
 
     _attribute_map = {
-        'storage_account': {'key': 'storageAccount', 'type': 'StorageAccountBaseProperties'},
-        'login_server': {'key': 'loginServer', 'type': 'str'},
-        'creation_date': {'key': 'creationDate', 'type': 'iso-8601'},
+        'tenant_id': {'key': 'tenantId', 'type': 'str'},
         'admin_user_enabled': {'key': 'adminUserEnabled', 'type': 'bool'},
+        'storage_account': {'key': 'storageAccount', 'type': 'StorageAccountProperties'},
     }
 
-    def __init__(self, storage_account=None, login_server=None, creation_date=None, admin_user_enabled=None):
-        self.storage_account = storage_account
-        self.login_server = login_server
-        self.creation_date = creation_date
+    def __init__(self, tenant_id=None, admin_user_enabled=None, storage_account=None):
+        self.tenant_id = tenant_id
         self.admin_user_enabled = admin_user_enabled
+        self.storage_account = storage_account

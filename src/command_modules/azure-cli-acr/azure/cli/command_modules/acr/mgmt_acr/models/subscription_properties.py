@@ -13,28 +13,24 @@
 from msrest.serialization import Model
 
 
-class StorageAccountProperties(Model):
-    """StorageAccountProperties
+class SubscriptionProperties(Model):
+    """SubscriptionProperties
 
-    :param access_key:
-    :type access_key: str
-    :param end_point_url:
-    :type end_point_url: str
-    :param location:
-    :type location: str
-    :param name:
-    :type name: str
+    :param tenant_id:
+    :type tenant_id: str
+    :param location_placement_id:
+    :type location_placement_id: str
+    :param quota_id:
+    :type quota_id: str
     """ 
 
     _attribute_map = {
-        'access_key': {'key': 'accessKey', 'type': 'str'},
-        'end_point_url': {'key': 'endPointUrl', 'type': 'str'},
-        'location': {'key': 'location', 'type': 'str'},
-        'name': {'key': 'name', 'type': 'str'},
+        'tenant_id': {'key': 'tenantId', 'type': 'str'},
+        'location_placement_id': {'key': 'locationPlacementId', 'type': 'str'},
+        'quota_id': {'key': 'quotaId', 'type': 'str'},
     }
 
-    def __init__(self, access_key=None, end_point_url=None, location=None, name=None):
-        self.access_key = access_key
-        self.end_point_url = end_point_url
-        self.location = location
-        self.name = name
+    def __init__(self, tenant_id=None, location_placement_id=None, quota_id=None):
+        self.tenant_id = tenant_id
+        self.location_placement_id = location_placement_id
+        self.quota_id = quota_id

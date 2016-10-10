@@ -13,28 +13,20 @@
 from msrest.serialization import Model
 
 
-class StorageAccountProperties(Model):
-    """StorageAccountProperties
+class RegistryCredentials(Model):
+    """RegistryCredentials
 
-    :param access_key:
-    :type access_key: str
-    :param end_point_url:
-    :type end_point_url: str
-    :param location:
-    :type location: str
-    :param name:
-    :type name: str
+    :param user_name:
+    :type user_name: str
+    :param pass_word:
+    :type pass_word: str
     """ 
 
     _attribute_map = {
-        'access_key': {'key': 'accessKey', 'type': 'str'},
-        'end_point_url': {'key': 'endPointUrl', 'type': 'str'},
-        'location': {'key': 'location', 'type': 'str'},
-        'name': {'key': 'name', 'type': 'str'},
+        'user_name': {'key': 'userName', 'type': 'str'},
+        'pass_word': {'key': 'passWord', 'type': 'str'},
     }
 
-    def __init__(self, access_key=None, end_point_url=None, location=None, name=None):
-        self.access_key = access_key
-        self.end_point_url = end_point_url
-        self.location = location
-        self.name = name
+    def __init__(self, user_name=None, pass_word=None):
+        self.user_name = user_name
+        self.pass_word = pass_word

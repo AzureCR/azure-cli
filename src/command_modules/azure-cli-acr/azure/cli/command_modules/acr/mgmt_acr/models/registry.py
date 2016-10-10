@@ -13,8 +13,8 @@
 from msrest.serialization import Model
 
 
-class RegistryParameters(Model):
-    """RegistryParameters
+class Registry(Model):
+    """Registry
 
     Variables are only populated by the server, and will be ignored when
     sending a request.

@@ -6,6 +6,8 @@
 from azure.cli.core._profile import Profile
 from azure.cli.core._config import az_config
 from azure.mgmt.resource.resources import ResourceManagementClient
+from azure.mgmt.storage import StorageManagementClient
+from azure.graphrbac import GraphRbacManagementClient
 
 from azure.cli.core.commands.client_factory import (
     configure_common_settings,
@@ -26,21 +28,39 @@ def get_arm_service_client():
     '''
     return get_mgmt_service_client(ResourceManagementClient)
 
-def get_registry_service_client():
+def get_storage_service_client():
+    '''Returns the client for managing storage accounts.
+    '''
+    return get_mgmt_service_client(StorageManagementClient)
+
+def get_acr_service_client():
     '''Returns the client for managing container registries.
     '''
     profile = Profile()
     credentials, subscription_id, _ = profile.get_login_credentials()
 
-    customized_api_version = az_config.get('acr', 'apiversion', None)
-    if customized_api_version:
-        logger.warning('Customized api-version is used: ' + customized_api_version)
-
-    api_version = customized_api_version or VERSION
-
-    config = ContainerRegistryConfiguration(subscription_id, api_version, credentials)
+    config = ContainerRegistryConfiguration(subscription_id, get_acr_api_version(), credentials)
     client = ContainerRegistry(config)
 
     configure_common_settings(client)
 
-    return client.registries
+    return client
+
+def get_graph_mgmt_client():
+    '''Returns the client for graph api.
+    '''
+    profile = Profile()
+    credentials, _, tenant_id = profile.get_login_credentials(True)
+    client = GraphRbacManagementClient(credentials, tenant_id)
+
+    configure_common_settings(client)
+
+    return client
+
+def get_acr_api_version():
+    '''Returns the api version for container registry
+    '''
+    customized_api_version = az_config.get('acr', 'apiversion', None)
+    if customized_api_version:
+        logger.warning('Customized api-version is used: %s', customized_api_version)
+    return customized_api_version or VERSION

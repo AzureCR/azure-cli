@@ -16,6 +16,7 @@
         },
         "registryApiVersion": {
             "type": "string",
+            "defaultValue": "2016-06-27-preview",
             "metadata": {
                 "description": "Api version of the registry service"
             }
@@ -26,51 +27,50 @@
                 "description": "Name of the storage account"
             }
         },
-        "storageAccountApiVersion": {
+        "storageAccountType": {
             "type": "string",
             "metadata": {
-                "description": "Api version of the storage account"
+                "description": "Type of the storage account"
+            }
+        },
+        "adminUserEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Enable admin user"
             }
         }
     },
     "resources": [
         {
-            "comments": "# Storage Account",
             "name": "[parameters('storageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
             "location": "[parameters('registryLocation')]",
-            "apiVersion": "[parameters('storageAccountApiVersion')]",
-            "properties": {
-                "accountType": "Standard_LRS"
-            }
+            "apiVersion": "2016-01-01",
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
+            },
+            "kind": "Storage"
         },
         {
-            "comments": "# Registry",
             "name": "[parameters('registryName')]",
             "type": "Microsoft.ContainerRegistry/registries",
             "location": "[parameters('registryLocation')]",
             "apiVersion": "[parameters('registryApiVersion')]",
+            "tags": {
+                "storageaccount": "[parameters('storageAccountName')]"
+            },
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
             ],
             "properties": {
+                "tenantId": "[subscription().tenantId]",
+                "adminUserEnabled": "[parameters('adminUserEnabled')]",
                 "storageAccount": {
                     "name": "[parameters('storageAccountName')]",
-                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), parameters('storageAccountApiVersion')).key1]",
-                    "endPointUrl": "[reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), parameters('storageAccountApiVersion')).primaryEndpoints.blob]"
+                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value]",
+                    "endPointUrl": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').primaryEndpoints.blob]"
                 }
-            }
-        },
-        {
-            "type": "Microsoft.ContainerRegistry/registries/providers/links",
-            "apiVersion": "2015-01-01",
-            "name": "[concat(parameters('registryName'),'/Microsoft.Resources/RegistryToStorage')]",
-            "dependsOn": [
-                "[parameters('registryName')]"
-            ],
-            "properties": {
-                "targetId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
-                "notes": "This registry uses the storage account to store registry information."
             }
         }
     ]
