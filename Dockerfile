@@ -38,7 +38,7 @@ _python_argcomplete() {\n\
 complete -o nospace -F _python_argcomplete \"az\"\n\
 " > /etc/az.completion
 RUN echo "\nsource '/etc/az.completion'\n" >> /etc/bash.bashrc
-
+RUN curl -sSL https://get.docker.com/ | sh
 WORKDIR /
 
 CMD az; bash
