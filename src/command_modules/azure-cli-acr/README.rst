@@ -33,7 +33,7 @@ Create a container registry
         --resource-group -g [Required]: Name of resource group.
         --app-id                      : The app id of an existing service principal. If provided, no
                                         --new-sp or -p should be specified.
-        --disable-admin               : Disable admin user.
+        --enable-admin                : Enable admin user.
         --new-sp                      : Create a new service principal. If provided, no --app-id should
                                         be specified. Optional: Use -p to specify a password.
         --password -p                 : Password used to log into a container registry.
@@ -44,7 +44,7 @@ Create a container registry
     Examples
         Create a container registry with a new storage account
             az acr create -n myRegistry -g myResourceGroup -l southus
-        Create a container registry with a specified new/existing storage account
+        Create a container registry with an existing storage account
             az acr create -n myRegistry -g myResourceGroup -l southus -s myStorageAccount
         Create a container registry with a new service principal
             az acr create -n myRegistry -g myResourceGroup -l southus --new-sp -p myPassword -r Owner

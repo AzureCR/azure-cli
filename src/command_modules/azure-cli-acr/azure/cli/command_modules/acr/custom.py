@@ -3,7 +3,10 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 #---------------------------------------------------------------------------------------------
 
-from azure.cli.core.commands import cli_command
+from azure.cli.core.commands import (
+    cli_command,
+    LongRunningOperation
+)
 from azure.cli.core._util import CLIError
 from azure.cli.command_modules.role.custom import _create_role_assignment
 
@@ -53,7 +56,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                app_id=None,
                password=None,
                role=DEFAULT_ROLE,
-               disable_admin=False):
+               enable_admin=False):
     '''Create a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
@@ -63,7 +66,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     :param str app_id: The app id of an existing service principal
     :param str password: The password used to log into the container registry
     :param str role: The name of role
-    :param bool disable_admin: Disable admin user
+    :param bool enable_admin: Enable admin user
     '''
     if new_sp and app_id:
         raise CLIError('new-service-principal and app-id should not be specified together.')
@@ -76,15 +79,26 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
          session_key) = create_service_principal(registry_name, password)
 
     # Create a container registry
-    arm_deploy_template(resource_group_name,
-                        registry_name,
-                        location,
-                        storage_account_name,
-                        not disable_admin).wait() # wait for the template deployment to finish
+    LongRunningOperation()(
+        arm_deploy_template(resource_group_name,
+                            registry_name,
+                            location,
+                            storage_account_name,
+                            enable_admin)
+    )
 
     client = get_acr_service_client().registries
     registry = client.get_properties(resource_group_name, registry_name)
     add_tag_storage_account(storage_account_name, registry_name)
+
+    logger.warning('\nCreate a new service principal and assign access:')
+    logger.warning(
+        '  az ad sp create-for-rbac --scopes %s --role Owner --secret <password>',
+        registry.id) #pylint: disable=E1101
+    logger.warning('\nUse an existing service principal and assign access:')
+    logger.warning(
+        '  az role assignment create --scope %s --role Owner --assignee <app-id>',
+        registry.id) #pylint: disable=E1101
 
     # Create role assignment
     if app_id:
@@ -92,10 +106,10 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                                 app_id,
                                 scope=registry.id, #pylint: disable=E1101
                                 ocp_aad_session_key=session_key)
-        logger.warning("Service principal has been configured.")
-        logger.warning("  id(client_id):           " + app_id)
+        logger.warning('Service principal has been configured.')
+        logger.warning('  id(client_id):           %s', app_id)
         if password:
-            logger.warning("  password(client_secret): " + password)
+            logger.warning('  password(client_secret): %s', password)
 
     return registry
 
@@ -185,10 +199,10 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
                                 app_id,
                                 scope=registry.id, #pylint: disable=E1101
                                 ocp_aad_session_key=session_key)
-        logger.warning("Service principal has been configured.")
-        logger.warning("  id(client_id):           " + app_id)
+        logger.warning('Service principal has been configured.')
+        logger.warning('  id(client_id):           %s', app_id)
         if password:
-            logger.warning("  password(client_secret): " + password)
+            logger.warning('  password(client_secret): %s', password)
 
     # Set admin_user_enabled
     admin_user_enabled = None

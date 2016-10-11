@@ -3,7 +3,10 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 #---------------------------------------------------------------------------------------------
 
-from azure.cli.core.commands import cli_command
+from azure.cli.core.commands import (
+    cli_command,
+    LongRunningOperation
+)
 
 from ._factory import get_acr_service_client
 from ._arm_utils import (
@@ -16,11 +19,7 @@ from ._utils import (
     get_resource_group_name_by_resource_id,
     registry_not_found
 )
-
 from ._format import output_format
-
-import azure.cli.core._logging as _logging
-logger = _logging.get_az_logger(__name__)
 
 def acr_storage_update(registry_name,
                        storage_account_name,
@@ -39,13 +38,14 @@ def acr_storage_update(registry_name,
 
     old_storage_account_name = registry.properties.storage_account.name
 
-    # Create a container registry
-    arm_deploy_template(resource_group_name,
-                        registry_name,
-                        registry.location,
-                        storage_account_name,
-                        registry.properties.admin_user_enabled).wait()
-                        # wait for the template deployment to finish
+    # Update a container registry
+    LongRunningOperation()(
+        arm_deploy_template(resource_group_name,
+                            registry_name,
+                            registry.location,
+                            storage_account_name,
+                            registry.properties.admin_user_enabled)
+    )
 
     client = get_acr_service_client().registries
     registry = client.get_properties(resource_group_name, registry_name)

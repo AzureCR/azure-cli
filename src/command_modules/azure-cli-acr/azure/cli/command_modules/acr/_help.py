@@ -44,7 +44,7 @@ helps['acr create'] = """
                 - name: Create a container registry with a new storage account
                   text:
                     az acr create -n myRegistry -g myResourceGroup -l southus
-                - name: Create a container registry with a specified new/existing storage account
+                - name: Create a container registry with an existing storage account
                   text:
                     az acr create -n myRegistry -g myResourceGroup -l southus -s myStorageAccount
                 - name: Create a container registry with a new service principal
