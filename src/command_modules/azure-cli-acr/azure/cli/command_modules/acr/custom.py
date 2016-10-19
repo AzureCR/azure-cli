@@ -8,16 +8,12 @@ from azure.cli.core.commands import (
     LongRunningOperation
 )
 from azure.cli.core._util import CLIError
-from azure.cli.command_modules.role.custom import _create_role_assignment
 
 from azure.cli.command_modules.acr.mgmt_acr.models import (
     RegistryUpdateParameters,
     RegistryPropertiesCreateParameters
 )
 
-from ._constants import (
-    DEFAULT_ROLE
-)
 from ._factory import get_acr_service_client
 from ._arm_utils import (
     arm_get_registries_in_subscription,
@@ -30,7 +26,6 @@ from ._arm_utils import (
 from ._utils import (
     get_registry_by_name,
     get_resource_group_name_by_resource_id,
-    create_service_principal,
     registry_not_found
 )
 
@@ -52,32 +47,14 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                resource_group_name,
                location,
                storage_account_name=None,
-               new_sp=False,
-               app_id=None,
-               password=None,
-               role=DEFAULT_ROLE,
                enable_admin=False):
     '''Create a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
-    :param bool new_sp: Create a new service principal
-    :param str app_id: The app id of an existing service principal
-    :param str password: The password used to log into the container registry
-    :param str role: The name of role
     :param bool enable_admin: Enable admin user
     '''
-    if new_sp and app_id:
-        raise CLIError('new-service-principal and app-id should not be specified together.')
-
-    session_key = None
-    # Create a service principal
-    if new_sp:
-        (app_id,
-         password,
-         session_key) = create_service_principal(registry_name, password)
-
     # Create a container registry
     LongRunningOperation()(
         arm_deploy_template(resource_group_name,
@@ -94,22 +71,11 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     logger.warning('\nCreate a new service principal and assign access:')
     logger.warning(
         '  az ad sp create-for-rbac --scopes %s --role Owner --secret <password>',
-        registry.id) #pylint: disable=E1101
+        registry.id) #pylint: disable=no-member
     logger.warning('\nUse an existing service principal and assign access:')
     logger.warning(
         '  az role assignment create --scope %s --role Owner --assignee <app-id>',
-        registry.id) #pylint: disable=E1101
-
-    # Create role assignment
-    if app_id:
-        _create_role_assignment(role,
-                                app_id,
-                                scope=registry.id, #pylint: disable=E1101
-                                ocp_aad_session_key=session_key)
-        logger.warning('Service principal has been configured.')
-        logger.warning('  id(client_id):           %s', app_id)
-        if password:
-            logger.warning('  password(client_secret): %s', password)
+        registry.id) #pylint: disable=no-member
 
     return registry
 
@@ -127,7 +93,7 @@ def acr_delete(registry_name, resource_group_name=None):
 
     client = get_acr_service_client().registries
 
-    storage_account_name = client.get_properties( #pylint: disable=E1101
+    storage_account_name = client.get_properties( #pylint: disable=no-member
         resource_group_name, registry_name).properties.storage_account.name
     delete_tag_storage_account(storage_account_name, registry_name)
 
@@ -152,28 +118,17 @@ def acr_show(registry_name, resource_group_name=None):
 def acr_update(registry_name, #pylint: disable=too-many-arguments
                resource_group_name=None,
                tags=None,
-               new_sp=False,
-               app_id=None,
-               password=None,
-               role=DEFAULT_ROLE,
-               disable_admin=False,
                enable_admin=False,
+               disable_admin=False,
                tenant_id=None):
     '''Update a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param dict tags: The set of tags
-    :param bool new_sp: Create a new service principal
-    :param str app_id: The app id of an existing service principal
-    :param str password: The password used to log into the container registry
-    :param str role: The name of role
-    :param bool disable_admin: Disable admin user
     :param bool enable_admin: Enable admin user
+    :param bool disable_admin: Disable admin user
     :param str tenant_id: Tenant id for service principal login
     '''
-    if new_sp and app_id:
-        raise CLIError('new_sp and app-id should not be specified together.')
-
     if disable_admin and enable_admin:
         raise CLIError('disable_admin and enable_admin should not be specified together.')
 
@@ -185,24 +140,6 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
         resource_group_name = get_resource_group_name_by_resource_id(registry.id)
 
     client = get_acr_service_client().registries
-
-    session_key = None
-    # Create a service principal
-    if new_sp:
-        (app_id,
-         password,
-         session_key) = create_service_principal(registry_name, password)
-
-    # Create role assignment
-    if app_id:
-        _create_role_assignment(role,
-                                app_id,
-                                scope=registry.id, #pylint: disable=E1101
-                                ocp_aad_session_key=session_key)
-        logger.warning('Service principal has been configured.')
-        logger.warning('  id(client_id):           %s', app_id)
-        if password:
-            logger.warning('  password(client_secret): %s', password)
 
     # Set admin_user_enabled
     admin_user_enabled = None

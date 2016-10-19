@@ -7,7 +7,6 @@ from azure.cli.core._profile import Profile
 from azure.cli.core._config import az_config
 from azure.mgmt.resource.resources import ResourceManagementClient
 from azure.mgmt.storage import StorageManagementClient
-from azure.graphrbac import GraphRbacManagementClient
 
 from azure.cli.core.commands.client_factory import (
     configure_common_settings,
@@ -41,17 +40,6 @@ def get_acr_service_client():
 
     config = ContainerRegistryConfiguration(subscription_id, get_acr_api_version(), credentials)
     client = ContainerRegistry(config)
-
-    configure_common_settings(client)
-
-    return client
-
-def get_graph_mgmt_client():
-    '''Returns the client for graph api.
-    '''
-    profile = Profile()
-    credentials, _, tenant_id = profile.get_login_credentials(True)
-    client = GraphRbacManagementClient(credentials, tenant_id)
 
     configure_common_settings(client)
 

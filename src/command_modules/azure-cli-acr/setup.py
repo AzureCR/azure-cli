@@ -8,10 +8,10 @@
 from codecs import open
 from setuptools import setup
 
-VERSION = '0.0.5'
+VERSION = '0.1.0b7'
 
 CLASSIFIERS = [
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
     'Intended Audience :: System Administrators',
     'Programming Language :: Python',
@@ -24,7 +24,9 @@ CLASSIFIERS = [
 ]
 
 DEPENDENCIES = [
-    'azure==2.0.0rc6',
+    'azure-cli-core',
+    'azure-mgmt-resource==0.30.0rc6',
+    'azure-mgmt-storage==0.30.0rc6',
 ]
 
 with open('README.rst', 'r', encoding='utf-8') as f:
@@ -33,14 +35,14 @@ with open('README.rst', 'r', encoding='utf-8') as f:
 setup(
     name='azure-cli-acr',
     version=VERSION,
-    description='Microsoft Azure Command-Line Tools',
+    description='Microsoft Azure Command-Line Tools ACR Command Module',
     long_description=README,
     license='MIT',
     author='Microsoft Corporation',
     author_email='azpycli@microsoft.com',
     url='https://github.com/Azure/azure-cli',
     classifiers=CLASSIFIERS,
-    namespace_packages = [
+    namespace_packages=[
         'azure',
         'azure.cli',
         'azure.cli.command_modules',

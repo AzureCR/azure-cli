@@ -11,10 +11,7 @@ from azure.cli.command_modules.acr.mgmt_acr.models import RegistryNameCheckReque
 from azure.cli.core._util import CLIError
 from azure.cli.command_modules.storage._factory import storage_client_factory
 
-from ._constants import (
-    RESOURCE_TYPE,
-    ALLOWED_ROLES
-)
+from ._constants import RESOURCE_TYPE
 from ._factory import (
     get_acr_service_client,
     get_arm_service_client
@@ -46,8 +43,8 @@ def validate_registry_name_create(namespace):
             )
         )
 
-        if not result.name_available: #pylint: disable=E1101
-            raise CLIError(result.message) #pylint: disable=E1101
+        if not result.name_available: #pylint: disable=no-member
+            raise CLIError(result.message) #pylint: disable=no-member
 
 def validate_storage_account_name(namespace):
     client = storage_client_factory().storage_accounts
@@ -67,7 +64,7 @@ def validate_storage_account_name(namespace):
     else:
         while True:
             storage_account_name = str(uuid.uuid4()).replace('-', '')[:24]
-            if client.check_name_availability(storage_account_name).name_available is True: #pylint: disable=E1101
+            if client.check_name_availability(storage_account_name).name_available is True: #pylint: disable=no-member
                 namespace.storage_account_name = storage_account_name
                 logger.warning(
                     'New storage account with name %s will be created and used.',
@@ -85,12 +82,3 @@ def validate_resource_group_name(namespace):
             raise CLIError(
                 'The resource group {} does not exist in the current subscription.'\
                 .format(resource_group_name))
-
-def validate_password(namespace):
-    if namespace.password and not namespace.new_sp:
-        raise CLIError('--password has to be used with --new-sp.')
-
-def validate_role(namespace):
-    if namespace.role and not namespace.role.lower() in ALLOWED_ROLES:
-        raise CLIError('The role {} is not allowed. Allowed roles (Owner, Contributor, Reader).'\
-        .format(namespace.role))

@@ -119,7 +119,7 @@ def _arm_deploy_template(deployments_client,
             resource_group_name, deployment_name, properties)
         return deployments_client.create_or_update(
             resource_group_name, deployment_name, properties)
-    except: #pylint: disable=W0702
+    except: #pylint: disable=bare-except
         return _arm_deploy_template(
             deployments_client, resource_group_name, properties, index + 1)
 

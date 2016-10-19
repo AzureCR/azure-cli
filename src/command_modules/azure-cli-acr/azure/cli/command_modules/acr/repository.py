@@ -59,7 +59,7 @@ def _validate_user_credentials(registry_name, path, resultIndex, username=None, 
         username = cred.user_name
         password = cred.pass_word
         return _obtain_data_from_registry(login_server, path, resultIndex, username, password)
-    except: #pylint: disable=W0702
+    except: #pylint: disable=bare-except
         raise CLIError('Login credentials cannot be obtained. Please enter username/password')
 
 def acr_repository_list(registry_name, username=None, password=None):

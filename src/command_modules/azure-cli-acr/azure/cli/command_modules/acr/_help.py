@@ -47,26 +47,17 @@ helps['acr create'] = """
                 - name: Create a container registry with an existing storage account
                   text:
                     az acr create -n myRegistry -g myResourceGroup -l southus -s myStorageAccount
-                - name: Create a container registry with a new service principal
-                  text:
-                    az acr create -n myRegistry -g myResourceGroup -l southus --new-sp -p myPassword -r Owner
-                - name: Create a container registry with an existing service principal
-                  text:
-                    az acr create -n myRegistry -g myResourceGroup -l southus --app-id myAppId -r Owner
             """
 
 helps['acr update'] = """
             type: command
             examples:
-                - name: Update tags of a container registry
+                - name: Update tags for a container registry
                   text:
-                    az acr update -n myRegistry --tags key1=value1;key2=value2
-                - name: Update a container registry with a new service principal
+                    az acr update -n myRegistry --tags key1=value1 key2=value2
+                - name: Enable admin user for a container registry
                   text:
-                    az acr update -n myRegistry --new-sp -p myPassword -r Owner
-                - name: Update a container registry with an existing service principal
-                  text:
-                    az acr update -n myRegistry --app-id myAppId -r Owner
+                    az acr update -n myRegistry --enable-admin
             """
 
 helps['acr repository list'] = """

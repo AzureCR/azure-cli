@@ -31,25 +31,14 @@ Create a container registry
         --location -l       [Required]: Location.
         --name -n           [Required]: Name of container registry.
         --resource-group -g [Required]: Name of resource group.
-        --app-id                      : The app id of an existing service principal. If provided, no
-                                        --new-sp or -p should be specified.
         --enable-admin                : Enable admin user.
-        --new-sp                      : Create a new service principal. If provided, no --app-id should
-                                        be specified. Optional: Use -p to specify a password.
-        --password -p                 : Password used to log into a container registry.
-        --role -r                     : Name of role. (Owner, Contributor, Reader).  Default: Reader.
-        --storage-account-name -s     : Name of new or existing storage account. If not provided, a
-                                        random storage account name will be generated.
+        --storage-account-name -s     : Name of an existing storage account.
 
     Examples
         Create a container registry with a new storage account
             az acr create -n myRegistry -g myResourceGroup -l southus
         Create a container registry with an existing storage account
             az acr create -n myRegistry -g myResourceGroup -l southus -s myStorageAccount
-        Create a container registry with a new service principal
-            az acr create -n myRegistry -g myResourceGroup -l southus --new-sp -p myPassword -r Owner
-        Create a container registry with an existing service principal
-            az acr create -n myRegistry -g myResourceGroup -l southus --app-id myAppId -r Owner
 
 Delete a container registry
 -------------
@@ -98,27 +87,19 @@ Update a container registry
 
     Arguments
         --name -n [Required]: Name of container registry.
-        --app-id            : The app id of an existing service principal. If provided, no --new-sp or
-                            -p should be specified.
         --disable-admin     : Disable admin user.
         --enable-admin      : Enable admin user.
-        --new-sp            : Create a new service principal. If provided, no --app-id should be
-                            specified. Optional: Use -p to specify a password.
-        --password -p       : Password used to log into a container registry.
         --resource-group -g : Name of resource group.
-        --role -r           : Name of role. (Owner, Contributor, Reader).  Default: Reader.
         --tags              : Space separated tags in 'key[=value]' format. Use "" to clear existing
                             tags.
         --tenant-id -t      : Tenant id for service principal login. Warning: Changing tenant id will
                             invalidate assigned access of existing service principals.
 
     Examples
-        Update tags of a container registry
+        Update tags for a container registry
             az acr update -n myRegistry --tags key1=value1;key2=value2
-        Update a container registry with a new service principal
-            az acr update -n myRegistry --new-sp -p myPassword -r Owner
-        Update a container registry with an existing service principal
-            az acr update -n myRegistry --app-id myAppId -r Owner
+        Enable admin user for a container registry
+            az acr update -n myRegistry --enable-admin
 
 Update storage account for a container registry
 -------------
@@ -129,7 +110,7 @@ Update storage account for a container registry
 
     Arguments
         --name -n                 [Required]: Name of container registry.
-        --storage-account-name -s [Required]: Name of new or existing storage account.
+        --storage-account-name -s [Required]: Name of an existing storage account.
         --resource-group -g                 : Name of resource group.
 
 Get admin username and password for a container registry
