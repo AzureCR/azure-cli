@@ -12,4 +12,4 @@ ALLOWED_ROLES = [
     'reader'
 ]
 
-DEFAULT_ROLE = 'Reader'
+DEFAULT_ROLE = 'reader'

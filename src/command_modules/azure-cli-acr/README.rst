@@ -37,7 +37,8 @@ Create a container registry
         --new-sp                      : Create a new service principal. If provided, no --app-id should
                                         be specified. Optional: Use -p to specify a password.
         --password -p                 : Password used to log into a container registry.
-        --role -r                     : Name of role. (Owner, Contributor, Reader).  Default: Reader.
+        --role -r                     : Name of role. Allowed roles: owner, contributor, reader.
+                                        Default: reader.
         --storage-account-name -s     : Name of new or existing storage account. If not provided, a
                                         random storage account name will be generated.
 
@@ -106,7 +107,7 @@ Update a container registry
                             specified. Optional: Use -p to specify a password.
         --password -p       : Password used to log into a container registry.
         --resource-group -g : Name of resource group.
-        --role -r           : Name of role. (Owner, Contributor, Reader).  Default: Reader.
+        --role -r           : Name of role. Allowed roles: owner, contributor, reader.  Default: reader.
         --tags              : Space separated tags in 'key[=value]' format. Use "" to clear existing
                             tags.
         --tenant-id -t      : Tenant id for service principal login. Warning: Changing tenant id will

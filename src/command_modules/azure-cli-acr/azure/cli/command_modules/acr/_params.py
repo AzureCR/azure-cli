@@ -11,7 +11,10 @@ from azure.cli.core.commands.parameters import (
     get_resource_name_completion_list
 )
 
-from ._constants import RESOURCE_TYPE
+from ._constants import (
+    RESOURCE_TYPE,
+    ALLOWED_ROLES
+)
 from ._validators import (
     validate_registry_name_create,
     validate_registry_name,
@@ -48,7 +51,7 @@ register_cli_argument('acr', 'password',
 
 register_cli_argument('acr', 'role',
                       options_list=('--role', '-r'),
-                      help='Name of role. (Owner, Contributor, Reader)',
+                      help='Name of role. Allowed roles: {}'.format(', '.join(ALLOWED_ROLES)),
                       validator=validate_role)
 
 register_cli_argument('acr', 'new_sp',

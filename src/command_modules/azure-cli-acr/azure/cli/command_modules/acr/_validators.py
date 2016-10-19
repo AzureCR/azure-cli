@@ -46,8 +46,8 @@ def validate_registry_name_create(namespace):
             )
         )
 
-        if not result.name_available: #pylint: disable=E1101
-            raise CLIError(result.message) #pylint: disable=E1101
+        if not result.name_available: #pylint: disable=no-member
+            raise CLIError(result.message) #pylint: disable=no-member
 
 def validate_storage_account_name(namespace):
     client = storage_client_factory().storage_accounts
@@ -67,7 +67,7 @@ def validate_storage_account_name(namespace):
     else:
         while True:
             storage_account_name = str(uuid.uuid4()).replace('-', '')[:24]
-            if client.check_name_availability(storage_account_name).name_available is True: #pylint: disable=E1101
+            if client.check_name_availability(storage_account_name).name_available is True: #pylint: disable=no-member
                 namespace.storage_account_name = storage_account_name
                 logger.warning(
                     'New storage account with name %s will be created and used.',
@@ -92,5 +92,5 @@ def validate_password(namespace):
 
 def validate_role(namespace):
     if namespace.role and not namespace.role.lower() in ALLOWED_ROLES:
-        raise CLIError('The role {} is not allowed. Allowed roles (Owner, Contributor, Reader).'\
-        .format(namespace.role))
+        raise CLIError('The role {} is not allowed. Allowed roles: {}.'\
+        .format(namespace.role, ', '.join(ALLOWED_ROLES)))

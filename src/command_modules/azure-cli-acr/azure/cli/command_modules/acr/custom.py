@@ -94,17 +94,17 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     logger.warning('\nCreate a new service principal and assign access:')
     logger.warning(
         '  az ad sp create-for-rbac --scopes %s --role Owner --secret <password>',
-        registry.id) #pylint: disable=E1101
+        registry.id) #pylint: disable=no-member
     logger.warning('\nUse an existing service principal and assign access:')
     logger.warning(
         '  az role assignment create --scope %s --role Owner --assignee <app-id>',
-        registry.id) #pylint: disable=E1101
+        registry.id) #pylint: disable=no-member
 
     # Create role assignment
     if app_id:
         _create_role_assignment(role,
                                 app_id,
-                                scope=registry.id, #pylint: disable=E1101
+                                scope=registry.id, #pylint: disable=no-member
                                 ocp_aad_session_key=session_key)
         logger.warning('Service principal has been configured.')
         logger.warning('  id(client_id):           %s', app_id)
@@ -127,7 +127,7 @@ def acr_delete(registry_name, resource_group_name=None):
 
     client = get_acr_service_client().registries
 
-    storage_account_name = client.get_properties( #pylint: disable=E1101
+    storage_account_name = client.get_properties( #pylint: disable=no-member
         resource_group_name, registry_name).properties.storage_account.name
     delete_tag_storage_account(storage_account_name, registry_name)
 
@@ -197,7 +197,7 @@ def acr_update(registry_name, #pylint: disable=too-many-arguments
     if app_id:
         _create_role_assignment(role,
                                 app_id,
-                                scope=registry.id, #pylint: disable=E1101
+                                scope=registry.id, #pylint: disable=no-member
                                 ocp_aad_session_key=session_key)
         logger.warning('Service principal has been configured.')
         logger.warning('  id(client_id):           %s', app_id)
