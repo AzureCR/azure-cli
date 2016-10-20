@@ -6,7 +6,6 @@
 import requests
 
 from azure.cli.core.commands import cli_command
-from azure.cli.core._util import CLIError
 
 from ._utils import (
     get_registry_by_name,
@@ -51,7 +50,10 @@ def _validate_user_credentials(registry_name, path, resultIndex, username=None, 
 
     login_server = registry.properties.login_server
 
-    if username and password:
+    if username:
+        if not password:
+            import getpass
+            password = getpass.getpass('Password: ')
         return _obtain_data_from_registry(login_server, path, resultIndex, username, password)
 
     try:
@@ -60,7 +62,10 @@ def _validate_user_credentials(registry_name, path, resultIndex, username=None, 
         password = cred.pass_word
         return _obtain_data_from_registry(login_server, path, resultIndex, username, password)
     except: #pylint: disable=bare-except
-        raise CLIError('Login credentials cannot be obtained. Please enter username/password')
+        import getpass
+        username = input("Username: ")
+        password = getpass.getpass('Password: ')
+        return _obtain_data_from_registry(login_server, path, resultIndex, username, password)
 
 def acr_repository_list(registry_name, username=None, password=None):
     '''List repositories in a given container registry.
