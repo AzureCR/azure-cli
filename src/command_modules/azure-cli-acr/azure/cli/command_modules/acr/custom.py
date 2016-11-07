@@ -17,7 +17,8 @@ from ._factory import get_acr_service_client
 from ._utils import (
     get_access_key_by_storage_account_name,
     get_resource_group_name_by_registry_name,
-    arm_deploy_template
+    arm_deploy_template,
+    docker_login_to_registry
 )
 
 import azure.cli.core._logging as _logging
@@ -115,6 +116,13 @@ def acr_show(registry_name, resource_group_name=None):
     client = get_acr_service_client().registries
 
     return client.get_properties(resource_group_name, registry_name)
+
+def acr_login(registry_name):
+    '''Login to a container registry through Docker.
+    :param str registry_name: The name of container registry
+    '''
+    props = acr_show(registry_name)
+    docker_login_to_registry(props)
 
 def acr_update_get(client,
                    registry_name,

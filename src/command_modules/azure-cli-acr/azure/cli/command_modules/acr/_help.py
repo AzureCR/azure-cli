@@ -44,6 +44,14 @@ helps['acr create'] = """
                     az acr create -n myRegistry -g myResourceGroup -l southcentralus --storage-account-name myStorageAccount
             """
 
+helps['acr login'] = """
+            type: command
+            examples:
+                - name: Log into a registry
+                  text:
+                    az acr login -n myRegistry
+            """
+
 helps['acr update'] = """
             type: command
             short-summary: Updates a container registry.
