@@ -31,7 +31,7 @@ Create a container registry
         --location -l       [Required]: Location.
         --name -n           [Required]: Name of container registry.
         --resource-group -g [Required]: Name of resource group.
-        --enable-admin                : Enable admin user.
+        --admin-user-enabled          : Enable admin user.
         --storage-account-name -s     : Name of an existing storage account.
 
     Examples
@@ -87,10 +87,9 @@ Update a container registry
     
     Arguments
         --name -n      [Required]: Name of container registry.
-        --admin-user-enabled -a  : Whether the admin user account is enabled.  Allowed values: false,
-                                   true.
         --resource-group -g      : Name of resource group.
-        --storage-account-name -s: Name of an existing storage account.
+        --admin-user-enabled     : Whether the admin user account is enabled.  Allowed values: false, true.
+        --storage-account-name   : Name of an existing storage account.
         --tags                   : Space separated tags in 'key[=value]' format. Use "" to clear
                                    existing tags.
     
