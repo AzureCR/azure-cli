@@ -57,7 +57,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     :param bool admin_enabled: Enable admin user
     '''
     client = get_acr_service_client().registries
-    admin_user_enabled = admin_enabled == "true" if admin_enabled is not None else False
+    admin_user_enabled = admin_enabled == "true" if admin_enabled is not None else None
 
     if storage_account_name is None:
         storage_account_name = str(uuid.uuid4()).replace('-', '')[:24]
