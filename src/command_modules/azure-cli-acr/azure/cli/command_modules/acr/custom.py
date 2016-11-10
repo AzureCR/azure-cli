@@ -46,15 +46,16 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                resource_group_name,
                location,
                storage_account_name=None,
-               enable_admin=False):
+               admin_enabled=None):
     '''Creates or updates a container registry with the specified parameters.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param str location: The name of location
     :param str storage_account_name: The name of storage account
-    :param bool enable_admin: Enable admin user
+    :param bool admin_enabled: Enable admin user
     '''
     client = get_acr_service_client().registries
+    admin_user_enabled = admin_enabled == "true" if admin_enabled is not None else None
 
     if storage_account_name is None:
         storage_account_name = str(uuid.uuid4()).replace('-', '')[:24]
@@ -63,7 +64,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                                 registry_name,
                                 location,
                                 storage_account_name,
-                                enable_admin)
+                                admin_user_enabled)
         )
         registry = client.get_properties(resource_group_name, registry_name)
     else:
@@ -76,7 +77,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                     storage_account_name,
                     storage_account_key
                 ),
-                admin_user_enabled=enable_admin
+                admin_user_enabled=admin_user_enabled
             )
         )
 
@@ -130,11 +131,11 @@ def acr_update_get(client,
     )
 
 def acr_update_custom(instance,
-                      admin_user_enabled=None,
+                      admin_enabled=None,
                       storage_account_name=None,
                       tags=None):
-    if admin_user_enabled is not None:
-        instance.admin_user_enabled = admin_user_enabled == 'true'
+    if admin_enabled is not None:
+        instance.admin_user_enabled = admin_enabled == 'true'
 
     if tags is not None:
         instance.tags = tags

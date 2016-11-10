@@ -56,7 +56,7 @@ helps['acr update'] = """
                     az acr update -n myRegistry --storage-account-name myStorageAccount
                 - name: Enable admin user for a container registry
                   text:
-                    az acr update -n myRegistry --admin-user-enabled true
+                    az acr update -n myRegistry --admin-enabled true
             """
 
 helps['acr repository list'] = """

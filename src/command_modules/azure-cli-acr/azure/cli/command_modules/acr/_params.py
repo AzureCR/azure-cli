@@ -30,7 +30,7 @@ register_cli_argument('acr', 'storage_account_name',
 register_cli_argument('acr', 'resource_group_name', resource_group_name_type)
 register_cli_argument('acr', 'location', location_type)
 register_cli_argument('acr', 'tags', tags_type)
-register_cli_argument('acr', 'admin_user_enabled',
+register_cli_argument('acr', 'admin_enabled',
                       help='The value that indicates whether the admin user is enabled',
                       choices=['true', 'false'])
 
