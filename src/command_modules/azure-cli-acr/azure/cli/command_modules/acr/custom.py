@@ -5,9 +5,7 @@
 
 import uuid
 
-from azure.cli.core.commands import (
-    LongRunningOperation
-)
+from azure.cli.core.commands import LongRunningOperation
 
 from azure.mgmt.containerregistry.models import (
     Registry,
@@ -26,7 +24,7 @@ import azure.cli.core._logging as _logging
 logger = _logging.get_az_logger(__name__)
 
 def acr_check_name(registry_name):
-    '''Check whether the container registry name is available.
+    '''Checks whether the container registry name is available for use.
     :param str registry_name: The name of container registry
     '''
     client = get_acr_service_client().registries
@@ -34,7 +32,7 @@ def acr_check_name(registry_name):
     return client.check_name_availability(registry_name)
 
 def acr_list(resource_group_name=None):
-    '''List container registries.
+    '''Lists all the available container registries under the current subscription.
     :param str resource_group_name: The name of resource group
     '''
     client = get_acr_service_client().registries
@@ -49,7 +47,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
                location,
                storage_account_name=None,
                enable_admin=False):
-    '''Create a container registry.
+    '''Creates or updates a container registry with the specified parameters.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param str location: The name of location
@@ -94,7 +92,7 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     return registry
 
 def acr_delete(registry_name, resource_group_name=None):
-    '''Delete a container registry.
+    '''Deletes a container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
@@ -106,7 +104,7 @@ def acr_delete(registry_name, resource_group_name=None):
     return client.delete(resource_group_name, registry_name)
 
 def acr_show(registry_name, resource_group_name=None):
-    '''Get a container registry.
+    '''Gets the properties of the specified container registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''

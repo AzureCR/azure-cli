@@ -14,7 +14,7 @@ helps['acr'] = """
 
 helps['acr credential'] = """
             type: group
-            short-summary: Manage admin user credential for Azure container registries.
+            short-summary: Manage administrator login credentials for Azure container registries.
             """
 
 helps['acr repository'] = """
@@ -41,12 +41,12 @@ helps['acr create'] = """
                     az acr create -n myRegistry -g myResourceGroup -l southcentralus
                 - name: Create a container registry with an existing storage account
                   text:
-                    az acr create -n myRegistry -g myResourceGroup -l southcentralus -s myStorageAccount
+                    az acr create -n myRegistry -g myResourceGroup -l southcentralus --storage-account-name myStorageAccount
             """
 
 helps['acr update'] = """
             type: command
-            short-summary: Update a container registry.
+            short-summary: Updates a container registry with the specified parameters.
             examples:
                 - name: Update tags for a container registry
                   text:
