@@ -3,16 +3,14 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
+from urllib.parse import urlencode, urlparse, urlunparse
+from subprocess import call
+from json import loads
+import requests
+
 from azure.cli.core._util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 from azure.cli.core._profile import Profile
-
-from urllib.parse import urlencode, urlparse, urlunparse
-import requests.api
-
-from subprocess import call
-from base64 import b64encode
-from json import loads
 
 from ._constants import (
     ACR_RESOURCE_PROVIDER,
@@ -26,7 +24,6 @@ from ._factory import (
     get_acr_api_version
 )
 
-
 def _arm_get_resource_by_name(resource_name, resource_type):
     '''Returns the ARM resource in the current subscription with resource_name.
     :param str resource_name: The name of resource
@@ -36,11 +33,15 @@ def _arm_get_resource_by_name(resource_name, resource_type):
     elements = [item for item in result if item.name.lower() == resource_name.lower()]
 
     if len(elements) == 0:
-        raise CLIError('No resource with type {} can be found with name: {}'.format(resource_type, resource_name))
+        raise CLIError(
+            'No resource with type {} can be found with name: {}'.format(
+                resource_type, resource_name))
     elif len(elements) == 1:
         return elements[0]
     else:
-        raise CLIError('More than one resources with type {} are found with name: {}'.format(resource_type, resource_name))
+        raise CLIError(
+            'More than one resources with type {} are found with name: {}'.format(
+                resource_type, resource_name))
 
 def get_resource_group_name_by_resource_id(resource_id):
     '''Returns the resource group name from parsing the resource id.
@@ -93,15 +94,12 @@ def docker_login_to_registry(registry_url):
     '''Logs in the Docker client to a registry.
     :param str registry: the registry to log in to
     '''
-    def generate_value(value):
-        yield value.encode("utf-8")
-
     profile = Profile()
-    credentials, subscription_id, tenant = profile.get_login_credentials()
+    _, _, tenant = profile.get_login_credentials()
     refresh = profile.get_refresh_credentials()
-    base_endpoint = 'http://' + registry_url.rstrip('/');
+    base_endpoint = 'http://' + registry_url.rstrip('/')
 
-    challenge = requests.get(base_endpoint + '/v2/');
+    challenge = requests.get(base_endpoint + '/v2/')
     if challenge.status_code not in [401] or 'WWW-Authenticate' not in challenge.headers:
         raise CLIError('Registry did not issue a challenge.')
 
@@ -111,14 +109,15 @@ def docker_login_to_registry(registry_url):
     if len(tokens) < 2 or tokens[0].lower() != 'bearer':
         raise CLIError('Registry does not support AAD login.')
 
-    params = { y[0]: y[1].strip('"') for y in (x.strip().split('=', 2) for x in tokens[1].split(',')) }
+    params = {y[0]: y[1].strip('"') for y in
+              (x.strip().split('=', 2) for x in tokens[1].split(','))}
     if 'realm' not in params or 'service' not in params:
         raise CLIError('Registry does not support AAD login.')
 
     authurl = urlparse(params['realm'])
     authhost = urlunparse((authurl[0], authurl[1], '/oauth2/exchange', '', '', ''))
 
-    headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     if isinstance(refresh, str):
         content = {
             'service': params['service'],
@@ -138,11 +137,13 @@ def docker_login_to_registry(registry_url):
     response = requests.post(authhost, urlencode(content), headers=headers)
 
     if response.status_code not in [200]:
-        raise CLIError("Access to repository was denied. Response code: {}".format(response.status_code))
+        raise CLIError(
+            "Access to repository was denied. Response code: {}".format(response.status_code))
 
     refresh_token = loads(response.content.decode("utf-8"))["refresh_token"]
 
-    call(["docker", "login", registry_url, "--username", "00000000-0000-0000-0000-000000000000", "--password", refresh_token])
+    call(["docker", "login", registry_url, "--username",
+          "00000000-0000-0000-0000-000000000000", "--password", refresh_token])
 
 def arm_deploy_template(resource_group_name,
                         registry_name,
@@ -166,7 +167,8 @@ def arm_deploy_template(resource_group_name,
     template = get_file_json(file_path)
     properties = DeploymentProperties(template=template, parameters=parameters, mode='incremental')
 
-    return _arm_deploy_template(get_arm_service_client().deployments, resource_group_name, properties)
+    return _arm_deploy_template(
+        get_arm_service_client().deployments, resource_group_name, properties)
 
 def _arm_deploy_template(deployments_client,
                          resource_group_name,
@@ -181,15 +183,19 @@ def _arm_deploy_template(deployments_client,
     if index == 0:
         deployment_name = ACR_RESOURCE_PROVIDER
     elif index > 9: # Just a number to avoid infinite loops
-        raise CLIError('The resource group {} has too many deployments'.format(resource_group_name))
+        raise CLIError(
+            'The resource group {} has too many deployments'.format(resource_group_name))
     else:
         deployment_name = ACR_RESOURCE_PROVIDER + '_' + str(index)
 
     try:
-        deployments_client.validate(resource_group_name, deployment_name, properties)
-        return deployments_client.create_or_update(resource_group_name, deployment_name, properties)
+        deployments_client.validate(
+            resource_group_name, deployment_name, properties)
+        return deployments_client.create_or_update(
+            resource_group_name, deployment_name, properties)
     except: #pylint: disable=bare-except
-        return _arm_deploy_template(deployments_client, resource_group_name, properties, index + 1)
+        return _arm_deploy_template(
+            deployments_client, resource_group_name, properties, index + 1)
 
 def _parameters(registry_name,
                 location,

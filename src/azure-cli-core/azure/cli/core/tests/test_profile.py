@@ -321,7 +321,7 @@ class Test_Profile(unittest.TestCase): #pylint: disable=too-many-public-methods
         self.assertEqual(refresh_object, self.refresh_token1)
         self.assertEqual(mock_read_cred_file.call_count, 1)
         mock_get_token_entry.assert_called_once_with(mock.ANY, self.user1, self.tenant_id,
-                                               'https://management.core.windows.net/')
+                                                     'https://management.core.windows.net/')
         self.assertEqual(mock_get_token_entry.call_count, 1)
 
     @mock.patch('azure.cli.core._profile._load_tokens_from_file', autospec=True)
@@ -347,7 +347,9 @@ class Test_Profile(unittest.TestCase): #pylint: disable=too-many-public-methods
 
     @mock.patch('azure.cli.core._profile._load_tokens_from_file', autospec=True)
     @mock.patch('azure.cli.core._profile.CredsCache.retrieve_token_entry_for_user', autospec=True)
-    def test_get_refresh_credentials_for_graph_client(self, mock_get_token_entry, mock_read_cred_file):
+    def test_get_refresh_credentials_for_graph_client(self,
+                                                      mock_get_token_entry,
+                                                      mock_read_cred_file):
         mock_read_cred_file.return_value = [Test_Profile.token_entry1]
         mock_get_token_entry.return_value = Test_Profile.token_entry1
         #setup
@@ -362,7 +364,7 @@ class Test_Profile(unittest.TestCase): #pylint: disable=too-many-public-methods
 
         #verify
         mock_get_token_entry.assert_called_once_with(mock.ANY, self.user1, self.tenant_id,
-                                               'https://graph.windows.net/')
+                                                     'https://graph.windows.net/')
         self.assertEqual(refresh_object, Test_Profile.refresh_token1)
 
     @mock.patch('azure.cli.core._profile._load_tokens_from_file', autospec=True)
@@ -622,7 +624,7 @@ class Test_Profile(unittest.TestCase): #pylint: disable=too-many-public-methods
             mock.ANY)
 
         token_entry = creds_cache.retrieve_token_entry_for_user(self.user1, self.tenant_id,
-                                                                   mgmt_resource)
+                                                                mgmt_resource)
         #assert
         mock_open_for_write.assert_called_with(mock.ANY, 'w+')
         self.assertEqual(token, 'new token')
