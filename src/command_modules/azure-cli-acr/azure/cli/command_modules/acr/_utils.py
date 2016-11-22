@@ -7,12 +7,12 @@ from azure.cli.core._util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 from azure.cli.core._profile import Profile
 
+from urllib.parse import urlencode, urlparse, urlunparse
+import requests.api
+
 from subprocess import call
 from base64 import b64encode
 from json import loads
-
-from msrest.service_client import ServiceClient
-from msrest import Configuration
 
 from ._constants import (
     ACR_RESOURCE_PROVIDER,
@@ -36,15 +36,11 @@ def _arm_get_resource_by_name(resource_name, resource_type):
     elements = [item for item in result if item.name.lower() == resource_name.lower()]
 
     if len(elements) == 0:
-        raise CLIError(
-            'No resource with type {} can be found with name: {}'.format(
-                resource_type, resource_name))
+        raise CLIError('No resource with type {} can be found with name: {}'.format(resource_type, resource_name))
     elif len(elements) == 1:
         return elements[0]
     else:
-        raise CLIError(
-            'More than one resources with type {} are found with name: {}'.format(
-                resource_type, resource_name))
+        raise CLIError('More than one resources with type {} are found with name: {}'.format(resource_type, resource_name))
 
 def get_resource_group_name_by_resource_id(resource_id):
     '''Returns the resource group name from parsing the resource id.
@@ -92,10 +88,9 @@ def get_access_key_by_storage_account_name(storage_account_name, resource_group_
     client = get_storage_service_client().storage_accounts
 
     return client.list_keys(resource_group_name, storage_account_name).keys[0].value #pylint: disable=no-member
-
-def docker_login_to_registry(registry):
+def docker_login_to_registry(registry_url):
     '''Logs in the Docker client to a registry.
-    :param Registry registry: the registry to log in to
+    :param str registry: the registry to log in to
     '''
     def generate_value(value):
         yield value.encode("utf-8")
@@ -103,37 +98,51 @@ def docker_login_to_registry(registry):
     profile = Profile()
     credentials, subscription_id, tenant = profile.get_login_credentials()
     refresh = profile.get_refresh_credentials()
+    base_endpoint = 'http://' + registry_url.rstrip('/');
 
-    # when token authorization is supported by the registry
-    # this URI should be retrieved from the authentication challenge
-    config = Configuration('http://172.30.168.178:44376/')
-    client = ServiceClient(credentials, config)
-    client.add_header('Content-Type', 'application/x-www-form-urlencoded')
+    challenge = requests.get(base_endpoint + '/v2/');
+    if challenge.status_code not in [401] or 'WWW-Authenticate' not in challenge.headers:
+        raise CLIError('Registry did not issue a challenge.')
 
-    request = client.post('/auth/exchange')
+    authenticate = challenge.headers['WWW-Authenticate']
+    print(authenticate)
 
+    tokens = authenticate.split(' ', 2)
+    if len(tokens) < 2 or tokens[0].lower() != 'bearer':
+        raise CLIError('Registry does not support AAD login.')
+
+    params = { y[0]: y[1].strip('"') for y in (x.strip().split('=', 2) for x in tokens[1].split(',')) }
+    if 'realm' not in params or 'service' not in params:
+        raise CLIError('Registry does not support AAD login.')
+
+    authurl = urlparse(params['realm'])
+    authhost = urlunparse((authurl[0], authurl[1], '/oauth2/exchange', '', '', ''))
+
+    headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
     if isinstance(refresh, str):
-        content = 'resource_id={}&user_type=user&tenant={}&refresh_token={}'.format(
-            registry.id, tenant, refresh)
+        content = {
+            'service': params['service'],
+            'user_type': 'user',
+            'tenant': tenant,
+            'refresh_token': refresh
+        }
     else:
-        content = 'resource_id={}&user_type=spn&tenant={}&username={}&password={}'.format(
-            registry.id, tenant, refresh[1], refresh[2])
+        content = {
+            'service': params['service'],
+            'user_type': 'spn',
+            'tenant': tenant,
+            'username': refresh[1],
+            'password': refresh[2]
+        }
 
-    # todo turn on verify after publishing!
-    response = client.send(request, None, generate_value(content), verify=False)
+    response = requests.post(authhost, urlencode(content), headers=headers)
 
     if response.status_code not in [200]:
-        raise CLIError("Access to repository was denied.")
+        raise CLIError("Access to repository was denied. Response code: {}".format(response.status_code))
 
     refresh_token = loads(response.content.decode("utf-8"))["refresh_token"]
 
-    print(registry)
-
-    # this URL should be gotten from the RP once it supports it
-    service_name = registry.name + "-exp.azurecr.io"
-    service_name = "10.0.75.1:5000"
-
-    call(["docker", "login", service_name, "--username", "00000000-0000-0000-0000-000000000000", "--password", refresh_token])
+    call(["docker", "login", registry_url, "--username", "00000000-0000-0000-0000-000000000000", "--password", refresh_token])
 
 def arm_deploy_template(resource_group_name,
                         registry_name,
@@ -157,8 +166,7 @@ def arm_deploy_template(resource_group_name,
     template = get_file_json(file_path)
     properties = DeploymentProperties(template=template, parameters=parameters, mode='incremental')
 
-    return _arm_deploy_template(
-        get_arm_service_client().deployments, resource_group_name, properties)
+    return _arm_deploy_template(get_arm_service_client().deployments, resource_group_name, properties)
 
 def _arm_deploy_template(deployments_client,
                          resource_group_name,
@@ -173,19 +181,15 @@ def _arm_deploy_template(deployments_client,
     if index == 0:
         deployment_name = ACR_RESOURCE_PROVIDER
     elif index > 9: # Just a number to avoid infinite loops
-        raise CLIError(
-            'The resource group {} has too many deployments'.format(resource_group_name))
+        raise CLIError('The resource group {} has too many deployments'.format(resource_group_name))
     else:
         deployment_name = ACR_RESOURCE_PROVIDER + '_' + str(index)
 
     try:
-        deployments_client.validate(
-            resource_group_name, deployment_name, properties)
-        return deployments_client.create_or_update(
-            resource_group_name, deployment_name, properties)
+        deployments_client.validate(resource_group_name, deployment_name, properties)
+        return deployments_client.create_or_update(resource_group_name, deployment_name, properties)
     except: #pylint: disable=bare-except
-        return _arm_deploy_template(
-            deployments_client, resource_group_name, properties, index + 1)
+        return _arm_deploy_template(deployments_client, resource_group_name, properties, index + 1)
 
 def _parameters(registry_name,
                 location,

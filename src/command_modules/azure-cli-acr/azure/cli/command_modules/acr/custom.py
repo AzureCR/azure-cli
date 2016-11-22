@@ -117,12 +117,11 @@ def acr_show(registry_name, resource_group_name=None):
 
     return client.get_properties(resource_group_name, registry_name)
 
-def acr_login(registry_name):
+def acr_login(registry_url):
     '''Login to a container registry through Docker.
-    :param str registry_name: The name of container registry
+    :param str registry_url: The url of container registry
     '''
-    props = acr_show(registry_name)
-    docker_login_to_registry(props)
+    docker_login_to_registry(registry_url)
 
 def acr_update_get(client,
                    registry_name,
