@@ -88,6 +88,7 @@ def get_access_key_by_storage_account_name(storage_account_name, resource_group_
     client = get_storage_service_client().storage_accounts
 
     return client.list_keys(resource_group_name, storage_account_name).keys[0].value #pylint: disable=no-member
+
 def docker_login_to_registry(registry_url):
     '''Logs in the Docker client to a registry.
     :param str registry: the registry to log in to
@@ -105,7 +106,6 @@ def docker_login_to_registry(registry_url):
         raise CLIError('Registry did not issue a challenge.')
 
     authenticate = challenge.headers['WWW-Authenticate']
-    print(authenticate)
 
     tokens = authenticate.split(' ', 2)
     if len(tokens) < 2 or tokens[0].lower() != 'bearer':
