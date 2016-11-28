@@ -97,7 +97,7 @@ def docker_login_to_registry(registry_url):
     profile = Profile()
     _, _, tenant = profile.get_login_credentials()
     refresh = profile.get_refresh_credentials()
-    base_endpoint = 'http://' + registry_url.rstrip('/')
+    base_endpoint = 'https://' + registry_url.rstrip('/')
 
     challenge = requests.get(base_endpoint + '/v2/')
     if challenge.status_code not in [401] or 'WWW-Authenticate' not in challenge.headers:
@@ -138,7 +138,7 @@ def docker_login_to_registry(registry_url):
 
     if response.status_code not in [200]:
         raise CLIError(
-            "Access to repository was denied. Response code: {}".format(response.status_code))
+            "Access to registry was denied. Response code: {}".format(response.status_code))
 
     refresh_token = loads(response.content.decode("utf-8"))["refresh_token"]
 
