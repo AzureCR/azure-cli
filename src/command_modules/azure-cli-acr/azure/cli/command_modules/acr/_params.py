@@ -41,6 +41,10 @@ register_cli_argument('acr', 'password',
                       options_list=('--password', '-p'),
                       help='The password used to log into a container registry')
 
+register_cli_argument('acr', 'registry_url',
+                      options_list=('--registry-url', '-u'),
+                      help='The login server of the container registry')
+
 register_cli_argument('acr create', 'registry_name', completer=None)
 register_cli_argument('acr create', 'resource_group_name',
                       validator=validate_resource_group_name)

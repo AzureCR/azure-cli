@@ -44,14 +44,6 @@ helps['acr create'] = """
                     az acr create -n myRegistry -g myResourceGroup -l southcentralus --storage-account-name myStorageAccount
             """
 
-helps['acr login'] = """
-            type: command
-            examples:
-                - name: Log into a registry
-                  text:
-                    az acr login -n myRegistry
-            """
-
 helps['acr update'] = """
             type: command
             short-summary: Updates a container registry.
@@ -65,6 +57,15 @@ helps['acr update'] = """
                 - name: Enable admin user for a container registry
                   text:
                     az acr update -n myRegistry --admin-enabled true
+            """
+
+helps['acr login'] = """
+            type: command
+            short-summary: Login to a container registry through Docker.
+            examples:
+                - name: Login to a registry
+                  text:
+                    az acr login -u myregistry.azurecr.io
             """
 
 helps['acr repository list'] = """
