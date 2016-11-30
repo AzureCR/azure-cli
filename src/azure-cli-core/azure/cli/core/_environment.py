@@ -2,13 +2,11 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
-'''The Azure Command-line tool.
 
-This tools provides a command-line interface to Azure's management and storage
-APIs.
-'''
-import pkg_resources
-pkg_resources.declare_namespace(__name__)
+import os
 
-__author__ = "Microsoft Corporation <python@microsoft.com>"
-__version__ = "0.1.0b10"
+def get_config_dir():
+    if os.getenv('AZURE_CONFIG_DIR'):
+        return os.getenv('AZURE_CONFIG_DIR')
+    else:
+        return os.path.expanduser(os.path.join('~', '.azure'))

@@ -30,7 +30,7 @@ from azure.cli.command_modules.network._validators import \
      process_nic_create_namespace, process_lb_create_namespace, process_ag_rule_create_namespace,
      process_ag_url_path_map_rule_create_namespace, process_auth_create_namespace,
      process_public_ip_create_namespace, validate_private_ip_address,
-     process_lb_frontend_ip_namespace,
+     process_lb_frontend_ip_namespace, process_local_gateway_create_namespace,
      validate_inbound_nat_rule_id_list, validate_address_pool_id_list,
      validate_inbound_nat_rule_name_or_id, validate_address_pool_name_or_id,
      validate_servers, load_cert_file,
@@ -239,6 +239,14 @@ register_cli_argument('network express-route peering', 'routing_registry_name', 
 
 # Local Gateway
 register_cli_argument('network local-gateway', 'local_network_gateway_name', name_arg_type, completer=get_resource_name_completion_list('Microsoft.Network/localNetworkGateways'), id_part='name')
+register_cli_argument('network local-gateway', 'asn', arg_group='BGP Peering', help='Autonomous System Number to use for the BGP settings.')
+register_cli_argument('network local-gateway', 'bgp_peering_address', arg_group='BGP Peering', help='IP address from the OnPremise VPN\'s subnet to use for BGP peering.')
+register_cli_argument('network local-gateway', 'peer_weight', arg_group='BGP Peering', help='Weight (0-100) added to routes learned through BGP peering.')
+register_cli_argument('network local-gateway', 'local_address_prefix', nargs='+', options_list=('--local-address-prefixes',), help='List of CIDR block prefixes representing the address space of the OnPremise VPN\'s subnet.')
+register_cli_argument('network local-gateway', 'gateway_ip_address', help='Gateway\'s public IP address. (e.g. 10.1.1.1).')
+
+register_cli_argument('network local-gateway create', 'use_bgp_settings', ignore_type)
+register_cli_argument('network local-gateway create', 'asn', validator=process_local_gateway_create_namespace)
 
 # NIC
 
@@ -302,14 +310,19 @@ register_cli_argument('network nsg rule', 'network_security_group_name', options
 register_cli_argument('network nsg rule create', 'priority', default=1000)
 
 # Public IP
-register_cli_argument('network public-ip', 'public_ip_address_name', name_arg_type, completer=get_resource_name_completion_list('Microsoft.Network/publicIPAddresses'), id_part='name')
-register_cli_argument('network public-ip', 'name', name_arg_type, completer=get_resource_name_completion_list('Microsoft.Network/publicIPAddresses'))
+register_cli_argument('network public-ip', 'public_ip_address_name', name_arg_type, completer=get_resource_name_completion_list('Microsoft.Network/publicIPAddresses'), id_part='name', help='The name of the public IP address.')
+register_cli_argument('network public-ip', 'name', name_arg_type, completer=get_resource_name_completion_list('Microsoft.Network/publicIPAddresses'), help='The name of the public IP address.')
+register_cli_argument('network public-ip', 'reverse_fqdn', help='Reverse FQDN (fully qualified domain name).')
+register_cli_argument('network public-ip', 'dns_name', help='Globally unique DNS entry.')
+register_cli_argument('network public-ip', 'idle_timeout', help='Idle timeout in minutes.')
 
 register_cli_argument('network public-ip create', 'name', completer=None)
 register_cli_argument('network public-ip create', 'dns_name', validator=process_public_ip_create_namespace)
-register_cli_argument('network public-ip create', 'allocation_method', **enum_choice_list(IPAllocationMethod))
-register_cli_argument('network public-ip create', 'version', **enum_choice_list(IPVersion))
 register_cli_argument('network public-ip create', 'dns_name_type', ignore_type)
+
+for item in ['create', 'update']:
+    register_cli_argument('network public-ip {}'.format(item), 'allocation_method', help='IP address allocation method', **enum_choice_list(IPAllocationMethod))
+    register_cli_argument('network public-ip {}'.format(item), 'version', help='IP address type.', **enum_choice_list(IPVersion))
 
 # Route Operation
 register_cli_argument('network route-table route', 'route_name', name_arg_type, id_part='child_name', help='Route name')

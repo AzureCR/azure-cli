@@ -16,7 +16,8 @@ from ._constants import (
     STORAGE_RESOURCE_TYPE
 )
 from ._validators import (
-    validate_resource_group_name
+    validate_resource_group_name,
+    validate_registry_name
 )
 
 register_cli_argument('acr', 'registry_name',
@@ -45,7 +46,8 @@ register_cli_argument('acr', 'registry_url',
                       options_list=('--registry-url', '-u'),
                       help='The login server of the container registry')
 
-register_cli_argument('acr create', 'registry_name', completer=None)
+register_cli_argument('acr create', 'registry_name', completer=None,
+                      validator=validate_registry_name)
 register_cli_argument('acr create', 'resource_group_name',
                       validator=validate_resource_group_name)
 register_cli_argument('acr check-name', 'registry_name', completer=None)

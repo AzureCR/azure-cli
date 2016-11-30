@@ -81,7 +81,16 @@ cli_storage_data_plane_command('storage blob lease release', 'azure.storage.blob
 cli_storage_data_plane_command('storage blob lease change', 'azure.storage.blob.blockblobservice#BlockBlobService.change_blob_lease', factory)
 cli_storage_data_plane_command('storage blob lease break', 'azure.storage.blob.blockblobservice#BlockBlobService.break_blob_lease', factory)
 cli_storage_data_plane_command('storage blob copy start', 'azure.storage.blob.blockblobservice#BlockBlobService.copy_blob', factory)
+cli_storage_data_plane_command('storage blob copy start-batch', 'azure.cli.command_modules.storage.blob#storage_blob_copy_batch', factory)
 cli_storage_data_plane_command('storage blob copy cancel', 'azure.storage.blob.blockblobservice#BlockBlobService.abort_copy_blob', factory)
+
+cli_storage_data_plane_command('storage blob upload-batch',
+                               'azure.cli.command_modules.storage.blob#storage_blob_upload_batch',
+                               factory)
+
+cli_storage_data_plane_command('storage blob download-batch',
+                               'azure.cli.command_modules.storage.blob#storage_blob_download_batch',
+                               factory)
 
 # share commands
 factory = file_data_service_factory

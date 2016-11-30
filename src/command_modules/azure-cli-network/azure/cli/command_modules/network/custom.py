@@ -620,6 +620,31 @@ def update_nsg_rule(instance, protocol=None, source_address_prefix=None,
 update_nsg_rule.__doc__ = SecurityRule.__doc__
 #endregion
 
+#region Public IP commands
+
+def update_public_ip(instance, dns_name=None, allocation_method=None, version=None,
+                     idle_timeout=None, reverse_fqdn=None, tags=None):
+    if dns_name is not None or reverse_fqdn is not None:
+        from azure.mgmt.network.models import PublicIPAddressDnsSettings
+        if instance.dns_settings:
+            if dns_name is not None:
+                instance.dns_settings.domain_name_label = dns_name
+            if reverse_fqdn is not None:
+                instance.dns_settings.reverse_fqdn = reverse_fqdn
+        else:
+            instance.dns_settings = PublicIPAddressDnsSettings(dns_name, None, reverse_fqdn)
+    if allocation_method is not None:
+        instance.public_ip_allocation_method = allocation_method
+    if version is not None:
+        instance.public_ip_address_version = version
+    if idle_timeout is not None:
+        instance.idle_timeout_in_minutes = idle_timeout
+    if tags is not None:
+        instance.tags = tags
+    return instance
+
+#endregion
+
 #region Vnet Peering commands
 
 def create_vnet_peering(resource_group_name, virtual_network_name, virtual_network_peering_name,
@@ -834,6 +859,37 @@ def create_vpn_gateway_root_cert(resource_group_name, gateway_name, public_cert_
     config.vpn_client_root_certificates.append(cert)
 
     return ncf.create_or_update(resource_group_name, gateway_name, gateway)
+#endregion
+
+#region Local Gateway commands
+
+def update_local_gateway(instance, gateway_ip_address=None, local_address_prefix=None, asn=None,
+                         bgp_peering_address=None, peer_weight=None, tags=None):
+
+    if any([asn, bgp_peering_address, peer_weight]):
+        if instance.bgp_settings is not None:
+            # update existing parameters selectively
+            if asn is not None:
+                instance.bgp_settings.asn = asn
+            if peer_weight is not None:
+                instance.bgp_settings.peer_weight = peer_weight
+            if bgp_peering_address is not None:
+                instance.bgp_settings.bgp_peering_address = bgp_peering_address
+        elif asn and bgp_peering_address:
+            from azure.mgmt.network.models import BgpSettings
+            instance.bgp_settings = BgpSettings(asn, bgp_peering_address, peer_weight)
+        else:
+            raise CLIError(
+                'incorrect usage: --asn ASN --bgp-peering-address IP [--peer-weight WEIGHT]')
+
+    if gateway_ip_address is not None:
+        instance.gateway_ip_address = gateway_ip_address
+    if local_address_prefix is not None:
+        instance.local_address_prefix = local_address_prefix
+    if tags is not None:
+        instance.tags = tags
+    return instance
+
 #endregion
 
 #region Traffic Manager Commands
