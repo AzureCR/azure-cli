@@ -16,7 +16,8 @@ from ._utils import (
     get_access_key_by_storage_account_name,
     get_resource_group_name_by_registry_name,
     arm_deploy_template,
-    random_storage_account_name
+    random_storage_account_name,
+    docker_login_to_registry
 )
 
 import azure.cli.core.azlogging as azlogging
@@ -114,6 +115,12 @@ def acr_show(registry_name, resource_group_name=None):
     client = get_acr_service_client().registries
 
     return client.get_properties(resource_group_name, registry_name)
+
+def acr_login(registry_url):
+    '''Login to a container registry through Docker.
+    :param str registry_url: The url of container registry
+    '''
+    docker_login_to_registry(registry_url)
 
 def acr_update_get(client,
                    registry_name,

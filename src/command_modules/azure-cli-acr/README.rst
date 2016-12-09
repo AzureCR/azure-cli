@@ -152,6 +152,20 @@ List repositories in a given container registry
         List repositories in a given container registry with credentials
             az acr repository list -n myRegistry -u myUsername -p myPassword
 
+Login to a container registry
+-------------
+::
+
+    Command
+        az acr login: Login to a container registry through Docker.
+
+    Arguments
+        --registry-url -u [Required]: The login server of the container registry.
+
+    Examples
+        Login to a container registry
+            az acr login -u myregistry.azurecr.io
+
 Show tags of a given repository in a given container registry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
