@@ -59,6 +59,15 @@ helps['acr update'] = """
                     az acr update -n myRegistry --admin-enabled true
             """
 
+helps['acr login'] = """
+            type: command
+            short-summary: Login to a container registry through Docker.
+            examples:
+                - name: Login to a registry
+                  text:
+                    az acr login -u myregistry.azurecr.io
+            """
+
 helps['acr repository list'] = """
             type: command
             examples:
