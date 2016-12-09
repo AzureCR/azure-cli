@@ -17,8 +17,10 @@ from ._utils import (
     get_resource_group_name_by_registry_name,
     arm_deploy_template,
     random_storage_account_name,
-    docker_login_to_registry,
     get_registry_by_name
+)
+from ._docker_utils import (
+    docker_login_to_registry
 )
 
 import azure.cli.core.azlogging as azlogging
