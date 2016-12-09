@@ -20,6 +20,7 @@ cli_command(__name__, 'acr list', 'azure.cli.command_modules.acr.custom#acr_list
 cli_command(__name__, 'acr create', 'azure.cli.command_modules.acr.custom#acr_create', table_transformer=output_format)
 cli_command(__name__, 'acr delete', 'azure.cli.command_modules.acr.custom#acr_delete', table_transformer=output_format)
 cli_command(__name__, 'acr show', 'azure.cli.command_modules.acr.custom#acr_show', table_transformer=output_format, exception_handler=empty_on_404)
+cli_command(__name__, 'acr login', 'azure.cli.command_modules.acr.custom#acr_login')
 cli_generic_update_command(__name__,
                            'acr update',
                            'azure.cli.command_modules.acr.custom#acr_update_get',
