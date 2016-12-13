@@ -8,9 +8,9 @@ from subprocess import call
 from json import loads
 import requests
 
+from azure.cli.core._profile import Profile
 from azure.cli.core._util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
-from azure.cli.core._profile import Profile
 
 from ._constants import (
     ACR_RESOURCE_PROVIDER,
