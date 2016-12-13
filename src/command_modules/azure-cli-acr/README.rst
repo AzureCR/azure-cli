@@ -17,6 +17,7 @@ Commands to manage Azure container registries
         create    : Creates a container registry.
         delete    : Deletes a container registry.
         list      : Lists all the available container registries under the current subscription.
+        login     : Login to a container registry through Docker.
         show      : Gets the properties of the specified container registry.
         update    : Updates a container registry.
 
@@ -152,20 +153,6 @@ List repositories in a given container registry
         List repositories in a given container registry with credentials
             az acr repository list -n myRegistry -u myUsername -p myPassword
 
-Login to a container registry
--------------
-::
-
-    Command
-        az acr login: Login to a container registry through Docker.
-
-    Arguments
-        --registry-url -u [Required]: The login server of the container registry.
-
-    Examples
-        Login to a container registry
-            az acr login -u myregistry.azurecr.io
-
 Show tags of a given repository in a given container registry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
@@ -185,3 +172,13 @@ Show tags of a given repository in a given container registry
             az acr repository show-tags -n myRegistry --repository myRepository
         Show tags of a given repository in a given container registry with credentials
             az acr repository show-tags -n myRegistry --repository myRepository -u myUsername -p myPassword
+
+Login to a container registry
+-------------
+::
+
+    Command
+        az acr login: Login to a container registry through Docker.
+
+    Arguments
+        --name -n [Required]: The name of the container registry.

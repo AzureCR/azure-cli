@@ -17,7 +17,8 @@ from ._utils import (
     get_resource_group_name_by_registry_name,
     arm_deploy_template,
     random_storage_account_name,
-    docker_login_to_registry
+    docker_login_to_registry,
+    get_registry_by_name
 )
 
 import azure.cli.core.azlogging as azlogging
@@ -116,12 +117,6 @@ def acr_show(registry_name, resource_group_name=None):
 
     return client.get_properties(resource_group_name, registry_name)
 
-def acr_login(registry_url):
-    '''Login to a container registry through Docker.
-    :param str registry_url: The url of container registry
-    '''
-    docker_login_to_registry(registry_url)
-
 def acr_update_get(client,
                    registry_name,
                    resource_group_name=None):
@@ -165,3 +160,11 @@ def acr_update_set(client,
         resource_group_name = get_resource_group_name_by_registry_name(registry_name)
 
     return client.update(resource_group_name, registry_name, parameters)
+
+def acr_login(registry_name):
+    '''Login to a container registry through Docker.
+    :param str registry_name: The name of container registry
+    '''
+    registry, _ = get_registry_by_name(registry_name)
+    login_server = registry.login_server #pylint: disable=no-member
+    docker_login_to_registry(login_server)
