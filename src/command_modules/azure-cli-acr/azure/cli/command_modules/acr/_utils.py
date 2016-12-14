@@ -97,14 +97,14 @@ def get_access_key_by_storage_account_name(storage_account_name, resource_group_
 
     return client.list_keys(resource_group_name, storage_account_name).keys[0].value #pylint: disable=no-member
 
-def docker_login_to_registry(registry_url):
+def docker_login_to_registry(login_server):
     '''Logs in the Docker client to a registry.
-    :param str registry: the registry to log in to
+    :param str login_server: The registry login server URL to log in to
     '''
     profile = Profile()
     _, _, tenant = profile.get_login_credentials()
     refresh = profile.get_refresh_credentials()
-    base_endpoint = 'https://' + registry_url.rstrip('/')
+    base_endpoint = 'https://' + login_server.rstrip('/')
 
     challenge = requests.get(base_endpoint + '/v2/')
     if challenge.status_code not in [401] or 'WWW-Authenticate' not in challenge.headers:
@@ -149,8 +149,10 @@ def docker_login_to_registry(registry_url):
 
     refresh_token = loads(response.content.decode("utf-8"))["refresh_token"]
 
-    call(["docker", "login", registry_url, "--username",
-          "00000000-0000-0000-0000-000000000000", "--password", refresh_token])
+    call(["docker", "login",
+          "--username", "00000000-0000-0000-0000-000000000000",
+          "--password", refresh_token,
+          login_server])
 
 def arm_deploy_template(resource_group_name,
                         registry_name,
