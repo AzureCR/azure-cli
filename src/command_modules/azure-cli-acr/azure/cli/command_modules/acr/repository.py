@@ -4,29 +4,46 @@
 # --------------------------------------------------------------------------------------------
 
 import json
+from base64 import b64encode
 import requests
 
+from requests.utils import to_native_string
 from azure.cli.core.prompting import prompt, prompt_pass, NoTTYException
 from azure.cli.core._util import CLIError
 
 from ._utils import (
     get_registry_by_name
 )
+from ._docker_utils import (
+    get_login_access_token
+)
 from .credential import acr_credential_show
+
+def _basic_auth_str(username, password):
+    return 'Basic ' + to_native_string(
+        b64encode(('%s:%s' % (username, password)).encode('latin1')).strip()
+    )
+
+def _bearer_auth_str(token):
+    return 'Bearer ' + token
 
 def _obtain_data_from_registry(login_server, path, resultIndex, username, password):
     registryEndpoint = 'https://' + login_server
     resultList = []
     executeNextHttpCall = True
 
+    if username is None:
+        auth = _bearer_auth_str(password)
+    else:
+        auth = _basic_auth_str(username, password)
+
+    headers = {'Authorization': auth}
+
     while executeNextHttpCall:
         executeNextHttpCall = False
         response = requests.get(
             registryEndpoint + path,
-            auth=requests.auth.HTTPBasicAuth(
-                username,
-                password
-            )
+            headers=headers
         )
 
         if response.status_code == 200:
@@ -46,7 +63,8 @@ def _obtain_data_from_registry(login_server, path, resultIndex, username, passwo
 
     return resultList
 
-def _validate_user_credentials(registry_name, path, resultIndex, username=None, password=None):
+def _validate_user_credentials(
+        registry_name, path, resultIndex, username=None, password=None, repository=None):
     registry, _ = get_registry_by_name(registry_name)
     login_server = registry.login_server #pylint: disable=no-member
 
@@ -57,6 +75,12 @@ def _validate_user_credentials(registry_name, path, resultIndex, username=None, 
             except NoTTYException:
                 raise CLIError('Please specify both username and password in non-interactive mode.')
         return _obtain_data_from_registry(login_server, path, resultIndex, username, password)
+
+    try:
+        access_token = get_login_access_token(login_server, repository)
+        return _obtain_data_from_registry(login_server, path, resultIndex, None, access_token)
+    except: #pylint: disable=bare-except
+        pass
 
     try:
         cred = acr_credential_show(registry_name)
@@ -92,4 +116,4 @@ def acr_repository_show_tags(registry_name, repository, username=None, password=
     :param str password: The password used to log into the container registry
     '''
     path = '/v2/' + repository + '/tags/list'
-    return _validate_user_credentials(registry_name, path, 'tags', username, password)
+    return _validate_user_credentials(registry_name, path, 'tags', username, password, repository)
