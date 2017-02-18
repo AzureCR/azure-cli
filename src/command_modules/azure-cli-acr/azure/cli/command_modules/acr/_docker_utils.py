@@ -46,14 +46,14 @@ def _get_login_token(login_server, only_refresh_token=True, repository=None):
     if isinstance(refresh, str):
         content = {
             'service': params['service'],
-            'user_type': 'user',
+            'credential_type': 'user',
             'tenant': tenant,
             'refresh_token': refresh
         }
     else:
         content = {
             'service': params['service'],
-            'user_type': 'spn',
+            'credential_type': 'spn',
             'tenant': tenant,
             'username': refresh[1],
             'password': refresh[2]
