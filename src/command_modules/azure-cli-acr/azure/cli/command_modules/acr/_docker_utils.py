@@ -45,15 +45,15 @@ def _get_login_token(login_server, only_refresh_token=True, repository=None):
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     if isinstance(refresh, str):
         content = {
+            'grant_type': 'refresh_token',
             'service': params['service'],
-            'credential_type': 'user',
             'tenant': tenant,
             'refresh_token': refresh
         }
     else:
         content = {
+            'grant_type': 'spn',
             'service': params['service'],
-            'credential_type': 'spn',
             'tenant': tenant,
             'username': refresh[1],
             'password': refresh[2]
@@ -76,9 +76,9 @@ def _get_login_token(login_server, only_refresh_token=True, repository=None):
         scope = 'repository:' + repository + ':pull'
     content = {
         'grant_type': 'refresh_token',
-        'refresh_token': refresh_token,
+        'service': login_server,
         'scope': scope,
-        'service': login_server
+        'refresh_token': refresh_token
     }
     response = requests.post(authhost, urlencode(content), headers=headers)
     access_token = loads(response.content.decode("utf-8"))["access_token"]
