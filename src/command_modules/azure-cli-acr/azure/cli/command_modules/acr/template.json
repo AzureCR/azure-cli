@@ -16,29 +16,16 @@
         },
         "registrySku": {
             "type": "string",
-            "defaultValue": "Basic",
+            "defaultValue": "Standard",
             "metadata": {
                 "description": "Sku of the container registry"
             }
         },
         "registryApiVersion": {
             "type": "string",
-            "defaultValue": "2017-03-01",
+            "defaultValue": "2017-06-01-preview",
             "metadata": {
                 "description": "Api version of the container registry"
-            }
-        },
-        "storageAccountName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the storage account"
-            }
-        },
-        "storageAccountSku": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "metadata": {
-                "description": "Sku of the storage account"
             }
         },
         "adminUserEnabled": {
@@ -51,29 +38,6 @@
     },
     "resources": [
         {
-            "name": "[parameters('storageAccountName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "location": "[parameters('registryLocation')]",
-            "apiVersion": "2016-12-01",
-            "tags": {
-                "containerregistry": "[parameters('registryName')]"
-            },
-            "sku": {
-                "name": "[parameters('storageAccountSku')]"
-            },
-            "kind": "Storage",
-            "properties": {
-                "encryption": {
-                    "services": {
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                }
-            }
-        },
-        {
             "name": "[parameters('registryName')]",
             "type": "Microsoft.ContainerRegistry/registries",
             "location": "[parameters('registryLocation')]",
@@ -81,15 +45,8 @@
             "sku": {
                 "name": "[parameters('registrySku')]"
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
-            ],
             "properties": {
-                "adminUserEnabled": "[parameters('adminUserEnabled')]",
-                "storageAccount": {
-                    "name": "[parameters('storageAccountName')]",
-                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-12-01').keys[0].value]"
-                }
+                "adminUserEnabled": "[parameters('adminUserEnabled')]"
             }
         }
     ]

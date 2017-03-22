@@ -28,13 +28,13 @@ def _arm_get_resource_by_name(resource_name, resource_type):
 
     if len(elements) == 0:
         raise CLIError(
-            'No resource with type {} can be found with name: {}'.format(
+            "No resource with type '{}' can be found with name '{}'.".format(
                 resource_type, resource_name))
     elif len(elements) == 1:
         return elements[0]
     else:
         raise CLIError(
-            'More than one resources with type {} are found with name: {}'.format(
+            "More than one resources with type '{}' are found with name '{}'.".format(
                 resource_type, resource_name))
 
 def get_resource_group_name_by_resource_id(resource_id):
@@ -60,6 +60,18 @@ def get_resource_group_name_by_storage_account_name(storage_account_name):
     arm_resource = _arm_get_resource_by_name(storage_account_name, STORAGE_RESOURCE_TYPE)
     return get_resource_group_name_by_resource_id(arm_resource.id)
 
+def get_registry_location_by_name(registry_name, resource_group_name=None):
+    '''Returns a tuple of registry location and resource group name.
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    '''
+    arm_resource = _arm_get_resource_by_name(registry_name, ACR_RESOURCE_TYPE)
+
+    if resource_group_name is None:
+        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
+
+    return arm_resource.location, resource_group_name
+
 def get_registry_by_name(registry_name, resource_group_name=None):
     '''Returns a tuple of Registry object and resource group name.
     :param str registry_name: The name of container registry
@@ -83,6 +95,37 @@ def get_access_key_by_storage_account_name(storage_account_name, resource_group_
     client = get_storage_service_client().storage_accounts
 
     return client.list_keys(resource_group_name, storage_account_name).keys[0].value #pylint: disable=no-member
+
+def arm_deploy_template_managed_storage(resource_group_name, #pylint: disable=too-many-arguments
+                                        registry_name,
+                                        location,
+                                        sku,
+                                        admin_user_enabled,
+                                        deployment_name=None):
+    '''Deploys ARM template to create a container registry with managed storage account.
+    :param str resource_group_name: The name of resource group
+    :param str registry_name: The name of container registry
+    :param str location: The name of location
+    :param str sku: The SKU of the container registry
+    :param bool admin_user_enabled: Enable admin user
+    :param str deployment_name: The name of the deployment
+    '''
+    from azure.mgmt.resource.resources.models import DeploymentProperties
+    from azure.cli.core.util import get_file_json
+    import os
+
+    parameters = _parameters(
+        registry_name=registry_name,
+        location=location,
+        sku=sku,
+        admin_user_enabled=admin_user_enabled)
+
+    file_path = os.path.join(os.path.dirname(__file__), 'template.json')
+    template = get_file_json(file_path)
+    properties = DeploymentProperties(template=template, parameters=parameters, mode='incremental')
+
+    return _arm_deploy_template(
+        get_arm_service_client().deployments, resource_group_name, deployment_name, properties)
 
 def arm_deploy_template_new_storage(resource_group_name, #pylint: disable=too-many-arguments
                                     registry_name,
@@ -111,7 +154,7 @@ def arm_deploy_template_new_storage(resource_group_name, #pylint: disable=too-ma
         admin_user_enabled=admin_user_enabled,
         storage_account_name=storage_account_name)
 
-    file_path = os.path.join(os.path.dirname(__file__), 'template.json')
+    file_path = os.path.join(os.path.dirname(__file__), 'template_new_storage.json')
     template = get_file_json(file_path)
     properties = DeploymentProperties(template=template, parameters=parameters, mode='incremental')
 
@@ -176,7 +219,7 @@ def _parameters(registry_name, #pylint: disable=too-many-arguments
                 location,
                 sku,
                 admin_user_enabled,
-                storage_account_name,
+                storage_account_name=None,
                 storage_account_resource_group=None):
     '''Returns a dict of deployment parameters.
     :param str registry_name: The name of container registry
@@ -190,14 +233,15 @@ def _parameters(registry_name, #pylint: disable=too-many-arguments
         'registryName': {'value': registry_name},
         'registryLocation': {'value': location},
         'registrySku': {'value': sku},
-        'adminUserEnabled': {'value': admin_user_enabled},
-        'storageAccountName': {'value': storage_account_name}
+        'adminUserEnabled': {'value': admin_user_enabled}
     }
     customized_api_version = get_acr_api_version()
     if customized_api_version:
         parameters['registryApiVersion'] = {'value': customized_api_version}
-    if storage_account_resource_group:
-        parameters['storageAccountResourceGroup'] = {'value': storage_account_resource_group}
+    if storage_account_name:
+        parameters['storageAccountName'] = {'value': storage_account_name}
+        if storage_account_resource_group:
+            parameters['storageAccountResourceGroup'] = {'value': storage_account_resource_group}
     return parameters
 
 def random_storage_account_name(registry_name):

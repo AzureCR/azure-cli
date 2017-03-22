@@ -31,3 +31,28 @@ cli_generic_update_command(__name__,
 
 cli_command(__name__, 'acr repository list', 'azure.cli.command_modules.acr.repository#acr_repository_list')
 cli_command(__name__, 'acr repository show-tags', 'azure.cli.command_modules.acr.repository#acr_repository_show_tags')
+
+cli_command(__name__, 'acr webhook list', 'azure.cli.command_modules.acr.webhook#acr_webhook_list', table_transformer=output_format)
+cli_command(__name__, 'acr webhook create', 'azure.cli.command_modules.acr.webhook#acr_webhook_create', table_transformer=output_format)
+cli_command(__name__, 'acr webhook delete', 'azure.cli.command_modules.acr.webhook#acr_webhook_delete', table_transformer=output_format)
+cli_command(__name__, 'acr webhook show', 'azure.cli.command_modules.acr.webhook#acr_webhook_show', table_transformer=output_format)
+cli_generic_update_command(__name__,
+                           'acr webhook update',
+                           'azure.cli.command_modules.acr.webhook#acr_webhook_update_get',
+                           'azure.cli.command_modules.acr.webhook#acr_webhook_update_set',
+                           factory=lambda: get_acr_service_client().webhooks,
+                           custom_function_op='azure.cli.command_modules.acr.webhook#acr_webhook_update_custom', table_transformer=output_format)
+cli_command(__name__, 'acr webhook get-config', 'azure.cli.command_modules.acr.webhook#acr_webhook_get_config', table_transformer=output_format)
+cli_command(__name__, 'acr webhook list-events', 'azure.cli.command_modules.acr.webhook#acr_webhook_list_events')
+cli_command(__name__, 'acr webhook ping', 'azure.cli.command_modules.acr.webhook#acr_webhook_ping')
+
+cli_command(__name__, 'acr replication list', 'azure.cli.command_modules.acr.replication#acr_replication_list', table_transformer=output_format)
+cli_command(__name__, 'acr replication create', 'azure.cli.command_modules.acr.replication#acr_replication_create', table_transformer=output_format)
+cli_command(__name__, 'acr replication delete', 'azure.cli.command_modules.acr.replication#acr_replication_delete', table_transformer=output_format)
+cli_command(__name__, 'acr replication show', 'azure.cli.command_modules.acr.replication#acr_replication_show', table_transformer=output_format)
+cli_generic_update_command(__name__,
+                           'acr replication update',
+                           'azure.cli.command_modules.acr.replication#acr_replication_update_get',
+                           'azure.cli.command_modules.acr.replication#acr_replication_update_set',
+                           factory=lambda: get_acr_service_client().replications,
+                           custom_function_op='azure.cli.command_modules.acr.replication#acr_replication_update_custom', table_transformer=output_format)

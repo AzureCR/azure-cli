@@ -11,18 +11,26 @@ from azure.cli.core.commands.parameters import (
     location_type,
     tags_type,
     deployment_name_type,
-    get_resource_name_completion_list
+    get_resource_name_completion_list,
+    quotes
 )
+from azure.cli.core.commands.validators import get_default_location_from_resource_group
 
 from ._constants import (
     ACR_RESOURCE_TYPE,
-    STORAGE_RESOURCE_TYPE
+    STORAGE_RESOURCE_TYPE,
+    WEBHOOK_RESOURCE_TYPE,
+    REPLICATION_RESOURCE_TYPE
 )
-from ._validators import validate_registry_name
+from ._validators import (
+    validate_registry_name,
+    validate_headers,
+    validate_replication_location
+)
 
 register_cli_argument('acr', 'registry_name', options_list=('--name', '-n'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
-register_cli_argument('acr', 'storage_account_name', help='The name of an existing storage account', completer=get_resource_name_completion_list(STORAGE_RESOURCE_TYPE))
-register_cli_argument('acr', 'sku', help='The SKU of the container registry', choices=['Basic'])
+register_cli_argument('acr', 'storage_account_name', help='Provide the name of an existing storage account if you\'re recreating a container registry over a previous registry created storage account. Only applicable to Basic SKU.', completer=get_resource_name_completion_list(STORAGE_RESOURCE_TYPE))
+register_cli_argument('acr', 'sku', help='The SKU of the container registry', choices=['Basic', 'Standard', 'Premium'])
 register_cli_argument('acr', 'password_name', help='The name of password to regenerate', choices=['password', 'password2'])
 
 register_cli_argument('acr', 'resource_group_name', resource_group_name_type)
@@ -36,6 +44,18 @@ register_cli_argument('acr', 'password', options_list=('--password', '-p'), help
 
 register_cli_argument('acr create', 'registry_name', completer=None, validator=validate_registry_name)
 register_cli_argument('acr create', 'deployment_name', deployment_name_type, validator=None)
+register_cli_argument('acr create', 'location', location_type, validator=get_default_location_from_resource_group)
 register_cli_argument('acr check-name', 'registry_name', completer=None)
-register_cli_argument('acr create', 'storage_account_name', help='Default: A new storage account will be created. Provide the name of an existing storage account if you\'re recreating a container registry over a previous registry created storage account.', completer=get_resource_name_completion_list(STORAGE_RESOURCE_TYPE))
-register_cli_argument('acr update', 'storage_account_name', help='Provide the name of an existing storage account if you\'re recreating a container registry over a previous registry created storage account.', completer=get_resource_name_completion_list(STORAGE_RESOURCE_TYPE))
+
+register_cli_argument('acr webhook', 'registry_name', options_list=('--registry', '-r'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
+register_cli_argument('acr webhook', 'webhook_name', options_list=('--name', '-n'), help='The name of the webhook', completer=get_resource_name_completion_list(WEBHOOK_RESOURCE_TYPE))
+register_cli_argument('acr webhook', 'uri', help='The service URI for the webhook to post notifications.')
+register_cli_argument('acr webhook', 'headers', nargs='*', help="Space separated custom headers in 'key[=value]' format that will be added to the webhook notifications. Use {} to clear existing headers.".format(quotes), validator=validate_headers)
+register_cli_argument('acr webhook', 'actions', nargs='+', help='Space separated list of actions that trigger the webhook to post notifications.', choices=['push', 'pull', 'delete'])
+register_cli_argument('acr webhook', 'is_enabled', help='Indicates whether the webhook is enabled.', choices=['true', 'false'])
+register_cli_argument('acr webhook create', 'webhook_name', completer=None)
+
+register_cli_argument('acr replication', 'registry_name', options_list=('--registry', '-r'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
+register_cli_argument('acr replication', 'replication_name', options_list=('--name', '-n'), help='The name of the replication', completer=get_resource_name_completion_list(REPLICATION_RESOURCE_TYPE))
+register_cli_argument('acr replication create', 'replication_name', completer=None)
+register_cli_argument('acr replication create', 'location', validator=validate_replication_location)

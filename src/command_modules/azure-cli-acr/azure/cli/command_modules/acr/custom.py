@@ -5,7 +5,7 @@
 
 from azure.cli.core.commands import LongRunningOperation
 
-from azure.mgmt.containerregistry.models import (
+from .azure.mgmt.containerregistry.models import (
     RegistryUpdateParameters,
     StorageAccountParameters
 )
@@ -16,8 +16,8 @@ from ._utils import (
     get_access_key_by_storage_account_name,
     arm_deploy_template_new_storage,
     arm_deploy_template_existing_storage,
-    random_storage_account_name,
-    get_location_from_resource_group
+    arm_deploy_template_managed_storage,
+    random_storage_account_name
 )
 from ._docker_utils import docker_login_to_registry
 
@@ -59,31 +59,49 @@ def acr_create(registry_name, #pylint: disable=too-many-arguments
     :param str admin_enabled: Indicates whether the admin user is enabled
     :param str deployment_name: The name of the deployment
     '''
-    if location is None:
-        location = get_location_from_resource_group(resource_group_name)
     client = get_acr_service_client().registries
     admin_user_enabled = admin_enabled == 'true'
 
-    if storage_account_name is None:
-        storage_account_name = random_storage_account_name(registry_name)
-        LongRunningOperation()(
-            arm_deploy_template_new_storage(
-                resource_group_name,
-                registry_name,
-                location,
-                sku,
+    if sku == 'Basic':
+        if storage_account_name is None:
+            storage_account_name = random_storage_account_name(registry_name)
+            logger.warning(
+                "A new storage account '%s' will be created in resource group '%s'.",
                 storage_account_name,
-                admin_user_enabled,
-                deployment_name)
-        )
+                resource_group_name)
+            LongRunningOperation()(
+                arm_deploy_template_new_storage(
+                    resource_group_name,
+                    registry_name,
+                    location,
+                    sku,
+                    storage_account_name,
+                    admin_user_enabled,
+                    deployment_name)
+            )
+        else:
+            LongRunningOperation()(
+                arm_deploy_template_existing_storage(
+                    resource_group_name,
+                    registry_name,
+                    location,
+                    sku,
+                    storage_account_name,
+                    admin_user_enabled,
+                    deployment_name)
+            )
     else:
+        if storage_account_name:
+            logger.warning(
+                "'%s' SKU uses managed storage account. Storage account '%s' will be ignored.",
+                sku,
+                storage_account_name)
         LongRunningOperation()(
-            arm_deploy_template_existing_storage(
+            arm_deploy_template_managed_storage(
                 resource_group_name,
                 registry_name,
                 location,
                 sku,
-                storage_account_name,
                 admin_user_enabled,
                 deployment_name)
         )
