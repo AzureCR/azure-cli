@@ -8,8 +8,13 @@ from subprocess import call
 from json import loads
 import requests
 
+
+from ._utils import get_registry_by_name
+from .credential import acr_credential_show
+
 from azure.cli.core._profile import Profile
 from azure.cli.core._util import CLIError
+from azure.cli.core.prompting import prompt, prompt_pass, NoTTYException
 
 def _get_login_token(login_server, only_refresh_token=True, repository=None):
     '''Obtains refresh and access tokens for an AAD-enabled registry.
@@ -101,12 +106,51 @@ def get_login_access_token(login_server, repository=None):
     _, access_token = _get_login_token(login_server, only_refresh_token, repository)
     return access_token
 
-def docker_login_to_registry(login_server):
+def docker_login_to_registry(registry_name, username=None, password=None):
     '''Logs in the Docker client to a registry.
-    :param str login_server: The registry login server URL to log in to
+    :param str registry_name: The name of container registry
+    :param str username: The username used to log into the container registry
+    :param str password: The password used to log into the container registry
     '''
-    refresh_token = _get_login_refresh_token(login_server)
+    registry, _ = get_registry_by_name(registry_name)
+    login_server = registry.login_server #pylint: disable=no-member
+
+    # 1. if username was specified, verify that password was also specified
+    if username:
+        if not password:
+            try:
+                password = prompt_pass(msg='Password: ')
+            except NoTTYException:
+                raise CLIError('Please specify both username and password in non-interactive mode.')
+
+    # 2. if we don't yet have credentials, attempt to get a refresh token
+    if not password:
+        try:
+            username = "00000000-0000-0000-0000-000000000000"
+            password = _get_login_refresh_token(login_server)
+        except: #pylint: disable=bare-except
+            pass
+
+    # 3. if we still don't have credentials, attempt to get the admin credentials (if enabled)
+    if not password:
+        try:
+            cred = acr_credential_show(registry_name)
+            username = cred.username
+            password = cred.password
+        except: #pylint: disable=bare-except
+            pass
+
+    # 4. if we still don't have credentials, prompt the user
+    if not password:
+        try:
+            username = prompt('Username: ')
+            password = prompt_pass(msg='Password: ')
+        except NoTTYException:
+            raise CLIError(
+                'Unable to authenticate using admin login credentials or admin is not enabled. ' +
+                'Please specify both username and password in non-interactive mode.')
+
     call(["docker", "login",
-          "--username", "00000000-0000-0000-0000-000000000000",
-          "--password", refresh_token,
+          "--username", username,
+          "--password", password,
           login_server])
