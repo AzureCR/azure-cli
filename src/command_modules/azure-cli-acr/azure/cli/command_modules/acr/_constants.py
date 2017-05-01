@@ -6,3 +6,5 @@
 ACR_RESOURCE_PROVIDER = 'Microsoft.ContainerRegistry'
 ACR_RESOURCE_TYPE = ACR_RESOURCE_PROVIDER + '/registries'
 STORAGE_RESOURCE_TYPE = 'Microsoft.Storage/storageAccounts'
+WEBHOOK_RESOURCE_TYPE = ACR_RESOURCE_TYPE + '/webhooks'
+REPLICATION_RESOURCE_TYPE = ACR_RESOURCE_TYPE + '/replications'
