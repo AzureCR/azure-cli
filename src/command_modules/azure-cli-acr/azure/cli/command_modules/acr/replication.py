@@ -16,9 +16,8 @@ def acr_replication_list(registry_name,
     '''Lists all the replications for the specified container registry.
     :param str registry_name: The name of container registry
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.list(resource_group_name, registry_name)
@@ -34,9 +33,8 @@ def acr_replication_create(replication_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.create_or_update(
@@ -55,9 +53,8 @@ def acr_replication_delete(replication_name,
     '''Deletes a replication from a container registry.
     :param str registry_name: The name of container registry
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.delete(resource_group_name, registry_name, replication_name)
@@ -70,9 +67,8 @@ def acr_replication_show(replication_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.get(resource_group_name, registry_name, replication_name)
@@ -87,8 +83,8 @@ def acr_replication_update_get(client,
                                replication_name,
                                registry_name,
                                resource_group_name=None):
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
 
     props = client.get(resource_group_name, registry_name, replication_name)
 
@@ -102,7 +98,7 @@ def acr_replication_update_set(client,
                                registry_name,
                                resource_group_name=None,
                                parameters=None):
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
 
     return client.create_or_update(resource_group_name, registry_name, replication_name, parameters)

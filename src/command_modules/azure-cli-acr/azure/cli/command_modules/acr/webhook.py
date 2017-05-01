@@ -23,9 +23,8 @@ def acr_webhook_list(registry_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().webhooks
 
     return client.list(resource_group_name, registry_name)
@@ -77,9 +76,8 @@ def acr_webhook_delete(webhook_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().webhooks
 
     return client.delete(resource_group_name, registry_name, webhook_name)
@@ -92,9 +90,8 @@ def acr_webhook_show(webhook_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().webhooks
 
     return client.get(resource_group_name, registry_name, webhook_name)
@@ -130,8 +127,8 @@ def acr_webhook_update_get(client,
                            webhook_name,
                            registry_name,
                            resource_group_name=None):
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
 
     props = client.get(resource_group_name, registry_name, webhook_name)
 
@@ -146,8 +143,8 @@ def acr_webhook_update_set(client,
                            registry_name,
                            resource_group_name=None,
                            parameters=None):
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
 
     return client.update(resource_group_name, registry_name, webhook_name, parameters)
 
@@ -159,9 +156,8 @@ def acr_webhook_get_config(webhook_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().webhooks
 
     return client.get_callback_config(resource_group_name, registry_name, webhook_name)
@@ -174,9 +170,8 @@ def acr_webhook_list_events(webhook_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().webhooks
 
     return client.list_events(resource_group_name, registry_name, webhook_name)
@@ -189,9 +184,8 @@ def acr_webhook_ping(webhook_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().webhooks
 
     return client.ping(resource_group_name, registry_name, webhook_name)

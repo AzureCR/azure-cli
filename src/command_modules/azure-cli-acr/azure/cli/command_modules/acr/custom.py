@@ -123,9 +123,8 @@ def acr_delete(registry_name, resource_group_name=None):
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().registries
 
     return client.delete(resource_group_name, registry_name)
@@ -135,9 +134,8 @@ def acr_show(registry_name, resource_group_name=None):
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().registries
 
     return client.get(resource_group_name, registry_name)
@@ -145,9 +143,8 @@ def acr_show(registry_name, resource_group_name=None):
 def acr_update_get(client,
                    registry_name,
                    resource_group_name=None):
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     props = client.get(resource_group_name, registry_name)
 
     return RegistryUpdateParameters(
@@ -181,8 +178,8 @@ def acr_update_set(client,
                    registry_name,
                    resource_group_name=None,
                    parameters=None):
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
 
     return client.update(resource_group_name, registry_name, parameters)
 

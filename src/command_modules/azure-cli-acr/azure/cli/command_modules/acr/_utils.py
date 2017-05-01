@@ -46,19 +46,27 @@ def get_resource_group_name_by_resource_id(resource_id):
     return resource_id[resource_id.index(resource_group_keyword) + len(resource_group_keyword):
                        resource_id.index('/providers/')]
 
-def get_resource_group_name_by_registry_name(registry_name):
+def get_resource_group_name_by_registry_name(registry_name,
+                                             resource_group_name=None):
     '''Returns the resource group name for the container registry.
     :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
     '''
-    arm_resource = _arm_get_resource_by_name(registry_name, ACR_RESOURCE_TYPE)
-    return get_resource_group_name_by_resource_id(arm_resource.id)
+    if resource_group_name is None:
+        arm_resource = _arm_get_resource_by_name(registry_name, ACR_RESOURCE_TYPE)
+        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
+    return resource_group_name
 
-def get_resource_group_name_by_storage_account_name(storage_account_name):
+def get_resource_group_name_by_storage_account_name(storage_account_name,
+                                                    resource_group_name=None):
     '''Returns the resource group name for the storage account.
     :param str storage_account_name: The name of storage account
+    :param str resource_group_name: The name of resource group
     '''
-    arm_resource = _arm_get_resource_by_name(storage_account_name, STORAGE_RESOURCE_TYPE)
-    return get_resource_group_name_by_resource_id(arm_resource.id)
+    if resource_group_name is None:
+        arm_resource = _arm_get_resource_by_name(storage_account_name, STORAGE_RESOURCE_TYPE)
+        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
+    return resource_group_name
 
 def get_registry_location_by_name(registry_name, resource_group_name=None):
     '''Returns a tuple of registry location and resource group name.
@@ -77,9 +85,8 @@ def get_registry_by_name(registry_name, resource_group_name=None):
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_registry_name(registry_name)
-
+    resource_group_name = get_resource_group_name_by_registry_name(
+        registry_name, resource_group_name)
     client = get_acr_service_client().registries
 
     return client.get(resource_group_name, registry_name), resource_group_name
@@ -89,9 +96,8 @@ def get_access_key_by_storage_account_name(storage_account_name, resource_group_
     :param str storage_account_name: The name of storage account
     :param str resource_group_name: The name of resource group
     '''
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_storage_account_name(storage_account_name)
-
+    resource_group_name = get_resource_group_name_by_storage_account_name(
+        storage_account_name, resource_group_name)
     client = get_storage_service_client().storage_accounts
 
     return client.list_keys(resource_group_name, storage_account_name).keys[0].value #pylint: disable=no-member
