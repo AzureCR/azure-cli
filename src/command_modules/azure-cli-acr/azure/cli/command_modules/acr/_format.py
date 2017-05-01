@@ -5,15 +5,18 @@
 
 from collections import OrderedDict
 
-from ._utils import get_resource_group_name_by_resource_id
-
 _registry_map = {
     'name': 'NAME',
     'resourceGroup': 'RESOURCE GROUP',
     'location': 'LOCATION',
     'loginServer': 'LOGIN SERVER',
     'creationDate': 'CREATION DATE',
-    'adminUserEnabled': 'ADMIN ENABLED'
+    'adminUserEnabled': 'ADMIN ENABLED',
+    'isEnabled': 'ENABLED',
+    'scope': 'SCOPE',
+    'actions': 'ACTIONS',
+    'serviceUri': 'SERVICE URI',
+    'customHeaders': 'HEADERS'
 }
 
 _order_map = {
@@ -25,7 +28,12 @@ _order_map = {
     'ADMIN ENABLED': 13,
     'USERNAME': 31,
     'PASSWORD': 32,
-    'PASSWORD2': 33
+    'PASSWORD2': 33,
+    'ENABLED': 41,
+    'SCOPE': 42,
+    'ACTIONS': 43,
+    'SERVICE URI': 44,
+    'HEADERS': 45
 }
 
 
@@ -42,10 +50,6 @@ def _format_group(item):
     :param dict item: The container registry object
     """
     registry_info = {_registry_map[key]: str(item[key]) for key in item if key in _registry_map}
-
-    if 'id' in item and item['id']:
-        resource_group_name = get_resource_group_name_by_resource_id(item['id'])
-        registry_info['RESOURCE GROUP'] = resource_group_name
 
     return OrderedDict(sorted(registry_info.items(), key=lambda t: _order_map[t[0]]))
 
