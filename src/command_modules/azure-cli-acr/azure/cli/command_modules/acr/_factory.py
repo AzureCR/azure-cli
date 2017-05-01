@@ -25,7 +25,7 @@ def get_storage_service_client():
 
 def get_acr_service_client():
     """Returns the client for managing container registries. """
-    from azure.mgmt.containerregistry import ContainerRegistryManagementClient
+    from .azure.mgmt.containerregistry import ContainerRegistryManagementClient
     return get_mgmt_service_client(ContainerRegistryManagementClient)
 
 
