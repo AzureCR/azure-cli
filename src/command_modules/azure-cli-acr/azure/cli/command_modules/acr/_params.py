@@ -22,11 +22,7 @@ from ._constants import (
     WEBHOOK_RESOURCE_TYPE,
     REPLICATION_RESOURCE_TYPE
 )
-from ._validators import (
-    validate_registry_name,
-    validate_headers,
-    validate_replication_location
-)
+from ._validators import validate_registry_name, validate_headers
 
 register_cli_argument('acr', 'registry_name', options_list=('--name', '-n'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
 register_cli_argument('acr', 'storage_account_name', help='Provide the name of an existing storage account if you\'re recreating a container registry over a previous registry created storage account. Only applicable to Basic SKU.', completer=get_resource_name_completion_list(STORAGE_RESOURCE_TYPE))
@@ -58,4 +54,3 @@ register_cli_argument('acr webhook create', 'webhook_name', completer=None)
 register_cli_argument('acr replication', 'registry_name', options_list=('--registry', '-r'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
 register_cli_argument('acr replication', 'replication_name', options_list=('--name', '-n'), help='The name of the replication', completer=get_resource_name_completion_list(REPLICATION_RESOURCE_TYPE))
 register_cli_argument('acr replication create', 'replication_name', completer=None)
-register_cli_argument('acr replication create', 'location', validator=validate_replication_location)

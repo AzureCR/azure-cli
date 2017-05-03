@@ -3,11 +3,16 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
+from subprocess import call
+
 from azure.cli.core.commands import LongRunningOperation
+from azure.cli.core.util import CLIError
+from azure.cli.core.prompting import prompt, prompt_pass, NoTTYException
 
 from .azure.mgmt.containerregistry.models import (
     RegistryUpdateParameters,
-    StorageAccountParameters
+    StorageAccountParameters,
+    SkuName
 )
 
 from ._factory import get_acr_service_client
@@ -17,9 +22,12 @@ from ._utils import (
     arm_deploy_template_new_storage,
     arm_deploy_template_existing_storage,
     arm_deploy_template_managed_storage,
-    random_storage_account_name
+    random_storage_account_name,
+    get_registry_by_name,
+    get_registry_login_server_by_name
 )
-from ._docker_utils import docker_login_to_registry
+from ._docker_utils import get_login_refresh_token
+from .credential import acr_credential_show
 
 import azure.cli.core.azlogging as azlogging
 
@@ -66,7 +74,7 @@ def acr_create(registry_name,  # pylint: disable=too-many-arguments
     client = get_acr_service_client().registries
     admin_user_enabled = admin_enabled == 'true'
 
-    if sku == 'Basic':
+    if sku == SkuName.basic.value:
         if storage_account_name is None:
             storage_account_name = random_storage_account_name(registry_name)
             logger.warning(
@@ -96,10 +104,8 @@ def acr_create(registry_name,  # pylint: disable=too-many-arguments
             )
     else:
         if storage_account_name:
-            logger.warning(
-                "'%s' SKU uses managed storage account. Storage account '%s' will be ignored.",
-                sku,
-                storage_account_name)
+            logger.warning("'%s' SKU uses managed storage account. " +
+                           "The specified storage account will be ignored.", sku)
         LongRunningOperation()(
             arm_deploy_template_managed_storage(
                 resource_group_name,
@@ -152,33 +158,32 @@ def acr_update_get(client,
                    resource_group_name=None):
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
-    props = client.get(resource_group_name, registry_name)
+
+    registry = client.get(resource_group_name, registry_name)
 
     return RegistryUpdateParameters(
-        tags=props.tags,
-        admin_user_enabled=props.admin_user_enabled,
-        storage_account=props.storage_account
+        tags=registry.tags,
+        admin_user_enabled=registry.admin_user_enabled
     )
 
 
 def acr_update_custom(instance,
-                      admin_enabled=None,
                       storage_account_name=None,
+                      admin_enabled=None,
                       tags=None):
-    if admin_enabled is not None:
-        instance.admin_user_enabled = admin_enabled == ['true']
-
-    if tags is not None:
-        instance.tags = tags
-
     if storage_account_name is not None:
         storage_account_key = \
             get_access_key_by_storage_account_name(storage_account_name)
-        storage_account = StorageAccountParameters(
+        instance.storage_account = StorageAccountParameters(
             storage_account_name,
             storage_account_key
         )
-    instance.storage_account = storage_account if storage_account_name else None
+
+    if admin_enabled is not None:
+        instance.admin_user_enabled = admin_enabled == 'true'
+
+    if tags is not None:
+        instance.tags = tags
 
     return instance
 
@@ -187,15 +192,71 @@ def acr_update_set(client,
                    registry_name,
                    resource_group_name=None,
                    parameters=None):
-    resource_group_name = get_resource_group_name_by_registry_name(
-        registry_name, resource_group_name)
+    registry, resource_group_name = get_registry_by_name(registry_name, resource_group_name)
+
+    if parameters.storage_account is not None and registry.sku.name != SkuName.basic.value:  # pylint: disable=no-member
+        parameters.storage_account = None
+        logger.warning(
+            "'%s' SKU uses managed storage account. The specified storage account will be ignored.",
+            registry.sku.name)  # pylint: disable=no-member
+
+    if parameters.storage_account is not None and isinstance(parameters.storage_account, dict):
+        if 'name' not in parameters.storage_account:
+            raise CLIError(
+                "Storage account name is required to update " +
+                "the storage account used by a container registry.")
+        if 'access_key' not in parameters.storage_account:
+            parameters.storage_account['access_key'] = \
+            get_access_key_by_storage_account_name(parameters.storage_account['name'])
 
     return client.update(resource_group_name, registry_name, parameters)
 
-def acr_login(registry_name, username=None, password=None):
-    '''Login to a container registry through Docker.
+
+def acr_login(registry_name, resource_group_name=None, username=None, password=None):
+    """Login to a container registry through Docker.
     :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
-    '''
-    docker_login_to_registry(registry_name, username, password)
+    """
+    login_server = get_registry_login_server_by_name(registry_name, resource_group_name)
+
+    # 1. if username was specified, verify that password was also specified
+    if username:
+        if not password:
+            try:
+                password = prompt_pass(msg='Password: ')
+            except NoTTYException:
+                raise CLIError('Please specify both username and password in non-interactive mode.')
+
+    # 2. if we don't yet have credentials, attempt to get a refresh token
+    if not password:
+        try:
+            username = "00000000-0000-0000-0000-000000000000"
+            password = get_login_refresh_token(login_server)
+        except Exception as e:  # pylint: disable=broad-except
+            logger.debug("acr_logger: " + str(e))
+
+    # 3. if we still don't have credentials, attempt to get the admin credentials (if enabled)
+    if not password:
+        try:
+            cred = acr_credential_show(registry_name)
+            username = cred.username
+            password = cred.passwords[0].value
+        except Exception as e:  # pylint: disable=broad-except
+            logger.debug("acr_logger: " + str(e))
+
+    # 4. if we still don't have credentials, prompt the user
+    if not password:
+        try:
+            username = prompt('Username: ')
+            password = prompt_pass(msg='Password: ')
+        except NoTTYException:
+            raise CLIError(
+                'Unable to authenticate using AAD or admin login credentials. ' +
+                'Please specify both username and password in non-interactive mode.')
+
+    call(["docker", "login",
+          "--username", username,
+          "--password", password,
+          login_server])
