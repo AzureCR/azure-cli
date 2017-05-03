@@ -180,7 +180,7 @@ def acr_update_custom(instance,
         )
 
     if admin_enabled is not None:
-        instance.admin_user_enabled = admin_enabled == 'true'
+        instance.admin_user_enabled = admin_enabled == ['true']
 
     if tags is not None:
         instance.tags = tags

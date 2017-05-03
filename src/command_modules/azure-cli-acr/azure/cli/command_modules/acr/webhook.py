@@ -115,7 +115,7 @@ def acr_webhook_update_custom(instance,  # pylint: disable=too-many-arguments
         instance.custom_headers = headers
 
     if is_enabled is not None:
-        instance.is_enabled = is_enabled == 'true'
+        instance.is_enabled = is_enabled == ['true']
 
     if scope is not None:
         instance.scope = scope
