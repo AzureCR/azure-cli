@@ -9,17 +9,19 @@ Commands to manage Azure container registries
         az acr: Manage Azure container registries.
 
     Subgroups:
-        credential: Manage login credentials for Azure container registries.
-        repository: Manage repositories for Azure container registries.
+        credential : Manage login credentials for Azure container registries.
+        replication: Manage replications for Azure container registries.
+        repository : Manage repositories for Azure container registries.
+        webhook    : Manage webhooks for Azure container registries.
 
     Commands:
-        check-name: Checks whether the container registry name is available for use.
-        create    : Creates a container registry.
-        delete    : Deletes a container registry.
-        list      : Lists all the container registries under the current subscription.
-        login     : Login to a container registry through Docker.
-        show      : Gets the properties of the specified container registry.
-        update    : Updates a container registry.
+        check-name : Checks whether the container registry name is available for use.
+        create     : Creates a container registry.
+        delete     : Deletes a container registry.
+        list       : Lists all the container registries under the current subscription.
+        login      : Login to a container registry through Docker.
+        show       : Gets the properties of the specified container registry.
+        update     : Updates a container registry.
 
 Create a container registry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -31,18 +33,22 @@ Create a container registry
     Arguments
         --name -n           [Required]: The name of the container registry.
         --resource-group -g [Required]: Name of resource group. You can configure the default group
-                                        using 'az configure --defaults group=<name>'.
-        --sku               [Required]: The SKU of the container registry.  Allowed values: Basic.
+                                        using `az configure --defaults group=<name>`.
+        --sku               [Required]: The SKU of the container registry.  Allowed values: Basic,
+                                        Standard_Large, Standard_Medium, Standard_Small.
         --admin-enabled               : Indicates whether the admin user is enabled.  Allowed values:
                                         false, true.
-        --location -l                 : Location. You can configure the default location using 'az
-                                        configure --defaults location=<location>'.
-        --storage-account-name        : Default: A new storage account will be created. Provide the name
-                                        of an existing storage account if you're recreating a container
-                                        registry over a previous registry created storage account.
+        --location -l                 : Location. You can configure the default location using `az
+                                        configure --defaults location=<location>`.
+        --storage-account-name        : Provide the name of an existing storage account if you're
+                                        recreating a container registry over a previous registry created
+                                        storage account. Only applicable to Basic SKU.
 
     Examples
-        Create a container registry with a new storage account.
+        Create a container registry with managed storage account. Applicable to Standard SKU.
+            az acr create -n MyRegistry -g MyResourceGroup --sku Standard_Medium
+
+        Create a container registry with a new storage account. Applicable to Basic SKU.
             az acr create -n MyRegistry -g MyResourceGroup --sku Basic
 
 Delete a container registry
@@ -54,11 +60,11 @@ Delete a container registry
 
     Arguments
         --name -n [Required]: The name of the container registry.
-        --resource-group -g : Name of resource group. You can configure the default group using 'az
-                            configure --defaults group=<name>'.
+        --resource-group -g : Name of resource group. You can configure the default group using `az
+                              configure --defaults group=<name>`.
 
     Examples
-        Delete a container registry
+        Delete a container registry.
             az acr delete -n MyRegistry
 
 List container registries
@@ -69,8 +75,8 @@ List container registries
         az acr list: Lists all the container registries under the current subscription.
 
     Arguments
-        --resource-group -g: Name of resource group. You can configure the default group using 'az
-                            configure --defaults group=<name>'.
+        --resource-group -g: Name of resource group. You can configure the default group using `az
+                             configure --defaults group=<name>`.
 
     Examples
         List container registries and show the results in a table.
@@ -88,8 +94,8 @@ Get a container registry
 
     Arguments
         --name -n [Required]: The name of the container registry.
-        --resource-group -g : Name of resource group. You can configure the default group using 'az
-                            configure --defaults group=<name>'.
+        --resource-group -g : Name of resource group. You can configure the default group using `az
+                              configure --defaults group=<name>`.
 
     Examples
         Get the login server for a container registry.
@@ -106,10 +112,11 @@ Update a container registry
         --name -n   [Required]: The name of the container registry.
         --admin-enabled       : Indicates whether the admin user is enabled.  Allowed values: false,
                                 true.
-        --resource-group -g   : Name of resource group. You can configure the default group using 'az
-                                configure --defaults group=<name>'.
+        --resource-group -g   : Name of resource group. You can configure the default group using `az
+                                configure --defaults group=<name>`.
         --storage-account-name: Provide the name of an existing storage account if you're recreating a
                                 container registry over a previous registry created storage account.
+                                Only applicable to Basic SKU.
         --tags                : Space separated tags in 'key[=value]' format. Use "" to clear existing
                                 tags.
 
@@ -132,6 +139,24 @@ Update a container registry
         Enable the administrator user account for a container registry.
             az acr update -n MyRegistry --admin-enabled true
 
+Login to a container registry
+-------------
+::
+
+    Command
+        az acr login: Login to a container registry through Docker.
+
+    Arguments
+        --name -n [Required]: The name of the container registry.
+        --password -p       : The password used to log into a container registry.
+        --resource-group -g : Name of resource group. You can configure the default group using `az
+                              configure --defaults group=<name>`.
+        --username -u       : The username used to log into a container registry.
+
+    Examples
+        Login to a container registry
+            az acr login -n MyRegistry
+
 Get login credentials for a container registry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
@@ -141,8 +166,8 @@ Get login credentials for a container registry
 
     Arguments
         --name -n [Required]: The name of the container registry.
-        --resource-group -g : Name of resource group. You can configure the default group using 'az
-                            configure --defaults group=<name>'.
+        --resource-group -g : Name of resource group. You can configure the default group using `az
+                              configure --defaults group=<name>`.
 
     Examples
         Get the login credentials for a container registry.
@@ -167,7 +192,7 @@ Regenerate login credentials for a container registry
         --password-name [Required]: The name of password to regenerate.  Allowed values: password,
                                     password2.
         --resource-group -g       : Name of resource group. You can configure the default group using
-                                    'az configure --defaults group=<name>'.
+                                    `az configure --defaults group=<name>`.
 
     Examples
         Renew the second password for a container registry.
@@ -183,11 +208,12 @@ List repositories in a given container registry
     Arguments
         --name -n [Required]: The name of the container registry.
         --password -p       : The password used to log into a container registry.
+        --resource-group -g : Name of resource group. You can configure the default group using `az
+                              configure --defaults group=<name>`.
         --username -u       : The username used to log into a container registry.
 
     Examples
-        List repositories in a given container registry. Enter login credentials in the prompt if admin
-        user is disabled.
+        List repositories in a given container registry.
             az acr repository list -n MyRegistry
 
 Show tags of a given repository in a given container registry
@@ -202,25 +228,10 @@ Show tags of a given repository in a given container registry
         --name -n    [Required]: The name of the container registry.
         --repository [Required]: The repository to obtain tags from.
         --password -p          : The password used to log into a container registry.
+        --resource-group -g    : Name of resource group. You can configure the default group using `az
+                                 configure --defaults group=<name>`.
         --username -u          : The username used to log into a container registry.
 
     Examples
-        Show tags of a given repository in a given container registry. Enter login credentials in the
-        prompt if admin user is disabled.
+        Show tags of a given repository in a given container registry.
             az acr repository show-tags -n MyRegistry --repository MyRepository
-
-Login to a container registry
--------------
-::
-
-    Command
-        az acr login: Login to a container registry through Docker.
-
-    Arguments
-        --name -n [Required]: The name of the container registry.
-        --password -p       : The password used to log into a container registry.
-        --username -u       : The username used to log into a container registry.
-
-    Examples
-        Login to a container registry
-            az acr login -n MyRegistry
