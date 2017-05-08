@@ -60,6 +60,7 @@ def get_resource_group_name_by_registry_name(registry_name,
         resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
     return resource_group_name
 
+
 def get_resource_group_name_by_storage_account_name(storage_account_name,
                                                     resource_group_name=None):
     """Returns the resource group name for the storage account.
@@ -70,6 +71,7 @@ def get_resource_group_name_by_storage_account_name(storage_account_name,
         arm_resource = _arm_get_resource_by_name(storage_account_name, STORAGE_RESOURCE_TYPE)
         resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
     return resource_group_name
+
 
 def get_registry_location_by_name(registry_name, resource_group_name=None):
     """Returns a tuple of registry location and resource group name.
@@ -83,11 +85,12 @@ def get_registry_location_by_name(registry_name, resource_group_name=None):
 
     return arm_resource.location, resource_group_name
 
+
 def get_registry_by_name(registry_name, resource_group_name=None):
-    '''Returns a tuple of Registry object and resource group name.
+    """Returns a tuple of Registry object and resource group name.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
-    '''
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
     client = get_acr_service_client().registries
@@ -108,20 +111,29 @@ def get_access_key_by_storage_account_name(storage_account_name, resource_group_
         0].value  # pylint: disable=no-member
 
 
+def get_registry_login_server_by_name(registry_name, resource_group_name=None):
+    """Returns login server for the container registry.
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    """
+    registry, _ = get_registry_by_name(registry_name, resource_group_name)
+    return registry.login_server  # pylint: disable=no-member
+
+
 def arm_deploy_template_managed_storage(resource_group_name,
                                         registry_name,
                                         location,
                                         sku,
                                         admin_user_enabled,
                                         deployment_name=None):
-    '''Deploys ARM template to create a container registry with managed storage account.
+    """Deploys ARM template to create a container registry with managed storage account.
     :param str resource_group_name: The name of resource group
     :param str registry_name: The name of container registry
     :param str location: The name of location
     :param str sku: The SKU of the container registry
     :param bool admin_user_enabled: Enable admin user
     :param str deployment_name: The name of the deployment
-    '''
+    """
     from azure.mgmt.resource.resources.models import DeploymentProperties
     from azure.cli.core.util import get_file_json
     import os
@@ -273,8 +285,3 @@ def random_storage_account_name(registry_name):
         if client.check_name_availability(
                 storage_account_name).name_available:  # pylint: disable=no-member
             return storage_account_name
-
-
-def get_location_from_resource_group(resource_group_name):
-    group = get_arm_service_client().resource_groups.get(resource_group_name)
-    return group.location  # pylint: disable=no-member
