@@ -53,6 +53,13 @@ cli_command(__name__, 'acr webhook delete',
 cli_command(__name__, 'acr webhook show',
             'azure.cli.command_modules.acr.webhook#acr_webhook_show',
             table_transformer=output_format)
+cli_command(__name__, 'acr webhook get-config',
+            'azure.cli.command_modules.acr.webhook#acr_webhook_get_config',
+            table_transformer=output_format)
+cli_command(__name__, 'acr webhook list-events',
+            'azure.cli.command_modules.acr.webhook#acr_webhook_list_events')
+cli_command(__name__, 'acr webhook ping',
+            'azure.cli.command_modules.acr.webhook#acr_webhook_ping')
 cli_generic_update_command(
     __name__,
     'acr webhook update',
@@ -61,13 +68,6 @@ cli_generic_update_command(
     factory=lambda: get_acr_service_client().webhooks,
     custom_function_op='azure.cli.command_modules.acr.webhook#acr_webhook_update_custom',
     table_transformer=output_format)
-cli_command(__name__, 'acr webhook get-config',
-            'azure.cli.command_modules.acr.webhook#acr_webhook_get_config',
-            table_transformer=output_format)
-cli_command(__name__, 'acr webhook list-events',
-            'azure.cli.command_modules.acr.webhook#acr_webhook_list_events')
-cli_command(__name__, 'acr webhook ping',
-            'azure.cli.command_modules.acr.webhook#acr_webhook_ping')
 
 cli_command(__name__, 'acr replication list',
             'azure.cli.command_modules.acr.replication#acr_replication_list',
