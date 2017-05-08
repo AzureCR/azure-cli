@@ -8,31 +8,30 @@ from .azure.mgmt.containerregistry.models import Replication
 from ._factory import get_acr_service_client
 from ._utils import get_resource_group_name_by_registry_name
 
-import azure.cli.core.azlogging as azlogging
-logger = azlogging.get_az_logger(__name__)
 
 def acr_replication_list(registry_name,
                          resource_group_name=None):
-    '''Lists all the replications for the specified container registry.
+    """Lists all the replications for the specified container registry.
     :param str registry_name: The name of container registry
-    '''
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.list(resource_group_name, registry_name)
 
+
 def acr_replication_create(replication_name,
                            location,
                            registry_name,
                            resource_group_name=None,
                            tags=None):
-    '''Creates a replication for a container registry.
+    """Creates a replication for a container registry.
     :param str replication_name: The name of replication
     :param str location: The name of location
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
-    '''
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
     client = get_acr_service_client().replications
@@ -47,37 +46,41 @@ def acr_replication_create(replication_name,
         )
     )
 
+
 def acr_replication_delete(replication_name,
                            registry_name,
                            resource_group_name=None):
-    '''Deletes a replication from a container registry.
+    """Deletes a replication from a container registry.
     :param str registry_name: The name of container registry
-    '''
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.delete(resource_group_name, registry_name, replication_name)
 
+
 def acr_replication_show(replication_name,
                          registry_name,
                          resource_group_name=None):
-    '''Gets the properties of the specified replication.
+    """Gets the properties of the specified replication.
     :param str replication_name: The name of replication
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
-    '''
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.get(resource_group_name, registry_name, replication_name)
 
+
 def acr_replication_update_custom(instance, tags=None):
     if tags is not None:
         instance.tags = tags
 
     return instance
+
 
 def acr_replication_update_get(client,
                                replication_name,
@@ -86,12 +89,13 @@ def acr_replication_update_get(client,
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
 
-    props = client.get(resource_group_name, registry_name, replication_name)
+    replication = client.get(resource_group_name, registry_name, replication_name)
 
     return Replication(
-        location=props.location,
-        tags=props.tags
+        location=replication.location,
+        tags=replication.tags
     )
+
 
 def acr_replication_update_set(client,
                                replication_name,
