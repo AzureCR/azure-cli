@@ -134,7 +134,7 @@ helps['acr repository list'] = """
     type: command
     short-summary: Lists repositories in the specified container registry.
     examples:
-        - name: List repositories in a given container registry. Enter login credentials in the prompt if admin user is disabled.
+        - name: List repositories in a given container registry.
           text:
             az acr repository list -n MyRegistry
 """
@@ -143,7 +143,7 @@ helps['acr repository show-tags'] = """
     type: command
     short-summary: Shows tags of a given repository in the specified container registry.
     examples:
-        - name: Show tags of a given repository in a given container registry. Enter login credentials in the prompt if admin user is disabled.
+        - name: Show tags of a given repository in a given container registry.
           text:
             az acr repository show-tags -n MyRegistry --repository MyRepository
 """
