@@ -34,7 +34,7 @@ def acr_webhook_create(webhook_name,
                        registry_name,
                        resource_group_name=None,
                        headers=None,
-                       status='true',
+                       status='enabled',
                        scope=None,
                        tags=None):
     """Creates a webhook for a container registry.
@@ -61,7 +61,7 @@ def acr_webhook_create(webhook_name,
             service_uri=uri,
             actions=actions,
             custom_headers=headers,
-            status=status == 'true',
+            status=status,
             scope=scope,
             tags=tags
         )
@@ -115,7 +115,7 @@ def acr_webhook_update_custom(instance,
         instance.custom_headers = headers
 
     if status is not None:
-        instance.status = status == ['enabled']
+        instance.status = status
 
     if scope is not None:
         instance.scope = scope

@@ -200,7 +200,7 @@ helps['acr webhook update'] = """
             az acr webhook update -n MyWebhook -r MyRegistry --uri http://myservice.com --actions push delete
         - name: Disable a webhook
           text: >
-            az acr webhook update -n MyWebhook -r MyRegistry --is-enabled false
+            az acr webhook update -n MyWebhook -r MyRegistry --status disabled
 """
 
 helps['acr webhook get-config'] = """
