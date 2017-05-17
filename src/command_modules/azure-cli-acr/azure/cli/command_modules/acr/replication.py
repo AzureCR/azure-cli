@@ -27,10 +27,10 @@ def acr_replication_create(location,
                            replication_name=None,
                            tags=None):
     """Creates a replication for a container registry.
-    :param str replication_name: The name of replication
     :param str location: The name of location
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
+    :param str replication_name: The name of replication
     """
     if replication_name is None:
         replication_name = "".join(location.split()).lower()

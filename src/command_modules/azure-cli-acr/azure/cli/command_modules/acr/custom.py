@@ -177,10 +177,8 @@ def acr_update_custom(instance,
                       admin_enabled=None,
                       tags=None):
     if storage_account_name is not None:
-        storage_account_id = \
-            get_resource_id_by_storage_account_name(storage_account_name)
         instance.storage_account = StorageAccountProperties(
-            storage_account_id
+            get_resource_id_by_storage_account_name(storage_account_name)
         )
 
     if admin_enabled is not None:
