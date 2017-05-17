@@ -28,7 +28,7 @@ def acr_webhook_list(registry_name,
     return client.list(resource_group_name, registry_name)
 
 
-def acr_webhook_create(webhook_name,  # pylint: disable=too-many-arguments
+def acr_webhook_create(webhook_name,
                        uri,
                        actions,
                        registry_name,
@@ -98,7 +98,7 @@ def acr_webhook_show(webhook_name,
     return client.get(resource_group_name, registry_name, webhook_name)
 
 
-def acr_webhook_update_custom(instance,  # pylint: disable=too-many-arguments
+def acr_webhook_update_custom(instance,
                               uri=None,
                               actions=None,
                               headers=None,

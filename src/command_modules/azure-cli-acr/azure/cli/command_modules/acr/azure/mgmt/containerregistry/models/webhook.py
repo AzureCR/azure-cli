@@ -29,15 +29,24 @@ class Webhook(Resource):
     :type location: str
     :param tags: The tags of the resource.
     :type tags: dict
-    :param is_enabled: The value that indicates whether the webhook is
-     enabled. Default value: True .
-    :type is_enabled: bool
+    :param status: The status of the webhook at the time the operation was
+     called. Possible values include: 'enabled', 'disabled'
+    :type status: str or :class:`WebhookStatus
+     <azure.mgmt.containerregistry.models.WebhookStatus>`
     :param scope: The scope of repositories where the event can be triggered.
+     For example, 'foo:*' means events for all tags under repository 'foo'.
+     'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
+     'foo:latest'. Empty means all events.
     :type scope: str
     :param actions: The list of actions that trigger the webhook to post
      notifications.
     :type actions: list of str or :class:`WebhookAction
      <azure.mgmt.containerregistry.models.WebhookAction>`
+    :ivar provisioning_state: The provisioning state of the webhook at the
+     time the operation was called. Possible values include: 'Creating',
+     'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+    :vartype provisioning_state: str or :class:`ProvisioningState
+     <azure.mgmt.containerregistry.models.ProvisioningState>`
     """
 
     _validation = {
@@ -46,6 +55,7 @@ class Webhook(Resource):
         'type': {'readonly': True},
         'location': {'required': True},
         'actions': {'required': True},
+        'provisioning_state': {'readonly': True},
     }
 
     _attribute_map = {
@@ -54,13 +64,15 @@ class Webhook(Resource):
         'type': {'key': 'type', 'type': 'str'},
         'location': {'key': 'location', 'type': 'str'},
         'tags': {'key': 'tags', 'type': '{str}'},
-        'is_enabled': {'key': 'properties.isEnabled', 'type': 'bool'},
+        'status': {'key': 'properties.status', 'type': 'str'},
         'scope': {'key': 'properties.scope', 'type': 'str'},
         'actions': {'key': 'properties.actions', 'type': '[str]'},
+        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
     }
 
-    def __init__(self, location, actions, tags=None, is_enabled=True, scope=None):
+    def __init__(self, location, actions, tags=None, status=None, scope=None):
         super(Webhook, self).__init__(location=location, tags=tags)
-        self.is_enabled = is_enabled
+        self.status = status
         self.scope = scope
         self.actions = actions
+        self.provisioning_state = None

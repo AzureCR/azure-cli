@@ -166,7 +166,7 @@ class RegistriesOperations(object):
         return deserialized
 
     def create(
-            self, resource_group_name, registry_name, registry_create_parameters, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, registry, custom_headers=None, raw=False, **operation_config):
         """Creates a container registry with the specified parameters.
 
         :param resource_group_name: The name of the resource group to which
@@ -174,10 +174,9 @@ class RegistriesOperations(object):
         :type resource_group_name: str
         :param registry_name: The name of the container registry.
         :type registry_name: str
-        :param registry_create_parameters: The parameters for creating a
-         container registry.
-        :type registry_create_parameters: :class:`RegistryCreateParameters
-         <azure.mgmt.containerregistry.models.RegistryCreateParameters>`
+        :param registry: The parameters for creating a container registry.
+        :type registry: :class:`Registry
+         <azure.mgmt.containerregistry.models.Registry>`
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
@@ -213,7 +212,7 @@ class RegistriesOperations(object):
             header_parameters['accept-language'] = self._serialize.header("self.config.accept_language", self.config.accept_language, 'str')
 
         # Construct body
-        body_content = self._serialize.body(registry_create_parameters, 'RegistryCreateParameters')
+        body_content = self._serialize.body(registry, 'Registry')
 
         # Construct and send request
         def long_running_send():
@@ -232,7 +231,7 @@ class RegistriesOperations(object):
 
         def get_long_running_output(response):
 
-            if response.status_code not in [200, 202]:
+            if response.status_code not in [200, 201]:
                 exp = CloudError(response)
                 exp.request_id = response.headers.get('x-ms-request-id')
                 raise exp
@@ -240,6 +239,8 @@ class RegistriesOperations(object):
             deserialized = None
 
             if response.status_code == 200:
+                deserialized = self._deserialize('Registry', response)
+            if response.status_code == 201:
                 deserialized = self._deserialize('Registry', response)
 
             if raw:
