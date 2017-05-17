@@ -47,10 +47,10 @@ register_cli_argument('acr webhook', 'registry_name', options_list=('--registry'
 register_cli_argument('acr webhook', 'webhook_name', options_list=('--name', '-n'), help='The name of the webhook', completer=get_resource_name_completion_list(WEBHOOK_RESOURCE_TYPE))
 register_cli_argument('acr webhook', 'uri', help='The service URI for the webhook to post notifications.')
 register_cli_argument('acr webhook', 'headers', nargs='*', help="Space separated custom headers in 'key[=value]' format that will be added to the webhook notifications. Use {} to clear existing headers.".format(quotes), validator=validate_headers)
-register_cli_argument('acr webhook', 'actions', nargs='+', help='Space separated list of actions that trigger the webhook to post notifications.', choices=['push', 'pull', 'delete'])
-register_cli_argument('acr webhook', 'is_enabled', nargs=1, help='Indicates whether the webhook is enabled.', choices=['true', 'false'])
+register_cli_argument('acr webhook', 'actions', nargs='+', help='Space separated list of actions that trigger the webhook to post notifications.', choices=['push', 'delete'])
+register_cli_argument('acr webhook', 'status', nargs=1, help='Indicates whether the webhook is enabled.', choices=['enabled', 'disabled'])
 register_cli_argument('acr webhook create', 'webhook_name', completer=None)
 
 register_cli_argument('acr replication', 'registry_name', options_list=('--registry', '-r'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
 register_cli_argument('acr replication', 'replication_name', options_list=('--name', '-n'), help='The name of the replication', completer=get_resource_name_completion_list(REPLICATION_RESOURCE_TYPE))
-register_cli_argument('acr replication create', 'replication_name', completer=None)
+register_cli_argument('acr replication create', 'replication_name', help='The name of the replication. Default to the location name.', completer=None)
