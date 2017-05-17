@@ -245,7 +245,7 @@ helps['acr replication create'] = """
     examples:
         - name: Create a replication for a container registry.
           text: >
-            az acr replication create -n MyReplication -r MyRegistry -l westus
+            az acr replication create -r MyRegistry -l westus
 """
 
 helps['acr replication delete'] = """
