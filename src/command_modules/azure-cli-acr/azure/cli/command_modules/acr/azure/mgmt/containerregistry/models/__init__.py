@@ -14,10 +14,9 @@ from .registry_name_status import RegistryNameStatus
 from .operation_display_definition import OperationDisplayDefinition
 from .operation_definition import OperationDefinition
 from .sku import Sku
+from .status import Status
 from .storage_account_properties import StorageAccountProperties
 from .registry import Registry
-from .storage_account_parameters import StorageAccountParameters
-from .registry_create_parameters import RegistryCreateParameters
 from .registry_update_parameters import RegistryUpdateParameters
 from .registry_password import RegistryPassword
 from .registry_list_credentials_result import RegistryListCredentialsResult
@@ -47,6 +46,7 @@ from .container_registry_management_client_enums import (
     SkuTier,
     ProvisioningState,
     PasswordName,
+    WebhookStatus,
     WebhookAction,
 )
 
@@ -56,10 +56,9 @@ __all__ = [
     'OperationDisplayDefinition',
     'OperationDefinition',
     'Sku',
+    'Status',
     'StorageAccountProperties',
     'Registry',
-    'StorageAccountParameters',
-    'RegistryCreateParameters',
     'RegistryUpdateParameters',
     'RegistryPassword',
     'RegistryListCredentialsResult',
@@ -88,5 +87,6 @@ __all__ = [
     'SkuTier',
     'ProvisioningState',
     'PasswordName',
+    'WebhookStatus',
     'WebhookAction',
 ]
