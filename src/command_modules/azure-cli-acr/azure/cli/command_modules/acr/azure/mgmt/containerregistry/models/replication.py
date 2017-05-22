@@ -29,10 +29,15 @@ class Replication(Resource):
     :type location: str
     :param tags: The tags of the resource.
     :type tags: dict
-    :ivar provisioning_state: The status of the replication at the time the
-     operation was called. Possible values include: 'Creating', 'Succeeded'
+    :ivar provisioning_state: The provisioning state of the replication at the
+     time the operation was called. Possible values include: 'Creating',
+     'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
     :vartype provisioning_state: str or :class:`ProvisioningState
      <azure.mgmt.containerregistry.models.ProvisioningState>`
+    :ivar status: The status of the replication at the time the operation was
+     called.
+    :vartype status: :class:`Status
+     <azure.mgmt.containerregistry.models.Status>`
     """
 
     _validation = {
@@ -41,6 +46,7 @@ class Replication(Resource):
         'type': {'readonly': True},
         'location': {'required': True},
         'provisioning_state': {'readonly': True},
+        'status': {'readonly': True},
     }
 
     _attribute_map = {
@@ -49,9 +55,11 @@ class Replication(Resource):
         'type': {'key': 'type', 'type': 'str'},
         'location': {'key': 'location', 'type': 'str'},
         'tags': {'key': 'tags', 'type': '{str}'},
-        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'ProvisioningState'},
+        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
+        'status': {'key': 'properties.status', 'type': 'Status'},
     }
 
     def __init__(self, location, tags=None):
         super(Replication, self).__init__(location=location, tags=tags)
         self.provisioning_state = None
+        self.status = None
