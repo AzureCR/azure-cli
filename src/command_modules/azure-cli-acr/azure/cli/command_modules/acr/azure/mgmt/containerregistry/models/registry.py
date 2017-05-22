@@ -37,10 +37,15 @@ class Registry(Resource):
     :ivar creation_date: The creation date of the container registry in
      ISO8601 format.
     :vartype creation_date: datetime
-    :ivar provisioning_state: The status of the container registry at the time
-     the operation was called. Possible values include: 'Creating', 'Succeeded'
+    :ivar provisioning_state: The provisioning state of the container registry
+     at the time the operation was called. Possible values include: 'Creating',
+     'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
     :vartype provisioning_state: str or :class:`ProvisioningState
      <azure.mgmt.containerregistry.models.ProvisioningState>`
+    :ivar status: The status of the container registry at the time the
+     operation was called.
+    :vartype status: :class:`Status
+     <azure.mgmt.containerregistry.models.Status>`
     :param admin_user_enabled: The value that indicates whether the admin user
      is enabled. Default value: False .
     :type admin_user_enabled: bool
@@ -59,6 +64,7 @@ class Registry(Resource):
         'login_server': {'readonly': True},
         'creation_date': {'readonly': True},
         'provisioning_state': {'readonly': True},
+        'status': {'readonly': True},
     }
 
     _attribute_map = {
@@ -70,7 +76,8 @@ class Registry(Resource):
         'sku': {'key': 'sku', 'type': 'Sku'},
         'login_server': {'key': 'properties.loginServer', 'type': 'str'},
         'creation_date': {'key': 'properties.creationDate', 'type': 'iso-8601'},
-        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'ProvisioningState'},
+        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
+        'status': {'key': 'properties.status', 'type': 'Status'},
         'admin_user_enabled': {'key': 'properties.adminUserEnabled', 'type': 'bool'},
         'storage_account': {'key': 'properties.storageAccount', 'type': 'StorageAccountProperties'},
     }
@@ -81,5 +88,6 @@ class Registry(Resource):
         self.login_server = None
         self.creation_date = None
         self.provisioning_state = None
+        self.status = None
         self.admin_user_enabled = admin_user_enabled
         self.storage_account = storage_account
