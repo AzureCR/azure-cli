@@ -28,13 +28,13 @@ def acr_webhook_list(registry_name,
     return client.list(resource_group_name, registry_name)
 
 
-def acr_webhook_create(webhook_name,  # pylint: disable=too-many-arguments
+def acr_webhook_create(webhook_name,
                        uri,
                        actions,
                        registry_name,
                        resource_group_name=None,
                        headers=None,
-                       is_enabled='true',
+                       status='enabled',
                        scope=None,
                        tags=None):
     """Creates a webhook for a container registry.
@@ -44,7 +44,7 @@ def acr_webhook_create(webhook_name,  # pylint: disable=too-many-arguments
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param str headers: Custom headers that will be added to the webhook notifications
-    :param str is_enabled: Indicates whether the webhook is enabled
+    :param str status: Indicates whether the webhook is enabled
     :param str scope: The scope of repositories where the event can be triggered
     """
     location, resource_group_name = get_registry_location_by_name(
@@ -61,7 +61,7 @@ def acr_webhook_create(webhook_name,  # pylint: disable=too-many-arguments
             service_uri=uri,
             actions=actions,
             custom_headers=headers,
-            is_enabled=is_enabled == 'true',
+            status=status,
             scope=scope,
             tags=tags
         )
@@ -98,11 +98,11 @@ def acr_webhook_show(webhook_name,
     return client.get(resource_group_name, registry_name, webhook_name)
 
 
-def acr_webhook_update_custom(instance,  # pylint: disable=too-many-arguments
+def acr_webhook_update_custom(instance,
                               uri=None,
                               actions=None,
                               headers=None,
-                              is_enabled=None,
+                              status=None,
                               scope=None,
                               tags=None):
     if uri is not None:
@@ -114,8 +114,8 @@ def acr_webhook_update_custom(instance,  # pylint: disable=too-many-arguments
     if headers is not None:
         instance.custom_headers = headers
 
-    if is_enabled is not None:
-        instance.is_enabled = is_enabled == ['true']
+    if status is not None:
+        instance.status = status
 
     if scope is not None:
         instance.scope = scope
@@ -130,6 +130,11 @@ def acr_webhook_update_get(client,
                            webhook_name,
                            registry_name,
                            resource_group_name=None):
+    """Gets the properties of the specified webhook.
+    :param str webhook_name: The name of webhook
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
 
@@ -137,7 +142,7 @@ def acr_webhook_update_get(client,
 
     return WebhookUpdateParameters(
         tags=webhook.tags,
-        is_enabled=webhook.is_enabled,
+        status=webhook.status,
         scope=webhook.scope,
         actions=webhook.actions)
 
@@ -147,6 +152,12 @@ def acr_webhook_update_set(client,
                            registry_name,
                            resource_group_name=None,
                            parameters=None):
+    """Sets the properties of the specified webhook.
+    :param str webhook_name: The name of webhook
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    :param WebhookUpdateParameters parameters: The webhook update parameters object
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
 

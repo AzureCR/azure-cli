@@ -18,7 +18,7 @@ class EventContent(Model):
     :param id: The event ID.
     :type id: str
     :param timestamp: The time at which the event occurred.
-    :type timestamp: str
+    :type timestamp: datetime
     :param action: The action that encompasses the provided event.
     :type action: str
     :param target: The target of the event.
@@ -36,7 +36,7 @@ class EventContent(Model):
 
     _attribute_map = {
         'id': {'key': 'id', 'type': 'str'},
-        'timestamp': {'key': 'timestamp', 'type': 'str'},
+        'timestamp': {'key': 'timestamp', 'type': 'iso-8601'},
         'action': {'key': 'action', 'type': 'str'},
         'target': {'key': 'target', 'type': 'Target'},
         'request': {'key': 'request', 'type': 'Request'},

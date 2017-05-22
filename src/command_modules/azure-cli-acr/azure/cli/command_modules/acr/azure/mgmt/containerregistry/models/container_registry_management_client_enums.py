@@ -29,7 +29,11 @@ class SkuTier(Enum):
 class ProvisioningState(Enum):
 
     creating = "Creating"
+    updating = "Updating"
+    deleting = "Deleting"
     succeeded = "Succeeded"
+    failed = "Failed"
+    canceled = "Canceled"
 
 
 class PasswordName(Enum):
@@ -38,8 +42,13 @@ class PasswordName(Enum):
     password2 = "password2"
 
 
+class WebhookStatus(Enum):
+
+    enabled = "enabled"
+    disabled = "disabled"
+
+
 class WebhookAction(Enum):
 
     push = "push"
-    pull = "pull"
     delete = "delete"

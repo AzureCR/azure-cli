@@ -67,7 +67,7 @@ def _obtain_data_from_registry(login_server, path, resultIndex, username, passwo
     return resultList
 
 
-def _validate_user_credentials(registry_name,  # pylint: disable=too-many-arguments
+def _validate_user_credentials(registry_name,
                                resource_group_name,
                                path,
                                resultIndex,

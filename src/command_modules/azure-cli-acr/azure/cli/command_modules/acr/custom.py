@@ -12,14 +12,14 @@ from azure.cli.core.prompting import prompt, prompt_pass, NoTTYException
 
 from .azure.mgmt.containerregistry.models import (
     RegistryUpdateParameters,
-    StorageAccountParameters,
+    StorageAccountProperties,
     SkuName
 )
 
 from ._factory import get_acr_service_client
 from ._utils import (
     get_resource_group_name_by_registry_name,
-    get_access_key_by_storage_account_name,
+    get_resource_id_by_storage_account_name,
     arm_deploy_template_new_storage,
     arm_deploy_template_existing_storage,
     arm_deploy_template_managed_storage,
@@ -156,6 +156,10 @@ def acr_show(registry_name, resource_group_name=None):
 def acr_update_get(client,
                    registry_name,
                    resource_group_name=None):
+    """Gets the properties of the specified container registry.
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
 
@@ -163,7 +167,8 @@ def acr_update_get(client,
 
     return RegistryUpdateParameters(
         tags=registry.tags,
-        admin_user_enabled=registry.admin_user_enabled
+        admin_user_enabled=registry.admin_user_enabled,
+        storage_account=registry.storage_account
     )
 
 
@@ -172,11 +177,8 @@ def acr_update_custom(instance,
                       admin_enabled=None,
                       tags=None):
     if storage_account_name is not None:
-        storage_account_key = \
-            get_access_key_by_storage_account_name(storage_account_name)
-        instance.storage_account = StorageAccountParameters(
-            storage_account_name,
-            storage_account_key
+        instance.storage_account = StorageAccountProperties(
+            get_resource_id_by_storage_account_name(storage_account_name)
         )
 
     if admin_enabled is not None:
@@ -192,6 +194,11 @@ def acr_update_set(client,
                    registry_name,
                    resource_group_name=None,
                    parameters=None):
+    """Sets the properties of the specified container registry.
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    :param RegistryUpdateParameters parameters: The registry update parameters object
+    """
     registry, resource_group_name = get_registry_by_name(registry_name, resource_group_name)
 
     if parameters.storage_account is not None and registry.sku.name != SkuName.basic.value:  # pylint: disable=no-member
@@ -199,15 +206,6 @@ def acr_update_set(client,
         logger.warning(
             "'%s' SKU uses managed storage account. The specified storage account will be ignored.",
             registry.sku.name)  # pylint: disable=no-member
-
-    if parameters.storage_account is not None and isinstance(parameters.storage_account, dict):
-        if 'name' not in parameters.storage_account:
-            raise CLIError(
-                "Storage account name is required to update " +
-                "the storage account used by a container registry.")
-        if 'access_key' not in parameters.storage_account:
-            parameters.storage_account['access_key'] = \
-            get_access_key_by_storage_account_name(parameters.storage_account['name'])
 
     return client.update(resource_group_name, registry_name, parameters)
 
