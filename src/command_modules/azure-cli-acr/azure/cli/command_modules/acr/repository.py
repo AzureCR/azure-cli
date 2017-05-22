@@ -33,7 +33,13 @@ def _bearer_auth_str(token):
     return 'Bearer ' + token
 
 
-def _obtain_data_from_registry(login_server, path, resultIndex, username, password, retry_times=3, retry_interval=5):
+def _obtain_data_from_registry(login_server,
+                               path,
+                               resultIndex,
+                               username,
+                               password,
+                               retry_times=3,
+                               retry_interval=5):
     registryEndpoint = 'https://' + login_server
     resultList = []
     executeNextHttpCall = True
