@@ -176,7 +176,7 @@ class ReplicationsOperations(object):
 
         def get_long_running_output(response):
 
-            if response.status_code not in [200, 202]:
+            if response.status_code not in [200, 201]:
                 exp = CloudError(response)
                 exp.request_id = response.headers.get('x-ms-request-id')
                 raise exp
@@ -184,6 +184,8 @@ class ReplicationsOperations(object):
             deserialized = None
 
             if response.status_code == 200:
+                deserialized = self._deserialize('Replication', response)
+            if response.status_code == 201:
                 deserialized = self._deserialize('Replication', response)
 
             if raw:
