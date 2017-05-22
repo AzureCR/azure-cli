@@ -200,7 +200,7 @@ helps['acr webhook update'] = """
             az acr webhook update -n MyWebhook -r MyRegistry --uri http://myservice.com --actions push delete
         - name: Disable a webhook
           text: >
-            az acr webhook update -n MyWebhook -r MyRegistry --is-enabled false
+            az acr webhook update -n MyWebhook -r MyRegistry --status disabled
 """
 
 helps['acr webhook get-config'] = """
@@ -245,7 +245,7 @@ helps['acr replication create'] = """
     examples:
         - name: Create a replication for a container registry.
           text: >
-            az acr replication create -n MyReplication -r MyRegistry -l westus
+            az acr replication create -r MyRegistry -l westus
 """
 
 helps['acr replication delete'] = """
