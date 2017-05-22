@@ -21,29 +21,30 @@ def acr_replication_list(registry_name,
     return client.list(resource_group_name, registry_name)
 
 
-def acr_replication_create(replication_name,
-                           location,
+def acr_replication_create(location,
                            registry_name,
                            resource_group_name=None,
+                           replication_name=None,
                            tags=None):
     """Creates a replication for a container registry.
-    :param str replication_name: The name of replication
     :param str location: The name of location
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
+    :param str replication_name: The name of replication
     """
+    if replication_name is None:
+        replication_name = "".join(location.split()).lower()
+
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.create_or_update(
-        resource_group_name,
-        registry_name,
-        replication_name,
-        Replication(
-            location=location,
-            tags=tags
-        )
+        resource_group_name=resource_group_name,
+        registry_name=registry_name,
+        replication_name=replication_name,
+        location=location,
+        tags=tags
     )
 
 
@@ -86,6 +87,11 @@ def acr_replication_update_get(client,
                                replication_name,
                                registry_name,
                                resource_group_name=None):
+    """Gets the properties of the specified replication.
+    :param str replication_name: The name of replication
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
 
@@ -102,7 +108,18 @@ def acr_replication_update_set(client,
                                registry_name,
                                resource_group_name=None,
                                parameters=None):
+    """Sets the properties of the specified replication.
+    :param str replication_name: The name of replication
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    :param Replication parameters: The replication object
+    """
     resource_group_name = get_resource_group_name_by_registry_name(
         registry_name, resource_group_name)
 
-    return client.create_or_update(resource_group_name, registry_name, replication_name, parameters)
+    return client.create_or_update(
+        resource_group_name=resource_group_name,
+        registry_name=registry_name,
+        replication_name=replication_name,
+        location=parameters.location,
+        tags=parameters.tags)
