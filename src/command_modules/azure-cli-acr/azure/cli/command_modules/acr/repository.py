@@ -3,6 +3,7 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
+import time
 import json
 from base64 import b64encode
 import requests
@@ -19,6 +20,8 @@ import azure.cli.core.azlogging as azlogging
 
 logger = azlogging.get_az_logger(__name__)
 
+_UNAUTHORIZED = 'Invalid username or password specified.'
+
 
 def _basic_auth_str(username, password):
     return 'Basic ' + to_native_string(
@@ -30,7 +33,13 @@ def _bearer_auth_str(token):
     return 'Bearer ' + token
 
 
-def _obtain_data_from_registry(login_server, path, resultIndex, username, password):
+def _obtain_data_from_registry(login_server,
+                               path,
+                               resultIndex,
+                               username,
+                               password,
+                               retry_times=3,
+                               retry_interval=5):
     registryEndpoint = 'https://' + login_server
     resultList = []
     executeNextHttpCall = True
@@ -44,25 +53,41 @@ def _obtain_data_from_registry(login_server, path, resultIndex, username, passwo
 
     while executeNextHttpCall:
         executeNextHttpCall = False
-        response = requests.get(
-            registryEndpoint + path,
-            headers=headers
-        )
+        for i in range (0, retry_times):
+            try:
+                response = requests.get(
+                    registryEndpoint + path,
+                    headers=headers
+                )
 
-        if response.status_code == 200:
-            resultList += response.json()[resultIndex]
-            if 'link' in response.headers and response.headers['link']:
-                linkHeader = response.headers['link']
-                # The registry is telling us there's more items in the list,
-                # and another call is needed. The link header looks something
-                # like `Link: </v2/_catalog?last=hello-world&n=1>; rel="next"`
-                # we should follow the next path indicated in the link header
-                path = linkHeader[(linkHeader.index('<') + 1):linkHeader.index('>')]
-                executeNextHttpCall = True
-        elif response.status_code == 401:
-            raise CLIError('Invalid username or password specified.')
-        else:
-            raise CLIError(json.loads(response.text)['errors'][0]['message'])
+                errorMessage = None
+
+                if response.status_code == 200:
+                    resultList += response.json()[resultIndex]
+                    if 'link' in response.headers and response.headers['link']:
+                        linkHeader = response.headers['link']
+                        # The registry is telling us there's more items in the list,
+                        # and another call is needed. The link header looks something
+                        # like `Link: </v2/_catalog?last=hello-world&n=1>; rel="next"`
+                        # we should follow the next path indicated in the link header
+                        path = linkHeader[(linkHeader.index('<') + 1):linkHeader.index('>')]
+                        executeNextHttpCall = True
+                    break
+                elif response.status_code == 401:
+                    raise CLIError(_UNAUTHORIZED)
+                else:
+                    errorMessage = response.text
+                    raise CLIError(errorMessage)
+
+            except Exception as e:  # pylint: disable=broad-except
+                if str(e) is not _UNAUTHORIZED:
+                    logger.debug('Retrying %s with exception %s', i + 1, str(e))
+                    time.sleep(retry_interval)
+                else:
+                    raise
+
+    if errorMessage is not None:
+        raise CLIError(errorMessage)
 
     return resultList
 
