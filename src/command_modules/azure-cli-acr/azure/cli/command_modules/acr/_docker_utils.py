@@ -8,7 +8,6 @@ from urllib.parse import urlencode, urlparse, urlunparse
 from json import loads
 import requests
 
-from azure.cli.core._profile import Profile
 from azure.cli.core.util import CLIError
 
 
@@ -39,8 +38,9 @@ def _get_login_token(login_server, only_refresh_token=True, repository=None):
     authurl = urlparse(params['realm'])
     authhost = urlunparse((authurl[0], authurl[1], '/oauth2/exchange', '', '', ''))
 
+    from azure.cli.core._profile import Profile
     profile = Profile()
-    sp_id, refresh, tenant = profile.get_refresh_credentials()
+    sp_id, refresh, tenant = profile.get_refresh_token()
 
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     if sp_id is None:
