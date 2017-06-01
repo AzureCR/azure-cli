@@ -51,9 +51,9 @@ def _delete_data_from_registry(login_server,
                                path,
                                username,
                                password,
-                               resultIndex=None,
-                               retry_times=3,
-                               retry_interval=5):
+                               resultIndex=None,  # pylint: disable=unused-argument
+                               retry_times=3,  # pylint: disable=unused-argument
+                               retry_interval=5):  # pylint: disable=unused-argument
     registryEndpoint = 'https://' + login_server
 
     response = requests.delete(
