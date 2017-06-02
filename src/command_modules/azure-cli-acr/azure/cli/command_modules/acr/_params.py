@@ -24,7 +24,7 @@ from ._constants import (
 )
 from ._validators import validate_registry_name, validate_headers
 
-register_cli_argument('acr', 'registry_name', options_list=('--name', '-n'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
+register_cli_argument('acr', 'registry_name', options_list=('--name', '-n'), help='The name of the container registry. You can configure the default registry name using `az configure --defaults acr=<registry name>`', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE), configured_default='acr')
 register_cli_argument('acr', 'storage_account_name', help='Provide the name of an existing storage account if you\'re recreating a container registry over a previous registry created storage account. Only applicable to Basic SKU.', completer=get_resource_name_completion_list(STORAGE_RESOURCE_TYPE))
 register_cli_argument('acr', 'sku', help='The SKU of the container registry', choices=['Basic', 'Standard_Small', 'Standard_Medium', 'Standard_Large'])
 register_cli_argument('acr', 'password_name', help='The name of password to regenerate', choices=['password', 'password2'])
