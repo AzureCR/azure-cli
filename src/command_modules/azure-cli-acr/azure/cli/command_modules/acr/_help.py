@@ -148,6 +148,33 @@ helps['acr repository show-tags'] = """
             az acr repository show-tags -n MyRegistry --repository MyRepository
 """
 
+helps['acr repository show-manifests'] = """
+    type: command
+    short-summary: Shows manifests of a given repository in the specified container registry.
+    examples:
+        - name: Show manifests of a given repository in a given container registry.
+          text:
+            az acr repository show-manifests -n MyRegistry --repository MyRepository
+"""
+
+helps['acr repository delete'] = """
+    type: command
+    short-summary: Deletes a repository or a manifest/tag from the given repository in the specified container registry.
+    examples:
+        - name: Delete a repository from the specified container registry.
+          text:
+            az acr repository delete -n MyRegistry --repository MyRepository
+        - name: Delete a tag from the given repository in the specified container registry, but keep the manifest referenced by the tag.
+          text:
+            az acr repository delete -n MyRegistry --repository MyRepository --tag MyTag
+        - name: Delete the manifest referenced by a tag and all tags referencing the manifest from the given repository in the specified container registry.
+          text:
+            az acr repository delete -n MyRegistry --repository MyRepository --tag MyTag --manifest
+        - name: Delete a manfiest and all tags referencing the manifest from the given repository in the specified container registry.
+          text:
+            az acr repository delete -n MyRegistry --repository MyRepository --manifest MyManifest
+"""
+
 helps['acr webhook list'] = """
     type: command
     short-summary: Lists all the webhooks for the specified container registry.
