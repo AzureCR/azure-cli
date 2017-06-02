@@ -5,34 +5,34 @@
         "registryName": {
             "type": "string",
             "metadata": {
-                "description": "Name of the container registry"
+                "description": "The name of the container registry."
             }
         },
         "registryLocation": {
             "type": "string",
             "metadata": {
-                "description": "Location of the container registry"
+                "description": "The location of the container registry. This cannot be changed after the resource is created."
             }
         },
         "registrySku": {
             "type": "string",
             "defaultValue": "Standard_Medium",
             "metadata": {
-                "description": "Sku of the container registry"
+                "description": "The SKU of the container registry."
             }
         },
         "registryApiVersion": {
             "type": "string",
             "defaultValue": "2017-06-01-preview",
             "metadata": {
-                "description": "Api version of the container registry"
+                "description": "The API version of the container registry."
             }
         },
         "adminUserEnabled": {
             "type": "bool",
             "defaultValue": false,
             "metadata": {
-                "description": "Enable admin user"
+                "description": "The value that indicates whether the admin user is enabled."
             }
         }
     },

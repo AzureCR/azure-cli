@@ -75,7 +75,7 @@ def _get_login_token(login_server, only_refresh_token=True, repository=None):
     if repository is None:
         scope = 'registry:catalog:*'
     else:
-        scope = 'repository:' + repository + ':pull'
+        scope = 'repository:' + repository + ':*'
 
     content = {
         'grant_type': 'refresh_token',
