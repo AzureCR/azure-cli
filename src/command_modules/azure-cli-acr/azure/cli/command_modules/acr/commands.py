@@ -40,6 +40,10 @@ cli_command(__name__, 'acr repository list',
             'azure.cli.command_modules.acr.repository#acr_repository_list')
 cli_command(__name__, 'acr repository show-tags',
             'azure.cli.command_modules.acr.repository#acr_repository_show_tags')
+cli_command(__name__, 'acr repository show-manifests',
+            'azure.cli.command_modules.acr.repository#acr_repository_show_manifests')
+cli_command(__name__, 'acr repository delete',
+            'azure.cli.command_modules.acr.repository#acr_repository_delete')
 
 cli_command(__name__, 'acr webhook list',
             'azure.cli.command_modules.acr.webhook#acr_webhook_list',
