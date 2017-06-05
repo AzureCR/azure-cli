@@ -283,14 +283,14 @@ def acr_repository_delete(registry_name,
         # Raise if --tag is empty
         if not tag:
             raise CLIError(_INVALID)
-        manifest = _delete_manifest_confirmation(yes, repository, None, tag)
+        manifest = _delete_manifest_confirmation(yes, registry_name, repository, None, tag)
         path = '/v2/{}/manifests/{}'.format(repository, manifest)
     # If --manifest is specified with a value
     else:
         # Raise if --tag is not empty
         if tag:
             raise CLIError(_INVALID)
-        manifest = _delete_manifest_confirmation(yes, repository, manifest, None)
+        manifest = _delete_manifest_confirmation(yes, registry_name, repository, manifest, None)
         path = '/v2/{}/manifests/{}'.format(repository, manifest)
 
     return _validate_user_credentials(
@@ -305,12 +305,12 @@ def acr_repository_delete(registry_name,
     )
 
 
-def _delete_manifest_confirmation(yes, repository, manifest, tag):
+def _delete_manifest_confirmation(yes, registry_name, repository, manifest, tag):
     # All tags that are referencing the manifest, this can be empty.
     tags = []
     # Always query manifest if it is None
     if manifest is None:
-        manifests = acr_repository_show_manifests('doyoudelete', repository)
+        manifests = acr_repository_show_manifests(registry_name, repository)
         filter_by_tag = [x for x in manifests if tag in x['tags']]
 
         if not filter_by_tag:
@@ -325,7 +325,7 @@ def _delete_manifest_confirmation(yes, repository, manifest, tag):
         return manifest
 
     if not tags:
-        manifests = acr_repository_show_manifests('doyoudelete', repository)
+        manifests = acr_repository_show_manifests(registry_name, repository)
         filter_by_manifest = [x for x in manifests if manifest == x['digest']]
 
         if not filter_by_manifest:
