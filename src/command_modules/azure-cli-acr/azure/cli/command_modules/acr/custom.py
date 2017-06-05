@@ -153,23 +153,10 @@ def acr_show(registry_name, resource_group_name=None):
     return client.get(resource_group_name, registry_name)
 
 
-def acr_update_get(client,
-                   registry_name,
-                   resource_group_name=None):
-    """Gets the properties of the specified container registry.
-    :param str registry_name: The name of container registry
-    :param str resource_group_name: The name of resource group
+def acr_update_get(client):  # pylint: disable=unused-argument
+    """Returns an empty RegistryUpdateParameters object.
     """
-    resource_group_name = get_resource_group_name_by_registry_name(
-        registry_name, resource_group_name)
-
-    registry = client.get(resource_group_name, registry_name)
-
-    return RegistryUpdateParameters(
-        tags=registry.tags,
-        admin_user_enabled=registry.admin_user_enabled,
-        storage_account=registry.storage_account
-    )
+    return RegistryUpdateParameters()
 
 
 def acr_update_custom(instance,
@@ -182,7 +169,7 @@ def acr_update_custom(instance,
         )
 
     if admin_enabled is not None:
-        instance.admin_user_enabled = admin_enabled == ['true']
+        instance.admin_user_enabled = admin_enabled == 'true'
 
     if tags is not None:
         instance.tags = tags
