@@ -19,8 +19,8 @@ class Sku(Model):
     sending a request.
 
     :param name: The SKU name of the the container registry. Required for
-     registry creation. Possible values include: 'Basic', 'Standard_Small',
-     'Standard_Medium', 'Standard_Large'
+     registry creation. Possible values include: 'Basic', 'Small', 'Medium',
+     'Large'
     :type name: str or :class:`SkuName
      <azure.mgmt.containerregistry.models.SkuName>`
     :ivar tier: The SKU tier based on the SKU name. Possible values include:

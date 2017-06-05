@@ -15,9 +15,9 @@ from enum import Enum
 class SkuName(Enum):
 
     basic = "Basic"
-    standard_small = "Standard_Small"
-    standard_medium = "Standard_Medium"
-    standard_large = "Standard_Large"
+    small = "Small"
+    medium = "Medium"
+    large = "Large"
 
 
 class SkuTier(Enum):
