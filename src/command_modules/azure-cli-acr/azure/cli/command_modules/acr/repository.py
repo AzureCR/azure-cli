@@ -12,12 +12,14 @@ from azure.cli.core.prompting import prompt, prompt_pass, NoTTYException, prompt
 import azure.cli.core.azlogging as azlogging
 from azure.cli.core.util import CLIError
 
-from ._utils import get_registry_login_server_by_name
+from ._utils import get_registry_login_server_by_name, registry_sku_validation
 from ._docker_utils import get_login_access_token
 from .credential import acr_credential_show
 
 
 logger = azlogging.get_az_logger(__name__)
+DELETE_NOT_SUPPORTED = 'Delete is not supported for registries in Basic SKU.'
+LIST_MANIFESTS_NOT_SUPPORTED = 'List manifests is not supported for registries in Basic SKU.'
 
 
 class NotFound(Exception):
@@ -238,6 +240,8 @@ def acr_repository_show_manifests(registry_name,
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     """
+    _, resource_group_name = registry_sku_validation(
+        registry_name, resource_group_name, LIST_MANIFESTS_NOT_SUPPORTED)
     return _validate_user_credentials(
         registry_name=registry_name,
         resource_group_name=resource_group_name,
@@ -267,6 +271,8 @@ def acr_repository_delete(registry_name,
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     """
+    _, resource_group_name = registry_sku_validation(
+        registry_name, resource_group_name, DELETE_NOT_SUPPORTED)
     _INVALID = "Please specify either a tag name with --tag or a manifest digest with --manifest."
 
     # If manifest is not specified
