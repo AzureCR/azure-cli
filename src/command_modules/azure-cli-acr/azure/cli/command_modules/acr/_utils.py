@@ -6,6 +6,8 @@
 from azure.cli.core.util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 
+from .azure.mgmt.containerregistry.models import SkuTier
+
 from ._constants import (
     ACR_RESOURCE_PROVIDER,
     ACR_RESOURCE_TYPE,
@@ -79,19 +81,6 @@ def get_resource_group_name_by_storage_account_name(storage_account_name,
         arm_resource = _arm_get_resource_by_name(storage_account_name, STORAGE_RESOURCE_TYPE)
         resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
     return resource_group_name
-
-
-def get_registry_location_by_name(registry_name, resource_group_name=None):
-    """Returns a tuple of registry location and resource group name.
-    :param str registry_name: The name of container registry
-    :param str resource_group_name: The name of resource group
-    """
-    arm_resource = _arm_get_resource_by_name(registry_name, ACR_RESOURCE_TYPE)
-
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
-
-    return arm_resource.location, resource_group_name
 
 
 def get_registry_by_name(registry_name, resource_group_name=None):
@@ -280,3 +269,19 @@ def random_storage_account_name(registry_name):
         if client.check_name_availability(
                 storage_account_name).name_available:  # pylint: disable=no-member
             return storage_account_name
+
+
+def registry_sku_validation(registry_name, resource_group_name=None, message=None):
+    """Validates if a registry is in Basic SKU.
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    """
+    arm_resource = _arm_get_resource_by_name(registry_name, ACR_RESOURCE_TYPE)
+
+    if resource_group_name is None:
+        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
+
+    if arm_resource.sku.tier == SkuTier.basic.value:
+        raise CLIError(message if message else "This operation is not supported for registries in Basic SKU.")
+
+    return arm_resource, resource_group_name
