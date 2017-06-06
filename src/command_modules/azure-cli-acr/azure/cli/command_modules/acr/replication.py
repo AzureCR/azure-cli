@@ -6,7 +6,13 @@
 from .azure.mgmt.containerregistry.models import Replication
 
 from ._factory import get_acr_service_client
-from ._utils import get_resource_group_name_by_registry_name
+from ._utils import (
+    get_resource_group_name_by_registry_name,
+    registry_sku_validation
+)
+
+
+REPLICATIONS_NOT_SUPPORTED = 'Replications are not supported for registries in Basic SKU.'
 
 
 def acr_replication_list(registry_name,
@@ -14,8 +20,8 @@ def acr_replication_list(registry_name,
     """Lists all the replications for the specified container registry.
     :param str registry_name: The name of container registry
     """
-    resource_group_name = get_resource_group_name_by_registry_name(
-        registry_name, resource_group_name)
+    _, resource_group_name = registry_sku_validation(
+        registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
     client = get_acr_service_client().replications
 
     return client.list(resource_group_name, registry_name)
@@ -32,11 +38,12 @@ def acr_replication_create(location,
     :param str resource_group_name: The name of resource group
     :param str replication_name: The name of replication
     """
+    _, resource_group_name = registry_sku_validation(
+        registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
+
     if replication_name is None:
         replication_name = "".join(location.split()).lower()
 
-    resource_group_name = get_resource_group_name_by_registry_name(
-        registry_name, resource_group_name)
     client = get_acr_service_client().replications
 
     return client.create_or_update(
@@ -54,8 +61,8 @@ def acr_replication_delete(replication_name,
     """Deletes a replication from a container registry.
     :param str registry_name: The name of container registry
     """
-    resource_group_name = get_resource_group_name_by_registry_name(
-        registry_name, resource_group_name)
+    _, resource_group_name = registry_sku_validation(
+        registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
     client = get_acr_service_client().replications
 
     return client.delete(resource_group_name, registry_name, replication_name)
@@ -69,8 +76,8 @@ def acr_replication_show(replication_name,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     """
-    resource_group_name = get_resource_group_name_by_registry_name(
-        registry_name, resource_group_name)
+    _, resource_group_name = registry_sku_validation(
+        registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
     client = get_acr_service_client().replications
 
     return client.get(resource_group_name, registry_name, replication_name)
@@ -92,8 +99,8 @@ def acr_replication_update_get(client,
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     """
-    resource_group_name = get_resource_group_name_by_registry_name(
-        registry_name, resource_group_name)
+    _, resource_group_name = registry_sku_validation(
+        registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
 
     replication = client.get(resource_group_name, registry_name, replication_name)
 

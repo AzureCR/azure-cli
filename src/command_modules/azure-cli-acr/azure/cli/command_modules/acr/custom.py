@@ -220,7 +220,7 @@ def acr_login(registry_name, resource_group_name=None, username=None, password=N
             username = "00000000-0000-0000-0000-000000000000"
             password = get_login_refresh_token(login_server)
         except Exception as e:  # pylint: disable=broad-except
-            logger.debug("acr_logger: " + str(e))
+            logger.warning("AAD authentication failed with exception: %s", str(e))
 
     # 3. if we still don't have credentials, attempt to get the admin credentials (if enabled)
     if not password:
@@ -229,7 +229,7 @@ def acr_login(registry_name, resource_group_name=None, username=None, password=N
             username = cred.username
             password = cred.passwords[0].value
         except Exception as e:  # pylint: disable=broad-except
-            logger.debug("acr_logger: " + str(e))
+            logger.warning("Admin user authentication failed with exception: %s", str(e))
 
     # 4. if we still don't have credentials, prompt the user
     if not password:
