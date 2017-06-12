@@ -9,10 +9,89 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-from .container_registry_management_client import ContainerRegistryManagementClient
-from .version import VERSION
+from msrest.service_client import ServiceClient
+from msrest import Serializer, Deserializer
+from msrestazure import AzureConfiguration
 
-__all__ = ['ContainerRegistryManagementClient']
 
-__version__ = VERSION
+class ContainerRegistryManagementClientConfiguration(AzureConfiguration):
 
+    def __init__(
+            self, credentials, subscription_id, base_url=None):
+
+        if credentials is None:
+            raise ValueError("Parameter 'credentials' must not be None.")
+        if subscription_id is None:
+            raise ValueError("Parameter 'subscription_id' must not be None.")
+        if not isinstance(subscription_id, str):
+            raise TypeError("Parameter 'subscription_id' must be str.")
+        if not base_url:
+            base_url = 'https://management.azure.com'
+
+        super(ContainerRegistryManagementClientConfiguration, self).__init__(base_url)
+
+        self.add_user_agent('Azure-SDK-For-Python')
+
+        self.credentials = credentials
+        self.subscription_id = subscription_id
+
+
+class ContainerRegistryManagementClient(object):
+
+    def __init__(
+            self, credentials, subscription_id, api_version='2017-03-01', base_url=None):
+
+        self.config = ContainerRegistryManagementClientConfiguration(credentials, subscription_id, base_url)
+        self._client = ServiceClient(self.config.credentials, self.config)
+
+        client_models = {k: v for k, v in self.models(api_version).__dict__.items() if isinstance(v, type)}
+        self.api_version = api_version
+        self._serialize = Serializer(client_models)
+        self._deserialize = Deserializer(client_models)
+
+    @classmethod
+    def models(cls, api_version='2017-03-01'):
+        if api_version == '2017-03-01':
+            from .v2017_03_01 import models
+            return models
+        elif api_version == '2017-06-01-preview':
+            from .v2017_06_01_preview import models
+            return models
+        else:
+            raise NotImplementedError("APIVersion {} is not available".format(api_version))
+
+    @property
+    def registries(self):
+        if self.api_version == '2017-03-01':
+            from .v2017_03_01.operations import RegistriesOperations as OperationClass
+        elif self.api_version == '2017-06-01-preview':
+            from .v2017_06_01_preview.operations import RegistriesOperations as OperationClass
+        else:
+            raise NotImplementedError("APIVersion {} is not available".format(self.api_version))
+        return OperationClass(self._client, self.config, self._serialize, self._deserialize)
+
+    @property
+    def operations(self):
+        if self.api_version == '2017-03-01':
+            from .v2017_03_01.operations import Operations as OperationClass
+        elif self.api_version == '2017-06-01-preview':
+            from .v2017_06_01_preview.operations import Operations as OperationClass
+        else:
+            raise NotImplementedError("APIVersion {} is not available".format(self.api_version))
+        return OperationClass(self._client, self.config, self._serialize, self._deserialize)
+
+    @property
+    def webhooks(self):
+        if self.api_version == '2017-06-01-preview':
+            from .v2017_06_01_preview.operations import WebhooksOperations as OperationClass
+        else:
+            raise NotImplementedError("APIVersion {} is not available".format(self.api_version))
+        return OperationClass(self._client, self.config, self._serialize, self._deserialize)
+
+    @property
+    def replications(self):
+        if self.api_version == '2017-06-01-preview':
+            from .v2017_06_01_preview.operations import ReplicationsOperations as OperationClass
+        else:
+            raise NotImplementedError("APIVersion {} is not available".format(self.api_version))
+        return OperationClass(self._client, self.config, self._serialize, self._deserialize)
