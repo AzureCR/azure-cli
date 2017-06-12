@@ -58,7 +58,7 @@ helps['acr create'] = """
     examples:
         - name: Create a container registry with managed storage account. Applicable to Standard SKU.
           text: >
-            az acr create -n MyRegistry -g MyResourceGroup --sku Medium
+            az acr create -n MyRegistry -g MyResourceGroup --sku Managed_Standard
         - name: Create a container registry with a new storage account. Applicable to Basic SKU.
           text: >
             az acr create -n MyRegistry -g MyResourceGroup --sku Basic

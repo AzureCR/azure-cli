@@ -37,7 +37,7 @@ Create a container registry
         --resource-group -g [Required]: Name of resource group. You can configure the default group
                                         using `az configure --defaults group=<name>`.
         --sku               [Required]: The SKU of the container registry.  Allowed values: Basic,
-                                        Large, Medium, Small.
+                                        Managed_Basic, Managed_Premium, Managed_Standard.
         --admin-enabled               : Indicates whether the admin user is enabled.  Allowed values:
                                         false, true.  Default: false.
         --location -l                 : Location. You can configure the default location using `az
@@ -48,7 +48,7 @@ Create a container registry
 
     Examples
         Create a container registry with managed storage account. Applicable to Standard SKU.
-            az acr create -n MyRegistry -g MyResourceGroup --sku Medium
+            az acr create -n MyRegistry -g MyResourceGroup --sku Managed_Standard
 
         Create a container registry with a new storage account. Applicable to Basic SKU.
             az acr create -n MyRegistry -g MyResourceGroup --sku Basic
