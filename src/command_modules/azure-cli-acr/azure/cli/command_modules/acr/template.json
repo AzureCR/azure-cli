@@ -16,7 +16,7 @@
         },
         "registrySku": {
             "type": "string",
-            "defaultValue": "Medium",
+            "defaultValue": "Managed_Standard",
             "metadata": {
                 "description": "The SKU of the container registry."
             }
