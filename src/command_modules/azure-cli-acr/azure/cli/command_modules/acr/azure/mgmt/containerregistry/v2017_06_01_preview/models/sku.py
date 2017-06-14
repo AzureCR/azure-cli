@@ -22,11 +22,11 @@ class Sku(Model):
      registry creation. Possible values include: 'Basic', 'Managed_Basic',
      'Managed_Standard', 'Managed_Premium'
     :type name: str or :class:`SkuName
-     <azure.mgmt.containerregistry.models.SkuName>`
+     <azure.mgmt.containerregistry.v2017_06_01_preview.models.SkuName>`
     :ivar tier: The SKU tier based on the SKU name. Possible values include:
      'Basic', 'Managed'
     :vartype tier: str or :class:`SkuTier
-     <azure.mgmt.containerregistry.models.SkuTier>`
+     <azure.mgmt.containerregistry.v2017_06_01_preview.models.SkuTier>`
     """
 
     _validation = {

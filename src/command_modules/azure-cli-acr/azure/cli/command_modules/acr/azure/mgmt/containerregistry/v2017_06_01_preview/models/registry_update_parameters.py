@@ -25,7 +25,7 @@ class RegistryUpdateParameters(Model):
      storage account must be in the same physical location as the container
      registry.
     :type storage_account: :class:`StorageAccountProperties
-     <azure.mgmt.containerregistry.models.StorageAccountProperties>`
+     <azure.mgmt.containerregistry.v2017_06_01_preview.models.StorageAccountProperties>`
     """
 
     _attribute_map = {

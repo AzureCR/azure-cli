@@ -53,7 +53,7 @@ class ReplicationsOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :rtype: :class:`Replication
-         <azure.mgmt.containerregistry.models.Replication>`
+         <azure.mgmt.containerregistry.v2017_06_01_preview.models.Replication>`
         :rtype: :class:`ClientRawResponse<msrest.pipeline.ClientRawResponse>`
          if raw=true
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
@@ -125,7 +125,7 @@ class ReplicationsOperations(object):
         :rtype:
          :class:`AzureOperationPoller<msrestazure.azure_operation.AzureOperationPoller>`
          instance that returns :class:`Replication
-         <azure.mgmt.containerregistry.models.Replication>`
+         <azure.mgmt.containerregistry.v2017_06_01_preview.models.Replication>`
         :rtype: :class:`ClientRawResponse<msrest.pipeline.ClientRawResponse>`
          if raw=true
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
@@ -301,7 +301,7 @@ class ReplicationsOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :rtype: :class:`ReplicationPaged
-         <azure.mgmt.containerregistry.models.ReplicationPaged>`
+         <azure.mgmt.containerregistry.v2017_06_01_preview.models.ReplicationPaged>`
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):

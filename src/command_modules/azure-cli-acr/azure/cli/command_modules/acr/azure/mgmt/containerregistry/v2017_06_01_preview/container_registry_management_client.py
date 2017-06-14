@@ -61,13 +61,13 @@ class ContainerRegistryManagementClient(object):
     :vartype config: ContainerRegistryManagementClientConfiguration
 
     :ivar registries: Registries operations
-    :vartype registries: .operations.RegistriesOperations
+    :vartype registries: azure.mgmt.containerregistry.v2017_06_01_preview.operations.RegistriesOperations
     :ivar operations: Operations operations
-    :vartype operations: .operations.Operations
+    :vartype operations: azure.mgmt.containerregistry.v2017_06_01_preview.operations.Operations
     :ivar replications: Replications operations
-    :vartype replications: .operations.ReplicationsOperations
+    :vartype replications: azure.mgmt.containerregistry.v2017_06_01_preview.operations.ReplicationsOperations
     :ivar webhooks: Webhooks operations
-    :vartype webhooks: .operations.WebhooksOperations
+    :vartype webhooks: azure.mgmt.containerregistry.v2017_06_01_preview.operations.WebhooksOperations
 
     :param credentials: Credentials needed for the client to connect to Azure.
     :type credentials: :mod:`A msrestazure Credentials
