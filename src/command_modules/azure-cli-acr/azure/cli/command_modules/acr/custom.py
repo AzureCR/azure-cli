@@ -105,7 +105,7 @@ def acr_create(registry_name,
             )
     else:
         if storage_account_name:
-            logger.warning("'%s' SKU uses managed storage account. " +
+            logger.warning("'%s' SKU are managed registries. " +
                            "The specified storage account will be ignored.", sku)
         LongRunningOperation()(
             arm_deploy_template_managed_storage(
@@ -195,7 +195,7 @@ def acr_update_set(client,
     if parameters.storage_account is not None and registry.sku.name != SkuTier.basic.value:  # pylint: disable=no-member
         parameters.storage_account = None
         logger.warning(
-            "'%s' SKU uses managed storage account. The specified storage account will be ignored.",
+            "'%s' SKU are managed registries. The specified storage account will be ignored.",
             registry.sku.name)  # pylint: disable=no-member
 
     if parameters.storage_account is not None and isinstance(parameters.storage_account, dict):
