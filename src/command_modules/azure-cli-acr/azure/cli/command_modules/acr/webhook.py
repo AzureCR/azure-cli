@@ -3,11 +3,12 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
-from .azure.mgmt.containerregistry.models import (
+from .azure.mgmt.containerregistry.v2017_06_01_preview.models import (
     WebhookCreateParameters,
     WebhookUpdateParameters
 )
 
+from ._constants import WEBHOOK_API_VERSION
 from ._factory import get_acr_service_client
 from ._utils import (
     get_resource_group_name_by_registry_name,
@@ -26,7 +27,7 @@ def acr_webhook_list(registry_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
-    client = get_acr_service_client().webhooks
+    client = get_acr_service_client(WEBHOOK_API_VERSION).webhooks
 
     return client.list(resource_group_name, registry_name)
 
@@ -54,7 +55,7 @@ def acr_webhook_create(webhook_name,
         registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
     location = arm_registry.location
 
-    client = get_acr_service_client().webhooks
+    client = get_acr_service_client(WEBHOOK_API_VERSION).webhooks
 
     return client.create(
         resource_group_name,
@@ -82,7 +83,7 @@ def acr_webhook_delete(webhook_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
-    client = get_acr_service_client().webhooks
+    client = get_acr_service_client(WEBHOOK_API_VERSION).webhooks
 
     return client.delete(resource_group_name, registry_name, webhook_name)
 
@@ -97,7 +98,7 @@ def acr_webhook_show(webhook_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
-    client = get_acr_service_client().webhooks
+    client = get_acr_service_client(WEBHOOK_API_VERSION).webhooks
 
     return client.get(resource_group_name, registry_name, webhook_name)
 
@@ -178,7 +179,7 @@ def acr_webhook_get_config(webhook_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
-    client = get_acr_service_client().webhooks
+    client = get_acr_service_client(WEBHOOK_API_VERSION).webhooks
 
     return client.get_callback_config(resource_group_name, registry_name, webhook_name)
 
@@ -193,7 +194,7 @@ def acr_webhook_list_events(webhook_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
-    client = get_acr_service_client().webhooks
+    client = get_acr_service_client(WEBHOOK_API_VERSION).webhooks
 
     return client.list_events(resource_group_name, registry_name, webhook_name)
 
@@ -208,6 +209,6 @@ def acr_webhook_ping(webhook_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
-    client = get_acr_service_client().webhooks
+    client = get_acr_service_client(WEBHOOK_API_VERSION).webhooks
 
     return client.ping(resource_group_name, registry_name, webhook_name)

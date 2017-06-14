@@ -6,7 +6,7 @@
 from azure.cli.core.util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 
-from .azure.mgmt.containerregistry.models import SkuTier
+from .azure.mgmt.containerregistry.v2017_03_01.models import SkuTier
 
 from ._constants import (
     ACR_RESOURCE_PROVIDER,
@@ -16,8 +16,7 @@ from ._constants import (
 from ._factory import (
     get_arm_service_client,
     get_storage_service_client,
-    get_acr_service_client,
-    get_acr_api_version
+    get_acr_service_client
 )
 
 
@@ -102,6 +101,19 @@ def get_registry_login_server_by_name(registry_name, resource_group_name=None):
     """
     registry, _ = get_registry_by_name(registry_name, resource_group_name)
     return registry.login_server  # pylint: disable=no-member
+
+
+def get_access_key_by_storage_account_name(storage_account_name, resource_group_name=None):
+    """Returns access key for the storage account.
+    :param str storage_account_name: The name of storage account
+    :param str resource_group_name: The name of resource group
+    """
+    resource_group_name = get_resource_group_name_by_storage_account_name(
+        storage_account_name, resource_group_name)
+    client = get_storage_service_client().storage_accounts
+
+    return client.list_keys(resource_group_name, storage_account_name).keys[
+        0].value  # pylint: disable=no-member
 
 
 def arm_deploy_template_managed_storage(resource_group_name,
@@ -232,7 +244,8 @@ def _parameters(registry_name,
                 sku,
                 admin_user_enabled,
                 storage_account_name=None,
-                storage_account_resource_group=None):
+                storage_account_resource_group=None,
+                registry_api_version=None):
     """Returns a dict of deployment parameters.
     :param str registry_name: The name of container registry
     :param str location: The name of location
@@ -240,6 +253,7 @@ def _parameters(registry_name,
     :param bool admin_user_enabled: Enable admin user
     :param str storage_account_name: The name of storage account
     :param str storage_account_resource_group: The resource group of storage account
+    :param str registry_api_version: The API version of the container registry
     """
     parameters = {
         'registryName': {'value': registry_name},
@@ -247,9 +261,8 @@ def _parameters(registry_name,
         'registrySku': {'value': sku},
         'adminUserEnabled': {'value': admin_user_enabled}
     }
-    customized_api_version = get_acr_api_version()
-    if customized_api_version:
-        parameters['registryApiVersion'] = {'value': customized_api_version}
+    if registry_api_version:
+        parameters['registryApiVersion'] = {'value': registry_api_version}
     if storage_account_name:
         parameters['storageAccountName'] = {'value': storage_account_name}
         if storage_account_resource_group:

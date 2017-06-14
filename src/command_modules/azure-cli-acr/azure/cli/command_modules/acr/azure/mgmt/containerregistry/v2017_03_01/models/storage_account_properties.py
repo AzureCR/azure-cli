@@ -9,5 +9,19 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-VERSION = "0.2.1"
+from msrest.serialization import Model
 
+
+class StorageAccountProperties(Model):
+    """The properties of a storage account for a container registry.
+
+    :param name: The name of the storage account.
+    :type name: str
+    """
+
+    _attribute_map = {
+        'name': {'key': 'name', 'type': 'str'},
+    }
+
+    def __init__(self, name=None):
+        self.name = name

@@ -9,5 +9,21 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-VERSION = "0.2.1"
+from enum import Enum
 
+
+class SkuTier(Enum):
+
+    basic = "Basic"
+
+
+class ProvisioningState(Enum):
+
+    creating = "Creating"
+    succeeded = "Succeeded"
+
+
+class PasswordName(Enum):
+
+    password = "password"
+    password2 = "password2"

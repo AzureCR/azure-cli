@@ -9,5 +9,10 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-VERSION = "0.2.1"
+from .registries_operations import RegistriesOperations
+from .operations import Operations
 
+__all__ = [
+    'RegistriesOperations',
+    'Operations',
+]

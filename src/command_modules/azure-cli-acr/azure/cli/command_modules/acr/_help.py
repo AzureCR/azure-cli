@@ -56,7 +56,7 @@ helps['acr create'] = """
     type: command
     short-summary: Creates a container registry.
     examples:
-        - name: Create a container registry with managed storage account. Applicable to Standard SKU.
+        - name: Create a managed container registry. Applicable to Managed SKU.
           text: >
             az acr create -n MyRegistry -g MyResourceGroup --sku Managed_Standard
         - name: Create a container registry with a new storage account. Applicable to Basic SKU.

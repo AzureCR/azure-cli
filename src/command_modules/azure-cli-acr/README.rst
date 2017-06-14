@@ -47,7 +47,7 @@ Create a container registry
                                         storage account. Only applicable to Basic SKU.
 
     Examples
-        Create a container registry with managed storage account. Applicable to Standard SKU.
+        Create a managed container registry. Applicable to Managed SKU.
             az acr create -n MyRegistry -g MyResourceGroup --sku Managed_Standard
 
         Create a container registry with a new storage account. Applicable to Basic SKU.
