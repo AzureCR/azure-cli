@@ -3,8 +3,9 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
-from .azure.mgmt.containerregistry.models import Replication
+from .azure.mgmt.containerregistry.v2017_06_01_preview.models import Replication
 
+from ._constants import REPLICATION_API_VERSION
 from ._factory import get_acr_service_client
 from ._utils import (
     get_resource_group_name_by_registry_name,
@@ -22,7 +23,7 @@ def acr_replication_list(registry_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
-    client = get_acr_service_client().replications
+    client = get_acr_service_client(REPLICATION_API_VERSION).replications
 
     return client.list(resource_group_name, registry_name)
 
@@ -44,7 +45,7 @@ def acr_replication_create(location,
     if replication_name is None:
         replication_name = "".join(location.split()).lower()
 
-    client = get_acr_service_client().replications
+    client = get_acr_service_client(REPLICATION_API_VERSION).replications
 
     return client.create_or_update(
         resource_group_name=resource_group_name,
@@ -63,7 +64,7 @@ def acr_replication_delete(replication_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
-    client = get_acr_service_client().replications
+    client = get_acr_service_client(REPLICATION_API_VERSION).replications
 
     return client.delete(resource_group_name, registry_name, replication_name)
 
@@ -78,7 +79,7 @@ def acr_replication_show(replication_name,
     """
     _, resource_group_name = registry_sku_validation(
         registry_name, resource_group_name, REPLICATIONS_NOT_SUPPORTED)
-    client = get_acr_service_client().replications
+    client = get_acr_service_client(REPLICATION_API_VERSION).replications
 
     return client.get(resource_group_name, registry_name, replication_name)
 

@@ -10,10 +10,10 @@ import azure.cli.core.azlogging as azlogging
 from azure.cli.core.util import CLIError
 from azure.cli.core.prompting import prompt, prompt_pass, NoTTYException
 
-from .azure.mgmt.containerregistry.models import (
+from .azure.mgmt.containerregistry.v2017_03_01.models import (
     RegistryUpdateParameters,
-    StorageAccountProperties,
-    SkuName
+    StorageAccountParameters,
+    SkuTier
 )
 
 from ._factory import get_acr_service_client
@@ -25,7 +25,8 @@ from ._utils import (
     arm_deploy_template_managed_storage,
     random_storage_account_name,
     get_registry_by_name,
-    get_registry_login_server_by_name
+    get_registry_login_server_by_name,
+    get_access_key_by_storage_account_name
 )
 from ._docker_utils import get_login_refresh_token
 from .credential import acr_credential_show
@@ -74,7 +75,7 @@ def acr_create(registry_name,
     client = get_acr_service_client().registries
     admin_user_enabled = admin_enabled == 'true'
 
-    if sku == SkuName.basic.value:
+    if sku == SkuTier.basic.value:
         if storage_account_name is None:
             storage_account_name = random_storage_account_name(registry_name)
             logger.warning(
@@ -164,8 +165,11 @@ def acr_update_custom(instance,
                       admin_enabled=None,
                       tags=None):
     if storage_account_name is not None:
-        instance.storage_account = StorageAccountProperties(
-            get_resource_id_by_storage_account_name(storage_account_name)
+        storage_account_key = \
+        get_access_key_by_storage_account_name(storage_account_name)
+        instance.storage_account = StorageAccountParameters(
+            get_resource_id_by_storage_account_name(storage_account_name),
+            storage_account_key
         )
 
     if admin_enabled is not None:
@@ -188,11 +192,20 @@ def acr_update_set(client,
     """
     registry, resource_group_name = get_registry_by_name(registry_name, resource_group_name)
 
-    if parameters.storage_account is not None and registry.sku.name != SkuName.basic.value:  # pylint: disable=no-member
+    if parameters.storage_account is not None and registry.sku.name != SkuTier.basic.value:  # pylint: disable=no-member
         parameters.storage_account = None
         logger.warning(
             "'%s' SKU uses managed storage account. The specified storage account will be ignored.",
             registry.sku.name)  # pylint: disable=no-member
+
+    if parameters.storage_account is not None and isinstance(parameters.storage_account, dict):
+        if 'name' not in parameters.storage_account:
+            raise CLIError(
+                "Storage account name is required to update " +
+                "the storage account used by a container registry.")
+        if 'access_key' not in parameters.storage_account:
+            parameters.storage_account['access_key'] = \
+            get_access_key_by_storage_account_name(parameters.storage_account['name'])
 
     return client.update(resource_group_name, registry_name, parameters)
 
