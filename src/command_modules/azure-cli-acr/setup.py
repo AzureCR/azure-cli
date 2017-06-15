@@ -33,7 +33,7 @@ DEPENDENCIES = [
     'azure-cli-core',
     'azure-mgmt-resource==1.1.0rc1',
     'azure-mgmt-storage==1.0.0rc1',
-    # 'azure-mgmt-containerregistry==0.2.1',
+    'azure-mgmt-containerregistry==0.3.0',
 ]
 
 with open('README.rst', 'r', encoding='utf-8') as f:
@@ -56,13 +56,6 @@ setup(
         'azure.cli',
         'azure.cli.command_modules',
         'azure.cli.command_modules.acr',
-        'azure.cli.command_modules.acr.azure.mgmt.containerregistry',
-        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2017_03_01',
-        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2017_03_01.models',
-        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2017_03_01.operations',
-        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2017_06_01_preview',
-        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2017_06_01_preview.models',
-        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2017_06_01_preview.operations',
     ],
     install_requires=DEPENDENCIES,
     package_data={'azure.cli.command_modules.acr': ['template.json', 'template_new_storage.json', 'template_existing_storage.json']},

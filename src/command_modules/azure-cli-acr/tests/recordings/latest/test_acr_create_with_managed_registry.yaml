@@ -1,0 +1,1362 @@
+interactions:
+- request:
+    body: '{"location": "westcentralus", "tags": {"use": "az-test"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [group create]
+      Connection: [keep-alive]
+      Content-Length: ['57']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 resourcemanagementclient/1.1.0rc1 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: PUT
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001?api-version=2017-05-10
+  response:
+    body: {string: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001","name":"clitest.rg000001","location":"westcentralus","tags":{"use":"az-test"},"properties":{"provisioningState":"Succeeded"}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['335']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:10 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-ms-ratelimit-remaining-subscription-writes: ['1196']
+    status: {code: 201, message: Created}
+- request:
+    body: 'b''{"name": "clireg000002", "type": "Microsoft.ContainerRegistry/registries"}'''
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Length: ['112']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: POST
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2017-03-01
+  response:
+    body: {string: '{"nameAvailable":true}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['22']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:15 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: 'b''{"properties": {"template": {"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+      "contentVersion": "1.0.0.0", "parameters": {"registryName": {"type": "string",
+      "metadata": {"description": "The name of the container registry."}}, "registryLocation":
+      {"type": "string", "metadata": {"description": "The location of the container
+      registry. This cannot be changed after the resource is created."}}, "registrySku":
+      {"type": "string", "defaultValue": "Managed_Standard", "metadata": {"description":
+      "The SKU of the container registry."}}, "registryApiVersion": {"type": "string",
+      "defaultValue": "2017-06-01-preview", "metadata": {"description": "The API version
+      of the container registry."}}, "adminUserEnabled": {"type": "bool", "defaultValue":
+      false, "metadata": {"description": "The value that indicates whether the admin
+      user is enabled."}}}, "resources": [{"name": "[parameters(\''registryName\'')]",
+      "type": "Microsoft.ContainerRegistry/registries", "location": "[parameters(\''registryLocation\'')]",
+      "apiVersion": "[parameters(\''registryApiVersion\'')]", "sku": {"name": "[parameters(\''registrySku\'')]"},
+      "properties": {"adminUserEnabled": "[parameters(\''adminUserEnabled\'')]"}}]},
+      "parameters": {"registryName": {"value": "clireg000002"}, "registryLocation":
+      {"value": "westcentralus"}, "registrySku": {"value": "Managed_Standard"}, "adminUserEnabled":
+      {"value": false}}, "mode": "Incremental"}}'''
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Length: ['1464']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 resourcemanagementclient/1.1.0rc1 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: PUT
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/mock-deployment?api-version=2017-05-10
+  response:
+    body: {string: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","name":"Microsoft.ContainerRegistry","properties":{"templateHash":"5391745780994016228","parameters":{"registryName":{"type":"String","value":"clireg000002"},"registryLocation":{"type":"String","value":"westcentralus"},"registrySku":{"type":"String","value":"Managed_Standard"},"registryApiVersion":{"type":"String","value":"2017-06-01-preview"},"adminUserEnabled":{"type":"Bool","value":false}},"mode":"Incremental","provisioningState":"Accepted","timestamp":"2017-06-15T23:17:17.8477482Z","duration":"PT0.5545034S","correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","providers":[{"namespace":"Microsoft.ContainerRegistry","resourceTypes":[{"resourceType":"registries","locations":["westcentralus"]}]}],"dependencies":[]}}'}
+    headers:
+      azure-asyncoperation: ['https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/operationStatuses/08587040382481843695?api-version=2017-05-10']
+      cache-control: [no-cache]
+      content-length: ['986']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:17 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-ms-ratelimit-remaining-subscription-writes: ['1195']
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A18Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:18 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A19Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:19 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A21Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:20 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A22Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:22 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A23Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:24 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A25Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:26 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A27Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:27 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A29Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:29 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A30Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:30 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A32Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:31 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A33Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:33 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A34Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['12']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:35 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A36Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['3721']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:36 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A37Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['3721']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:38 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A39Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['3721']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:38 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A40Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"e6ec8f08-0b23-49d1-9cca-99f7aad369c1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/e6ec8f08-0b23-49d1-9cca-99f7aad369c1/ticks/636331654458819393","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"97d8819f-59ff-40c4-befa-6c4f36004734","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:25.8819393Z","submissionTimestamp":"2017-06-15T23:17:39.4880721Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"18948b60-63ea-49b2-b172-3d20d0e736b2","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/18948b60-63ea-49b2-b172-3d20d0e736b2/ticks/636331654366099452","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:16.6099452Z","submissionTimestamp":"2017-06-15T23:17:29.3563533Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['10823']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:40 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A42Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"e6ec8f08-0b23-49d1-9cca-99f7aad369c1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/e6ec8f08-0b23-49d1-9cca-99f7aad369c1/ticks/636331654458819393","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"97d8819f-59ff-40c4-befa-6c4f36004734","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:25.8819393Z","submissionTimestamp":"2017-06-15T23:17:39.4880721Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"a439961b-6986-4952-896e-57d2054351ba","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/a439961b-6986-4952-896e-57d2054351ba/ticks/636331654425920657","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:22.5920657Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"18948b60-63ea-49b2-b172-3d20d0e736b2","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/18948b60-63ea-49b2-b172-3d20d0e736b2/ticks/636331654366099452","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:16.6099452Z","submissionTimestamp":"2017-06-15T23:17:29.3563533Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['14576']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:42 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A43Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"e6ec8f08-0b23-49d1-9cca-99f7aad369c1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/e6ec8f08-0b23-49d1-9cca-99f7aad369c1/ticks/636331654458819393","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"97d8819f-59ff-40c4-befa-6c4f36004734","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:25.8819393Z","submissionTimestamp":"2017-06-15T23:17:39.4880721Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"b212b95b-c686-4ee0-85a0-31e39b8cace1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/b212b95b-c686-4ee0-85a0-31e39b8cace1/ticks/636331654450044168","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"properties":{"statusCode":"OK","serviceRequestId":null},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"OK","localizedValue":"OK
+        (HTTP Status Code: 200)"},"eventTimestamp":"2017-06-15T23:17:25.0044168Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"a439961b-6986-4952-896e-57d2054351ba","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/a439961b-6986-4952-896e-57d2054351ba/ticks/636331654425920657","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:22.5920657Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"18948b60-63ea-49b2-b172-3d20d0e736b2","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/18948b60-63ea-49b2-b172-3d20d0e736b2/ticks/636331654366099452","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:16.6099452Z","submissionTimestamp":"2017-06-15T23:17:29.3563533Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['18414']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:43 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A45Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"e6ec8f08-0b23-49d1-9cca-99f7aad369c1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/e6ec8f08-0b23-49d1-9cca-99f7aad369c1/ticks/636331654458819393","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"97d8819f-59ff-40c4-befa-6c4f36004734","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:25.8819393Z","submissionTimestamp":"2017-06-15T23:17:39.4880721Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"b212b95b-c686-4ee0-85a0-31e39b8cace1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/b212b95b-c686-4ee0-85a0-31e39b8cace1/ticks/636331654450044168","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"properties":{"statusCode":"OK","serviceRequestId":null},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"OK","localizedValue":"OK
+        (HTTP Status Code: 200)"},"eventTimestamp":"2017-06-15T23:17:25.0044168Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"a439961b-6986-4952-896e-57d2054351ba","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/a439961b-6986-4952-896e-57d2054351ba/ticks/636331654425920657","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:22.5920657Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"18948b60-63ea-49b2-b172-3d20d0e736b2","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/18948b60-63ea-49b2-b172-3d20d0e736b2/ticks/636331654366099452","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:16.6099452Z","submissionTimestamp":"2017-06-15T23:17:29.3563533Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['18414']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:45 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A46Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"e6ec8f08-0b23-49d1-9cca-99f7aad369c1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/e6ec8f08-0b23-49d1-9cca-99f7aad369c1/ticks/636331654458819393","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"97d8819f-59ff-40c4-befa-6c4f36004734","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:25.8819393Z","submissionTimestamp":"2017-06-15T23:17:39.4880721Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"b212b95b-c686-4ee0-85a0-31e39b8cace1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/b212b95b-c686-4ee0-85a0-31e39b8cace1/ticks/636331654450044168","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"properties":{"statusCode":"OK","serviceRequestId":null},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"OK","localizedValue":"OK
+        (HTTP Status Code: 200)"},"eventTimestamp":"2017-06-15T23:17:25.0044168Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"a439961b-6986-4952-896e-57d2054351ba","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/a439961b-6986-4952-896e-57d2054351ba/ticks/636331654425920657","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:22.5920657Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"18948b60-63ea-49b2-b172-3d20d0e736b2","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/18948b60-63ea-49b2-b172-3d20d0e736b2/ticks/636331654366099452","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:16.6099452Z","submissionTimestamp":"2017-06-15T23:17:29.3563533Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['18414']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:46 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 resourcemanagementclient/1.1.0rc1 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/mock-deployment/operationStatuses/08587040382481843695?api-version=2017-05-10
+  response:
+    body: {string: '{"status":"Succeeded"}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['22']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:48 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 monitorclient/0.3.0 Azure-SDK-For-Python AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%202017-05-05T07%3A17%3A48Z%20and%20correlationId%20eq%20%27a33ca55d-637f-4cf3-abac-d876cc7ffbec%27
+  response:
+    body: {string: '{"value":[{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"e6ec8f08-0b23-49d1-9cca-99f7aad369c1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/e6ec8f08-0b23-49d1-9cca-99f7aad369c1/ticks/636331654458819393","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"97d8819f-59ff-40c4-befa-6c4f36004734","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:25.8819393Z","submissionTimestamp":"2017-06-15T23:17:39.4880721Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"b212b95b-c686-4ee0-85a0-31e39b8cace1","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/b212b95b-c686-4ee0-85a0-31e39b8cace1/ticks/636331654450044168","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"properties":{"statusCode":"OK","serviceRequestId":null},"status":{"value":"Succeeded","localizedValue":"Succeeded"},"subStatus":{"value":"OK","localizedValue":"OK
+        (HTTP Status Code: 200)"},"eventTimestamp":"2017-06-15T23:17:25.0044168Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.ContainerRegistry/registries/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"a439961b-6986-4952-896e-57d2054351ba","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"ec270c8e-f6e1-4610-b60e-70ac5be436b8","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/events/a439961b-6986-4952-896e-57d2054351ba/ticks/636331654425920657","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.ContainerRegistry","localizedValue":"Microsoft.ContainerRegistry"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","resourceType":{"value":"Microsoft.ContainerRegistry/registries","localizedValue":"Microsoft.ContainerRegistry/registries"},"operationId":"60e0e066-129a-4250-a160-11a822fb399f","operationName":{"value":"Microsoft.ContainerRegistry/registries/write","localizedValue":"Microsoft.ContainerRegistry/registries/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:22.5920657Z","submissionTimestamp":"2017-06-15T23:17:39.5853354Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"4f9900aa-24f3-4f21-85ce-6bcb9536c13a","eventName":{"value":"EndRequest","localizedValue":"End
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/4f9900aa-24f3-4f21-85ce-6bcb9536c13a/ticks/636331654381256074","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"properties":{"statusCode":"Created","serviceRequestId":null},"status":{"value":"Accepted","localizedValue":"Accepted"},"subStatus":{"value":"Created","localizedValue":"Created
+        (HTTP Status Code: 201)"},"eventTimestamp":"2017-06-15T23:17:18.1256074Z","submissionTimestamp":"2017-06-15T23:17:29.3573542Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"},{"authorization":{"action":"Microsoft.Resources/deployments/write","scope":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry"},"caller":"doyou@microsoft.com","channels":"Operation","claims":{"aud":"https://management.core.windows.net/","iss":"https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/","iat":"1497567036","nbf":"1497567036","exp":"1497570936","_claim_names":"{\"groups\":\"src1\"}","_claim_sources":"{\"src1\":{\"endpoint\":\"https://graph.windows.net/00000000-0000-0000-0000-000000000000/users/a8db5e3c-0725-4628-a658-26b33e5e4caa/getMemberObjects\"}}","http://schemas.microsoft.com/claims/authnclassreference":"1","aio":"Y2ZgYPiQ81+XWeeKx+L1x75FLbogYvVW/FnrS99ePf9DgQdEpG0B","http://schemas.microsoft.com/claims/authnmethodsreferences":"rsa,mfa","appid":"04b07795-8ddb-461a-bbee-02f9e1bf7b46","appidacr":"0","e_exp":"262800","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"You","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Dongjiang","in_corp":"true","ipaddr":"167.220.0.144","name":"Dongjiang
+        You","http://schemas.microsoft.com/identity/claims/objectidentifier":"a8db5e3c-0725-4628-a658-26b33e5e4caa","onprem_sid":"S-1-5-21-2127521184-1604012920-1887927527-21588747","platf":"3","puid":"10037FFE9849482B","http://schemas.microsoft.com/identity/claims/scope":"user_impersonation","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier":"2M9-3tYPJrSYWkOxb_HhbPca8Co1YPSXXnu-EbJ3fUY","http://schemas.microsoft.com/identity/claims/tenantid":"72f988bf-86f1-41af-91ab-2d7cd011db47","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"doyou@microsoft.com","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn":"doyou@microsoft.com","ver":"1.0"},"correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","description":"","eventDataId":"18948b60-63ea-49b2-b172-3d20d0e736b2","eventName":{"value":"BeginRequest","localizedValue":"Begin
+        request"},"category":{"value":"Administrative","localizedValue":"Administrative"},"httpRequest":{"clientRequestId":"c2976568-5220-11e7-8311-480fcf61db4b","clientIpAddress":"167.220.0.144","method":"PUT"},"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/events/18948b60-63ea-49b2-b172-3d20d0e736b2/ticks/636331654366099452","level":"Informational","resourceGroupName":"clitest.rg000001","resourceProviderName":{"value":"Microsoft.Resources","localizedValue":"Microsoft
+        Resources"},"resourceId":"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","resourceType":{"value":"Microsoft.Resources/deployments","localizedValue":"Microsoft.Resources/deployments"},"operationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","operationName":{"value":"Microsoft.Resources/deployments/write","localizedValue":"Microsoft.Resources/deployments/write"},"status":{"value":"Started","localizedValue":"Started"},"subStatus":{"value":"","localizedValue":""},"eventTimestamp":"2017-06-15T23:17:16.6099452Z","submissionTimestamp":"2017-06-15T23:17:29.3563533Z","subscriptionId":"84c559c6-30a0-417c-ba06-8a2253b388c3","tenantId":"72f988bf-86f1-41af-91ab-2d7cd011db47"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['18414']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:48 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-IIS/8.5]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: ['Accept-Encoding,Accept-Encoding']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 resourcemanagementclient/1.1.0rc1 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/mock-deployment?api-version=2017-05-10
+  response:
+    body: {string: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","name":"Microsoft.ContainerRegistry","properties":{"templateHash":"5391745780994016228","parameters":{"registryName":{"type":"String","value":"clireg000002"},"registryLocation":{"type":"String","value":"westcentralus"},"registrySku":{"type":"String","value":"Managed_Standard"},"registryApiVersion":{"type":"String","value":"2017-06-01-preview"},"adminUserEnabled":{"type":"Bool","value":false}},"mode":"Incremental","provisioningState":"Succeeded","timestamp":"2017-06-15T23:17:25.7630485Z","duration":"PT8.4698037S","correlationId":"a33ca55d-637f-4cf3-abac-d876cc7ffbec","providers":[{"namespace":"Microsoft.ContainerRegistry","resourceTypes":[{"resourceType":"registries","locations":["westcentralus"]}]}],"dependencies":[],"outputResources":[{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"}]}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['1259']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:48 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr create]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:24.7602462Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['643']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:49 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: 'b''{"name": "clireg000002", "type": "Microsoft.ContainerRegistry/registries"}'''
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr check-name]
+      Connection: [keep-alive]
+      Content-Length: ['112']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: POST
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2017-03-01
+  response:
+    body: {string: '{"nameAvailable":false,"reason":"AlreadyExists","message":"The
+        registry clireg000002 is already in use."}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['143']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:50 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr list]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries?api-version=2017-03-01
+  response:
+    body: {string: '{"value":[{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:24.7602462Z","provisioningState":"Succeeded","adminUserEnabled":false}}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['655']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:50 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr show]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:24.7602462Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['643']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:51 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr update]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:24.7602462Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['643']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:51 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"tags": {"foo": "bar", "cat": ""}, "properties": {"adminUserEnabled":
+      true}}'
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr update]
+      Connection: [keep-alive]
+      Content-Length: ['77']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: PATCH
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:24.7602462Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['662']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:52 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      x-ms-ratelimit-remaining-subscription-writes: ['1197']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr credential show]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:52.935676Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['661']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:53 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr credential show]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: POST
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/listCredentials?api-version=2017-03-01
+  response:
+    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"D+IS=/7=H2HaxgSR+0wQLIn4rEqgMWHQ"},{"name":"password2","value":"i//+=++=B/+/ia=7ghO+om=MDcr+jKW6"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['206']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:54 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      x-ms-ratelimit-remaining-subscription-writes: ['1198']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr credential renew]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:52.935676Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['661']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:54 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"name": "password"}'
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr credential renew]
+      Connection: [keep-alive]
+      Content-Length: ['20']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: POST
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/regenerateCredential?api-version=2017-03-01
+  response:
+    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"/Gb=Nkm/glb+QWYAgeXMRZDJBhjubiQt"},{"name":"password2","value":"i//+=++=B/+/ia=7ghO+om=MDcr+jKW6"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['206']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:55 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      x-ms-ratelimit-remaining-subscription-writes: ['1199']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr credential renew]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:55.407401Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['661']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:56 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"name": "password2"}'
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr credential renew]
+      Connection: [keep-alive]
+      Content-Length: ['21']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: POST
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/regenerateCredential?api-version=2017-03-01
+  response:
+    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"/Gb=Nkm/glb+QWYAgeXMRZDJBhjubiQt"},{"name":"password2","value":"=Qg//uRa=e9jqdd05AiroKx6GfdiZ0DJ"}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['206']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:56 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+      x-ms-ratelimit-remaining-subscription-writes: ['1197']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr repository list]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 resourcemanagementclient/1.1.0rc1 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resources?$filter=resourceType%20eq%20%27Microsoft.ContainerRegistry%2Fregistries%27&api-version=2017-05-10
+  response:
+    body: {string: '{"value":[{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acr-common-layers/providers/Microsoft.ContainerRegistry/registries/acrservice","name":"acrservice","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acr-stress/providers/Microsoft.ContainerRegistry/registries/acrstress1","name":"acrstress1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acr-stress/providers/Microsoft.ContainerRegistry/registries/acrstress2","name":"acrstress2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acrcommonimages/providers/Microsoft.ContainerRegistry/registries/prime","name":"prime","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acrunittest/providers/Microsoft.ContainerRegistry/registries/testnaduggar","name":"testnaduggar","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{"tag1":"Value1"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cgrtestcuseuap/providers/Microsoft.ContainerRegistry/registries/cgrtestingwebhooks9","name":"cgrtestingwebhooks9","type":"Microsoft.ContainerRegistry/registries","location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cgrtestwebhook/providers/Microsoft.ContainerRegistry/registries/cgrtestwebhooks","name":"cgrtestwebhooks","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"westcentralus","tags":{"foo":"bar","cat":""}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ComplianceWebScout/providers/Microsoft.ContainerRegistry/registries/webscoutregistry","name":"webscoutregistry","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cristywebhooktest2/providers/Microsoft.ContainerRegistry/registries/cgrwebhooktest2","name":"cgrwebhooktest2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandoaad","name":"daobandoaad","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandoaad2","name":"daobandoaad2","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandocuse","name":"daobandocuse","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandomanaged","name":"daobandomanaged","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyou/providers/Microsoft.ContainerRegistry/registries/acrcli","name":"acrcli","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyou/providers/Microsoft.ContainerRegistry/registries/doyou","name":"doyou","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoubasic","name":"doyoubasic","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyoubasic1","name":"doyoubasic1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoubasic2","name":"doyoubasic2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Basic","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyoucanary","name":"doyoucanary","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoucanary2","name":"doyoucanary2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyoucus1","name":"doyoucus1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Large","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouerror","name":"doyouerror","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoufailed","name":"doyoufailed","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouibiza","name":"doyouibiza","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouibiza11","name":"doyouibiza11","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouibiza22","name":"doyouibiza22","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Small","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouibiza3","name":"doyouibiza3","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouibizabyos","name":"doyouibizabyos","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouibizamanaged","name":"doyouibizamanaged","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Large","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoujp","name":"doyoujp","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoumanaged1","name":"doyoumanaged1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoupowershell","name":"doyoupowershell","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyoups1","name":"doyoups1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyoustandard","name":"doyoustandard","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyouwcus","name":"doyouwcus","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/library/providers/Microsoft.ContainerRegistry/registries/library","name":"library","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/martinpfacrtestwus/providers/Microsoft.ContainerRegistry/registries/martinpfTestRegWus1","name":"martinpfTestRegWus1","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/moveregistryRg/providers/Microsoft.ContainerRegistry/registries/sourceregistry","name":"sourceregistry","type":"Microsoft.ContainerRegistry/registries","location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/moveregistryRg/providers/Microsoft.ContainerRegistry/registries/targetregistry","name":"targetregistry","type":"Microsoft.ContainerRegistry/registries","location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanacanary","name":"nathanacanary","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanacastor","name":"nathanacastor","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanadyad","name":"nathanadyad","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanaleda","name":"nathanaleda","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanapollux","name":"nathanapollux","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanatest1234","name":"nathanatest1234","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/peterhsu/providers/Microsoft.ContainerRegistry/registries/peterhsuaad2","name":"peterhsuaad2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Standard_Medium","tier":"Standard"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/peterhsu/providers/Microsoft.ContainerRegistry/registries/peterhsuaadacr","name":"peterhsuaadacr","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/peterhsu/providers/Microsoft.ContainerRegistry/registries/peterhsuacr","name":"peterhsuacr","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{"key1":"value2"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/iotdev","name":"iotdev","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/perfregdgldVgQ","name":"perfregdgldVgQ","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{"storageaccount":"perfregdgldvgq"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagaadtest","name":"sivagaadtest","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagadtest","name":"sivagadtest","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus2","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagtestEUAPCUS","name":"sivagtestEUAPCUS","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagtestweu1","name":"sivagtestweu1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westeurope","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/reservedregistries/providers/Microsoft.ContainerRegistry/registries/tryacr","name":"tryacr","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{"storageaccount":"tryacrstorenew"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/vinayreg","name":"vinayreg","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayaAdminTest/providers/Microsoft.ContainerRegistry/registries/sajay","name":"sajay","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayaAdminTest/providers/Microsoft.ContainerRegistry/registries/sajaya","name":"sajaya","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayaadmintest/providers/Microsoft.ContainerRegistry/registries/sajayatest1","name":"sajayatest1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayaAdminTest/providers/Microsoft.ContainerRegistry/registries/sajayatip","name":"sajayatip","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayatemp/providers/Microsoft.ContainerRegistry/registries/sajaytodelete","name":"sajaytodelete","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayatodelete/providers/Microsoft.ContainerRegistry/registries/testregistrycandelete","name":"testregistrycandelete","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/t-gigonz-private/providers/Microsoft.ContainerRegistry/registries/composetest","name":"composetest","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/t-gigonz-private/providers/Microsoft.ContainerRegistry/registries/hello","name":"hello","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/t-gigonz-private/providers/Microsoft.ContainerRegistry/registries/test1","name":"test1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test01/providers/Microsoft.ContainerRegistry/registries/ankheman01","name":"ankheman01","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"northcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/kiranreg","name":"kiranreg","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/sivagtest876","name":"sivagtest876","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/testnewregistry","name":"testnewregistry","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{"tag2":"Value1"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/testregistry1","name":"testregistry1","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/testregistryprod","name":"testregistryprod","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatest7","name":"yuwatest7","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatest8","name":"yuwatest8","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatest9","name":"yuwatest9","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatestcan1","name":"yuwatestcan1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatestcan2","name":"yuwatestcan2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatestcan3","name":"yuwatestcan3","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}}]}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['22159']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:56 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr repository list]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: GET
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"westcentralus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-06-15T23:17:56.3090302Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['662']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:57 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://clireg000002.azurecr.io/v2/
+  response:
+    body: {string: '{"errors":[{"code":"UNAUTHORIZED","message":"authentication required","detail":null}]}
+
+        '}
+    headers:
+      connection: [keep-alive]
+      content-length: ['87']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:17:58 GMT']
+      docker-distribution-api-version: [registry/2.0]
+      server: [nginx/1.11.10]
+      strict-transport-security: [max-age=31536000; includeSubDomains, max-age=31536000;
+          includeSubDomains]
+      www-authenticate: ['Bearer realm="https://cliregkrg47rihbit37cqrmxseardrib6j2deicrydcvn42tya.azurecr.io/oauth2/token",service="cliregkrg47rihbit37cqrmxseardrib6j2deicrydcvn42tya.azurecr.io"']
+      x-content-type-options: [nosniff]
+    status: {code: 401, message: Unauthorized}
+- request:
+    body: b'grant_type=refresh_token&service=clireg000002.azurecr.io&tenant=72f988bf-86f1-41af-91ab-2d7cd011db47&refresh_token=AQABAAAAAABnfiG-mA6NTae7CdWW7QfdZJIq3c2VcV20AOZfx5Ne8pqpY62eDbjDv4VeutBqwq38OTpgEkEc2K3lkYmxmJwUH484VvMBLeRWJPiRXdUT07ssa-3axs_AMhs8dnvt5HjW5Tbvb6jMk2EvshhVTEjituOOqY18ZzBMvZVy8YFJ8i5gXP7aqjqFheshwGoXoK7xww7TDzp_2WYYchcba02p308CSl-eNX2hcvvnxrdgnfKotymJIkk_OvvH9lozMJcZqRhpK_u2VOFFggFIFQEu93rhMsyG3FUx-CMf6iLP6drB5fHoTQDbgt6Srj_Gq4xq6vDDEUtyEnb8GQ1A6TaBxEPONMp9gs6IecZB5Tsw3dllLaXyDHFYsLxC3_WseN0NotMe1yLdo9nch2l5t8tZ8PZN88y203JFXYKQH_bKhbzJLFW1vWyS6UYtNOD2tjGQ8IqRqB7CzEnsRcnnKnEutvUheQn_yWoPlrS1tlnovp_NLbepqbe44tuQ2xON1XmnHeAytXbKtStvIp1Kay1ry7PiePM4A_pwf9_wgaVcqOeuRlNJRbx7ik-Wwzzg60TBPU5EkA3aXPnLMArZfg8yFjuvHe522KXdGQ2GrL7nI_l3gss_4eA7BUTRPWvFUoXc-QzieSSChrJ0Hb0xgGnlh4k2SjGU-rI5SXHwRHwCC5P3s1M1BiwmhiWP000saTeaivtAIi1NyNdm6Q6dRcevvqVa2F-CiH5XlJUrJPxgIRfzndB-g-hnB_b7IN8M5RrOLtacOEHQshBYgCDQ4ngaNU6nbqH98IAqoMqFSYoI6SQ90v8MNGhZc4_oCgRFLz54bKO6ub_Qas71L_rUqdQHegjG6xjzi6tv6QcrOjp6S0Cc8NfrJxMQ4wPOh_GNgB1f0BCCtoLxy_59cwn1iGZ9fgmVslnP9ceraNUKkXQkKOLFvTxqiknJHt8xTNPmVH0gAA'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['1127']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://clireg000002.azurecr.io/oauth2/exchange
+  response:
+    body: {string: '{"refresh_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBLNlg6TFJZQTo2WEtQOldKVkk6WlRXNzpXWjQ3OklONTI6QU5JSzpMNTM3OlZUTVU6QjVWTjpJRlhVIn0.eyJqdGkiOiI5MzNhNWExZC0wNjdkLTRlZTktYTg4Ny02NjYxODIyMjk2OTIiLCJzdWIiOiJkb3lvdUBtaWNyb3NvZnQuY29tIiwibmJmIjoxNDk3NTY3NzgzLCJleHAiOjE0OTc1NzIyNzksImlhdCI6MTQ5NzU2Nzc4MywiaXNzIjoiQXp1cmUgQ29udGFpbmVyIFJlZ2lzdHJ5IiwiYXVkIjoiY2xpcmVna3JnNDdyaWhiaXQzN2Nxcm14c2VhcmRyaWI2ajJkZWljcnlkY3ZuNDJ0eWEuYXp1cmVjci5pbyIsInZlcnNpb24iOiIxLjAiLCJncmFudF90eXBlIjoicmVmcmVzaF90b2tlbiIsInRlbmFudCI6IjcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0NyIsImNyZWRlbnRpYWwiOiJBUUFCQUFBQUFBQm5maUctbUE2TlRhZTdDZFdXN1FmZGJnRzYwZThsSFdmc0hmUnlMYmxnZmhyUWNELVQ5SDlmZk41XzduMmxacUsyYXd4NEZpc2NRVC13WFhqTEhnT3JRVm1WekxfUGpjZWxDdGpmQVRxLVVoWkQ5VE5UcUQ3MDZyUDhFbUFVUjZYbFU5X3d4RTQxMzZvVl9vZldFZ0VDZllJbTVva0dqNGpaSXMxUlhUWGlNYnpDNUFNTURBUk9qSlJQRmVad2FhNk1fNHRhWGVGVW16MmxHWmRCMDN5UUN5NHpoaWRFQnpqMlk0Ml9iU2pGUm9YdkdVNDNDZHJJRjAyZEpYX3JteXUzRVllUUZfX0YyXzludC10RzZCSENiVWJpOGJuM1hQTmpTTU5UNkRtTG93Z0JwSmI2dTM0bFRfSDBURnMwSWpDcEEwSjFvckhkaHNaNlJ3cExrN1pRd2FZVlYtTHB4aTlvTFNoM2RnSDRxTWR6R2NGRlM5VWN0RmIzRVBwRFRKTjczZXR0YzcyUjJIUTY5VjRHdFlhMkZFNzNMU0xnazZCSk03ZGI5Y0tfTWVhVHBTdndfMGhPcnFrY0pHNnBKSEJ4cnIzdGVZQ2t1RXpTVzkwY2g0VGcxTV9EWVg1TkZnNk02bEtiTUprR0xwU2NpYmlITVQzMjhwcDJVQ2owempRamJwbXF1N2xYbmszeFBCN2s4OWFRcWJONjhrMkZrVGxVNndsR1RDa2VGT05JcXBWTFhuOTZOQnFzZ2o3R2ltNHNUeTVxNlpVbndZajltRGNySGhOTW82STMydUFmV3ZLUXREWWdVY0NzaThZYjZ5VXhrQklzZ2p6RzdNRmpUTG53dUZxOGMyd2lOcWhTOUpIbWZRTGdBUG5ORk9lWW1MUlBUeW1md1hNSDd4QTNHbzhhaEZVVFZBOE5yZGprZTBDOTV3V212R2VHR2JvLXFsSGVKSG0taWQwMnhXR2VMREs4Vk9KNllpeVNmTEZVNXB2SzVPa2dhYndEUHE3VlVMN25JMXlEWGtPUGFzOEg0LXM0bkNJWW41YTNEVnBZdkpmazBQNS0xb1BxRF9kVFI5NXk4QTZ4cTJOYXBRRmpoUzZ4MWl4NFBJY0VUZmNCSGxCQ01KVFdubElod0pTTklKdUhTTjVPamhkT1p6dWpCQllzdVRGLU9rMjFsTzBXVG9NSU1KR01URE9ZdUZWLUMyYXpFb0JZWkZCeW1MTTgycEJrSmZFckdtcmJIU2FpUXgwRzZ2YTNKLXJBeXlzZG9QY2dBQSIsInBlcm1pc3Npb25zIjp7ImFjdGlvbnMiOlsiKiJdLCJub3RBY3Rpb25zIjpbIk1pY3Jvc29mdC5BdXRob3JpemF0aW9uLyovRGVsZXRlIiwiTWljcm9zb2Z0LkF1dGhvcml6YXRpb24vKi9Xcml0ZSIsIk1pY3Jvc29mdC5BdXRob3JpemF0aW9uL2VsZXZhdGVBY2Nlc3MvQWN0aW9uIl19fQ.qgKDHXV8dnlKMcJSSsdQmZF6GRIHB3FZxbK8-4Ex3g8NIhfEwg3-7qti_YKzDGYM0XipTPQWnyEvNFXnC6WttxaK_5GHmeADa0kMT-9f7gZrMpLxoGjTBEFJNV3umlNQrtl336Pz_2VeypzDamxBYsuU8lF-u0WKZqKgSc9rcgB3XeGK4L3Lh-oxgZKgYkATkM8DokcPSds5C9SNdM8ROJkIgzXJ3VxBnCrv6mCmYGffqpeX0ZFrd8ptVy0gRXuh8jKLiyFWop_K2REsHvnpOGxz7nD5eI7gN4r94TcNbUhHSu3chF48EvTlj_vPQq3CNQyMQfyjNl8FhEPjC68Z5w"}'}
+    headers:
+      connection: [keep-alive]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:18:03 GMT']
+      server: [nginx/1.11.10]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+    status: {code: 200, message: OK}
+- request:
+    body: b'grant_type=refresh_token&service=clireg000002.azurecr.io&scope=registry%3Acatalog%3A%2A&refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBLNlg6TFJZQTo2WEtQOldKVkk6WlRXNzpXWjQ3OklONTI6QU5JSzpMNTM3OlZUTVU6QjVWTjpJRlhVIn0.eyJqdGkiOiI5MzNhNWExZC0wNjdkLTRlZTktYTg4Ny02NjYxODIyMjk2OTIiLCJzdWIiOiJkb3lvdUBtaWNyb3NvZnQuY29tIiwibmJmIjoxNDk3NTY3NzgzLCJleHAiOjE0OTc1NzIyNzksImlhdCI6MTQ5NzU2Nzc4MywiaXNzIjoiQXp1cmUgQ29udGFpbmVyIFJlZ2lzdHJ5IiwiYXVkIjoiY2xpcmVna3JnNDdyaWhiaXQzN2Nxcm14c2VhcmRyaWI2ajJkZWljcnlkY3ZuNDJ0eWEuYXp1cmVjci5pbyIsInZlcnNpb24iOiIxLjAiLCJncmFudF90eXBlIjoicmVmcmVzaF90b2tlbiIsInRlbmFudCI6IjcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0NyIsImNyZWRlbnRpYWwiOiJBUUFCQUFBQUFBQm5maUctbUE2TlRhZTdDZFdXN1FmZGJnRzYwZThsSFdmc0hmUnlMYmxnZmhyUWNELVQ5SDlmZk41XzduMmxacUsyYXd4NEZpc2NRVC13WFhqTEhnT3JRVm1WekxfUGpjZWxDdGpmQVRxLVVoWkQ5VE5UcUQ3MDZyUDhFbUFVUjZYbFU5X3d4RTQxMzZvVl9vZldFZ0VDZllJbTVva0dqNGpaSXMxUlhUWGlNYnpDNUFNTURBUk9qSlJQRmVad2FhNk1fNHRhWGVGVW16MmxHWmRCMDN5UUN5NHpoaWRFQnpqMlk0Ml9iU2pGUm9YdkdVNDNDZHJJRjAyZEpYX3JteXUzRVllUUZfX0YyXzludC10RzZCSENiVWJpOGJuM1hQTmpTTU5UNkRtTG93Z0JwSmI2dTM0bFRfSDBURnMwSWpDcEEwSjFvckhkaHNaNlJ3cExrN1pRd2FZVlYtTHB4aTlvTFNoM2RnSDRxTWR6R2NGRlM5VWN0RmIzRVBwRFRKTjczZXR0YzcyUjJIUTY5VjRHdFlhMkZFNzNMU0xnazZCSk03ZGI5Y0tfTWVhVHBTdndfMGhPcnFrY0pHNnBKSEJ4cnIzdGVZQ2t1RXpTVzkwY2g0VGcxTV9EWVg1TkZnNk02bEtiTUprR0xwU2NpYmlITVQzMjhwcDJVQ2owempRamJwbXF1N2xYbmszeFBCN2s4OWFRcWJONjhrMkZrVGxVNndsR1RDa2VGT05JcXBWTFhuOTZOQnFzZ2o3R2ltNHNUeTVxNlpVbndZajltRGNySGhOTW82STMydUFmV3ZLUXREWWdVY0NzaThZYjZ5VXhrQklzZ2p6RzdNRmpUTG53dUZxOGMyd2lOcWhTOUpIbWZRTGdBUG5ORk9lWW1MUlBUeW1md1hNSDd4QTNHbzhhaEZVVFZBOE5yZGprZTBDOTV3V212R2VHR2JvLXFsSGVKSG0taWQwMnhXR2VMREs4Vk9KNllpeVNmTEZVNXB2SzVPa2dhYndEUHE3VlVMN25JMXlEWGtPUGFzOEg0LXM0bkNJWW41YTNEVnBZdkpmazBQNS0xb1BxRF9kVFI5NXk4QTZ4cTJOYXBRRmpoUzZ4MWl4NFBJY0VUZmNCSGxCQ01KVFdubElod0pTTklKdUhTTjVPamhkT1p6dWpCQllzdVRGLU9rMjFsTzBXVG9NSU1KR01URE9ZdUZWLUMyYXpFb0JZWkZCeW1MTTgycEJrSmZFckdtcmJIU2FpUXgwRzZ2YTNKLXJBeXlzZG9QY2dBQSIsInBlcm1pc3Npb25zIjp7ImFjdGlvbnMiOlsiKiJdLCJub3RBY3Rpb25zIjpbIk1pY3Jvc29mdC5BdXRob3JpemF0aW9uLyovRGVsZXRlIiwiTWljcm9zb2Z0LkF1dGhvcml6YXRpb24vKi9Xcml0ZSIsIk1pY3Jvc29mdC5BdXRob3JpemF0aW9uL2VsZXZhdGVBY2Nlc3MvQWN0aW9uIl19fQ.qgKDHXV8dnlKMcJSSsdQmZF6GRIHB3FZxbK8-4Ex3g8NIhfEwg3-7qti_YKzDGYM0XipTPQWnyEvNFXnC6WttxaK_5GHmeADa0kMT-9f7gZrMpLxoGjTBEFJNV3umlNQrtl336Pz_2VeypzDamxBYsuU8lF-u0WKZqKgSc9rcgB3XeGK4L3Lh-oxgZKgYkATkM8DokcPSds5C9SNdM8ROJkIgzXJ3VxBnCrv6mCmYGffqpeX0ZFrd8ptVy0gRXuh8jKLiyFWop_K2REsHvnpOGxz7nD5eI7gN4r94TcNbUhHSu3chF48EvTlj_vPQq3CNQyMQfyjNl8FhEPjC68Z5w'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2577']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://clireg000002.azurecr.io/oauth2/token
+  response:
+    body: {string: '{"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBLNlg6TFJZQTo2WEtQOldKVkk6WlRXNzpXWjQ3OklONTI6QU5JSzpMNTM3OlZUTVU6QjVWTjpJRlhVIn0.eyJqdGkiOiJlMThhNzQ4Yi04NGY2LTQxMjMtYjQ5NS0xNjU2NmM4NTI3NTAiLCJzdWIiOiJkb3lvdUBtaWNyb3NvZnQuY29tIiwibmJmIjoxNDk3NTY3NzgzLCJleHAiOjE0OTc1NzIyODMsImlhdCI6MTQ5NzU2Nzc4MywiaXNzIjoiQXp1cmUgQ29udGFpbmVyIFJlZ2lzdHJ5IiwiYXVkIjoiY2xpcmVna3JnNDdyaWhiaXQzN2Nxcm14c2VhcmRyaWI2ajJkZWljcnlkY3ZuNDJ0eWEuYXp1cmVjci5pbyIsImFjY2VzcyI6W3sidHlwZSI6InJlZ2lzdHJ5IiwibmFtZSI6ImNhdGFsb2ciLCJhY3Rpb25zIjpbIioiXX1dfQ.aIZQjToqgs446oAW5_nRbj_c8EhPBTB-nMndxeTUun9mwYPIy03U9Yg5BUtw2GTwT8WFbauIWBvk0PWHDfPB4IsBiGjtXmBBITPyffSirBu17MaI5s6FaDYqsadHJP6L4LtxcBFk0ilyjVcPTEOjsJrnI_AiJ-SHvLYDRUWi3bBByPxzdJdGaoZ_AjJvyFgVychFdXNUmSBiYvYoXAJxg2nDVTM6bOEiWT0aUNzeVXX7QTxpXq3f6cu4_ifSTcmJy4J4qqkr193Glx6tEQ7npr9znxAr2brgloYfDaP1RWvdHN3fBEyJoxnhmBfAhxFpzgkoRDZZGMiPYhbiO-H3Iw"}'}
+    headers:
+      connection: [keep-alive]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:18:03 GMT']
+      server: [nginx/1.11.10]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.1]
+    method: GET
+    uri: https://clireg000002.azurecr.io/v2/_catalog
+  response:
+    body: {string: '{"repositories":[]}
+
+        '}
+    headers:
+      connection: [keep-alive]
+      content-length: ['20']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 15 Jun 2017 23:18:04 GMT']
+      docker-distribution-api-version: [registry/2.0]
+      server: [nginx/1.11.10]
+      strict-transport-security: [max-age=31536000; includeSubDomains, max-age=31536000;
+          includeSubDomains]
+      x-content-type-options: [nosniff]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [acr delete]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 containerregistrymanagementclient/0.3.0 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: DELETE
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
+  response:
+    body: {string: ''}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['0']
+      date: ['Thu, 15 Jun 2017 23:18:06 GMT']
+      expires: ['-1']
+      pragma: [no-cache]
+      server: [Microsoft-HTTPAPI/2.0]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-ms-ratelimit-remaining-subscription-writes: ['1197']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      CommandName: [group delete]
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json; charset=utf-8]
+      User-Agent: [python/3.6.1 (Windows-10-10.0.14393-SP0) requests/2.9.1 msrest/0.4.9
+          msrest_azure/0.4.8 resourcemanagementclient/1.1.0rc1 Azure-SDK-For-Python
+          AZURECLI/2.0.9+dev]
+      accept-language: [en-US]
+    method: DELETE
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001?api-version=2017-05-10
+  response:
+    body: {string: ''}
+    headers:
+      cache-control: [no-cache]
+      content-length: ['0']
+      date: ['Thu, 15 Jun 2017 23:18:07 GMT']
+      expires: ['-1']
+      location: ['https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1DTElURVNUOjJFUkc3NE5KQUZXTEM0N0lWVjZaRVhTUUhZUUNBUktaNkVPRkdLWXxGMkM5Q0QyMzJGN0U0QzdELVdFU1RDRU5UUkFMVVMiLCJqb2JMb2NhdGlvbiI6Indlc3RjZW50cmFsdXMifQ?api-version=2017-05-10']
+      pragma: [no-cache]
+      retry-after: ['15']
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-ms-ratelimit-remaining-subscription-writes: ['1198']
+    status: {code: 202, message: Accepted}
+version: 1

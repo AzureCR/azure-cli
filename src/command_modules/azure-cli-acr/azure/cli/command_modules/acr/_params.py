@@ -19,8 +19,7 @@ from azure.cli.core.commands.validators import get_default_location_from_resourc
 from ._constants import (
     ACR_RESOURCE_TYPE,
     STORAGE_RESOURCE_TYPE,
-    WEBHOOK_RESOURCE_TYPE,
-    REPLICATION_RESOURCE_TYPE
+    WEBHOOK_RESOURCE_TYPE
 )
 from ._validators import validate_registry_name, validate_headers
 
@@ -54,7 +53,3 @@ register_cli_argument('acr webhook', 'actions', nargs='+', help='Space separated
 register_cli_argument('acr webhook', 'status', help='Indicates whether the webhook is enabled.', choices=['enabled', 'disabled'])
 register_cli_argument('acr webhook', 'scope', help="The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means events for all repositories.")
 register_cli_argument('acr webhook create', 'webhook_name', completer=None)
-
-register_cli_argument('acr replication', 'registry_name', options_list=('--registry', '-r'), help='The name of the container registry', completer=get_resource_name_completion_list(ACR_RESOURCE_TYPE))
-register_cli_argument('acr replication', 'replication_name', options_list=('--name', '-n'), help='The name of the replication', completer=get_resource_name_completion_list(REPLICATION_RESOURCE_TYPE))
-register_cli_argument('acr replication create', 'replication_name', help='The name of the replication. Default to the location name.', completer=None)

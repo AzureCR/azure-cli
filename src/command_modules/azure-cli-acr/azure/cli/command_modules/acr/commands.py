@@ -7,7 +7,7 @@ from azure.cli.core.commands import cli_command
 from azure.cli.core.commands.arm import cli_generic_update_command
 from azure.cli.core.util import empty_on_404
 
-from ._constants import WEBHOOK_API_VERSION, REPLICATION_API_VERSION
+from ._constants import WEBHOOK_API_VERSION
 from ._format import output_format
 from ._factory import get_acr_service_client
 
@@ -72,25 +72,4 @@ cli_generic_update_command(
     'azure.cli.command_modules.acr.webhook#acr_webhook_update_set',
     factory=lambda: get_acr_service_client(WEBHOOK_API_VERSION).webhooks,
     custom_function_op='azure.cli.command_modules.acr.webhook#acr_webhook_update_custom',
-    table_transformer=output_format)
-
-cli_command(__name__, 'acr replication list',
-            'azure.cli.command_modules.acr.replication#acr_replication_list',
-            table_transformer=output_format)
-cli_command(__name__, 'acr replication create',
-            'azure.cli.command_modules.acr.replication#acr_replication_create',
-            table_transformer=output_format)
-cli_command(__name__, 'acr replication delete',
-            'azure.cli.command_modules.acr.replication#acr_replication_delete',
-            table_transformer=output_format)
-cli_command(__name__, 'acr replication show',
-            'azure.cli.command_modules.acr.replication#acr_replication_show',
-            table_transformer=output_format)
-cli_generic_update_command(
-    __name__,
-    'acr replication update',
-    'azure.cli.command_modules.acr.replication#acr_replication_update_get',
-    'azure.cli.command_modules.acr.replication#acr_replication_update_set',
-    factory=lambda: get_acr_service_client(REPLICATION_API_VERSION).replications,
-    custom_function_op='azure.cli.command_modules.acr.replication#acr_replication_update_custom',
     table_transformer=output_format)

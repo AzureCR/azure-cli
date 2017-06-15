@@ -3,14 +3,14 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
-from subprocess import call
+from subprocess import call, PIPE
 
 from azure.cli.core.commands import LongRunningOperation
 import azure.cli.core.azlogging as azlogging
 from azure.cli.core.util import CLIError
 from azure.cli.core.prompting import prompt, prompt_pass, NoTTYException
 
-from .azure.mgmt.containerregistry.v2017_03_01.models import (
+from azure.mgmt.containerregistry.v2017_03_01.models import (
     RegistryUpdateParameters,
     StorageAccountParameters,
     SkuTier
@@ -19,7 +19,6 @@ from .azure.mgmt.containerregistry.v2017_03_01.models import (
 from ._factory import get_acr_service_client
 from ._utils import (
     get_resource_group_name_by_registry_name,
-    get_resource_id_by_storage_account_name,
     arm_deploy_template_new_storage,
     arm_deploy_template_existing_storage,
     arm_deploy_template_managed_storage,
@@ -168,7 +167,7 @@ def acr_update_custom(instance,
         storage_account_key = \
         get_access_key_by_storage_account_name(storage_account_name)
         instance.storage_account = StorageAccountParameters(
-            get_resource_id_by_storage_account_name(storage_account_name),
+            storage_account_name,
             storage_account_key
         )
 
@@ -194,9 +193,8 @@ def acr_update_set(client,
 
     if parameters.storage_account is not None and registry.sku.name != SkuTier.basic.value:  # pylint: disable=no-member
         parameters.storage_account = None
-        logger.warning(
-            "'%s' SKU are managed registries. The specified storage account will be ignored.",
-            registry.sku.name)  # pylint: disable=no-member
+        logger.warning("'%s' SKU are managed registries. " +
+                       "The specified storage account will be ignored.", registry.sku.name)  # pylint: disable=no-member
 
     if parameters.storage_account is not None and isinstance(parameters.storage_account, dict):
         if 'name' not in parameters.storage_account:
@@ -217,6 +215,11 @@ def acr_login(registry_name, resource_group_name=None, username=None, password=N
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     """
+    try:
+        call(["docker", "ps"], stdout=PIPE, stderr=PIPE)
+    except Exception as e:
+        raise CLIError("Please verify whether docker is installed and running properly")
+
     login_server = get_registry_login_server_by_name(registry_name, resource_group_name)
 
     # 1. if username was specified, verify that password was also specified
@@ -233,7 +236,7 @@ def acr_login(registry_name, resource_group_name=None, username=None, password=N
             username = "00000000-0000-0000-0000-000000000000"
             password = get_login_refresh_token(login_server)
         except Exception as e:  # pylint: disable=broad-except
-            logger.warning("AAD authentication failed with exception: %s", str(e))
+            logger.warning("AAD authentication failed with message: %s", str(e))
 
     # 3. if we still don't have credentials, attempt to get the admin credentials (if enabled)
     if not password:
@@ -242,7 +245,7 @@ def acr_login(registry_name, resource_group_name=None, username=None, password=N
             username = cred.username
             password = cred.passwords[0].value
         except Exception as e:  # pylint: disable=broad-except
-            logger.warning("Admin user authentication failed with exception: %s", str(e))
+            logger.warning("Admin user authentication failed with message: %s", str(e))
 
     # 4. if we still don't have credentials, prompt the user
     if not password:

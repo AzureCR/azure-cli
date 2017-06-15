@@ -26,11 +26,6 @@ helps['acr webhook'] = """
     short-summary: Manage webhooks for Azure container registries.
     """
 
-helps['acr replication'] = """
-    type: group
-    short-summary: Manage replications for Azure container registries.
-    """
-
 helps['acr check-name'] = """
     type: command
     short-summary: Checks whether the container registry name is available for use.
@@ -254,49 +249,4 @@ helps['acr webhook list-events'] = """
         - name: List recent events for the specified webhook.
           text: >
             az acr webhook list-events -n MyWebhook -r MyRegistry
-"""
-
-helps['acr replication list'] = """
-    type: command
-    short-summary: Lists all the replications for the specified container registry.
-    examples:
-        - name: List replications and show the results in a table.
-          text: >
-            az acr replication list -r MyRegistry -o table
-"""
-
-helps['acr replication create'] = """
-    type: command
-    short-summary: Creates a replication for a container registry.
-    examples:
-        - name: Create a replication for a container registry.
-          text: >
-            az acr replication create -r MyRegistry -l westus
-"""
-
-helps['acr replication delete'] = """
-    type: command
-    short-summary: Deletes a replication from a container registry.
-    examples:
-        - name: Delete a replication from a container registry.
-          text: >
-            az acr replication delete -n MyReplication -r MyRegistry
-"""
-
-helps['acr replication show'] = """
-    type: command
-    short-summary: Gets the properties of the specified replication.
-    examples:
-        - name: Get the properties of the specified replication.
-          text: >
-            az acr replication show -n MyReplication -r MyRegistry
-"""
-
-helps['acr replication update'] = """
-    type: command
-    short-summary: Updates a replication.
-    examples:
-        - name: Update tags for a replication
-          text: >
-            az acr replication update -n MyReplication -r MyRegistry --tags key1=value1 key2=value2
 """

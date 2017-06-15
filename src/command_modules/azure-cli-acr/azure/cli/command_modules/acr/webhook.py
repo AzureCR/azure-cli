@@ -3,7 +3,7 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
-from .azure.mgmt.containerregistry.v2017_06_01_preview.models import (
+from azure.mgmt.containerregistry.v2017_06_01_preview.models import (
     WebhookCreateParameters,
     WebhookUpdateParameters
 )

@@ -6,7 +6,7 @@
 from azure.cli.core.util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 
-from .azure.mgmt.containerregistry.v2017_03_01.models import SkuTier
+from azure.mgmt.containerregistry.v2017_03_01.models import SkuTier
 
 from ._constants import (
     ACR_RESOURCE_PROVIDER,
@@ -291,10 +291,10 @@ def registry_sku_validation(registry_name, resource_group_name=None, message=Non
     """
     arm_resource = _arm_get_resource_by_name(registry_name, ACR_RESOURCE_TYPE)
 
-    if resource_group_name is None:
-        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
-
     if arm_resource.sku.tier == SkuTier.basic.value:
         raise CLIError(message if message else "This operation is not supported for registries in Basic SKU.")
+
+    if resource_group_name is None:
+        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
 
     return arm_resource, resource_group_name
