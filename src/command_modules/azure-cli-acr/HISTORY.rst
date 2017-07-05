@@ -2,6 +2,11 @@
 
 Release History
 ===============
+unreleased
+++++++++++
+* Add show-usage command for managed registries.
+* Support SKU update for managed registries.
+
 2.0.7 (2017-06-21)
 ++++++++++++++++++
 * Add managed registries with Managed SKU.

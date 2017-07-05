@@ -172,9 +172,9 @@ Get the quota usages for a container registry
 
     Arguments
         --name -n [Required]: The name of the container registry. You can configure the default registry
-                            name using `az configure --defaults acr=<registry name>`.
+                              name using `az configure --defaults acr=<registry name>`.
         --resource-group -g : Name of resource group. You can configure the default group using `az
-                            configure --defaults group=<name>`.
+                              configure --defaults group=<name>`.
 
     Examples
         Get the quota usages for a container registry.
