@@ -130,25 +130,10 @@ def acr_webhook_update_custom(instance,
     return instance
 
 
-def acr_webhook_update_get(client,
-                           webhook_name,
-                           registry_name,
-                           resource_group_name=None):
-    """Gets the properties of the specified webhook.
-    :param str webhook_name: The name of webhook
-    :param str registry_name: The name of container registry
-    :param str resource_group_name: The name of resource group
+def acr_webhook_update_get(client):  # pylint: disable=unused-argument
+    """Returns an empty WebhookUpdateParameters object.
     """
-    _, resource_group_name = registry_sku_validation(
-        registry_name, resource_group_name, WEBHOOKS_NOT_SUPPORTED)
-
-    webhook = client.get(resource_group_name, registry_name, webhook_name)
-
-    return WebhookUpdateParameters(
-        tags=webhook.tags,
-        status=webhook.status,
-        scope=webhook.scope,
-        actions=webhook.actions)
+    return WebhookUpdateParameters()
 
 
 def acr_webhook_update_set(client,
