@@ -20,11 +20,11 @@ interactions:
       cache-control: [no-cache]
       content-length: ['328']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:03:33 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:09 GMT']
       expires: ['-1']
       pragma: [no-cache]
       strict-transport-security: [max-age=31536000; includeSubDomains]
-      x-ms-ratelimit-remaining-subscription-writes: ['1197']
+      x-ms-ratelimit-remaining-subscription-writes: ['1199']
     status: {code: 201, message: Created}
 - request:
     body: 'b''{"name": "clireg000002", "type": "Microsoft.ContainerRegistry/registries"}'''
@@ -47,7 +47,7 @@ interactions:
       cache-control: [no-cache]
       content-length: ['22']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:03:34 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:10 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -87,17 +87,17 @@ interactions:
     method: PUT
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/mock-deployment?api-version=2017-05-10
   response:
-    body: {string: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","name":"Microsoft.ContainerRegistry","properties":{"templateHash":"5391745780994016228","parameters":{"registryName":{"type":"String","value":"clireg000002"},"registryLocation":{"type":"String","value":"eastus"},"registrySku":{"type":"String","value":"Managed_Standard"},"registryApiVersion":{"type":"String","value":"2017-06-01-preview"},"adminUserEnabled":{"type":"Bool","value":false}},"mode":"Incremental","provisioningState":"Accepted","timestamp":"2017-07-05T01:03:36.9874974Z","duration":"PT1.2410811S","correlationId":"920f08c1-44e8-460b-9f9e-a9e333fbfd60","providers":[{"namespace":"Microsoft.ContainerRegistry","resourceTypes":[{"resourceType":"registries","locations":["eastus"]}]}],"dependencies":[]}}'}
+    body: {string: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","name":"Microsoft.ContainerRegistry","properties":{"templateHash":"5391745780994016228","parameters":{"registryName":{"type":"String","value":"clireg000002"},"registryLocation":{"type":"String","value":"eastus"},"registrySku":{"type":"String","value":"Managed_Standard"},"registryApiVersion":{"type":"String","value":"2017-06-01-preview"},"adminUserEnabled":{"type":"Bool","value":false}},"mode":"Incremental","provisioningState":"Accepted","timestamp":"2017-07-05T01:14:13.0375015Z","duration":"PT0.9174965S","correlationId":"aef988ea-5815-4928-8365-384fd7c12271","providers":[{"namespace":"Microsoft.ContainerRegistry","resourceTypes":[{"resourceType":"registries","locations":["eastus"]}]}],"dependencies":[]}}'}
     headers:
-      azure-asyncoperation: ['https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/operationStatuses/08587023902697311924?api-version=2017-05-10']
+      azure-asyncoperation: ['https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry/operationStatuses/08587023896333576068?api-version=2017-05-10']
       cache-control: [no-cache]
       content-length: ['972']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:03:37 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:13 GMT']
       expires: ['-1']
       pragma: [no-cache]
       strict-transport-security: [max-age=31536000; includeSubDomains]
-      x-ms-ratelimit-remaining-subscription-writes: ['1196']
+      x-ms-ratelimit-remaining-subscription-writes: ['1198']
     status: {code: 201, message: Created}
 - request:
     body: null
@@ -112,14 +112,14 @@ interactions:
           AZURECLI/2.0.10+dev]
       accept-language: [en-US]
     method: GET
-    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/mock-deployment/operationStatuses/08587023902697311924?api-version=2017-05-10
+    uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/mock-deployment/operationStatuses/08587023896333576068?api-version=2017-05-10
   response:
     body: {string: '{"status":"Succeeded"}'}
     headers:
       cache-control: [no-cache]
       content-length: ['22']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:08 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:43 GMT']
       expires: ['-1']
       pragma: [no-cache]
       strict-transport-security: [max-age=31536000; includeSubDomains]
@@ -140,12 +140,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/clitest.rg000001/providers/Microsoft.Resources/deployments/mock-deployment?api-version=2017-05-10
   response:
-    body: {string: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","name":"Microsoft.ContainerRegistry","properties":{"templateHash":"5391745780994016228","parameters":{"registryName":{"type":"String","value":"clireg000002"},"registryLocation":{"type":"String","value":"eastus"},"registrySku":{"type":"String","value":"Managed_Standard"},"registryApiVersion":{"type":"String","value":"2017-06-01-preview"},"adminUserEnabled":{"type":"Bool","value":false}},"mode":"Incremental","provisioningState":"Succeeded","timestamp":"2017-07-05T01:03:42.2076956Z","duration":"PT6.4612793S","correlationId":"920f08c1-44e8-460b-9f9e-a9e333fbfd60","providers":[{"namespace":"Microsoft.ContainerRegistry","resourceTypes":[{"resourceType":"registries","locations":["eastus"]}]}],"dependencies":[],"outputResources":[{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"}]}}'}
+    body: {string: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.Resources/deployments/Microsoft.ContainerRegistry","name":"Microsoft.ContainerRegistry","properties":{"templateHash":"5391745780994016228","parameters":{"registryName":{"type":"String","value":"clireg000002"},"registryLocation":{"type":"String","value":"eastus"},"registrySku":{"type":"String","value":"Managed_Standard"},"registryApiVersion":{"type":"String","value":"2017-06-01-preview"},"adminUserEnabled":{"type":"Bool","value":false}},"mode":"Incremental","provisioningState":"Succeeded","timestamp":"2017-07-05T01:14:19.0731234Z","duration":"PT6.9531184S","correlationId":"aef988ea-5815-4928-8365-384fd7c12271","providers":[{"namespace":"Microsoft.ContainerRegistry","resourceTypes":[{"resourceType":"registries","locations":["eastus"]}]}],"dependencies":[],"outputResources":[{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002"}]}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['1245']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:09 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:43 GMT']
       expires: ['-1']
       pragma: [no-cache]
       strict-transport-security: [max-age=31536000; includeSubDomains]
@@ -166,12 +166,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
   response:
-    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:03:39.9734629Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:17.0921995Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['636']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:10 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:44 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -201,7 +201,7 @@ interactions:
       cache-control: [no-cache]
       content-length: ['143']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:12 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:46 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -224,12 +224,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries?api-version=2017-03-01
   response:
-    body: {string: '{"value":[{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:03:39.9734629Z","provisioningState":"Succeeded","adminUserEnabled":false}}]}'}
+    body: {string: '{"value":[{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:17.0921995Z","provisioningState":"Succeeded","adminUserEnabled":false}}]}'}
     headers:
       cache-control: [no-cache]
       content-length: ['648']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:14 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:46 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -252,12 +252,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
   response:
-    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:03:39.9734629Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:17.0921995Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['636']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:15 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:47 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -280,12 +280,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resources?$filter=resourceType%20eq%20%27Microsoft.ContainerRegistry%2Fregistries%27&api-version=2017-05-10
   response:
-    body: {string: '{"value":[{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acr-common-layers/providers/Microsoft.ContainerRegistry/registries/acrservice","name":"acrservice","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acr-stress/providers/Microsoft.ContainerRegistry/registries/acrstress1","name":"acrstress1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acr-stress/providers/Microsoft.ContainerRegistry/registries/acrstress2","name":"acrstress2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acrcommonimages/providers/Microsoft.ContainerRegistry/registries/prime","name":"prime","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acrunittest/providers/Microsoft.ContainerRegistry/registries/testnaduggar","name":"testnaduggar","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{"tag1":"Value1"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ComplianceWebScout/providers/Microsoft.ContainerRegistry/registries/webscoutregistry","name":"webscoutregistry","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandoaad","name":"daobandoaad","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandoaad2","name":"daobandoaad2","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandocrosstenant","name":"daobandocrosstenant","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/daobandotest/providers/Microsoft.ContainerRegistry/registries/daobandocuse","name":"daobandocuse","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyoufail","name":"doyoufail","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoupurge","name":"doyoupurge","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyoustorageid","name":"doyoustorageid","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyouwcus1","name":"doyouwcus1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Basic","tier":"Managed"},"location":"westcentralus","tags":{"foo":"bar"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyourg/providers/Microsoft.ContainerRegistry/registries/doyouwcus2","name":"doyouwcus2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/doyouRG/providers/Microsoft.ContainerRegistry/registries/doyouwcus3","name":"doyouwcus3","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/library/providers/Microsoft.ContainerRegistry/registries/library","name":"library","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/martinpfacrtestwus/providers/Microsoft.ContainerRegistry/registries/martinpfTestRegWus1","name":"martinpfTestRegWus1","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/moveregistryRg/providers/Microsoft.ContainerRegistry/registries/sourceregistry","name":"sourceregistry","type":"Microsoft.ContainerRegistry/registries","location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/moveregistryRg/providers/Microsoft.ContainerRegistry/registries/targetregistry","name":"targetregistry","type":"Microsoft.ContainerRegistry/registries","location":"eastus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanacastor","name":"nathanacastor","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanadyad","name":"nathanadyad","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanaleda","name":"nathanaleda","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanamanaged","name":"nathanamanaged","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanapollux","name":"nathanapollux","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nathana-dyad/providers/Microsoft.ContainerRegistry/registries/nathanatest1234","name":"nathanatest1234","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/peterhsu/providers/Microsoft.ContainerRegistry/registries/peterhsuaad2","name":"peterhsuaad2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/peterhsu/providers/Microsoft.ContainerRegistry/registries/peterhsuaadacr","name":"peterhsuaadacr","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/peterhsu/providers/Microsoft.ContainerRegistry/registries/peterhsuacr","name":"peterhsuacr","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{"key1":"value2"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/iotdev","name":"iotdev","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/kraterteam","name":"kraterteam","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/perfregdgldVgQ","name":"perfregdgldVgQ","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{"storageaccount":"perfregdgldvgq"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagaadtest","name":"sivagaadtest","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagadtest","name":"sivagadtest","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus2","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagtestEUAPCUS","name":"sivagtestEUAPCUS","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/sivagtestweu1","name":"sivagtestweu1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westeurope","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/reservedregistries/providers/Microsoft.ContainerRegistry/registries/tryacr","name":"tryacr","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{"storageaccount":"tryacrstorenew"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ReservedRegistries/providers/Microsoft.ContainerRegistry/registries/vinayreg","name":"vinayreg","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayaadmintest/providers/Microsoft.ContainerRegistry/registries/sajay","name":"sajay","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayaadmintest/providers/Microsoft.ContainerRegistry/registries/sajayatest1","name":"sajayatest1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sajayaAdminTest/providers/Microsoft.ContainerRegistry/registries/sajayatip","name":"sajayatip","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/t-gigonz-private/providers/Microsoft.ContainerRegistry/registries/composetest","name":"composetest","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/t-gigonz-private/providers/Microsoft.ContainerRegistry/registries/demoArch","name":"demoArch","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/t-gigonz-private/providers/Microsoft.ContainerRegistry/registries/hello","name":"hello","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/t-gigonz-private/providers/Microsoft.ContainerRegistry/registries/test1","name":"test1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test01/providers/Microsoft.ContainerRegistry/registries/ankheman01","name":"ankheman01","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"northcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test01/providers/Microsoft.ContainerRegistry/registries/ankheman02","name":"ankheman02","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test01/providers/Microsoft.ContainerRegistry/registries/test02","name":"test02","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"northcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/kiranreg","name":"kiranreg","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/sivagtest876","name":"sivagtest876","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/testnewregistry","name":"testnewregistry","type":"Microsoft.ContainerRegistry/registries","location":"westcentralus","tags":{"tag2":"Value1"}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/testregistry1","name":"testregistry1","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ContainerRegistry/registries/testregistryprod","name":"testregistryprod","type":"Microsoft.ContainerRegistry/registries","location":"southcentralus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwacanman1","name":"yuwacanman1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwacanman2","name":"yuwacanman2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Premium","tier":"Managed"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatest7","name":"yuwatest7","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatest8","name":"yuwatest8","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatest9","name":"yuwatest9","type":"Microsoft.ContainerRegistry/registries","location":"westus","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatestcan1","name":"yuwatestcan1","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}},{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/yuwatestrg/providers/Microsoft.ContainerRegistry/registries/yuwatestcan2","name":"yuwatestcan2","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Basic","tier":"Basic"},"location":"centraluseuap","tags":{}}]}'}
+    body: {string: '{"value":[{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","type":"Microsoft.ContainerRegistry/registries","sku":{"name":"Managed_Standard","tier":"Managed"},"location":"eastus","tags":{}}]}'}
     headers:
       cache-control: [no-cache]
-      content-length: ['17135']
+      content-length: ['452']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:15 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:46 GMT']
       expires: ['-1']
       pragma: [no-cache]
       strict-transport-security: [max-age=31536000; includeSubDomains]
@@ -306,12 +306,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
   response:
-    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:03:39.9734629Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:17.0921995Z","provisioningState":"Succeeded","adminUserEnabled":false}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['636']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:16 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:47 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -336,12 +336,12 @@ interactions:
     method: PATCH
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-06-01-preview
   response:
-    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:03:39.9734629Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:17.0921995Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['655']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:20 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:50 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -365,12 +365,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
   response:
-    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:04:19.1967066Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:49.2643299Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['655']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:21 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:51 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -394,19 +394,19 @@ interactions:
     method: POST
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/listCredentials?api-version=2017-03-01
   response:
-    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"=v+/H=++/D/k=++iV=Ju+r6KHTlmdO1H"},{"name":"password2","value":"x++MCYsX9U8Md7cK0SWBbDrnknZ0wjqG"}]}'}
+    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"l==wYx+=JwRj///tr++q==9=1IaxqCRi"},{"name":"password2","value":"V4gefFFwRY4/lvwy3bveZt3e04tiQRAM"}]}'}
     headers:
       cache-control: [no-cache]
       content-length: ['206']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:22 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:52 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
       strict-transport-security: [max-age=31536000; includeSubDomains]
       transfer-encoding: [chunked]
       vary: [Accept-Encoding]
-      x-ms-ratelimit-remaining-subscription-writes: ['1199']
+      x-ms-ratelimit-remaining-subscription-writes: ['1198']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -423,12 +423,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
   response:
-    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:04:19.1967066Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:49.2643299Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['655']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:23 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:52 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -452,19 +452,19 @@ interactions:
     method: POST
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/regenerateCredential?api-version=2017-03-01
   response:
-    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"Csjj9P1Yo3/1E+3YlsrE0QkgTVmq0oV1"},{"name":"password2","value":"x++MCYsX9U8Md7cK0SWBbDrnknZ0wjqG"}]}'}
+    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"=/iwL4n/+q2+dqmm+ZVo0+8W=TY0A=Gg"},{"name":"password2","value":"V4gefFFwRY4/lvwy3bveZt3e04tiQRAM"}]}'}
     headers:
       cache-control: [no-cache]
       content-length: ['206']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:24 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:53 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
       strict-transport-security: [max-age=31536000; includeSubDomains]
       transfer-encoding: [chunked]
       vary: [Accept-Encoding]
-      x-ms-ratelimit-remaining-subscription-writes: ['1199']
+      x-ms-ratelimit-remaining-subscription-writes: ['1198']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -481,12 +481,12 @@ interactions:
     method: GET
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002?api-version=2017-03-01
   response:
-    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:04:24.4332939Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
+    body: {string: '{"sku":{"name":"Managed_Standard","tier":"Managed"},"type":"Microsoft.ContainerRegistry/registries","id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002","name":"clireg000002","location":"eastus","tags":{"foo":"bar","cat":""},"properties":{"loginServer":"clireg000002.azurecr.io","creationDate":"2017-07-05T01:14:53.4742134Z","provisioningState":"Succeeded","adminUserEnabled":true}}'}
     headers:
       cache-control: [no-cache]
       content-length: ['655']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:25 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:54 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
@@ -510,19 +510,19 @@ interactions:
     method: POST
     uri: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clitest.rg000001/providers/Microsoft.ContainerRegistry/registries/clireg000002/regenerateCredential?api-version=2017-03-01
   response:
-    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"Csjj9P1Yo3/1E+3YlsrE0QkgTVmq0oV1"},{"name":"password2","value":"7ddBW8P+FBXAsrnCbhZCzqDBYhbsJXtM"}]}'}
+    body: {string: '{"username":"clireg000002","passwords":[{"name":"password","value":"=/iwL4n/+q2+dqmm+ZVo0+8W=TY0A=Gg"},{"name":"password2","value":"+5bsTI/rUL=l9=7q4cRO3dBk0lrn9HiJ"}]}'}
     headers:
       cache-control: [no-cache]
       content-length: ['206']
       content-type: [application/json; charset=utf-8]
-      date: ['Wed, 05 Jul 2017 01:04:28 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:55 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
       strict-transport-security: [max-age=31536000; includeSubDomains]
       transfer-encoding: [chunked]
       vary: [Accept-Encoding]
-      x-ms-ratelimit-remaining-subscription-writes: ['1198']
+      x-ms-ratelimit-remaining-subscription-writes: ['1199']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -544,12 +544,12 @@ interactions:
     headers:
       cache-control: [no-cache]
       content-length: ['0']
-      date: ['Wed, 05 Jul 2017 01:04:31 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:58 GMT']
       expires: ['-1']
       pragma: [no-cache]
       server: [Microsoft-HTTPAPI/2.0]
       strict-transport-security: [max-age=31536000; includeSubDomains]
-      x-ms-ratelimit-remaining-subscription-writes: ['1198']
+      x-ms-ratelimit-remaining-subscription-writes: ['1199']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -571,9 +571,9 @@ interactions:
     headers:
       cache-control: [no-cache]
       content-length: ['0']
-      date: ['Wed, 05 Jul 2017 01:04:34 GMT']
+      date: ['Wed, 05 Jul 2017 01:14:59 GMT']
       expires: ['-1']
-      location: ['https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1DTElURVNUOjJFUkdCUlJGT01VNDdaSVpGRUs1TUEzRjJQN1BTTjJNTUVFTENLUHw5RDdFMDk5MThCNjUzNTVGLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2017-05-10']
+      location: ['https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1DTElURVNUOjJFUkdLMkVPUFlTVVVWVzZFSFk0UU5UU05FSFpJR0Y0Tk1YUFlMV3wzNTAyODQxQzVDRjcwMzU0LUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2017-05-10']
       pragma: [no-cache]
       strict-transport-security: [max-age=31536000; includeSubDomains]
       x-ms-ratelimit-remaining-subscription-writes: ['1199']
