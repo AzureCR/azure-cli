@@ -319,12 +319,12 @@ Delete a repository from a container registry or delete a manifest/tag from a gi
 
     Arguments
         --name -n    [Required]: The name of the container registry. You can configure the default
-                                registry name using `az configure --defaults acr=<registry name>`.
+                                 registry name using `az configure --defaults acr=<registry name>`.
         --repository [Required]: The name of repository to delete.
         --manifest             : The sha256 based digest of manifest to delete.
         --password -p          : The password used to log into a container registry.
         --resource-group -g    : Name of resource group. You can configure the default group using `az
-                                configure --defaults group=<name>`.
+                                 configure --defaults group=<name>`.
         --tag                  : The name of tag to delete.
         --username -u          : The username used to log into a container registry.
         --yes -y               : Do not prompt for confirmation.
