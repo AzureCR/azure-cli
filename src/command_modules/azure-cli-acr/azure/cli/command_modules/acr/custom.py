@@ -21,7 +21,7 @@ from azure.mgmt.containerregistry.v2017_06_01_preview.models import (
     Sku
 )
 
-from ._constants import MANAGED_REGISTRY_API_VERSION
+from ._constants import MANAGED_REGISTRY_API_VERSION, MANAGED_REGISTRY_LOCATION
 from ._factory import get_acr_service_client
 from ._utils import (
     get_resource_group_name_by_registry_name,
@@ -111,10 +111,13 @@ def acr_create(registry_name,
                     deployment_name)
             )
     else:
+        if location not in MANAGED_REGISTRY_LOCATION:
+            raise CLIError(
+                "Managed registries are available in the following locations: {}.".format(MANAGED_REGISTRY_LOCATION))
         if storage_account_name:
             logger.warning(
                 "The registry '%s' in '%s' SKU is a managed registry. The specified storage account will be ignored.",
-                registry_name, sku)  # pylint: disable=no-member
+                registry_name, sku)
         LongRunningOperation()(
             arm_deploy_template_managed_storage(
                 resource_group_name,
@@ -214,7 +217,7 @@ def acr_update_set(client,
             parameters.storage_account = None
             logger.warning(
                 "The registry '%s' in '%s' SKU is a managed registry. The specified storage account will be ignored.",
-                registry_name, registry.sku.name)  # pylint: disable=no-member
+                registry_name, registry.sku.name)
         client = get_acr_service_client(MANAGED_REGISTRY_API_VERSION).registries
     elif registry.sku.tier == SkuTier.basic.value:
         if hasattr(parameters, 'sku') and parameters.sku is not None:
