@@ -96,15 +96,6 @@ def get_registry_by_name(registry_name, resource_group_name=None):
     return client.get(resource_group_name, registry_name), resource_group_name
 
 
-def get_registry_login_server_by_name(registry_name, resource_group_name=None):
-    """Returns login server for the container registry.
-    :param str registry_name: The name of container registry
-    :param str resource_group_name: The name of resource group
-    """
-    registry, _ = get_registry_by_name(registry_name, resource_group_name)
-    return registry.login_server  # pylint: disable=no-member
-
-
 def get_access_key_by_storage_account_name(storage_account_name, resource_group_name=None):
     """Returns access key for the storage account.
     :param str storage_account_name: The name of storage account
@@ -285,7 +276,7 @@ def random_storage_account_name(registry_name):
             return storage_account_name
 
 
-def registry_sku_validation(registry_name, resource_group_name=None, message=None):
+def managed_registry_validation(registry_name, resource_group_name=None, message=None):
     """Validates if a registry is in Basic SKU.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group

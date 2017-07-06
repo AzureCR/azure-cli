@@ -30,8 +30,7 @@ from ._utils import (
     arm_deploy_template_managed_storage,
     random_storage_account_name,
     get_registry_by_name,
-    get_registry_login_server_by_name,
-    registry_sku_validation,
+    managed_registry_validation,
     validate_sku_update,
     ensure_storage_account_parameter
 )
@@ -170,7 +169,7 @@ def acr_update_get(client,  # pylint: disable=unused-argument
     :param str resource_group_name: The name of resource group
     """
     try:
-        registry_sku_validation(registry_name, resource_group_name)
+        managed_registry_validation(registry_name, resource_group_name)
         return ManagedRegistryUpdateParameters()
     except:  # pylint: disable=bare-except
         return BasicRegistryUpdateParameters()
@@ -239,7 +238,9 @@ def acr_login(registry_name, resource_group_name=None, username=None, password=N
     except:
         raise CLIError("Please verify whether docker is installed and running properly")
 
-    login_server = get_registry_login_server_by_name(registry_name, resource_group_name)
+    registry, _ = get_registry_by_name(registry_name, resource_group_name)
+    sku_tier = registry.sku.tier
+    login_server = registry.login_server
 
     # 1. if username was specified, verify that password was also specified
     if username and not password:
@@ -248,22 +249,23 @@ def acr_login(registry_name, resource_group_name=None, username=None, password=N
         except NoTTYException:
             raise CLIError('Please specify both username and password in non-interactive mode.')
 
-    # 2. if we don't yet have credentials, attempt to get a refresh token
-    if not password:
-        try:
-            username = "00000000-0000-0000-0000-000000000000"
-            password = get_login_refresh_token(login_server)
-        except Exception as e:  # pylint: disable=broad-except
-            logger.warning("AAD authentication failed with message: %s", str(e))
-
-    # 3. if we still don't have credentials, attempt to get the admin credentials (if enabled)
-    if not password:
-        try:
-            cred = acr_credential_show(registry_name)
-            username = cred.username
-            password = cred.passwords[0].value
-        except Exception as e:  # pylint: disable=broad-except
-            logger.warning("Admin user authentication failed with message: %s", str(e))
+    if sku_tier == SkuTier.managed.value:
+        # 2. if we don't yet have credentials, attempt to get a refresh token
+        if not password:
+            try:
+                username = "00000000-0000-0000-0000-000000000000"
+                password = get_login_refresh_token(login_server)
+            except Exception as e:  # pylint: disable=broad-except
+                logger.warning("AAD authentication failed with message: %s", str(e))
+    else:
+        # 3. if we still don't have credentials, attempt to get the admin credentials (if enabled)
+        if not password:
+            try:
+                cred = acr_credential_show(registry_name)
+                username = cred.username
+                password = cred.passwords[0].value
+            except Exception as e:  # pylint: disable=broad-except
+                logger.warning("Admin user authentication failed with message: %s", str(e))
 
     # 4. if we still don't have credentials, prompt the user
     if not password:
@@ -286,7 +288,7 @@ def acr_show_usage(registry_name, resource_group_name=None):
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     """
-    _, resource_group_name = registry_sku_validation(
+    _, resource_group_name = managed_registry_validation(
         registry_name, resource_group_name, "Usage is not supported for registries in Basic SKU.")
     client = get_acr_service_client(MANAGED_REGISTRY_API_VERSION).registries
 
