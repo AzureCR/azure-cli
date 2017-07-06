@@ -21,7 +21,7 @@ from azure.mgmt.containerregistry.v2017_06_01_preview.models import (
     Sku
 )
 
-from ._constants import MANAGED_REGISTRY_API_VERSION, MANAGED_REGISTRY_LOCATION
+from ._constants import MANAGED_REGISTRY_API_VERSION
 from ._factory import get_acr_service_client
 from ._utils import (
     get_resource_group_name_by_registry_name,
@@ -111,9 +111,6 @@ def acr_create(registry_name,
                     deployment_name)
             )
     else:
-        if location not in MANAGED_REGISTRY_LOCATION:
-            raise CLIError(
-                "Managed registries are available in the following locations: {}.".format(MANAGED_REGISTRY_LOCATION))
         if storage_account_name:
             logger.warning(
                 "The registry '%s' in '%s' SKU is a managed registry. The specified storage account will be ignored.",
