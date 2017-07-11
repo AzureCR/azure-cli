@@ -1,7 +1,7 @@
 Microsoft Azure CLI 'acr' Command Module
 ========================================
 
-Commands to manage Azure container registries
+Commands to manage Azure Container Registries
 +++++++++++++++++++++++++++++++++++++++++++++
 ::
 
@@ -9,19 +9,20 @@ Commands to manage Azure container registries
         az acr: Manage Azure Container Registries.
 
     Subgroups:
-        credential: Manage login credentials for Azure container registries.
-        repository: Manage repositories for Azure container registries.
-        webhook   : Manage webhooks for Azure container registries.
+        credential : Manage login credentials for Azure Container Registries.
+        replication: Manage replications for Azure Container Registries.
+        repository : Manage repositories for Azure Container Registries.
+        webhook    : Manage webhooks for Azure Container Registries.
 
     Commands:
-        check-name: Checks whether the container registry name is available for use.
-        create    : Creates a container registry.
-        delete    : Deletes a container registry.
-        list      : Lists all the container registries under the current subscription.
-        login     : Login to a container registry through Docker.
-        show      : Gets the properties of the specified container registry.
-        show-usage: Gets the quota usages for the specified container registry.
-        update    : Updates a container registry.
+        check-name : Checks whether the container registry name is available for use.
+        create     : Creates a container registry.
+        delete     : Deletes a container registry.
+        list       : Lists all the container registries under the current subscription.
+        login      : Login to a container registry through Docker.
+        show       : Gets the properties of the specified container registry.
+        show-usage : Gets the quota usages for the specified container registry.
+        update     : Updates a container registry.
 
 Create a container registry
 +++++++++++++++++++++++++++
@@ -180,12 +181,12 @@ Get the quota usages for a container registry
         Get the quota usages for a container registry.
             az acr show-usage -n MyRegistry
 
-Commands to manage login credentials for Azure container registries
+Commands to manage login credentials for Azure Container Registries
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
     Group
-        az acr credential: Manage login credentials for Azure container registries.
+        az acr credential: Manage login credentials for Azure Container Registries.
 
     Commands:
         renew: Regenerates one of the login credentials for the specified container registry.
@@ -234,12 +235,12 @@ Regenerate login credentials for a container registry
         Renew the second password for a container registry.
             az acr credential renew -n MyRegistry --password-name password2
 
-Commands to manage repositories for Azure container registries
+Commands to manage repositories for Azure Container Registries
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
     Group
-        az acr repository: Manage repositories for Azure container registries.
+        az acr repository: Manage repositories for Azure Container Registries.
 
     Commands:
         delete        : Deletes a repository or a manifest/tag from the given repository in the
@@ -345,12 +346,12 @@ Delete a repository from a container registry or delete a manifest/tag from a gi
         and all tags referencing the manifest.
             az acr repository delete -n MyRegistry --repository MyRepository --manifest MyManifest
 
-Commands to manage webhooks for Azure container registries
+Commands to manage webhooks for Azure Container Registries
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ::
 
     Group
-        az acr webhook: Manage webhooks for Azure container registries.
+        az acr webhook: Manage webhooks for Azure Container Registries.
 
     Commands:
         create     : Creates a webhook for a container registry.
@@ -554,3 +555,121 @@ List recent events for a webhook
     Examples
         List recent events for the specified webhook.
             az acr webhook list-events -n MyWebhook -r MyRegistry
+
+Commands to manage replications for Azure Container Registries
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+::
+
+    Group
+        az acr replication: Manage replications for Azure Container Registries.
+
+    Commands:
+        create: Creates a replication for a container registry.
+        delete: Deletes a replication from a container registry.
+        list  : Lists all the replications for the specified container registry.
+        show  : Gets the properties of the specified replication.
+        update: Updates a replication.
+
+Create a replication
+++++++++++++++++++++
+::
+
+    Command
+        az acr replication create: Creates a replication for a container registry.
+
+    Arguments
+        --location -l [Required]: Location. You can configure the default location using `az configure
+                                  --defaults location=<location>`.
+        --registry -r [Required]: The name of the container registry. You can configure the default
+                                  registry name using `az configure --defaults acr=<registry name>`.
+        --name -n               : The name of the replication. Default to the location name.
+        --resource-group -g     : Name of resource group. You can configure the default group using `az
+                                  configure --defaults group=<name>`.
+        --tags                  : Space separated tags in 'key[=value]' format. Use "" to clear existing
+                                  tags.
+
+    Examples
+        Create a replication for a container registry.
+            az acr replication create -r MyRegistry -l westus
+
+Delete a replication
+++++++++++++++++++++
+::
+
+    Command
+        az acr replication delete: Deletes a replication from a container registry.
+
+    Arguments
+        --name -n     [Required]: The name of the replication.
+        --registry -r [Required]: The name of the container registry. You can configure the default
+                                  registry name using `az configure --defaults acr=<registry name>`.
+        --resource-group -g     : Name of resource group. You can configure the default group using `az
+                                  configure --defaults group=<name>`.
+
+    Examples
+        Delete a replication from a container registry.
+            az acr replication delete -n MyReplication -r MyRegistry
+
+List replications
++++++++++++++++++
+::
+
+    Command
+        az acr replication list: Lists all the replications for the specified container registry.
+
+    Arguments
+        --registry -r [Required]: The name of the container registry. You can configure the default
+                                  registry name using `az configure --defaults acr=<registry name>`.
+        --resource-group -g     : Name of resource group. You can configure the default group using `az
+                                  configure --defaults group=<name>`.
+
+    Examples
+        List replications and show the results in a table.
+            az acr replication list -r MyRegistry -o table
+
+Get a replication
++++++++++++++++++
+::
+
+    Command
+        az acr replication show: Gets the properties of the specified replication.
+
+    Arguments
+        --name -n     [Required]: The name of the replication.
+        --registry -r [Required]: The name of the container registry. You can configure the default
+                                  registry name using `az configure --defaults acr=<registry name>`.
+        --resource-group -g     : Name of resource group. You can configure the default group using `az
+                                  configure --defaults group=<name>`.
+
+    Examples
+        Get the properties of the specified replication.
+            az acr replication show -n MyReplication -r MyRegistry
+
+Update a replication
+++++++++++++++++++++
+::
+
+    Command
+        az acr replication update: Updates a replication.
+
+    Arguments
+        --name -n     [Required]: The name of the replication.
+        --registry -r [Required]: The name of the container registry. You can configure the default
+                                  registry name using `az configure --defaults acr=<registry name>`.
+        --resource-group -g     : Name of resource group. You can configure the default group using `az
+                                  configure --defaults group=<name>`.
+        --tags                  : Space separated tags in 'key[=value]' format. Use "" to clear existing
+                                  tags.
+
+    Generic Update Arguments
+        --add                   : Add an object to a list of objects by specifying a path and key value
+                                  pairs.  Example: --add property.listProperty <key=value, string or
+                                  JSON string>.
+        --remove                : Remove a property or an element from a list.  Example: --remove
+                                  property.list <indexToRemove> OR --remove propertyToRemove.
+        --set                   : Update an object by specifying a property path and value to set.
+                                  Example: --set property1.property2=<value>.
+
+    Examples
+        Update tags for a replication
+            az acr replication update -n MyReplication -r MyRegistry --tags key1=value1 key2=value2
