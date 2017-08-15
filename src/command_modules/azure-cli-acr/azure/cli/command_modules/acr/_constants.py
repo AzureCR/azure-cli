@@ -7,6 +7,7 @@ STORAGE_RESOURCE_TYPE = 'Microsoft.Storage/storageAccounts'
 
 ACR_RESOURCE_PROVIDER = 'Microsoft.ContainerRegistry'
 ACR_RESOURCE_TYPE = ACR_RESOURCE_PROVIDER + '/registries'
+BASIC_REGISTRY_API_VERSION = '2017-03-01'
 
 MANAGED_REGISTRY_SKU = ['Managed_Basic', 'Managed_Standard', 'Managed_Premium']
 MANAGED_REGISTRY_API_VERSION = '2017-06-01-preview'

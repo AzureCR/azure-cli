@@ -24,7 +24,7 @@ from azure.mgmt.containerregistry.v2017_06_01_preview.models import (
 from ._constants import MANAGED_REGISTRY_API_VERSION
 from ._factory import get_acr_service_client
 from ._utils import (
-    get_resource_group_name_by_registry_name,
+    get_registry_api_version,
     arm_deploy_template_new_storage,
     arm_deploy_template_existing_storage,
     arm_deploy_template_managed_storage,
@@ -142,9 +142,9 @@ def acr_delete(registry_name, resource_group_name=None):
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     """
-    resource_group_name = get_resource_group_name_by_registry_name(
+    api_version, resource_group_name = get_registry_api_version(
         registry_name, resource_group_name)
-    client = get_acr_service_client().registries
+    client = get_acr_service_client(api_version).registries
 
     return client.delete(resource_group_name, registry_name)
 
@@ -154,9 +154,9 @@ def acr_show(registry_name, resource_group_name=None):
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     """
-    resource_group_name = get_resource_group_name_by_registry_name(
+    api_version, resource_group_name = get_registry_api_version(
         registry_name, resource_group_name)
-    client = get_acr_service_client().registries
+    client = get_acr_service_client(api_version).registries
 
     return client.get(resource_group_name, registry_name)
 
