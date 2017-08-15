@@ -13,7 +13,9 @@ from ._constants import (
     ACR_RESOURCE_PROVIDER,
     ACR_RESOURCE_TYPE,
     STORAGE_RESOURCE_TYPE,
-    MANAGED_REGISTRY_SKU
+    MANAGED_REGISTRY_SKU,
+    MANAGED_REGISTRY_API_VERSION,
+    BASIC_REGISTRY_API_VERSION
 )
 from ._factory import (
     get_arm_service_client,
@@ -274,6 +276,21 @@ def random_storage_account_name(registry_name):
         storage_account_name = ''.join([prefix, time_stamp_suffix])[:24]
         if client.check_name_availability(storage_account_name).name_available:  # pylint: disable=no-member
             return storage_account_name
+
+
+def get_registry_api_version(registry_name, resource_group_name=None):
+    """Gets the API version of a registry based on SKU.
+    :param str registry_name: The name of container registry
+    :param str resource_group_name: The name of resource group
+    """
+    arm_resource = _arm_get_resource_by_name(registry_name, ACR_RESOURCE_TYPE)
+    if not resource_group_name:
+        resource_group_name = get_resource_group_name_by_resource_id(arm_resource.id)
+
+    if arm_resource.sku.tier == SkuTier.managed.value:
+        return MANAGED_REGISTRY_API_VERSION, resource_group_name
+
+    return BASIC_REGISTRY_API_VERSION, resource_group_name
 
 
 def managed_registry_validation(registry_name, resource_group_name=None, message=None):
