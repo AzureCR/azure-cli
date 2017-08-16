@@ -12,24 +12,11 @@ from ._utils import (
     get_registry_by_name
 )
 from .credential import acr_credential_show
+from .repository import _headers, Unauthorized, NotFound
 
 logger = azlogging.get_az_logger(__name__)
 APIUSERNAME = os.getenv('multiUser')
 APIPASSWORD = os.getenv('multiPass')
-
-class NotFound(Exception):
-    pass
-
-
-class Unauthorized(Exception):
-    pass
-
-def _basic_auth_str(username, password):
-    return 'Basic ' + to_native_string(b64encode(('%s:%s' % (username, password)).encode('latin1')).strip())
-
-def _headers(username, password):
-    auth = _basic_auth_str(username, password)
-    return {'Authorization': auth, 'Content-Type': 'application/JSON'}
 
 def get_response_for_show(resource_group_name, registry_name, name, api_username, api_password):
     registry_name, _ = get_registry_by_name(registry_name, resource_group_name)
@@ -134,7 +121,7 @@ def _validate_user_credentials(registry_name,
 def create_build(location,
                  registry_name,
                  repository,
-                 multi_arch_tag,
+                 multiArch_tag,
                  platform,
                  build_name,
                  login_server,
@@ -150,7 +137,7 @@ def create_build(location,
         for key, value in platform.items():
             manifests = manifests + ("- image: " + tag_prefix + key + "\n  platform:\n    architecture: " +
                                      value.split("-")[1] + "\n    os: " + value.split("-")[0] + "\n")
-        multiYaml = "image: " + tag_prefix + multi_arch_tag + "\nmanifests:\n" + manifests
+        multiYaml = "image: " + tag_prefix + multiArch_tag + "\nmanifests:\n" + manifests
         request = {"location":location, "properties":{"buildType":"MultiArch",
                                                       "buildArguments":{"multiArchYaml":multiYaml,
                                                                         "username":username,
@@ -181,7 +168,7 @@ def create_build(location,
 
 def acr_multi_build_definition_create(registry_name,
                                       repository,
-                                      tags,
+                                      tags=None,
                                       multi_arch_tag=None,
                                       build_name=None,
                                       resource_group_name=None,
