@@ -121,7 +121,7 @@ def _validate_user_credentials(registry_name,
 def create_build(location,
                  registry_name,
                  repository,
-                 multi_arch_tag,
+                 multiArch_tag,
                  platform,
                  build_name,
                  login_server,
@@ -137,7 +137,7 @@ def create_build(location,
         for key, value in platform.items():
             manifests = manifests + ("- image: " + tag_prefix + key + "\n  platform:\n    architecture: " +
                                      value.split("-")[1] + "\n    os: " + value.split("-")[0] + "\n")
-        multiYaml = "image: " + tag_prefix + multi_arch_tag + "\nmanifests:\n" + manifests
+        multiYaml = "image: " + tag_prefix + multiArch_tag + "\nmanifests:\n" + manifests
         request = {"location":location, "properties":{"buildType":"MultiArch",
                                                       "buildArguments":{"multiArchYaml":multiYaml,
                                                                         "username":username,
