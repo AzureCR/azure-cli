@@ -96,3 +96,9 @@ cli_generic_update_command(
     factory=lambda: get_acr_service_client(REPLICATION_API_VERSION).replications,
     custom_function_op='azure.cli.command_modules.acr.replication#acr_replication_update_custom',
     table_transformer=output_format)
+cli_command(__name__, 'acr flux create',
+            'azure.cli.command_modules.acr.multiarch#acr_multi_build_definition_create')
+cli_command(__name__, 'acr flux show',
+            'azure.cli.command_modules.acr.multiarch#acr_multi_build_definition_show')
+cli_command(__name__, 'acr flux delete',
+            'azure.cli.command_modules.acr.multiarch#acr_multi_build_definition_delete')

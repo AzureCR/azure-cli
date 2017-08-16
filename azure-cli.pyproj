@@ -117,6 +117,7 @@
     <Compile Include="command_modules\azure-cli-acr\azure\cli\command_modules\acr\commands.py" />
     <Compile Include="command_modules\azure-cli-acr\azure\cli\command_modules\acr\credential.py" />
     <Compile Include="command_modules\azure-cli-acr\azure\cli\command_modules\acr\custom.py" />
+    <Compile Include="command_modules\azure-cli-acr\azure\cli\command_modules\acr\multiarch.py"/>
     <Compile Include="command_modules\azure-cli-acr\azure\cli\command_modules\acr\repository.py" />
     <Compile Include="command_modules\azure-cli-acr\azure\cli\command_modules\acr\tests\test_acr_commands.py" />
     <Compile Include="command_modules\azure-cli-acr\azure\cli\command_modules\acr\webhook.py" />
