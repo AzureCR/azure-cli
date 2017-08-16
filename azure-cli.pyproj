@@ -13,7 +13,8 @@
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <InterpreterId>{c3f4c99d-1c4f-47ce-a44e-7f7e0e830a4f}</InterpreterId>
-    <InterpreterVersion>3.5</InterpreterVersion>    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <InterpreterVersion>3.5</InterpreterVersion>    
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <CommandLineArguments>
     </CommandLineArguments>
   </PropertyGroup>
