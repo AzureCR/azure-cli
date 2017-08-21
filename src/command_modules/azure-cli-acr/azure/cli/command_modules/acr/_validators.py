@@ -34,3 +34,19 @@ def validate_header(string):
         comps = string.split('=', 1)
         result = {comps[0]: comps[1]} if len(comps) > 1 else {string: ''}
     return result
+
+def validate_images(namespace):
+    """Extracts multiple space-separated headers in key[=value] format. """
+    if isinstance(namespace.images, list):
+        images_dict = {}
+        for item in namespace.images:
+            images_dict.update(validate_image(item))
+        namespace.images = images_dict
+
+def validate_image(string):
+    """Extracts a single header in key[=value] format. """
+    result = {}
+    if string:
+        comps = string.split('=', 1)
+        result = {comps[0]: comps[1]} if len(comps) > 1 else {string: ''}
+    return result
