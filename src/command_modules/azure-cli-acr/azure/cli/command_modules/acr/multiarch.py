@@ -12,9 +12,11 @@ from ._utils import (
 from .credential import acr_credential_show
 from .repository import _headers, Unauthorized, NotFound
 
+
 logger = azlogging.get_az_logger(__name__)
 APIUSERNAME = os.getenv('multiUser')
 APIPASSWORD = os.getenv('multiPass')
+
 
 def get_response_for_show(resource_group_name, registry_name, name, api_username, api_password):
     registry_name, _ = get_registry_by_name(registry_name, resource_group_name)
@@ -25,6 +27,7 @@ def get_response_for_show(resource_group_name, registry_name, name, api_username
         return response.json()
     raise CLIError("There was an error retrieving the resource. " + str(response.status_code))
 
+
 def put_multi_arch_artifact(data, username, password, registry_name, name, resource_group_name):
     registry_name, _ = get_registry_by_name(registry_name, resource_group_name)
     id = registry_name.id
@@ -34,6 +37,7 @@ def put_multi_arch_artifact(data, username, password, registry_name, name, resou
         return response.json()
     raise CLIError("There was an error creating the resource. " + str(response.status_code))
 
+
 def delete_multi_arch_artifact(resource_group_name, registry_name, name, api_username, api_password):
     registry_name, _ = get_registry_by_name(registry_name, resource_group_name)
     id = registry_name.id
@@ -42,6 +46,7 @@ def delete_multi_arch_artifact(resource_group_name, registry_name, name, api_use
     if response.status_code == 200:
         return "Succesfully deleted resource."
     raise CLIError("There was an error deleting the resource. " + str(response.status_code))
+
 
 def _validate_user_credentials(registry_name,
                                multi_arch_tag,
@@ -108,6 +113,7 @@ def _validate_user_credentials(registry_name,
                         password,
                         yaml)
 
+
 def create_build(location,
                  registry_name,
                  multi_arch_tag,
@@ -157,6 +163,7 @@ def create_build(location,
         except FileNotFoundError as e:
             logger.warning("Unable to find file %s", str(e))
 
+
 def acr_multi_build_definition_create(registry,
                                       images=None,
                                       multi_arch_tag=None,
@@ -177,9 +184,11 @@ def acr_multi_build_definition_create(registry,
                                       password,
                                       yaml)
 
+
 def acr_multi_build_definition_show(registry, build_name, resource_group_name=None):
     resource_group_name = get_resource_group_name_by_registry_name(registry)
     return get_response_for_show(resource_group_name, registry, build_name, APIUSERNAME, APIPASSWORD)
+
 
 def acr_multi_build_definition_delete(registry, build_name, resource_group_name=None):
     resource_group_name = get_resource_group_name_by_registry_name(registry)
