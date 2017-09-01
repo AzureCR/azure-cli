@@ -21,7 +21,7 @@ from azure.mgmt.containerregistry.v2017_06_01_preview.models import (
     Sku
 )
 
-from ._constants import MANAGED_REGISTRY_API_VERSION
+from ._constants import MANAGED_REGISTRY_API_VERSION, MANAGED_REGISTRY_SKU
 from ._factory import get_acr_service_client
 from ._utils import (
     get_registry_api_version,
@@ -217,12 +217,19 @@ def acr_update_set(client,
         client = get_acr_service_client(MANAGED_REGISTRY_API_VERSION).registries
     elif registry.sku.tier == SkuTier.basic.value:
         if hasattr(parameters, 'sku') and parameters.sku is not None:
-            parameters.sku = None
-            logger.warning(
-                "Updating SKU is not supported for registries in Basic SKU. The specified SKU will be ignored.")
+            if parameters.sku.name in MANAGED_REGISTRY_SKU:
+                client = get_acr_service_client(MANAGED_REGISTRY_API_VERSION).registries
+                parameters = ManagedRegistryUpdateParameters(
+                    tags=parameters.tags,
+                    sku=Sku(
+                        parameters.sku.name
+                    ),
+                    admin_user_enabled=parameters.admin_user_enabled
+                )
+            else:
+                parameters.sku = None
         if parameters.storage_account is not None:
             parameters.storage_account = ensure_storage_account_parameter(parameters.storage_account)
-
     return client.update(resource_group_name, registry_name, parameters)
 
 
