@@ -61,8 +61,8 @@ def load_command_table(self, _):
                                  client_factory=cf_acr_registries)
 
     with self.command_group('acr build', acr_build_util) as g:
-            g.command('show-logs', 'acr_show_logs')
-            g.command('queue', 'acr_queue')
+            g.command('show-logs', 'acr_build_show_logs')
+            g.command('queue', 'acr_build_queue')
 
     with self.command_group('acr credential', acr_cred_util) as g:
         g.command('show', 'acr_credential_show', exception_handler=empty_on_404)
