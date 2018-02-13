@@ -14,7 +14,17 @@ helps['acr'] = """
 helps['acr build'] = """
     type: group
     short-summary: Manage builds for Azure Container Registries.
-    """    
+    """
+
+helps['acr build queue'] = """
+    type: command
+    short-summary: Queues a new build based on the specified parameters.
+    """
+
+helps['acr build show-logs'] = """
+    type: command
+    short-summary: Shows logs for a particular build.
+    """
 
 helps['acr credential'] = """
     type: group

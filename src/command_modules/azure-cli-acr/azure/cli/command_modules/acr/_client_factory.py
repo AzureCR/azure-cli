@@ -4,7 +4,6 @@
 # --------------------------------------------------------------------------------------------
 
 from azure.cli.core.commands.client_factory import get_mgmt_service_client
-from .sdk.operations.builds_operations import BuildsOperations
 
 
 def get_arm_service_client(cli_ctx):
@@ -43,5 +42,5 @@ def cf_acr_webhooks(cli_ctx, *_):
     return get_acr_service_client(cli_ctx).webhooks
 
 
-def cf_acr_build(cli_ctx, *_):
+def cf_acr_builds(cli_ctx, *_):
     return get_acr_build_client(cli_ctx).builds

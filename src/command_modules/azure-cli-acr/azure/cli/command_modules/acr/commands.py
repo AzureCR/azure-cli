@@ -7,7 +7,7 @@ from azure.cli.core.commands import CliCommandType
 from azure.cli.core.util import empty_on_404
 
 from ._format import output_format
-from ._client_factory import cf_acr_registries, cf_acr_replications, cf_acr_webhooks, cf_acr_build
+from ._client_factory import cf_acr_registries, cf_acr_replications, cf_acr_webhooks, cf_acr_builds
 
 
 def load_command_table(self, _):
@@ -42,7 +42,7 @@ def load_command_table(self, _):
 
     acr_build_util = CliCommandType(
         operations_tmpl='azure.cli.command_modules.acr.build#{}',    
-        client_factory=cf_acr_build
+        client_factory=cf_acr_builds
     )
 
     with self.command_group('acr', acr_custom_util) as g:
