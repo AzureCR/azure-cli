@@ -28,10 +28,16 @@ class BuildDefinitionStatus(Enum):
     enabled = "Enabled"
 
 
-class SourceControlTypes(Enum):
+class SourceControlType(Enum):
 
     github = "Github"
     visual_studio_team_service = "VisualStudioTeamService"
+
+
+class OsType(Enum):
+
+    windows = "Windows"
+    linux = "Linux"
 
 
 class BuildStatus(Enum):
@@ -41,7 +47,7 @@ class BuildStatus(Enum):
     running = "Running"
     succeeded = "Succeeded"
     failed = "Failed"
-    cancelled = "Cancelled"
+    canceled = "Canceled"
 
 
 class BuildType(Enum):
@@ -54,9 +60,3 @@ class TokenType(Enum):
 
     pat = "PAT"
     oauth = "OAuth"
-
-
-class OsTypes(Enum):
-
-    windows = "Windows"
-    linux = "Linux"
