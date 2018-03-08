@@ -13,27 +13,27 @@ from msrest.serialization import Model
 
 
 class BuildStepUpdateParameters(Model):
-    """The base properties for updating any build step.
+    """The parameters for updating a build step.
 
-    You probably want to use the sub-classes and not this class directly. Known
-    sub-classes are: DockerBuildStepUpdateParameters
+    Variables are only populated by the server, and will be ignored when
+    sending a request.
 
-    :param type: Constant filled by server.
-    :type type: str
+    :ivar type: The type of the step. Possible values include: 'Docker'
+    :vartype type: str or ~containerregistrybuild.models.BuildStepType
+    :param tags: The ARM resource tags.
+    :type tags: dict[str, str]
     """
 
     _validation = {
-        'type': {'required': True},
+        'type': {'readonly': True},
     }
 
     _attribute_map = {
-        'type': {'key': 'type', 'type': 'str'},
+        'type': {'key': 'properties.type', 'type': 'str'},
+        'tags': {'key': 'tags', 'type': '{str}'},
     }
 
-    _subtype_map = {
-        'type': {'Docker': 'DockerBuildStepUpdateParameters'}
-    }
-
-    def __init__(self):
+    def __init__(self, tags=None):
         super(BuildStepUpdateParameters, self).__init__()
         self.type = None
+        self.tags = tags

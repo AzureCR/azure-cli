@@ -9,36 +9,55 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-from msrest.serialization import Model
+from .resource import Resource
 
 
-class BuildStep(Model):
-    """Base properties for any  build step.
+class BuildStep(Resource):
+    """Build step resource properties.
 
-    You probably want to use the sub-classes and not this class directly. Known
-    sub-classes are: DockerBuildStep
+    Variables are only populated by the server, and will be ignored when
+    sending a request.
 
-    :param name: The unique name of the step.
-    :type name: str
-    :param type: Constant filled by server.
-    :type type: str
+    :ivar id: The resource ID.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource.
+    :vartype type: str
+    :param location: The location of the resource. This cannot be changed
+     after the resource is created.
+    :type location: str
+    :param tags: The tags of the resource.
+    :type tags: dict[str, str]
+    :ivar provisioning_state: The provisioning state of the build step.
+     Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded',
+     'Failed', 'Canceled'
+    :vartype provisioning_state: str or
+     ~containerregistrybuild.models.ProvisioningState
+    :param build_step_type: Constant filled by server.
+    :type build_step_type: str
     """
 
     _validation = {
-        'name': {'required': True},
-        'type': {'required': True},
+        'id': {'readonly': True},
+        'name': {'readonly': True},
+        'type': {'readonly': True},
+        'location': {'required': True},
+        'provisioning_state': {'readonly': True},
+        'build_step_type': {'required': True},
     }
 
     _attribute_map = {
+        'id': {'key': 'id', 'type': 'str'},
         'name': {'key': 'name', 'type': 'str'},
         'type': {'key': 'type', 'type': 'str'},
+        'location': {'key': 'location', 'type': 'str'},
+        'tags': {'key': 'tags', 'type': '{str}'},
+        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
+        'build_step_type': {'key': 'properties.type', 'type': 'str'},
     }
 
-    _subtype_map = {
-        'type': {'Docker': 'DockerBuildStep'}
-    }
-
-    def __init__(self, name):
-        super(BuildStep, self).__init__()
-        self.name = name
-        self.type = None
+    def __init__(self, location, build_step_type, tags=None):
+        super(BuildStep, self).__init__(location=location, tags=tags)
+        self.provisioning_state = None
+        self.build_step_type = build_step_type

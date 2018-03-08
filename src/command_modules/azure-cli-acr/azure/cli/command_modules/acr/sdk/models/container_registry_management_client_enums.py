@@ -34,6 +34,12 @@ class SourceControlType(Enum):
     visual_studio_team_service = "VisualStudioTeamService"
 
 
+class TokenType(Enum):
+
+    pat = "PAT"
+    oauth = "OAuth"
+
+
 class OsType(Enum):
 
     windows = "Windows"
@@ -56,7 +62,12 @@ class BuildType(Enum):
     quick_build = "QuickBuild"
 
 
-class TokenType(Enum):
+class BuildStepType(Enum):
 
-    pat = "PAT"
-    oauth = "OAuth"
+    docker = "Docker"
+
+
+class BaseImageDependencyType(Enum):
+
+    build_time = "BuildTime"
+    run_time = "RunTime"

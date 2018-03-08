@@ -9,12 +9,26 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-from msrest.serialization import Model
+from .resource import Resource
 
 
-class Build(Model):
-    """The properties for a build.
+class Build(Resource):
+    """Build resource properties.
 
+    Variables are only populated by the server, and will be ignored when
+    sending a request.
+
+    :ivar id: The resource ID.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource.
+    :vartype type: str
+    :param location: The location of the resource. This cannot be changed
+     after the resource is created.
+    :type location: str
+    :param tags: The tags of the resource.
+    :type tags: dict[str, str]
     :param build_id: The unique identifier for the build.
     :type build_id: str
     :param status: The current status of the build. Possible values include:
@@ -45,25 +59,43 @@ class Build(Model):
     :param platform: The platform properties against which the build will
      happen.
     :type platform: ~containerregistrybuild.models.PlatformProperties
+    :param provisioning_state: The provisioning state of a build. Possible
+     values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed',
+     'Canceled'
+    :type provisioning_state: str or
+     ~containerregistrybuild.models.ProvisioningState
     """
 
-    _attribute_map = {
-        'build_id': {'key': 'buildId', 'type': 'str'},
-        'status': {'key': 'status', 'type': 'str'},
-        'last_updated_time': {'key': 'lastUpdatedTime', 'type': 'iso-8601'},
-        'build_type': {'key': 'buildType', 'type': 'str'},
-        'create_time': {'key': 'createTime', 'type': 'iso-8601'},
-        'start_time': {'key': 'startTime', 'type': 'iso-8601'},
-        'finish_time': {'key': 'finishTime', 'type': 'iso-8601'},
-        'output_images': {'key': 'outputImages', 'type': '[ImageDescriptor]'},
-        'build_definition': {'key': 'buildDefinition', 'type': 'str'},
-        'trigger': {'key': 'trigger', 'type': 'str'},
-        'is_archive_enabled': {'key': 'isArchiveEnabled', 'type': 'bool'},
-        'platform': {'key': 'platform', 'type': 'PlatformProperties'},
+    _validation = {
+        'id': {'readonly': True},
+        'name': {'readonly': True},
+        'type': {'readonly': True},
+        'location': {'required': True},
     }
 
-    def __init__(self, build_id=None, status=None, last_updated_time=None, build_type=None, create_time=None, start_time=None, finish_time=None, output_images=None, build_definition=None, trigger=None, is_archive_enabled=None, platform=None):
-        super(Build, self).__init__()
+    _attribute_map = {
+        'id': {'key': 'id', 'type': 'str'},
+        'name': {'key': 'name', 'type': 'str'},
+        'type': {'key': 'type', 'type': 'str'},
+        'location': {'key': 'location', 'type': 'str'},
+        'tags': {'key': 'tags', 'type': '{str}'},
+        'build_id': {'key': 'properties.buildId', 'type': 'str'},
+        'status': {'key': 'properties.status', 'type': 'str'},
+        'last_updated_time': {'key': 'properties.lastUpdatedTime', 'type': 'iso-8601'},
+        'build_type': {'key': 'properties.buildType', 'type': 'str'},
+        'create_time': {'key': 'properties.createTime', 'type': 'iso-8601'},
+        'start_time': {'key': 'properties.startTime', 'type': 'iso-8601'},
+        'finish_time': {'key': 'properties.finishTime', 'type': 'iso-8601'},
+        'output_images': {'key': 'properties.outputImages', 'type': '[ImageDescriptor]'},
+        'build_definition': {'key': 'properties.buildDefinition', 'type': 'str'},
+        'trigger': {'key': 'properties.trigger', 'type': 'str'},
+        'is_archive_enabled': {'key': 'properties.isArchiveEnabled', 'type': 'bool'},
+        'platform': {'key': 'properties.platform', 'type': 'PlatformProperties'},
+        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
+    }
+
+    def __init__(self, location, tags=None, build_id=None, status=None, last_updated_time=None, build_type=None, create_time=None, start_time=None, finish_time=None, output_images=None, build_definition=None, trigger=None, is_archive_enabled=None, platform=None, provisioning_state=None):
+        super(Build, self).__init__(location=location, tags=tags)
         self.build_id = build_id
         self.status = status
         self.last_updated_time = last_updated_time
@@ -76,3 +108,4 @@ class Build(Model):
         self.trigger = trigger
         self.is_archive_enabled = is_archive_enabled
         self.platform = platform
+        self.provisioning_state = provisioning_state

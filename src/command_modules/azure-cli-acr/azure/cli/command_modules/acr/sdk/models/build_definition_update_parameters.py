@@ -25,10 +25,6 @@ class BuildDefinitionUpdateParameters(Model):
     :type platform: ~containerregistrybuild.models.PlatformProperties
     :param timeout: Build timeout in seconds.
     :type timeout: int
-    :param is_base_image_triggers_enabled: The value of this property
-     indicates whether auto triggers of the build items trigger a build against
-     this definition. Default value: False .
-    :type is_base_image_triggers_enabled: bool
     :param source_repository: The properties that describes the source(code)
      for the build definition.
     :type source_repository:
@@ -42,17 +38,15 @@ class BuildDefinitionUpdateParameters(Model):
         'status': {'key': 'properties.status', 'type': 'str'},
         'platform': {'key': 'properties.platform', 'type': 'PlatformProperties'},
         'timeout': {'key': 'properties.timeout', 'type': 'int'},
-        'is_base_image_triggers_enabled': {'key': 'properties.isBaseImageTriggersEnabled', 'type': 'bool'},
         'source_repository': {'key': 'properties.sourceRepository', 'type': 'SourceRepositoryUpdateParameters'},
         'tags': {'key': 'tags', 'type': '{str}'},
     }
 
-    def __init__(self, alias=None, status=None, platform=None, timeout=None, is_base_image_triggers_enabled=False, source_repository=None, tags=None):
+    def __init__(self, alias=None, status=None, platform=None, timeout=None, source_repository=None, tags=None):
         super(BuildDefinitionUpdateParameters, self).__init__()
         self.alias = alias
         self.status = status
         self.platform = platform
         self.timeout = timeout
-        self.is_base_image_triggers_enabled = is_base_image_triggers_enabled
         self.source_repository = source_repository
         self.tags = tags

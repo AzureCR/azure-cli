@@ -12,28 +12,26 @@
 from msrest.serialization import Model
 
 
-class QueueBuildParameters(Model):
-    """The properties of a quick build.
+class ErrorBodyProperties(Model):
+    """Azure container registry build API error body.
 
-    You probably want to use the sub-classes and not this class directly. Known
-    sub-classes are: DockerBuildParameters
-
-    :param type: Constant filled by server.
-    :type type: str
+    :param code: error code.
+    :type code: str
+    :param message: error message.
+    :type message: str
     """
 
     _validation = {
-        'type': {'required': True},
+        'code': {'required': True},
+        'message': {'required': True},
     }
 
     _attribute_map = {
-        'type': {'key': 'type', 'type': 'str'},
+        'code': {'key': 'code', 'type': 'str'},
+        'message': {'key': 'message', 'type': 'str'},
     }
 
-    _subtype_map = {
-        'type': {'Docker': 'DockerBuildParameters'}
-    }
-
-    def __init__(self):
-        super(QueueBuildParameters, self).__init__()
-        self.type = None
+    def __init__(self, code, message):
+        super(ErrorBodyProperties, self).__init__()
+        self.code = code
+        self.message = message

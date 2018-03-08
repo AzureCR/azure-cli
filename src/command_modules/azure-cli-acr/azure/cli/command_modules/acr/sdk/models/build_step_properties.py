@@ -12,28 +12,39 @@
 from msrest.serialization import Model
 
 
-class BuildTriggerParameters(Model):
-    """Properties for adding any build trigger.
+class BuildStepProperties(Model):
+    """Base properties for any  build step.
 
     You probably want to use the sub-classes and not this class directly. Known
-    sub-classes are: ImageTriggerParameters
+    sub-classes are: DockerBuildStep
 
+    Variables are only populated by the server, and will be ignored when
+    sending a request.
+
+    :ivar provisioning_state: The provisioning state of the build step.
+     Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded',
+     'Failed', 'Canceled'
+    :vartype provisioning_state: str or
+     ~containerregistrybuild.models.ProvisioningState
     :param type: Constant filled by server.
     :type type: str
     """
 
     _validation = {
+        'provisioning_state': {'readonly': True},
         'type': {'required': True},
     }
 
     _attribute_map = {
+        'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
         'type': {'key': 'type', 'type': 'str'},
     }
 
     _subtype_map = {
-        'type': {'ImageTrigger': 'ImageTriggerParameters'}
+        'type': {'Docker': 'DockerBuildStep'}
     }
 
     def __init__(self):
-        super(BuildTriggerParameters, self).__init__()
+        super(BuildStepProperties, self).__init__()
+        self.provisioning_state = None
         self.type = None

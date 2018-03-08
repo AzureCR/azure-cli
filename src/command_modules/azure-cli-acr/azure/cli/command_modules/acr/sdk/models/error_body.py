@@ -9,19 +9,20 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
-from msrest.paging import Paged
+from msrest.serialization import Model
 
 
-class BuildTriggerPaged(Paged):
-    """
-    A paging container for iterating over a list of :class:`BuildTrigger <containerregistrybuild.models.BuildTrigger>` object
+class ErrorBody(Model):
+    """Azure container registry build API error body.
+
+    :param properties: Azure container registry build API error body.
+    :type properties: ~containerregistrybuild.models.ErrorBodyProperties
     """
 
     _attribute_map = {
-        'next_link': {'key': 'nextLink', 'type': 'str'},
-        'current_page': {'key': 'value', 'type': '[BuildTrigger]'}
+        'properties': {'key': 'properties', 'type': 'ErrorBodyProperties'},
     }
 
-    def __init__(self, *args, **kwargs):
-
-        super(BuildTriggerPaged, self).__init__(*args, **kwargs)
+    def __init__(self, properties=None):
+        super(ErrorBody, self).__init__()
+        self.properties = properties

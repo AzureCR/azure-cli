@@ -9,90 +9,88 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
+from .source_control_auth_info import SourceControlAuthInfo
 from .source_repository_properties import SourceRepositoryProperties
 from .platform_properties import PlatformProperties
 from .build_definition import BuildDefinition
 from .build_definition_filter import BuildDefinitionFilter
-from .build_base import BuildBase
-from .build_filter import BuildFilter
-from .source_control_auth_info import SourceControlAuthInfo
-from .source_repository_create_parameters import SourceRepositoryCreateParameters
-from .build_step_create_parameters import BuildStepCreateParameters
-from .build_trigger_parameters import BuildTriggerParameters
-from .build_definition_create_parameters import BuildDefinitionCreateParameters
 from .source_repository_update_parameters import SourceRepositoryUpdateParameters
 from .build_definition_update_parameters import BuildDefinitionUpdateParameters
 from .image_descriptor import ImageDescriptor
 from .build import Build
-from .build_trigger import BuildTrigger
+from .build_filter import BuildFilter
 from .build_update_parameters import BuildUpdateParameters
-from .build_argument import BuildArgument
-from .queue_build_parameters import QueueBuildParameters
-from .queue_build_request import QueueBuildRequest
-from .source_upload_definition import SourceUploadDefinition
+from .build_get_log_result import BuildGetLogResult
+from .build_step_properties import BuildStepProperties
 from .build_step import BuildStep
 from .build_step_update_parameters import BuildStepUpdateParameters
+from .build_argument import BuildArgument
+from .build_argument_list import BuildArgumentList
+from .base_image_dependency import BaseImageDependency
+from .base_image_dependency_list import BaseImageDependencyList
+from .queue_build_request import QueueBuildRequest
+from .source_upload_definition import SourceUploadDefinition
 from .resource import Resource
-from .docker_build_parameters import DockerBuildParameters
+from .error_body_properties import ErrorBodyProperties
+from .error_body import ErrorBody
+from .error import Error, ErrorException
 from .docker_build_step import DockerBuildStep
-from .docker_build_step_update_parameters import DockerBuildStepUpdateParameters
-from .docker_build_step_create_parameters import DockerBuildStepCreateParameters
-from .image_trigger import ImageTrigger
-from .image_trigger_parameters import ImageTriggerParameters
+from .build_definition_build_request import BuildDefinitionBuildRequest
+from .quick_build_request import QuickBuildRequest
 from .build_definition_paged import BuildDefinitionPaged
-from .build_base_paged import BuildBasePaged
+from .build_paged import BuildPaged
 from .build_step_paged import BuildStepPaged
-from .build_trigger_paged import BuildTriggerPaged
 from .container_registry_management_client_enums import (
     ProvisioningState,
     BuildDefinitionStatus,
     SourceControlType,
+    TokenType,
     OsType,
     BuildStatus,
     BuildType,
-    TokenType,
+    BuildStepType,
+    BaseImageDependencyType,
 )
 
 __all__ = [
+    'SourceControlAuthInfo',
     'SourceRepositoryProperties',
     'PlatformProperties',
     'BuildDefinition',
     'BuildDefinitionFilter',
-    'BuildBase',
-    'BuildFilter',
-    'SourceControlAuthInfo',
-    'SourceRepositoryCreateParameters',
-    'BuildStepCreateParameters',
-    'BuildTriggerParameters',
-    'BuildDefinitionCreateParameters',
     'SourceRepositoryUpdateParameters',
     'BuildDefinitionUpdateParameters',
     'ImageDescriptor',
     'Build',
-    'BuildTrigger',
+    'BuildFilter',
     'BuildUpdateParameters',
-    'BuildArgument',
-    'QueueBuildParameters',
-    'QueueBuildRequest',
-    'SourceUploadDefinition',
+    'BuildGetLogResult',
+    'BuildStepProperties',
     'BuildStep',
     'BuildStepUpdateParameters',
+    'BuildArgument',
+    'BuildArgumentList',
+    'BaseImageDependency',
+    'BaseImageDependencyList',
+    'QueueBuildRequest',
+    'SourceUploadDefinition',
     'Resource',
-    'DockerBuildParameters',
+    'ErrorBodyProperties',
+    'ErrorBody',
+    'Error', 'ErrorException',
     'DockerBuildStep',
-    'DockerBuildStepUpdateParameters',
-    'DockerBuildStepCreateParameters',
-    'ImageTrigger',
-    'ImageTriggerParameters',
+    'BuildDefinitionBuildRequest',
+    'QuickBuildRequest',
     'BuildDefinitionPaged',
-    'BuildBasePaged',
+    'BuildPaged',
     'BuildStepPaged',
-    'BuildTriggerPaged',
     'ProvisioningState',
     'BuildDefinitionStatus',
     'SourceControlType',
+    'TokenType',
     'OsType',
     'BuildStatus',
     'BuildType',
-    'TokenType',
+    'BuildStepType',
+    'BaseImageDependencyType',
 ]

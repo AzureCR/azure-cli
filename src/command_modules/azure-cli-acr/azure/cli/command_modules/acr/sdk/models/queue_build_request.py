@@ -15,53 +15,25 @@ from msrest.serialization import Model
 class QueueBuildRequest(Model):
     """The queue build request parameters.
 
-    :param image_name: The fully qualified image name with the tag that the
-     build tags it.
-    :type image_name: str
-    :param source_location: The URL(absolute or relative) of the source that
-     needs to be built. For Docker build, it can be an URL to a tar or github
-     repoistory as supported by Docker.
-     If it is relative URL, the relative path should be obtained from calling
-     getSourceUploadUrl API.
-    :type source_location: str
-    :param build_arguments: The collection of build arguments to be used.
-    :type build_arguments: list[~containerregistrybuild.models.BuildArgument]
-    :param is_push_enabled: The value of this property indicate whether the
-     image built should be pushed to the registry or not. Default value: False
-     .
-    :type is_push_enabled: bool
-    :param timeout: Build timeout in seconds.
-    :type timeout: int
-    :param platform: The platform properties against which the build will
-     happen.
-    :type platform: ~containerregistrybuild.models.PlatformProperties
-    :param build_parameters: The build parameters depending on the type of the
-     build.
-    :type build_parameters:
-     ~containerregistrybuild.models.QueueBuildParameters
+    You probably want to use the sub-classes and not this class directly. Known
+    sub-classes are: BuildDefinitionBuildRequest, QuickBuildRequest
+
+    :param type: Constant filled by server.
+    :type type: str
     """
 
     _validation = {
-        'source_location': {'required': True},
-        'build_parameters': {'required': True},
+        'type': {'required': True},
     }
 
     _attribute_map = {
-        'image_name': {'key': 'imageName', 'type': 'str'},
-        'source_location': {'key': 'sourceLocation', 'type': 'str'},
-        'build_arguments': {'key': 'buildArguments', 'type': '[BuildArgument]'},
-        'is_push_enabled': {'key': 'isPushEnabled', 'type': 'bool'},
-        'timeout': {'key': 'timeout', 'type': 'int'},
-        'platform': {'key': 'platform', 'type': 'PlatformProperties'},
-        'build_parameters': {'key': 'buildParameters', 'type': 'QueueBuildParameters'},
+        'type': {'key': 'type', 'type': 'str'},
     }
 
-    def __init__(self, source_location, build_parameters, image_name=None, build_arguments=None, is_push_enabled=False, timeout=None, platform=None):
+    _subtype_map = {
+        'type': {'BuildDefinition': 'BuildDefinitionBuildRequest', 'QuickBuild': 'QuickBuildRequest'}
+    }
+
+    def __init__(self):
         super(QueueBuildRequest, self).__init__()
-        self.image_name = image_name
-        self.source_location = source_location
-        self.build_arguments = build_arguments
-        self.is_push_enabled = is_push_enabled
-        self.timeout = timeout
-        self.platform = platform
-        self.build_parameters = build_parameters
+        self.type = None

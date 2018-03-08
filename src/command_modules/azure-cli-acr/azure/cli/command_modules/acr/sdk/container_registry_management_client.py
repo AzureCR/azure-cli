@@ -16,7 +16,7 @@ from .version import VERSION
 from .operations.build_definitions_operations import BuildDefinitionsOperations
 from .operations.builds_operations import BuildsOperations
 from .operations.build_steps_operations import BuildStepsOperations
-from .operations.build_triggers_operations import BuildTriggersOperations
+from .operations.registries_operations import RegistriesOperations
 from . import models
 
 
@@ -64,8 +64,8 @@ class ContainerRegistryManagementClient(object):
     :vartype builds: containerregistrybuild.operations.BuildsOperations
     :ivar build_steps: BuildSteps operations
     :vartype build_steps: containerregistrybuild.operations.BuildStepsOperations
-    :ivar build_triggers: BuildTriggers operations
-    :vartype build_triggers: containerregistrybuild.operations.BuildTriggersOperations
+    :ivar registries: Registries operations
+    :vartype registries: containerregistrybuild.operations.RegistriesOperations
 
     :param credentials: Credentials needed for the client to connect to Azure.
     :type credentials: :mod:`A msrestazure Credentials
@@ -92,5 +92,5 @@ class ContainerRegistryManagementClient(object):
             self._client, self.config, self._serialize, self._deserialize)
         self.build_steps = BuildStepsOperations(
             self._client, self.config, self._serialize, self._deserialize)
-        self.build_triggers = BuildTriggersOperations(
+        self.registries = RegistriesOperations(
             self._client, self.config, self._serialize, self._deserialize)

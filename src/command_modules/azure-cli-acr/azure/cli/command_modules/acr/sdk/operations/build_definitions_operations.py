@@ -11,7 +11,6 @@
 
 import uuid
 from msrest.pipeline import ClientRawResponse
-from msrestazure.azure_exceptions import CloudError
 from msrest.exceptions import DeserializationError
 from msrestazure.azure_operation import AzureOperationPoller
 
@@ -40,7 +39,7 @@ class BuildDefinitionsOperations(object):
         self.config = config
 
     def list(
-            self, resource_group_name, registry_name, filter=None, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, filter=None, skip_token=None, custom_headers=None, raw=False, **operation_config):
         """Lists all the build definitions for a specified container registry.
 
         :param resource_group_name: The name of the resource group to which
@@ -48,8 +47,11 @@ class BuildDefinitionsOperations(object):
         :type resource_group_name: str
         :param registry_name: The name of the container registry.
         :type registry_name: str
-        :param filter: OData Filter options
+        :param filter: The build definition filter to apply on the operation.
         :type filter: str
+        :param skip_token: $skipToken is supported on get list of build
+         definitions, which provides the next page in the list of definitions.
+        :type skip_token: str
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
@@ -58,7 +60,8 @@ class BuildDefinitionsOperations(object):
         :return: An iterator like instance of BuildDefinition
         :rtype:
          ~containerregistrybuild.models.BuildDefinitionPaged[~containerregistrybuild.models.BuildDefinition]
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
+        :raises:
+         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
         """
         def internal_paging(next_link=None, raw=False):
 
@@ -74,9 +77,11 @@ class BuildDefinitionsOperations(object):
 
                 # Construct parameters
                 query_parameters = {}
+                query_parameters['api-version'] = self._serialize.query("self.api_version", self.api_version, 'str')
                 if filter is not None:
                     query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
-                query_parameters['api-version'] = self._serialize.query("self.api_version", self.api_version, 'str')
+                if skip_token is not None:
+                    query_parameters['$skipToken'] = self._serialize.query("skip_token", skip_token, 'str')
 
             else:
                 url = next_link
@@ -98,9 +103,7 @@ class BuildDefinitionsOperations(object):
                 request, header_parameters, stream=False, **operation_config)
 
             if response.status_code not in [200]:
-                exp = CloudError(response)
-                exp.request_id = response.headers.get('x-ms-request-id')
-                raise exp
+                raise models.ErrorException(self._deserialize, response)
 
             return response
 
@@ -110,85 +113,6 @@ class BuildDefinitionsOperations(object):
         if raw:
             header_dict = {}
             client_raw_response = models.BuildDefinitionPaged(internal_paging, self._deserialize.dependencies, header_dict)
-            return client_raw_response
-
-        return deserialized
-
-    def list_builds(
-            self, resource_group_name, registry_name, build_definition_name, filter=None, custom_headers=None, raw=False, **operation_config):
-        """Get all the builds for a given build definition.
-
-        :param resource_group_name: The name of the resource group to which
-         the container registry belongs.
-        :type resource_group_name: str
-        :param registry_name: The name of the container registry.
-        :type registry_name: str
-        :param build_definition_name: The name of the container registry build
-         definition.
-        :type build_definition_name: str
-        :param filter: OData Filter options
-        :type filter: str
-        :param dict custom_headers: headers that will be added to the request
-        :param bool raw: returns the direct response alongside the
-         deserialized response
-        :param operation_config: :ref:`Operation configuration
-         overrides<msrest:optionsforoperations>`.
-        :return: An iterator like instance of BuildBase
-        :rtype:
-         ~containerregistrybuild.models.BuildBasePaged[~containerregistrybuild.models.BuildBase]
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
-        """
-        def internal_paging(next_link=None, raw=False):
-
-            if not next_link:
-                # Construct URL
-                url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildDefinitions/{buildDefinitionName}/builds'
-                path_format_arguments = {
-                    'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
-                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-                    'registryName': self._serialize.url("registry_name", registry_name, 'str', max_length=50, min_length=5, pattern=r'^[a-zA-Z0-9]*$'),
-                    'buildDefinitionName': self._serialize.url("build_definition_name", build_definition_name, 'str', max_length=50, min_length=5, pattern=r'^[a-zA-Z0-9]*$')
-                }
-                url = self._client.format_url(url, **path_format_arguments)
-
-                # Construct parameters
-                query_parameters = {}
-                if filter is not None:
-                    query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
-                query_parameters['api-version'] = self._serialize.query("self.api_version", self.api_version, 'str')
-
-            else:
-                url = next_link
-                query_parameters = {}
-
-            # Construct headers
-            header_parameters = {}
-            header_parameters['Content-Type'] = 'application/json; charset=utf-8'
-            if self.config.generate_client_request_id:
-                header_parameters['x-ms-client-request-id'] = str(uuid.uuid1())
-            if custom_headers:
-                header_parameters.update(custom_headers)
-            if self.config.accept_language is not None:
-                header_parameters['accept-language'] = self._serialize.header("self.config.accept_language", self.config.accept_language, 'str')
-
-            # Construct and send request
-            request = self._client.get(url, query_parameters)
-            response = self._client.send(
-                request, header_parameters, stream=False, **operation_config)
-
-            if response.status_code not in [200]:
-                exp = CloudError(response)
-                exp.request_id = response.headers.get('x-ms-request-id')
-                raise exp
-
-            return response
-
-        # Deserialize response
-        deserialized = models.BuildBasePaged(internal_paging, self._deserialize.dependencies)
-
-        if raw:
-            header_dict = {}
-            client_raw_response = models.BuildBasePaged(internal_paging, self._deserialize.dependencies, header_dict)
             return client_raw_response
 
         return deserialized
@@ -213,7 +137,8 @@ class BuildDefinitionsOperations(object):
         :return: BuildDefinition or ClientRawResponse if raw=true
         :rtype: ~containerregistrybuild.models.BuildDefinition or
          ~msrest.pipeline.ClientRawResponse
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
+        :raises:
+         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
         """
         # Construct URL
         url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildDefinitions/{buildDefinitionName}'
@@ -244,9 +169,7 @@ class BuildDefinitionsOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200]:
-            exp = CloudError(response)
-            exp.request_id = response.headers.get('x-ms-request-id')
-            raise exp
+            raise models.ErrorException(self._deserialize, response)
 
         deserialized = None
 
@@ -261,7 +184,7 @@ class BuildDefinitionsOperations(object):
 
 
     def _create_initial(
-            self, build_definition_create_parameters, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, build_definition_name, build_definition_create_parameters, custom_headers=None, raw=False, **operation_config):
         # Construct URL
         url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildDefinitions/{buildDefinitionName}'
         path_format_arguments = {
@@ -287,7 +210,7 @@ class BuildDefinitionsOperations(object):
             header_parameters['accept-language'] = self._serialize.header("self.config.accept_language", self.config.accept_language, 'str')
 
         # Construct body
-        body_content = self._serialize.body(build_definition_create_parameters, 'BuildDefinitionCreateParameters')
+        body_content = self._serialize.body(build_definition_create_parameters, 'BuildDefinition')
 
         # Construct and send request
         request = self._client.put(url, query_parameters)
@@ -295,9 +218,7 @@ class BuildDefinitionsOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            exp = CloudError(response)
-            exp.request_id = response.headers.get('x-ms-request-id')
-            raise exp
+            raise models.ErrorException(self._deserialize, response)
 
         deserialized = None
 
@@ -313,14 +234,10 @@ class BuildDefinitionsOperations(object):
         return deserialized
 
     def create(
-            self, build_definition_create_parameters, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, build_definition_name, build_definition_create_parameters, custom_headers=None, raw=False, **operation_config):
         """Creates a build definition for a container registry with the specified
         parameters.
 
-        :param build_definition_create_parameters: The parameters for creating
-         a build definition.
-        :type build_definition_create_parameters:
-         ~containerregistrybuild.models.BuildDefinitionCreateParameters
         :param resource_group_name: The name of the resource group to which
          the container registry belongs.
         :type resource_group_name: str
@@ -329,6 +246,10 @@ class BuildDefinitionsOperations(object):
         :param build_definition_name: The name of the container registry build
          definition.
         :type build_definition_name: str
+        :param build_definition_create_parameters: The parameters for creating
+         a build definition.
+        :type build_definition_create_parameters:
+         ~containerregistrybuild.models.BuildDefinition
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
@@ -337,13 +258,14 @@ class BuildDefinitionsOperations(object):
         :rtype:
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildDefinition]
          or ~msrest.pipeline.ClientRawResponse
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
+        :raises:
+         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
         """
         raw_result = self._create_initial(
-            build_definition_create_parameters=build_definition_create_parameters,
             resource_group_name=resource_group_name,
             registry_name=registry_name,
             build_definition_name=build_definition_name,
+            build_definition_create_parameters=build_definition_create_parameters,
             custom_headers=custom_headers,
             raw=True,
             **operation_config
@@ -368,9 +290,7 @@ class BuildDefinitionsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                exp = CloudError(response)
-                exp.request_id = response.headers.get('x-ms-request-id')
-                raise exp
+                raise models.ErrorException(self._deserialize, response)
 
             deserialized = self._deserialize('BuildDefinition', response)
 
@@ -419,9 +339,7 @@ class BuildDefinitionsOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200, 202, 204]:
-            exp = CloudError(response)
-            exp.request_id = response.headers.get('x-ms-request-id')
-            raise exp
+            raise models.ErrorException(self._deserialize, response)
 
         if raw:
             client_raw_response = ClientRawResponse(None, response)
@@ -446,7 +364,8 @@ class BuildDefinitionsOperations(object):
          ClientRawResponse if raw=true
         :rtype: ~msrestazure.azure_operation.AzureOperationPoller[None] or
          ~msrest.pipeline.ClientRawResponse
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
+        :raises:
+         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
         """
         raw_result = self._delete_initial(
             resource_group_name=resource_group_name,
@@ -476,9 +395,7 @@ class BuildDefinitionsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 202, 204]:
-                exp = CloudError(response)
-                exp.request_id = response.headers.get('x-ms-request-id')
-                raise exp
+                raise models.ErrorException(self._deserialize, response)
 
             if raw:
                 client_raw_response = ClientRawResponse(None, response)
@@ -493,7 +410,7 @@ class BuildDefinitionsOperations(object):
 
 
     def _update_initial(
-            self, build_definition_update_parameters, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, build_definition_name, build_definition_update_parameters, custom_headers=None, raw=False, **operation_config):
         # Construct URL
         url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildDefinitions/{buildDefinitionName}'
         path_format_arguments = {
@@ -527,9 +444,7 @@ class BuildDefinitionsOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            exp = CloudError(response)
-            exp.request_id = response.headers.get('x-ms-request-id')
-            raise exp
+            raise models.ErrorException(self._deserialize, response)
 
         deserialized = None
 
@@ -545,13 +460,9 @@ class BuildDefinitionsOperations(object):
         return deserialized
 
     def update(
-            self, build_definition_update_parameters, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, build_definition_name, build_definition_update_parameters, custom_headers=None, raw=False, **operation_config):
         """Updates a build definition with the specified parameters.
 
-        :param build_definition_update_parameters: The parameters for updating
-         a build definition.
-        :type build_definition_update_parameters:
-         ~containerregistrybuild.models.BuildDefinitionUpdateParameters
         :param resource_group_name: The name of the resource group to which
          the container registry belongs.
         :type resource_group_name: str
@@ -560,6 +471,10 @@ class BuildDefinitionsOperations(object):
         :param build_definition_name: The name of the container registry build
          definition.
         :type build_definition_name: str
+        :param build_definition_update_parameters: The parameters for updating
+         a build definition.
+        :type build_definition_update_parameters:
+         ~containerregistrybuild.models.BuildDefinitionUpdateParameters
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
@@ -568,13 +483,14 @@ class BuildDefinitionsOperations(object):
         :rtype:
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildDefinition]
          or ~msrest.pipeline.ClientRawResponse
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
+        :raises:
+         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
         """
         raw_result = self._update_initial(
-            build_definition_update_parameters=build_definition_update_parameters,
             resource_group_name=resource_group_name,
             registry_name=registry_name,
             build_definition_name=build_definition_name,
+            build_definition_update_parameters=build_definition_update_parameters,
             custom_headers=custom_headers,
             raw=True,
             **operation_config
@@ -599,253 +515,9 @@ class BuildDefinitionsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                exp = CloudError(response)
-                exp.request_id = response.headers.get('x-ms-request-id')
-                raise exp
+                raise models.ErrorException(self._deserialize, response)
 
             deserialized = self._deserialize('BuildDefinition', response)
-
-            if raw:
-                client_raw_response = ClientRawResponse(deserialized, response)
-                return client_raw_response
-
-            return deserialized
-
-        long_running_operation_timeout = operation_config.get(
-            'long_running_operation_timeout',
-            self.config.long_running_operation_timeout)
-        return AzureOperationPoller(
-            long_running_send, get_long_running_output,
-            get_long_running_status, long_running_operation_timeout)
-
-
-    def _queue_build_initial(
-            self, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
-        # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildDefinitions/{buildDefinitionName}/queue'
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
-            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-            'registryName': self._serialize.url("registry_name", registry_name, 'str', max_length=50, min_length=5, pattern=r'^[a-zA-Z0-9]*$'),
-            'buildDefinitionName': self._serialize.url("build_definition_name", build_definition_name, 'str', max_length=50, min_length=5, pattern=r'^[a-zA-Z0-9]*$')
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}
-        query_parameters['api-version'] = self._serialize.query("self.api_version", self.api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}
-        header_parameters['Content-Type'] = 'application/json; charset=utf-8'
-        if self.config.generate_client_request_id:
-            header_parameters['x-ms-client-request-id'] = str(uuid.uuid1())
-        if custom_headers:
-            header_parameters.update(custom_headers)
-        if self.config.accept_language is not None:
-            header_parameters['accept-language'] = self._serialize.header("self.config.accept_language", self.config.accept_language, 'str')
-
-        # Construct and send request
-        request = self._client.post(url, query_parameters)
-        response = self._client.send(request, header_parameters, stream=False, **operation_config)
-
-        if response.status_code not in [200, 202]:
-            exp = CloudError(response)
-            exp.request_id = response.headers.get('x-ms-request-id')
-            raise exp
-
-        deserialized = None
-
-        if response.status_code == 200:
-            deserialized = self._deserialize('Build', response)
-
-        if raw:
-            client_raw_response = ClientRawResponse(deserialized, response)
-            return client_raw_response
-
-        return deserialized
-
-    def queue_build(
-            self, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
-        """Creates a new build against the given build definition and adds it to
-        the build queue.
-
-        :param resource_group_name: The name of the resource group to which
-         the container registry belongs.
-        :type resource_group_name: str
-        :param registry_name: The name of the container registry.
-        :type registry_name: str
-        :param build_definition_name: The name of the container registry build
-         definition.
-        :type build_definition_name: str
-        :param dict custom_headers: headers that will be added to the request
-        :param bool raw: returns the direct response alongside the
-         deserialized response
-        :return: An instance of AzureOperationPoller that returns Build or
-         ClientRawResponse if raw=true
-        :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.Build]
-         or ~msrest.pipeline.ClientRawResponse
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
-        """
-        raw_result = self._queue_build_initial(
-            resource_group_name=resource_group_name,
-            registry_name=registry_name,
-            build_definition_name=build_definition_name,
-            custom_headers=custom_headers,
-            raw=True,
-            **operation_config
-        )
-        if raw:
-            return raw_result
-
-        # Construct and send request
-        def long_running_send():
-            return raw_result.response
-
-        def get_long_running_status(status_link, headers=None):
-
-            request = self._client.get(status_link)
-            if headers:
-                request.headers.update(headers)
-            header_parameters = {}
-            header_parameters['x-ms-client-request-id'] = raw_result.response.request.headers['x-ms-client-request-id']
-            return self._client.send(
-                request, header_parameters, stream=False, **operation_config)
-
-        def get_long_running_output(response):
-
-            if response.status_code not in [200, 202]:
-                exp = CloudError(response)
-                exp.request_id = response.headers.get('x-ms-request-id')
-                raise exp
-
-            deserialized = self._deserialize('Build', response)
-
-            if raw:
-                client_raw_response = ClientRawResponse(deserialized, response)
-                return client_raw_response
-
-            return deserialized
-
-        long_running_operation_timeout = operation_config.get(
-            'long_running_operation_timeout',
-            self.config.long_running_operation_timeout)
-        return AzureOperationPoller(
-            long_running_send, get_long_running_output,
-            get_long_running_status, long_running_operation_timeout)
-
-
-    def _add_trigger_initial(
-            self, build_trigger_parameters, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
-        # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildDefinitions/{buildDefinitionName}/addTrigger'
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
-            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-            'registryName': self._serialize.url("registry_name", registry_name, 'str', max_length=50, min_length=5, pattern=r'^[a-zA-Z0-9]*$'),
-            'buildDefinitionName': self._serialize.url("build_definition_name", build_definition_name, 'str', max_length=50, min_length=5, pattern=r'^[a-zA-Z0-9]*$')
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}
-        query_parameters['api-version'] = self._serialize.query("self.api_version", self.api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}
-        header_parameters['Content-Type'] = 'application/json; charset=utf-8'
-        if self.config.generate_client_request_id:
-            header_parameters['x-ms-client-request-id'] = str(uuid.uuid1())
-        if custom_headers:
-            header_parameters.update(custom_headers)
-        if self.config.accept_language is not None:
-            header_parameters['accept-language'] = self._serialize.header("self.config.accept_language", self.config.accept_language, 'str')
-
-        # Construct body
-        body_content = self._serialize.body(build_trigger_parameters, 'BuildTriggerParameters')
-
-        # Construct and send request
-        request = self._client.post(url, query_parameters)
-        response = self._client.send(
-            request, header_parameters, body_content, stream=False, **operation_config)
-
-        if response.status_code not in [200, 202]:
-            exp = CloudError(response)
-            exp.request_id = response.headers.get('x-ms-request-id')
-            raise exp
-
-        deserialized = None
-
-        if response.status_code == 200:
-            deserialized = self._deserialize('BuildTrigger', response)
-
-        if raw:
-            client_raw_response = ClientRawResponse(deserialized, response)
-            return client_raw_response
-
-        return deserialized
-
-    def add_trigger(
-            self, build_trigger_parameters, resource_group_name, registry_name, build_definition_name, custom_headers=None, raw=False, **operation_config):
-        """Adds a build trigger to a build definition.
-
-        :param build_trigger_parameters: The parameters for adding a build
-         trigger.
-        :type build_trigger_parameters:
-         ~containerregistrybuild.models.BuildTriggerParameters
-        :param resource_group_name: The name of the resource group to which
-         the container registry belongs.
-        :type resource_group_name: str
-        :param registry_name: The name of the container registry.
-        :type registry_name: str
-        :param build_definition_name: The name of the container registry build
-         definition.
-        :type build_definition_name: str
-        :param dict custom_headers: headers that will be added to the request
-        :param bool raw: returns the direct response alongside the
-         deserialized response
-        :return: An instance of AzureOperationPoller that returns BuildTrigger
-         or ClientRawResponse if raw=true
-        :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildTrigger]
-         or ~msrest.pipeline.ClientRawResponse
-        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
-        """
-        raw_result = self._add_trigger_initial(
-            build_trigger_parameters=build_trigger_parameters,
-            resource_group_name=resource_group_name,
-            registry_name=registry_name,
-            build_definition_name=build_definition_name,
-            custom_headers=custom_headers,
-            raw=True,
-            **operation_config
-        )
-        if raw:
-            return raw_result
-
-        # Construct and send request
-        def long_running_send():
-            return raw_result.response
-
-        def get_long_running_status(status_link, headers=None):
-
-            request = self._client.get(status_link)
-            if headers:
-                request.headers.update(headers)
-            header_parameters = {}
-            header_parameters['x-ms-client-request-id'] = raw_result.response.request.headers['x-ms-client-request-id']
-            return self._client.send(
-                request, header_parameters, stream=False, **operation_config)
-
-        def get_long_running_output(response):
-
-            if response.status_code not in [200, 202]:
-                exp = CloudError(response)
-                exp.request_id = response.headers.get('x-ms-request-id')
-                raise exp
-
-            deserialized = self._deserialize('BuildTrigger', response)
 
             if raw:
                 client_raw_response = ClientRawResponse(deserialized, response)

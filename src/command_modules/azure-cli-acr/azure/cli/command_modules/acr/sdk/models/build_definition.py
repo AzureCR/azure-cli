@@ -52,10 +52,6 @@ class BuildDefinition(Resource):
     :type platform: ~containerregistrybuild.models.PlatformProperties
     :param timeout: Build timeout in seconds.
     :type timeout: int
-    :param is_base_image_triggers_enabled: The value of this property
-     indicates whether auto triggers of the build items trigger a build against
-     this definition. Default value: False .
-    :type is_base_image_triggers_enabled: bool
     """
 
     _validation = {
@@ -65,6 +61,9 @@ class BuildDefinition(Resource):
         'location': {'required': True},
         'provisioning_state': {'readonly': True},
         'creation_date': {'readonly': True},
+        'alias': {'required': True},
+        'source_repository': {'required': True},
+        'platform': {'required': True},
     }
 
     _attribute_map = {
@@ -80,10 +79,9 @@ class BuildDefinition(Resource):
         'source_repository': {'key': 'properties.sourceRepository', 'type': 'SourceRepositoryProperties'},
         'platform': {'key': 'properties.platform', 'type': 'PlatformProperties'},
         'timeout': {'key': 'properties.timeout', 'type': 'int'},
-        'is_base_image_triggers_enabled': {'key': 'properties.isBaseImageTriggersEnabled', 'type': 'bool'},
     }
 
-    def __init__(self, location, tags=None, alias=None, status=None, source_repository=None, platform=None, timeout=None, is_base_image_triggers_enabled=False):
+    def __init__(self, location, alias, source_repository, platform, tags=None, status=None, timeout=None):
         super(BuildDefinition, self).__init__(location=location, tags=tags)
         self.provisioning_state = None
         self.creation_date = None
@@ -92,4 +90,3 @@ class BuildDefinition(Resource):
         self.source_repository = source_repository
         self.platform = platform
         self.timeout = timeout
-        self.is_base_image_triggers_enabled = is_base_image_triggers_enabled
