@@ -22,8 +22,7 @@ from azure.storage.blob import (
     ContainerPermissions
 )
 from .sdk.models import (
-    QueueBuildRequest,
-    DockerBuildParameters,
+    QuickBuildRequest,
     PlatformProperties,
     Build,
     BuildArgument,
@@ -34,8 +33,9 @@ from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
 from knack.log import get_logger
 
-logger = get_logger(__name__)
+from ._client_factory import cf_acr_registries
 
+logger = get_logger(__name__)
 
 def acr_build_show_logs(cmd,
                         client,
@@ -46,9 +46,10 @@ def acr_build_show_logs(cmd,
     resource_group_name = get_resource_group_name_by_registry_name(
         cmd.cli_ctx, registry_name, resource_group_name)
 
-    log_file_sas = client.get_log_link(
+    build_log_result = client.get_log_link(
         build_id=build_id, resource_group_name=resource_group_name,
         registry_name=registry_name)
+    log_file_sas = build_log_result.log_link
 
     if not log_file_sas:
         return 'No logs found.'
@@ -207,20 +208,20 @@ def acr_queue(cmd,
     resource_group_name = get_resource_group_name_by_registry_name(
         cmd.cli_ctx, registry_name, resource_group_name)
 
+    client_registries = cf_acr_registries(cmd.cli_ctx)
+
     if docker_file_path is None:
         docker_file_path = "Dockerfile"
-
-    build_parameters = DockerBuildParameters(docker_file_path)
-    # context_path in quick build is always the source code root folder
-    build_parameters.context_path = "."
 
     if source_location is None:
         source_location = "."
 
     if os.path.exists(source_location):
         if os.path.isdir(source_location):
+            _check_local_docker_file(source_location, docker_file_path)
+
             source_location = _upload_source_code(
-                client, registry_name, resource_group_name, source_location)
+                client_registries, registry_name, resource_group_name, source_location)
         else:
             raise CLIError(
                 "'--source-location' should be a local directory path or remote url.")
@@ -230,7 +231,7 @@ def acr_queue(cmd,
     is_push_enabled = True
     if image_name is None:
         is_push_enabled = False
-        print("'--tag' is not provided. Skip image push after build.")
+        print("'--image -t' is not provided. Skip image push after build.")
     else:
         image_name = _check_image_name(image_name)
 
@@ -250,16 +251,16 @@ def acr_queue(cmd,
             build_arguments.append(BuildArgument(name, value, True))
 
     try:
-        build_request = QueueBuildRequest(
-            image_name=image_name,
+        build_request = QuickBuildRequest(
             source_location=source_location,
-            build_parameters=build_parameters,
+            platform=platform,
+            docker_file_path = docker_file_path,            
+            image_name=image_name,
             is_push_enabled=is_push_enabled,
             timeout=timeout,
-            platform=platform,
             build_arguments=build_arguments)
 
-        result = LongRunningOperation(cmd.cli_ctx)(client.queue(
+        result = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
             build_request=build_request, resource_group_name=resource_group_name, registry_name=registry_name))
 
         print("Queued a build with build-id: {}.".format(result.build_id))
@@ -269,6 +270,10 @@ def acr_queue(cmd,
             return acr_build_show_logs(cmd, client, registry_name, result.build_id, resource_group_name)
     except Exception as err:
         raise CLIError(err)
+
+def _check_local_docker_file(source_location, docker_file_path):
+    if not os.path.isfile(os.path.join(source_location, docker_file_path)):
+        raise CLIError("Unable to find '{}' in '{}'.".format(docker_file_path, source_location))
 
 
 def _check_remote_source_code(source_location):
@@ -293,35 +298,36 @@ def _check_remote_source_code(source_location):
 
     raise CLIError("'{}' is not a valid remote url for git or tarball.".format(source_location))
 
+
 def _check_image_name(image_name):
 
     # referenc: https://github.com/docker/distribution/tree/master/reference
 
     if not image_name:
-        raise CLIError("'--tag' value should not be empty.")
+        raise CLIError("'--image -t' value should not be empty.")
 
     tokens = image_name.split(':')
     if(len(tokens) > 2):
         raise CLIError(
-            "'--tag' value should be repository and optionally a tag in the 'repository:tag' format")
+            "'--image -t' value should be repository and optionally a tag in the 'repository:tag' format")
 
     # check repository
     repository = tokens[0]
     if len(repository) > 255:
         raise CLIError(
-            "The repository of '--tag' value should be no more than 255 characters.")
+            "The repository of '--image -t' value should be no more than 255 characters.")
     else:
         # TODO: Consider move the validation to server side
         if re.match(r"^[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?$", repository) is None:
             raise CLIError(
-                "The '--tag' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
+                "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
 
     # check tag
     if len(tokens) == 2:
         tag = tokens[1]
         if re.match(r"^[\w][\w.-]{0,127}$", tag) is None:
             raise CLIError(
-                "The '--tag' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
+                "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
 
     return image_name
 
@@ -335,7 +341,7 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
         logger.debug(
             "Starting to acquire the access token to upload the source code.")
 
-        source_upload_location = client.get_source_upload_url(
+        source_upload_location = client.get_build_source_upload_url(
             resource_group_name=resource_group_name, registry_name=registry_name)
 
         print(
