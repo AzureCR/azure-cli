@@ -7,6 +7,7 @@ from azure.cli.core import AzCommandsLoader
 from azure.cli.core.commands.parameters import (
     get_resource_name_completion_list
 )
+import azext_acrbuildext._help  # pylint: disable=unused-import
 from ._constants import (
     REGISTRY_RESOURCE_TYPE,
     BUILD_TASK_RESOURCE_TYPE
@@ -27,7 +28,7 @@ class AcrBuildCommandsLoader(AzCommandsLoader):
         )
 
         acr_build_task_util = CliCommandType(
-            operations_tmpl='azure.cli.command_modules.acr.build_task#{}',    
+            operations_tmpl='azext_acrbuildext.build_task#{}',    
             client_factory=cf_acr_build_tasks
         )
 
@@ -41,8 +42,8 @@ class AcrBuildCommandsLoader(AzCommandsLoader):
             g.command('list', 'acr_build_task_list')
             g.command('delete', 'acr_build_task_delete')
             g.command('list-builds', 'acr_build_task_list_builds')
-            g.command('queue-build', 'acr_build_task_queue_build')
-            g.command('show-logs', 'acr_build_task_show_logs')
+            g.command('run', 'acr_build_task_run')
+            g.command('logs', 'acr_build_task_logs')
         return self.command_table
 
     def load_arguments(self, _):
@@ -67,6 +68,7 @@ class AcrBuildCommandsLoader(AzCommandsLoader):
             c.argument('git_access_token', help="The git access token for configuring webhook.")
             c.argument('os_type', options_list=['--os'], help="The platform OS that has to be used for build task.")
             c.argument('cpu', help="The number of cpu cores to use for running builds.")
+            c.argument('no_logs', action='store_true', help="Do not show build logs.")
 
         with self.argument_context('acr build-task create') as c:
             c.argument('build_task_name', completer=None)
