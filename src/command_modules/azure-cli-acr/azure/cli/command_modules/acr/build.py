@@ -37,7 +37,6 @@ from ._client_factory import cf_acr_registries
 
 logger = get_logger(__name__)
 
-FILE = ""
 
 def acr_build_show_logs(cmd,
                         client,
@@ -56,7 +55,8 @@ def acr_build_show_logs(cmd,
     if not log_file_sas:
         return 'No logs found.'
 
-    account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(log_file_sas)
+    account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(
+        log_file_sas)
 
     byte_size = 1024*4
     timeout_in_minutes = 30
@@ -198,7 +198,7 @@ def _get_blob_info(blob_sas_url):
 def acr_queue(cmd,
               client,
               registry_name,
-              source_location,              
+              source_location,
               image_name=None,
               docker_file_path=None,
               resource_group_name=None,
@@ -209,6 +209,9 @@ def acr_queue(cmd,
 
     resource_group_name = get_resource_group_name_by_registry_name(
         cmd.cli_ctx, registry_name, resource_group_name)
+
+    tar_file_path = os.path.join(tempfile.gettempdir(),
+                                 "source_archive_{}.tar.gz".format(hash(os.times())))
 
     client_registries = cf_acr_registries(cmd.cli_ctx)
 
@@ -223,7 +226,7 @@ def acr_queue(cmd,
             _check_local_docker_file(source_location, docker_file_path)
 
             source_location = _upload_source_code(
-                client_registries, registry_name, resource_group_name, source_location, docker_file_path)
+                client_registries, registry_name, resource_group_name, source_location, tar_file_path)
         else:
             raise CLIError(
                 "'--source-location' should be a local directory path or remote url.")
@@ -256,7 +259,7 @@ def acr_queue(cmd,
         build_request = QuickBuildRequest(
             source_location=source_location,
             platform=platform,
-            docker_file_path = docker_file_path,            
+            docker_file_path=docker_file_path,
             image_name=image_name,
             is_push_enabled=is_push_enabled,
             timeout=timeout,
@@ -265,29 +268,34 @@ def acr_queue(cmd,
         result = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
             build_request=build_request, resource_group_name=resource_group_name, registry_name=registry_name))
 
+        size = os.path.getsize(tar_file_path)
+        unit = ""
+        for S in ['Bytes', 'KiB', 'MiB', 'GiB']:
+            if size < 1024:
+                unit = S
+                break
+            size = size / 1024.0
+        if unit == "":
+            unit = "GiB"
+
+        print("Sending build context ({0: .3f} {1}) to ACR Build as Id: {2}".format(
+            size, unit, result.build_id))
+
         if no_logs == False:
-            size = os.path.getsize(FILE)
-            unit = ""
-            for S in ['Bytes', 'KB', 'MB']:
-                if size < 1024:
-                    unit = S
-                    break
-                size = size / 1024.0
-            if unit == "" or (unit == "MB" and size > 500):
-                raise Exception("Build context too large. Request declined.")
-            print ("Sending build context ({0: .3f} {1}) to ACR Build as Id: {2}".format(size, unit, result.build_id))
             return acr_build_show_logs(cmd, client, registry_name, result.build_id, resource_group_name)
     except Exception as err:
         raise CLIError(err)
     finally:
-        if os.path.exists(FILE):
+        if os.path.exists(tar_file_path):
             logger.debug(
-                "Starting to delete the archived source code from '{}'.".format(FILE))
-            os.remove(FILE)
+                "Starting to delete the archived source code from '{}'.".format(tar_file_path))
+            os.remove(tar_file_path)
+
 
 def _check_local_docker_file(source_location, docker_file_path):
     if not os.path.isfile(os.path.join(source_location, docker_file_path)):
-        raise CLIError("Unable to find '{}' in '{}'.".format(docker_file_path, source_location))
+        raise CLIError("Unable to find '{}' in '{}'.".format(
+            docker_file_path, source_location))
 
 
 def _check_remote_source_code(source_location):
@@ -310,7 +318,8 @@ def _check_remote_source_code(source_location):
             else:
                 raise CLIError("'{}' doesn't exist.".format(source_location))
 
-    raise CLIError("'{}' is not a valid remote url for git or tarball.".format(source_location))
+    raise CLIError(
+        "'{}' is not a valid remote url for git or tarball.".format(source_location))
 
 
 def _check_image_name(image_name):
@@ -346,13 +355,7 @@ def _check_image_name(image_name):
     return image_name
 
 
-def _upload_source_code(client, registry_name, resource_group_name, source_location, docker_file_path):
-
-    tar_file_path = os.path.join(tempfile.gettempdir(),
-                                 "source_archive_{}.tar.gz".format(hash(os.times())))
-    global FILE
-    FILE = tar_file_path
-
+def _upload_source_code(client, registry_name, resource_group_name, source_location, tar_file_path):
     try:
         logger.debug(
             "Starting to acquire the access token to upload the source code.")
