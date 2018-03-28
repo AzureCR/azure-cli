@@ -37,5 +37,7 @@ setup(
     url='https://github.com/Azure/azure-cli',
     classifiers=CLASSIFIERS,
     packages=find_packages(),
-    install_requires=DEPENDENCIES
+    install_requires=DEPENDENCIES,
+    package_data={'azext_acrbuildext': ['*.json']},
+    include_package_data=True
 )
