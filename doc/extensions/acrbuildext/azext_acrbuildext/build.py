@@ -242,9 +242,9 @@ def acr_queue(cmd,
     else:
         image_name = _check_image_name(image_name)
 
-    # hard-code platform to linux and cpu to 2
+    # hard-code platform to linux and cpu to 1
     platform = PlatformProperties("Linux")
-    platform.cpu = 2
+    platform.cpu = 1
 
     build_arguments = []
     if not (build_args is None):
