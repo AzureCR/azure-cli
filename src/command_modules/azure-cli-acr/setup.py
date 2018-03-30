@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------------------
 
 from codecs import open
-from setuptools import setup
+from setuptools import setup, find_packages
 try:
     from azure_bdist_wheel import cmdclass
 except ImportError:
@@ -51,13 +51,8 @@ setup(
     author_email='azpycli@microsoft.com',
     url='https://github.com/Azure/azure-cli',
     classifiers=CLASSIFIERS,
-    packages=[
-        'azure',
-        'azure.cli',
-        'azure.cli.command_modules',
-        'azure.cli.command_modules.acr',
-    ],
+    packages=find_packages(),
     install_requires=DEPENDENCIES,
-    package_data={'azure.cli.command_modules.acr': ['template.json', 'template_new_storage.json', 'template_existing_storage.json']},
+    package_data={'azure.cli.command_modules.acr': ['*.json']},
     cmdclass=cmdclass
 )
