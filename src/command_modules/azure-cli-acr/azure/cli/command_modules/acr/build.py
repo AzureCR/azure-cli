@@ -244,7 +244,6 @@ def acr_queue(cmd,
 
     # hard-code platform to linux and cpu to 1
     platform = PlatformProperties("Linux")
-    platform.cpu = 1
 
     build_arguments = []
     if not (build_args is None):
