@@ -123,7 +123,7 @@ def _stream_logs(byte_size,
                         flush = curr_bytes[:i]  # won't print \n
                         stream = BytesIO()
                         stream.write(curr_bytes[i+1:])
-                        print(flush.decode('utf-8'))
+                        print(flush.decode('utf-8', errors='ignore'))
                         break
 
             except AzureHttpError as ae:
@@ -132,7 +132,7 @@ def _stream_logs(byte_size,
             except KeyboardInterrupt:
                 curr_bytes = stream.getvalue()
                 if len(curr_bytes) > 0:
-                    print(curr_bytes.decode('utf-8'))
+                    print(curr_bytes.decode('utf-8', errors='ignore'))
                 return
 
         try:
@@ -147,7 +147,7 @@ def _stream_logs(byte_size,
                 raise CLIError(ae)
         except KeyboardInterrupt:
             if len(curr_bytes) > 0:
-                print(curr_bytes.decode('utf-8'))
+                print(curr_bytes.decode('utf-8', errors='ignore'))
             return
         except Exception as err:
             raise CLIError(err)
@@ -296,7 +296,8 @@ def acr_queue(cmd,
             result.build_id))
 
     if no_logs == False:
-        acr_build_show_logs(cmd, client, registry_name, result.build_id, resource_group_name)
+        acr_build_show_logs(cmd, client, registry_name,
+                            result.build_id, resource_group_name)
 
 
 def _check_local_docker_file(source_location, docker_file_path):
@@ -379,9 +380,10 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
                 return tarinfo
 
             # always include docker file
-            # file path comparision is case-sensitive 
+            # file path comparision is case-sensitive
             if tarinfo.name == docker_file_path:
-                logger.debug(".dockerignore: skip checking '{}'".format(docker_file_path))
+                logger.debug(
+                    ".dockerignore: skip checking '{}'".format(docker_file_path))
                 return tarinfo
 
             for item in ignore_list:
