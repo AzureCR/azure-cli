@@ -33,7 +33,7 @@ from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
 from knack.log import get_logger
 
-from ._client_factory import cf_acr_registries
+from ._client_factory import cf_acr_build_registries
 
 logger = get_logger(__name__)
 
@@ -224,7 +224,7 @@ def acr_queue(cmd,
     resource_group_name = get_resource_group_name_by_registry_name(
         cmd.cli_ctx, registry_name, resource_group_name)
 
-    client_registries = cf_acr_registries(cmd.cli_ctx)
+    client_registries = cf_acr_build_registries(cmd.cli_ctx)
 
     if docker_file_path is None:
         docker_file_path = "Dockerfile"

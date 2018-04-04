@@ -30,13 +30,25 @@ def get_acr_build_client(cli_ctx, api_version=None):
     return get_mgmt_service_client(cli_ctx, ContainerRegistryManagementClient, api_version=api_version)
 
 
+def cf_acr_registries(cli_ctx, *_):
+    return get_acr_service_client(cli_ctx).registries
+
+
+def cf_acr_replications(cli_ctx, *_):
+    return get_acr_service_client(cli_ctx).replications
+
+
+def cf_acr_webhooks(cli_ctx, *_):
+    return get_acr_service_client(cli_ctx).webhooks
+
+
 def cf_acr_builds(cli_ctx, *_):
     return get_acr_build_client(cli_ctx).builds
 
 
 def cf_acr_build_tasks(cli_ctx, *_):
     return get_acr_build_client(cli_ctx).build_tasks
- 
 
-def cf_acr_registries(cli_ctx, *_):
+
+def cf_acr_build_registries(cli_ctx, *_):
     return get_acr_build_client(cli_ctx).registries
