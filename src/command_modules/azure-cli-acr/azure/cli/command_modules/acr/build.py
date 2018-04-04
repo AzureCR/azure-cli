@@ -131,7 +131,7 @@ def _stream_logs(byte_size,
                     raise CLIError(ae)
             except KeyboardInterrupt:
                 curr_bytes = stream.getvalue()
-                if len(curr_bytes) > 0:
+                if curr_bytes:
                     print(curr_bytes.decode('utf-8', errors='ignore'))
                 return
 
@@ -146,7 +146,7 @@ def _stream_logs(byte_size,
             if ae.status_code != 404:
                 raise CLIError(ae)
         except KeyboardInterrupt:
-            if len(curr_bytes) > 0:
+            if curr_bytes:
                 print(curr_bytes.decode('utf-8', errors='ignore'))
             return
         except Exception as err:
@@ -160,6 +160,13 @@ def _stream_logs(byte_size,
             delta = datetime.utcnow().replace(tzinfo=pytz.utc) - last_modified
 
             if delta.seconds > timeout_in_seconds:
+                # Flush anything remaining in the buffer - this would be the case
+                # if the file has expired and we weren't able to detect any \r\n
+                curr_bytes = stream.getvalue()
+
+                if curr_bytes:
+                    print(curr_bytes.decode('utf-8', errors='ignore'))
+
                 print("No additional logs found. Timing out...")
                 return
 
@@ -167,6 +174,13 @@ def _stream_logs(byte_size,
         # to process additional data.
         if (_blob_is_not_complete(metadata) and start >= available):
             time.sleep(5)
+
+    # One final check to see if there's anything in the buffer to flush
+    # E.g., metadata has been set and start == available, but the log file
+    # didn't end in \r\n, so we were unable to flush out the final contents.
+    curr_bytes = stream.getvalue()
+    if curr_bytes:
+        print(curr_bytes.decode('utf-8', errors='ignore'))
 
 
 def _blob_is_not_complete(metadata):
