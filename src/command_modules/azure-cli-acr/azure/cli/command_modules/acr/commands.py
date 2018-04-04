@@ -41,12 +41,12 @@ def load_command_table(self, _):
     )
 
     acr_build_util = CliCommandType(
-        operations_tmpl='azure.cli.command_modules.acr.build#{}',    
+        operations_tmpl='azure.cli.command_modules.acr.build#{}',
         client_factory=cf_acr_builds
     )
 
     acr_build_task_util = CliCommandType(
-        operations_tmpl='azure.cli.command_modules.acr.build_task#{}',    
+        operations_tmpl='azure.cli.command_modules.acr.build_task#{}',
         table_transformer=output_format,
         client_factory=cf_acr_build_tasks
     )
@@ -105,14 +105,14 @@ def load_command_table(self, _):
                                  client_factory=cf_acr_replications)
 
     with self.command_group('acr build-task', acr_build_task_util) as g:
-            g.command('create', 'acr_build_task_create')
-            g.command('show', 'acr_build_task_show')
-            g.command('list', 'acr_build_task_list')
-            g.command('delete', 'acr_build_task_delete')
-            g.command('list-builds', 'acr_build_task_list_builds')
-            g.command('run', 'acr_build_task_run')
-            g.command('logs', 'acr_build_task_logs')
+        g.command('create', 'acr_build_task_create')
+        g.command('show', 'acr_build_task_show')
+        g.command('list', 'acr_build_task_list')
+        g.command('delete', 'acr_build_task_delete')
+        g.command('list-builds', 'acr_build_task_list_builds')
+        g.command('run', 'acr_build_task_run')
+        g.command('logs', 'acr_build_task_logs')
 
     with self.command_group('acr build', acr_build_util) as g:
-            g.command('show-logs', 'acr_build_show_logs')
-            g.command('', 'acr_queue') # TODO: it should be moved to acr command group once we can integrate the full sdk.
+        g.command('show-logs', 'acr_build_show_logs')
+        g.command('', 'acr_queue') # TODO: it should be moved to acr command group once we can integrate the full sdk.
