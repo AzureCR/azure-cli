@@ -240,7 +240,7 @@ def acr_queue(cmd,
             _check_local_docker_file(source_location, docker_file_path)
 
             source_location = _upload_source_code(
-                client_registries, registry_name, resource_group_name, source_location, tar_file_path)
+                client_registries, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path)
         else:
             raise CLIError(
                 "'--source-location' should be a local directory path or remote url.")
@@ -377,7 +377,7 @@ def _check_image_name(image_name):
     return image_name
 
 
-def _upload_source_code(client, registry_name, resource_group_name, source_location, tar_file_path):
+def _upload_source_code(client, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path):
 
     try:
         logger.debug(
