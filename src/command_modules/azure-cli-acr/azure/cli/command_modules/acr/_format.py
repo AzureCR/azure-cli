@@ -6,8 +6,9 @@
 from collections import OrderedDict
 
 _property_map = {
-    'name': 'NAME',
-    'resourceGroup': 'RESOURCE GROUP',
+    #'name': 'NAME',
+    #'resourceGroup': 'RESOURCE GROUP',
+    'buildType': 'TYPE',
     'location': 'LOCATION',
     'loginServer': 'LOGIN SERVER',
     'creationDate': 'CREATION DATE',
@@ -19,7 +20,11 @@ _property_map = {
     'customHeaders': 'HEADERS',
     'limit': 'LIMIT',
     'currentValue': 'CURRENT VALUE',
-    'unit': 'UNIT'
+    'unit': 'UNIT',
+    'buildId': "BUILDID",
+    #'trigger': "TRIGGER",
+    'platform': "PLATFORM",
+    'startTime': "STARTTIME"
 }
 
 _order_map = {
@@ -45,7 +50,12 @@ _order_map = {
     'ACTION': 62,
     'IMAGE': 63,
     'RESPONSE STATUS': 64,
-    'TIMESTAMP': 65
+    'TIMESTAMP': 65,
+    'BUILDID': 7,
+    'TRIGGER': 71,
+    'PLATFORM': 72,
+    'STARTTIME': 73,
+    'TYPE': 8
 }
 
 
@@ -64,6 +74,11 @@ def _format_group(item):
     :param dict item: The container registry object
     """
     table_info = {_property_map[key]: str(item[key]) for key in item if key in _property_map}
+
+    try:
+        table_info['PLATFORM'] = item['platform']['osType']
+    except(KeyError, TypeError):
+        pass
 
     try:
         table_info['SKU'] = item['sku']['name']
