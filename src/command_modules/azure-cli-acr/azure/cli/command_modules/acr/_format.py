@@ -190,10 +190,7 @@ def _get_difference(finishTime, startTime):
     date_start = datetime.strptime(startTime.replace("T", " ")[2:19], "%y-%m-%d %H:%M:%S")
     
     ret = date_finish - date_start
-    '''hours = "{:02}".format(ret.days * 24)
-    minutes = "{:02}".format(int(ret.seconds / 60))
-    seconds = "{:02}".format(ret.seconds % 60)'''
-    return "{0}s".format(ret.seconds)#"{0}:{1}:{2}".format(hours, minutes, seconds)
+    return "{0}s".format(ret.seconds)
 
 
 def _get_start(cur):
