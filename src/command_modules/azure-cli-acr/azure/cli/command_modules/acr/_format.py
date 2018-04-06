@@ -64,7 +64,7 @@ def _format_group(item):
     :param dict item: The container registry object
     """
     table_info = {_property_map[key]: str(item[key]) for key in item if key in _property_map}
-    
+  
     try:
         table_info['SKU'] = item['sku']['name']
     except (KeyError, TypeError):
