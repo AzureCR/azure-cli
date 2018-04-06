@@ -162,7 +162,7 @@ def _get_difference(finishTime, startTime):
     try:
         date_start = dateutil.parser.parse(startTime)
         date_finish = dateutil.parser.parse(finishTime)
-    except Exception as err:
+    except (ValueError, OverflowError) as err:
         print(err)
     
     ret = relativedelta.relativedelta(date_finish, date_start)
