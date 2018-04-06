@@ -6,9 +6,6 @@
 from collections import OrderedDict
 
 _property_map = {
-    #'name': 'NAME',
-    #'resourceGroup': 'RESOURCE GROUP',
-    'buildType': 'TYPE',
     'location': 'LOCATION',
     'loginServer': 'LOGIN SERVER',
     'creationDate': 'CREATION DATE',
@@ -21,15 +18,14 @@ _property_map = {
     'limit': 'LIMIT',
     'currentValue': 'CURRENT VALUE',
     'unit': 'UNIT',
-    'buildId': "BUILDID",
-    #'trigger': "TRIGGER",
-    'platform': "PLATFORM",
-    'startTime': "STARTTIME"
+    'buildId': 'BUILD ID',
+    #'trigger': 'TRIGGER',
+    'platform': 'PLATFORM'
 }
 
 _order_map = {
-    'NAME': 1,
-    'RESOURCE GROUP': 2,
+    'BUILD ID': 1,
+    'TASK': 2,
     'LOCATION': 3,
     'SKU': 4,
     'LOGIN SERVER': 11,
@@ -38,11 +34,12 @@ _order_map = {
     'USERNAME': 31,
     'PASSWORD': 32,
     'PASSWORD2': 33,
-    'STATUS': 41,
-    'SCOPE': 42,
-    'ACTIONS': 43,
-    'SERVICE URI': 44,
-    'HEADERS': 45,
+    'PLATFORM': 41,
+    'STATUS': 42,
+    'SCOPE': 43,
+    'ACTIONS': 44,
+    'SERVICE URI': 45,
+    'HEADERS': 46,
     'LIMIT': 51,
     'CURRENT VALUE': 52,
     'UNIT': 53,
@@ -51,15 +48,13 @@ _order_map = {
     'IMAGE': 63,
     'RESPONSE STATUS': 64,
     'TIMESTAMP': 65,
-    'BUILDID': 7,
-    'TRIGGER': 71,
-    'PLATFORM': 72,
-    'STARTTIME': 73,
-    'TYPE': 8
+    'TRIGGERED': 71,
+    'STARTED': 72,
+    'DURATION': 73
 }
 
 
-def output_format(result):
+def build_output_format(result):
     """Returns the list of container registries each of which is an ordered dictionary.
     :param list/dict result: The (list of) container registry object(s)
     """
@@ -73,11 +68,26 @@ def _format_group(item):
     """Returns an ordered dictionary of the container registry.
     :param dict item: The container registry object
     """
-    table_info = {_property_map[key]: str(item[key]) for key in item if key in _property_map}
+    table_info = {_property_map[key]: str(
+        item[key]) for key in item if key in _property_map}
+
+    try:
+        import json
+        table_info['TASK'] = json.loads(item['buildTask'])['BuildTaskName']
+    except (KeyError, TypeError):
+        table_info['TASK'] = item['buildType']
 
     try:
         table_info['PLATFORM'] = item['platform']['osType']
-    except(KeyError, TypeError):
+    except (KeyError, TypeError):
+        pass
+
+    table_info['STARTED'] = _get_start(item['startTime'])
+
+    try:
+        table_info['DURATION'] = _get_difference(
+            item['finishTime'], item['startTime'])
+    except (KeyError, TypeError):
         pass
 
     try:
@@ -137,8 +147,29 @@ def _format_group(item):
     try:
         status_code = item['eventResponseMessage']['statusCode']
         reason_phrase = item['eventResponseMessage']['reasonPhrase']
-        table_info['RESPONSE STATUS'] = '{} {}'.format(status_code, reason_phrase)
+        table_info['RESPONSE STATUS'] = '{} {}'.format(
+            status_code, reason_phrase)
     except (KeyError, TypeError):
         pass
 
     return OrderedDict(sorted(table_info.items(), key=lambda t: _order_map[t[0]]))
+
+
+def _get_difference(finishTime, startTime):
+    from datetime import datetime
+    from dateutil import relativedelta
+    import dateutil.parser
+    try:
+        date_start = dateutil.parser.parse(startTime)
+        date_finish = dateutil.parser.parse(finishTime)
+    except Exception as err:
+        print(err)
+    
+    ret = relativedelta.relativedelta(date_finish, date_start)
+    hour = ((ret.years * 365 + ret.months) * 30 + ret.days) * 24
+    return "{0}:{1}:{2}".format(hour, ret.minutes, ret.seconds)
+
+
+def _get_start(cur):
+    time = cur.split("T")
+    return time[0] + " " + time[1][:8]
