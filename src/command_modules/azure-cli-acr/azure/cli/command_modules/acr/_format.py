@@ -22,6 +22,13 @@ _property_map = {
     'unit': 'UNIT'
 }
 
+_build_property_map = {
+    'buildId': 'BUILD ID',
+    'platform': 'PLATFORM',
+    'status': 'STATUS',
+    #'trigger': 'TRIGGERED'
+}
+
 _order_map = {
     'NAME': 1,
     'RESOURCE GROUP': 2,
@@ -46,6 +53,16 @@ _order_map = {
     'IMAGE': 63,
     'RESPONSE STATUS': 64,
     'TIMESTAMP': 65
+}
+
+_build_order_map = {
+    'BUILD ID': 1,
+    'TASK': 2,
+    'PLATFORM': 3,
+    'STATUS': 4,
+    #'TRIGGERED': 5,
+    'STARTED': 6,
+    'DURATION': 7
 }
 
 
@@ -127,3 +144,54 @@ def _format_group(item):
         pass
 
     return OrderedDict(sorted(table_info.items(), key=lambda t: _order_map[t[0]]))
+
+def build_output_format(result):
+    """Returns the list of container registries each of which is an ordered dictionary.
+    :param list/dict result: The (list of) container registry object(s)
+    """
+    if 'value' in result and isinstance(result['value'], list):
+        result = result['value']
+    obj_list = result if isinstance(result, list) else [result]
+    return [_build_format_group(item) for item in obj_list]
+
+def _build_format_group(item):
+    """Returns an ordered dictionary of the container registry.
+    :param dict item: The container registry object
+    """
+    table_info = {_build_property_map[key]: str(
+        item[key]) for key in item if key in _build_property_map}
+
+    try:
+        import json
+        table_info['TASK'] = json.loads(item['buildTask'])['BuildTaskName']
+    except (KeyError, TypeError):
+        table_info['TASK'] = item['buildType']
+
+    try:
+        table_info['PLATFORM'] = item['platform']['osType']
+    except (KeyError, TypeError):
+        pass
+
+    table_info['STARTED'] = _get_start(item['startTime'])
+
+    try:
+        table_info['DURATION'] = _get_difference(
+            item['finishTime'], item['startTime'])
+    except (KeyError, TypeError):
+        pass
+
+    return OrderedDict(sorted(table_info.items(), key=lambda t: _build_order_map[t[0]]))
+
+
+def _get_difference(finishTime, startTime):
+    from datetime import datetime
+    temp = finishTime.replace("T", " ")[2:19]
+    date_finish = datetime.strptime(temp, "%y-%m-%d %H:%M:%S")
+    date_start = datetime.strptime(startTime.replace("T", " ")[2:19], "%y-%m-%d %H:%M:%S")
+    ret = date_finish - date_start
+    return "{0} s".format(ret.seconds)
+
+
+def _get_start(cur):
+    time = cur.split("T")
+    return "{0} {1}".format(time[0][2:], time[1][:8])
