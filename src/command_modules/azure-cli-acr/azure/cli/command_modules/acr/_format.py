@@ -166,7 +166,6 @@ def _build_format_group(item):
         table_info['TASK'] = json.loads(item['buildTask'])['BuildTaskName']
     except (KeyError, TypeError):
         pass
-        #table_info['TASK'] = item['buildType']
 
     try:
         table_info['PLATFORM'] = item['platform']['osType']
