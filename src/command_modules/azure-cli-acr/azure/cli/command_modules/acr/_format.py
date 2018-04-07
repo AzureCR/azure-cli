@@ -165,7 +165,8 @@ def _build_format_group(item):
         import json
         table_info['TASK'] = json.loads(item['buildTask'])['BuildTaskName']
     except (KeyError, TypeError):
-        table_info['TASK'] = item['buildType']
+        pass
+        #table_info['TASK'] = item['buildType']
 
     try:
         table_info['PLATFORM'] = item['platform']['osType']
@@ -189,9 +190,11 @@ def _get_difference(finishTime, startTime):
     date_finish = datetime.strptime(temp, "%y-%m-%d %H:%M:%S")
     date_start = datetime.strptime(startTime.replace("T", " ")[2:19], "%y-%m-%d %H:%M:%S")
     ret = date_finish - date_start
-    return "{0}s".format(ret.seconds)
+    hours = "{0:02d}".format((24 * ret.days) + (ret.seconds // 3600))
+    minutes = "{0:02d}".format((ret.seconds % 3600) // 60)
+    seconds = "{0:02d}".format(ret.seconds % 60)
+    return "{0}:{1}:{2}".format(hours, minutes, seconds)
 
 
 def _get_start(cur):
-    time = cur.split("T")
-    return "{0} {1}".format(time[0][2:], time[1][:8])
+    return "{0}Z".format(cur[:19])
