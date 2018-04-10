@@ -21,6 +21,8 @@ from ._client_factory import (
     get_acr_service_client
 )
 
+from .sdk.models import BuildArgument
+
 
 def _arm_get_resource_by_name(cli_ctx, resource_name, resource_type):
     """Returns the ARM resource in the current subscription with resource_name.
@@ -201,6 +203,7 @@ def arm_deploy_template_build_task_create(
     source_branch,         
     image_name,
     docker_file_path,
+    build_arguments,
     git_access_token,
     os_type,
     cpu,
@@ -217,7 +220,6 @@ def arm_deploy_template_build_task_create(
     from azure.mgmt.resource.resources.models import DeploymentProperties
     from azure.cli.core.util import get_file_json
     import os
-    import random
 
     # TODO ankheman remove hard-coded values
     parameters = {
@@ -239,6 +241,7 @@ def arm_deploy_template_build_task_create(
         'sourceControlAuthExpiresIn': {'value': 1313141},
         'stepName': {'value': build_task_name + "StepName"},
         'dockerFilePath': {'value': docker_file_path},
+        'buildArguments': {'value': build_arguments},
         'SourceControlBranch': {'value': source_branch},
         'imageName': {'value': image_name},
         'isPushEnabled': {'value': True},
@@ -369,3 +372,16 @@ def _invalid_sku_update():
 
 def _invalid_sku_downgrade():
     raise CLIError("Managed registries could not be downgraded to Classic SKU.")
+
+
+def validate_and_serialize_build_arguments(
+    build_arg,
+    build_arguments,
+    is_secret):
+    
+    if build_arg is not None:
+        for name_value in build_arg:
+            if "=" not in name_value:
+                raise CLIError("Accepted format for arg is <name>=<value>.")
+            name, value = name_value.split('=', 1)
+            build_arguments.append(BuildArgument(name, value, is_secret))

@@ -28,7 +28,10 @@ from .sdk.models import (
     BuildArgument,
     SourceUploadDefinition
 )
-from ._utils import get_resource_group_name_by_registry_name
+from ._utils import (
+    get_resource_group_name_by_registry_name,
+    validate_and_serialize_build_arguments
+)
 from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
 from knack.log import get_logger
@@ -214,20 +217,17 @@ def acr_queue(cmd,
               registry_name,
               source_location,
               image_name=None,
-              docker_file_path=None,
               resource_group_name=None,
               timeout=None,
-              build_args=None,
-              secret_build_args=None,
+              build_arg=None,
+              secret_build_arg=None,
+              docker_file_path="Dockerfile",
               no_logs=False):
 
     resource_group_name = get_resource_group_name_by_registry_name(
         cmd.cli_ctx, registry_name, resource_group_name)
 
     client_registries = cf_acr_build_registries(cmd.cli_ctx)
-
-    if docker_file_path is None:
-        docker_file_path = "Dockerfile"
 
     if source_location is None:
         source_location = "."
@@ -260,15 +260,8 @@ def acr_queue(cmd,
     platform = PlatformProperties("Linux")
 
     build_arguments = []
-    if not (build_args is None):
-        for name_value in build_args:
-            name, value = name_value.split('=', 1)
-            build_arguments.append(BuildArgument(name, value, False))
-
-    if not (secret_build_args is None):
-        for name_value in secret_build_args:
-            name, value = name_value.split('=', 1)
-            build_arguments.append(BuildArgument(name, value, True))
+    validate_and_serialize_build_arguments(build_arg, build_arguments, False)
+    validate_and_serialize_build_arguments(secret_build_arg, build_arguments, True)
 
     build_request = QuickBuildRequest(
         source_location=source_location,
