@@ -113,6 +113,13 @@
                 "description": "the path to the docker file in the source control."
             }
         },
+        "buildArguments": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Build arguments"
+            }
+        },
         "sourceControlBranch": {
             "type": "string",
             "metadata": {
@@ -172,7 +179,8 @@
                 "branch": "[parameters('sourceControlBranch')]",
                 "imageName": "[parameters('imageName')]",
                 "isPushEnabled": "[parameters('isPushEnabled')]",
-                "dockerFilePath": "[parameters('dockerFilePath')]"
+                "dockerFilePath": "[parameters('dockerFilePath')]",
+                "buildArguments": "[parameters('buildArguments')]"
             }
         }
     ]

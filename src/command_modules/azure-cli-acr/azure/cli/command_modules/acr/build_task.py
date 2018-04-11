@@ -4,9 +4,11 @@
 # --------------------------------------------------------------------------------------------
 
 from azure.cli.core.commands import LongRunningOperation
+from knack.util import CLIError
 from ._utils import (
     arm_deploy_template_build_task_create,
-    validate_managed_registry
+    validate_managed_registry,
+    validate_and_append_build_arguments
 )
 from .build import _check_image_name
 
@@ -22,13 +24,18 @@ def acr_build_task_create(
     image_name,
     git_access_token,
     source_branch="master",  
-    docker_file_path='Dockerfile',
+    docker_file_path="Dockerfile",
     os_type="Linux",
     cpu=1,
+    build_arg=None,
+    secret_build_arg=None,
     resource_group_name=None):
     
     registry, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
+    build_arguments = []
+    validate_and_append_build_arguments(build_arg, build_arguments, False)
+    validate_and_append_build_arguments(secret_build_arg, build_arguments, True)
 
     LongRunningOperation(cmd.cli_ctx)(
             arm_deploy_template_build_task_create(
@@ -41,6 +48,7 @@ def acr_build_task_create(
                 source_branch,              
                 _check_image_name(image_name),
                 docker_file_path,
+                build_arguments,
                 git_access_token,
                 os_type,
                 cpu)
