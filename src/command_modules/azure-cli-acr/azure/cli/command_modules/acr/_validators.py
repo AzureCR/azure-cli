@@ -41,5 +41,6 @@ def validate_build_task_name(namespace):
     import re
     build_task_name = namespace.build_task_name
     p = re.compile('^[a-zA-Z0-9]*$')
-    if p.match(build_task_name) == None:
-        raise CLIError("Build task name may contain alpha numeric characters only and must be between 5 and 50 characters.")
+    if p.match(build_task_name) is None:
+        raise CLIError(
+            "Build task name may contain alpha numeric characters only and must be between 5 and 50 characters.")
