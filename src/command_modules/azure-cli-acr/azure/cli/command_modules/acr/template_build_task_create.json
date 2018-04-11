@@ -126,6 +126,12 @@
                 "description": "The branch of the source control."
             }
         },
+        "baseImageTrigger": {
+            "type": "string",
+            "metadata": {
+                "description": "The type of the auto trigger for base image dependency updates."
+            }
+        },
         "imageNames": {
             "type": "array",
             "metadata": {
@@ -180,7 +186,8 @@
                 "imageNames": "[parameters('imageNames')]",
                 "isPushEnabled": "[parameters('isPushEnabled')]",
                 "dockerFilePath": "[parameters('dockerFilePath')]",
-                "buildArguments": "[parameters('buildArguments')]"
+                "buildArguments": "[parameters('buildArguments')]",
+                "baseImageTrigger": "[parameters('baseImageTrigger')]"
             }
         }
     ]
