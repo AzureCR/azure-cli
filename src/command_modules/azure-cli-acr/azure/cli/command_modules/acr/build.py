@@ -252,9 +252,10 @@ def acr_queue(cmd,
     is_push_enabled = True
     if image_name is None:
         is_push_enabled = False
-        print("'--image -t' is not provided. Skip image push after build.")
-    else:
-        image_name = _check_image_name(image_name)
+        print("'--image -t' is not provided. Skip image push after build.")  
+    # TODO: ankheman support variable tagging, disabling check temporarily
+    # else:
+    #     image_name = _check_image_name(image_name)
 
     # hard-code platform to linux and cpu to 1
     platform = PlatformProperties("Linux")
@@ -337,6 +338,7 @@ def _check_remote_source_code(source_location):
         "'{}' is not a valid remote url for git or tarball.".format(source_location))
 
 
+#TODO: ankheman move validations to utils?
 def _check_image_name(image_name):
 
     # referenc: https://github.com/docker/distribution/tree/master/reference

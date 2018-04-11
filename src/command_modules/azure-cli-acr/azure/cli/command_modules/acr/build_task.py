@@ -46,7 +46,8 @@ def acr_build_task_create(
                 resource_group_name,
                 source_location,
                 source_branch,              
-                _check_image_name(image_name),
+                # _check_image_name(image_name), TODO: ankheman support variable tagging, disabling check temporarily
+                image_name,
                 docker_file_path,
                 build_arguments,
                 git_access_token,
