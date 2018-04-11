@@ -25,7 +25,7 @@ from ._constants import (
     CLASSIC_REGISTRY_SKU,
     MANAGED_REGISTRY_SKU
 )
-from ._validators import validate_registry_name, validate_headers
+from ._validators import validate_registry_name, validate_headers, validate_build_task_name
 
 
 def load_arguments(self, _):
@@ -114,4 +114,4 @@ def load_arguments(self, _):
         c.argument('no_logs', action='store_true', help="Do not show build logs.")
 
     with self.argument_context('acr build-task create') as c:
-        c.argument('build_task_name', completer=None)
+        c.argument('build_task_name', completer=None, validator = validate_build_task_name)
