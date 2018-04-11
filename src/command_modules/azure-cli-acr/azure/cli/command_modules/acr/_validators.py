@@ -34,3 +34,13 @@ def validate_header(string):
         comps = string.split('=', 1)
         result = {comps[0]: comps[1]} if len(comps) > 1 else {string: ''}
     return result
+
+
+def validate_build_task_name(namespace):
+    """Validate the name of the build task name. """
+    import re
+    build_task_name = namespace.build_task_name
+    p = re.compile('^[a-zA-Z0-9]*$')
+    if p.match(build_task_name) is None:
+        raise CLIError(
+            "Build task name may contain alpha numeric characters only and must be between 5 and 50 characters.")
