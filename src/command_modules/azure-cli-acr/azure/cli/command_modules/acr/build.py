@@ -30,7 +30,7 @@ from .sdk.models import (
 )
 from ._utils import (
     get_resource_group_name_by_registry_name,
-    validate_and_serialize_build_arguments
+    validate_and_append_build_arguments
 )
 from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
@@ -260,8 +260,8 @@ def acr_queue(cmd,
     platform = PlatformProperties("Linux")
 
     build_arguments = []
-    validate_and_serialize_build_arguments(build_arg, build_arguments, False)
-    validate_and_serialize_build_arguments(secret_build_arg, build_arguments, True)
+    validate_and_append_build_arguments(build_arg, build_arguments, False)
+    validate_and_append_build_arguments(secret_build_arg, build_arguments, True)
 
     build_request = QuickBuildRequest(
         source_location=source_location,
