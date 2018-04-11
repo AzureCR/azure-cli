@@ -23,10 +23,7 @@ from azure.storage.blob import (
 )
 from .sdk.models import (
     QuickBuildRequest,
-    PlatformProperties,
-    Build,
-    BuildArgument,
-    SourceUploadDefinition
+    PlatformProperties
 )
 from ._utils import (
     get_resource_group_name_by_registry_name,
@@ -253,7 +250,7 @@ def acr_queue(cmd,
 
     if image_names is None:
         is_push_enabled = False
-        print("'--image -t' is not provided. Skip image push after build.")  
+        print("'--image -t' is not provided. Skip image push after build.")
 
     # hard-code platform to linux and cpu to 1
     platform = PlatformProperties("Linux")

@@ -10,6 +10,7 @@ from ._utils import (
     validate_managed_registry,
     validate_and_append_build_arguments
 )
+from .sdk.models import BuildTaskBuildRequest
 
 BUILD_TASKS_NOT_SUPPORTED = 'Build Tasks are only supported for managed registries.'
 
@@ -120,13 +121,10 @@ def acr_build_task_run(
 
     from ._client_factory import cf_acr_build_registries
     client_registries = cf_acr_build_registries(cmd.cli_ctx)
-    buildRequest = {
-        "type": "BuildTask",
-        "buildTaskName": build_task_name
-    }
+    buildTaskBuildRequest = BuildTaskBuildRequest(build_task_name=build_task_name)
 
     queued_build = LongRunningOperation(cmd.cli_ctx)(
-        client_registries.queue_build(resource_group_name, registry_name, buildRequest))        
+        client_registries.queue_build(resource_group_name, registry_name, buildTaskBuildRequest))        
     if no_logs:
         return queued_build
     else:
