@@ -3,6 +3,12 @@
 Release History
 ===============
 
+2.1.0
+++++++
+* BREAKING CHANGE: `express-route auth list`, `express-route peering list`, `nic ip-config list`
+                   `nsg rule list`, `route-filter rule list`, `route-table route list`,
+                   `traffic-manager endpoint list`: Removed the `--ids` parameter.
+
 2.0.28
 ++++++
 * `application-gateway create`: Fix issue where tags could not be set. [#5936](https://github.com/Azure/azure-cli/issues/5936)
