@@ -250,6 +250,7 @@ def arm_deploy_template_build_task_create(
         'buildArguments': {'value': build_arguments},
         'SourceControlBranch': {'value': source_branch},
         'imageNames': {'value': image_names},
+        'baseImageTrigger': {'value': "Runtime"},
         'isPushEnabled': {'value': True},
     }
 
