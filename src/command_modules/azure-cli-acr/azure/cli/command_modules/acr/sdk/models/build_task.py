@@ -49,7 +49,7 @@ class BuildTask(Resource):
     :param platform: The platform properties against which the build has to
      happen.
     :type platform: ~containerregistrybuild.models.PlatformProperties
-    :param timeout: Build timeout in seconds.
+    :param timeout: Build timeout in seconds. Default value: 3600 .
     :type timeout: int
     """
 
@@ -63,6 +63,7 @@ class BuildTask(Resource):
         'alias': {'required': True},
         'source_repository': {'required': True},
         'platform': {'required': True},
+        'timeout': {'maximum': 28800, 'minimum': 300},
     }
 
     _attribute_map = {
@@ -80,7 +81,7 @@ class BuildTask(Resource):
         'timeout': {'key': 'properties.timeout', 'type': 'int'},
     }
 
-    def __init__(self, location, alias, source_repository, platform, tags=None, status=None, timeout=None):
+    def __init__(self, location, alias, source_repository, platform, tags=None, status=None, timeout=3600):
         super(BuildTask, self).__init__(location=location, tags=tags)
         self.provisioning_state = None
         self.creation_date = None

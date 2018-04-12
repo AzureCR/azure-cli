@@ -20,6 +20,8 @@ class BuildStatus(Enum):
     succeeded = "Succeeded"
     failed = "Failed"
     canceled = "Canceled"
+    abandoned_as_system_error = "AbandonedAsSystemError"
+    timeout = "Timeout"
 
 
 class BuildType(Enum):
@@ -70,5 +72,6 @@ class BaseImageDependencyType(Enum):
 
 class BaseImageTriggerType(Enum):
 
+    all = "All"
     runtime = "Runtime"
     none = "None"

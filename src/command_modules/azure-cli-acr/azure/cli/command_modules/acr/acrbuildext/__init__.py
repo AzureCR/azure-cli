@@ -8,7 +8,7 @@
 from azure.cli.core import AzCommandsLoader
 import azext_acrbuildext._help  # pylint: disable=unused-import
 from ._client_factory import cf_acr_builds, cf_acr_build_tasks
-from ._format import output_format
+from ._format import build_output_format
 
 class AcrBuildCommandsLoader(AzCommandsLoader):
 
@@ -25,7 +25,7 @@ class AcrBuildCommandsLoader(AzCommandsLoader):
 
         acr_build_task_util = CliCommandType(
             operations_tmpl='azext_acrbuildext.build_task#{}',
-            table_transformer=output_format,
+            table_transformer=build_output_format,
             client_factory=cf_acr_build_tasks
         )
 
