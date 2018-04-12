@@ -33,6 +33,10 @@ class BuildTaskUpdateParameters(Model):
     :type tags: dict[str, str]
     """
 
+    _validation = {
+        'timeout': {'maximum': 28800, 'minimum': 300},
+    }
+
     _attribute_map = {
         'alias': {'key': 'properties.alias', 'type': 'str'},
         'status': {'key': 'properties.status', 'type': 'str'},

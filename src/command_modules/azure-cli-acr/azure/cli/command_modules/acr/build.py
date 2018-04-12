@@ -216,7 +216,7 @@ def acr_queue(cmd,
               client,
               registry_name,
               source_location,
-              image_name=None,
+              image_names=None,
               resource_group_name=None,
               timeout=None,
               build_arg=None,
@@ -250,12 +250,10 @@ def acr_queue(cmd,
         is_local_file = False
 
     is_push_enabled = True
-    if image_name is None:
+
+    if image_names is None:
         is_push_enabled = False
         print("'--image -t' is not provided. Skip image push after build.")  
-    # TODO: ankheman support variable tagging, disabling check temporarily
-    # else:
-    #     image_name = _check_image_name(image_name)
 
     # hard-code platform to linux and cpu to 1
     platform = PlatformProperties("Linux")
@@ -268,7 +266,7 @@ def acr_queue(cmd,
         source_location=source_location,
         platform=platform,
         docker_file_path=docker_file_path,
-        image_name=image_name,
+        image_names=image_names,
         is_push_enabled=is_push_enabled,
         timeout=timeout,
         build_arguments=build_arguments)
@@ -336,40 +334,6 @@ def _check_remote_source_code(source_location):
 
     raise CLIError(
         "'{}' is not a valid remote url for git or tarball.".format(source_location))
-
-
-#TODO: ankheman move validations to utils?
-def _check_image_name(image_name):
-
-    # referenc: https://github.com/docker/distribution/tree/master/reference
-
-    if not image_name:
-        raise CLIError("'--image -t' value should not be empty.")
-
-    tokens = image_name.split(':')
-    if(len(tokens) > 2):
-        raise CLIError(
-            "'--image -t' value should be repository and optionally a tag in the 'repository:tag' format")
-
-    # check repository
-    repository = tokens[0]
-    if len(repository) > 255:
-        raise CLIError(
-            "The repository of '--image -t' value should be no more than 255 characters.")
-    else:
-        # TODO: Consider move the validation to server side
-        if re.match(r"^[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?$", repository) is None:
-            raise CLIError(
-                "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
-
-    # check tag
-    if len(tokens) == 2:
-        tag = tokens[1]
-        if re.match(r"^[\w][\w.-]{0,127}$", tag) is None:
-            raise CLIError(
-                "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
-
-    return image_name
 
 
 def _upload_source_code(client, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path):

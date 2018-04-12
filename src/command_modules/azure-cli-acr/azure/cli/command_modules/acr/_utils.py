@@ -201,7 +201,7 @@ def arm_deploy_template_build_task_create(
     resource_group_name,
     context,     
     source_branch,         
-    image_name,
+    image_names,
     docker_file_path,
     build_arguments,
     git_access_token,
@@ -215,7 +215,7 @@ def arm_deploy_template_build_task_create(
     :param str resource_group_name: The name of resource group
     :param str context: The URL to a git repository.
     :param str source_branch: The source control branch name.
-    :param str image_name: The name of the image.
+    :param str[] image_names: List of images that the build will push to registry.
     :param str docker_file_path: The relative path of the the docker file to the source code root folder.
     :param str[] build_arguments: List of build arguments.
     :param str git_access_token: The git access token for configuring webhook.
@@ -249,7 +249,7 @@ def arm_deploy_template_build_task_create(
         'dockerFilePath': {'value': docker_file_path},
         'buildArguments': {'value': build_arguments},
         'SourceControlBranch': {'value': source_branch},
-        'imageName': {'value': image_name},
+        'imageNames': {'value': image_names},
         'isPushEnabled': {'value': True},
     }
 

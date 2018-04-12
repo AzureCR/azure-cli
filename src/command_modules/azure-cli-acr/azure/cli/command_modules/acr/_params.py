@@ -25,7 +25,7 @@ from ._constants import (
     CLASSIC_REGISTRY_SKU,
     MANAGED_REGISTRY_SKU
 )
-from ._validators import validate_registry_name, validate_headers, validate_build_task_name
+from ._validators import validate_registry_name, validate_headers, validate_build_task_name, validate_image_names
 
 
 def load_arguments(self, _):
@@ -40,7 +40,7 @@ def load_arguments(self, _):
         c.argument('username', options_list=['--username', '-u'], help='The username used to log into a container registry')
         c.argument('password', options_list=['--password', '-p'], help='The password used to log into a container registry')
         c.argument('build_id', help='The unique build identifier.')
-        c.argument('image_name', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.")
+        c.argument('image_names', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append') #TODO: ankheman add validator validate_image_name after variable tag support
         c.argument('docker_file_path', options_list=['--file', '-f'], help="The relative path of the the docker file to the source code root folder.")        
         c.argument('build_arg', help='Build argument in a format of <name>=<value>.', action='append')
         c.argument('secret_build_arg', help='Secret build argument in a format of <name>=<value>.', action='append')

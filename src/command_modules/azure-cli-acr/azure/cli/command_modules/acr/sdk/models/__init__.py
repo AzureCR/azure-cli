@@ -10,6 +10,9 @@
 # --------------------------------------------------------------------------
 
 from .image_descriptor import ImageDescriptor
+from .image import Image
+from .image_update_trigger import ImageUpdateTrigger
+from .git_commit_trigger import GitCommitTrigger
 from .platform_properties import PlatformProperties
 from .build import Build
 from .build_filter import BuildFilter
@@ -56,6 +59,9 @@ from .container_registry_management_client_enums import (
 
 __all__ = [
     'ImageDescriptor',
+    'Image',
+    'ImageUpdateTrigger',
+    'GitCommitTrigger',
     'PlatformProperties',
     'Build',
     'BuildFilter',

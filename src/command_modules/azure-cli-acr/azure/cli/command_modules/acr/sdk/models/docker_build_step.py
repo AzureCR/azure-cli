@@ -27,13 +27,16 @@ class DockerBuildStep(BuildStepProperties):
     :type type: str
     :param branch: The repository branch name.
     :type branch: str
-    :param image_name: The full qualified name of the image including the
+    :param image_names: The fully qualified image names including the
      repository and tag.
-    :type image_name: str
-    :param is_push_enabled: The value of this property indicate whether the
+    :type image_names: list[str]
+    :param is_push_enabled: The value of this property indicates whether the
      image built should be pushed to the registry or not. Default value: False
      .
     :type is_push_enabled: bool
+    :param no_cache: The value of this property indicates whether the image
+     cache is enabled or not. Default value: False .
+    :type no_cache: bool
     :param docker_file_path: The Docker file path relative to the source
      control root.
     :type docker_file_path: str
@@ -46,7 +49,7 @@ class DockerBuildStep(BuildStepProperties):
     :vartype base_image_dependencies:
      list[~containerregistrybuild.models.BaseImageDependency]
     :param base_image_trigger: The type of the auto trigger for base image
-     dependency updates. Possible values include: 'Runtime', 'None'
+     dependency updates. Possible values include: 'All', 'Runtime', 'None'
     :type base_image_trigger: str or
      ~containerregistrybuild.models.BaseImageTriggerType
     """
@@ -61,8 +64,9 @@ class DockerBuildStep(BuildStepProperties):
         'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
         'type': {'key': 'type', 'type': 'str'},
         'branch': {'key': 'branch', 'type': 'str'},
-        'image_name': {'key': 'imageName', 'type': 'str'},
+        'image_names': {'key': 'imageNames', 'type': '[str]'},
         'is_push_enabled': {'key': 'isPushEnabled', 'type': 'bool'},
+        'no_cache': {'key': 'noCache', 'type': 'bool'},
         'docker_file_path': {'key': 'dockerFilePath', 'type': 'str'},
         'context_path': {'key': 'contextPath', 'type': 'str'},
         'build_arguments': {'key': 'buildArguments', 'type': '[BuildArgument]'},
@@ -70,11 +74,12 @@ class DockerBuildStep(BuildStepProperties):
         'base_image_trigger': {'key': 'baseImageTrigger', 'type': 'str'},
     }
 
-    def __init__(self, branch=None, image_name=None, is_push_enabled=False, docker_file_path=None, context_path=None, build_arguments=None, base_image_trigger=None):
+    def __init__(self, branch=None, image_names=None, is_push_enabled=False, no_cache=False, docker_file_path=None, context_path=None, build_arguments=None, base_image_trigger=None):
         super(DockerBuildStep, self).__init__()
         self.branch = branch
-        self.image_name = image_name
+        self.image_names = image_names
         self.is_push_enabled = is_push_enabled
+        self.no_cache = no_cache
         self.docker_file_path = docker_file_path
         self.context_path = context_path
         self.build_arguments = build_arguments

@@ -17,9 +17,9 @@ class QuickBuildRequest(QueueBuildRequest):
 
     :param type: Constant filled by server.
     :type type: str
-    :param image_name: The fully qualified image name with the tag that the
-     build tags it.
-    :type image_name: str
+    :param image_names: The fully qualified image names including the
+     repository and tag.
+    :type image_names: list[str]
     :param source_location: The URL(absolute or relative) of the source that
      needs to be built. For Docker build, it can be an URL to a tar or github
      repoistory as supported by Docker.
@@ -28,11 +28,14 @@ class QuickBuildRequest(QueueBuildRequest):
     :type source_location: str
     :param build_arguments: The collection of build arguments to be used.
     :type build_arguments: list[~containerregistrybuild.models.BuildArgument]
-    :param is_push_enabled: The value of this property indicate whether the
+    :param is_push_enabled: The value of this property indicates whether the
      image built should be pushed to the registry or not. Default value: False
      .
     :type is_push_enabled: bool
-    :param timeout: Build timeout in seconds.
+    :param no_cache: The value of this property indicates whether the image
+     cache is enabled or not. Default value: False .
+    :type no_cache: bool
+    :param timeout: Build timeout in seconds. Default value: 3600 .
     :type timeout: int
     :param platform: The platform properties against which the build will
      happen.
@@ -45,27 +48,30 @@ class QuickBuildRequest(QueueBuildRequest):
     _validation = {
         'type': {'required': True},
         'source_location': {'required': True},
+        'timeout': {'maximum': 28800, 'minimum': 300},
         'platform': {'required': True},
         'docker_file_path': {'required': True},
     }
 
     _attribute_map = {
         'type': {'key': 'type', 'type': 'str'},
-        'image_name': {'key': 'imageName', 'type': 'str'},
+        'image_names': {'key': 'imageNames', 'type': '[str]'},
         'source_location': {'key': 'sourceLocation', 'type': 'str'},
         'build_arguments': {'key': 'buildArguments', 'type': '[BuildArgument]'},
         'is_push_enabled': {'key': 'isPushEnabled', 'type': 'bool'},
+        'no_cache': {'key': 'noCache', 'type': 'bool'},
         'timeout': {'key': 'timeout', 'type': 'int'},
         'platform': {'key': 'platform', 'type': 'PlatformProperties'},
         'docker_file_path': {'key': 'dockerFilePath', 'type': 'str'},
     }
 
-    def __init__(self, source_location, platform, docker_file_path, image_name=None, build_arguments=None, is_push_enabled=False, timeout=None):
+    def __init__(self, source_location, platform, docker_file_path, image_names=None, build_arguments=None, is_push_enabled=False, no_cache=False, timeout=3600):
         super(QuickBuildRequest, self).__init__()
-        self.image_name = image_name
+        self.image_names = image_names
         self.source_location = source_location
         self.build_arguments = build_arguments
         self.is_push_enabled = is_push_enabled
+        self.no_cache = no_cache
         self.timeout = timeout
         self.platform = platform
         self.docker_file_path = docker_file_path

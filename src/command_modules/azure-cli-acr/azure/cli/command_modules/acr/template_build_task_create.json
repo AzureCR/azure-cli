@@ -126,10 +126,10 @@
                 "description": "The branch of the source control."
             }
         },
-        "imageName": {
-            "type": "string",
+        "imageNames": {
+            "type": "array",
             "metadata": {
-                "description": "the name of the image that the build will push to registry."
+                "description": "List of images that the build will push to registry."
             }
         },
         "isPushEnabled": {
@@ -177,7 +177,7 @@
             "properties": {
                 "type": "Docker",
                 "branch": "[parameters('sourceControlBranch')]",
-                "imageName": "[parameters('imageName')]",
+                "imageNames": "[parameters('imageNames')]",
                 "isPushEnabled": "[parameters('isPushEnabled')]",
                 "dockerFilePath": "[parameters('dockerFilePath')]",
                 "buildArguments": "[parameters('buildArguments')]"

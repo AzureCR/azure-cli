@@ -10,7 +10,6 @@ from ._utils import (
     validate_managed_registry,
     validate_and_append_build_arguments
 )
-from .build import _check_image_name
 
 BUILD_TASKS_NOT_SUPPORTED = 'Build Tasks are only supported for managed registries.'
 
@@ -21,7 +20,7 @@ def acr_build_task_create(
     build_task_name,
     registry_name,
     source_location,            
-    image_name,
+    image_names,
     git_access_token,
     source_branch="master",  
     docker_file_path="Dockerfile",
@@ -46,8 +45,7 @@ def acr_build_task_create(
                 resource_group_name,
                 source_location,
                 source_branch,              
-                # _check_image_name(image_name), TODO: ankheman support variable tagging, disabling check temporarily
-                image_name,
+                image_names,
                 docker_file_path,
                 build_arguments,
                 git_access_token,
