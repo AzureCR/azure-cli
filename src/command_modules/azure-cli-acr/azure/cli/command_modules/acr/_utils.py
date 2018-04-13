@@ -193,21 +193,20 @@ def arm_deploy_template_existing_storage(cli_ctx,
         get_arm_service_client(cli_ctx).deployments, resource_group_name, deployment_name, properties)
 
 
-def arm_deploy_template_build_task_create(
-    cli_ctx,
-    build_task_name,
-    registry_name,
-    registry_location,
-    resource_group_name,
-    context,     
-    source_branch,         
-    image_names,
-    docker_file_path,
-    build_arguments,
-    git_access_token,
-    os_type,
-    cpu,
-    deployment_name=None):
+def arm_deploy_template_build_task_create(cli_ctx,
+                                          build_task_name,
+                                          registry_name,
+                                          registry_location,
+                                          resource_group_name,
+                                          context,
+                                          source_branch,
+                                          image_names,
+                                          docker_file_path,
+                                          build_arguments,
+                                          git_access_token,
+                                          os_type,
+                                          cpu,
+                                          deployment_name=None):
     """Deploys ARM template to create a build task.
     :param str build_task_name: The name of build task
     :param str registry_name: The name of container registry
@@ -381,10 +380,9 @@ def _invalid_sku_downgrade():
     raise CLIError("Managed registries could not be downgraded to Classic SKU.")
 
 
-def validate_and_append_build_arguments(
-    build_arg,
-    build_arguments,
-    is_secret):
+def validate_and_append_build_arguments(build_arg,
+                                        build_arguments,
+                                        is_secret):
     """Returns a tuple of Registry object and resource group name.
     :param str[] build_arg: List of build arguments provided by user
     :param str[] build_arguments: Mutable list of build_arg and secret_build_arg.

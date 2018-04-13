@@ -4,6 +4,9 @@
 # --------------------------------------------------------------------------------------------
 
 from collections import OrderedDict
+from knack.log import get_logger
+
+logger = get_logger(__name__)
 
 
 def registry_output_format(result):
@@ -131,8 +134,8 @@ def _build_format_group(item):
         ('TASK', _get_value(item, 'buildTask')),
         ('PLATFORM', _get_value(item, 'platform', 'osType')),
         ('STATUS', _get_value(item, 'status')),
-        ('STARTED', _format_datetime(_get_value(item, 'status'))),
-        ('DURATION', _get_duration(_get_value(item, 'finishTime'), _get_value(item, 'startTime')))
+        ('STARTED', _format_datetime(_get_value(item, 'startTime'))),
+        ('DURATION', _get_duration(_get_value(item, 'startTime'), _get_value(item, 'finishTime')))
     ])
 
 
@@ -153,16 +156,18 @@ def _format_datetime(date_string):
     try:
         return parse(date_string).strftime("%Y-%m-%dT%H:%M:%SZ")
     except ValueError:
+        logger.debug("Unable to parse date_string '%s'", date_string)
         return date_string or ' '
 
 
-def _get_duration(finishTime, startTime):
-    from datetime import datetime
-    temp = finishTime.replace("T", " ")[2:19]
-    date_finish = datetime.strptime(temp, "%y-%m-%d %H:%M:%S")
-    date_start = datetime.strptime(startTime.replace("T", " ")[2:19], "%y-%m-%d %H:%M:%S")
-    ret = date_finish - date_start
-    hours = "{0:02d}".format((24 * ret.days) + (ret.seconds // 3600))
-    minutes = "{0:02d}".format((ret.seconds % 3600) // 60)
-    seconds = "{0:02d}".format(ret.seconds % 60)
-    return "{0}:{1}:{2}".format(hours, minutes, seconds)
+def _get_duration(start_time, finish_time):
+    from dateutil.parser import parse
+    try:
+        duration = parse(finish_time) - parse(start_time)
+        hours = "{0:02d}".format((24 * duration.days) + (duration.seconds // 3600))
+        minutes = "{0:02d}".format((duration.seconds % 3600) // 60)
+        seconds = "{0:02d}".format(duration.seconds % 60)
+        return "{0}:{1}:{2}".format(hours, minutes, seconds)
+    except ValueError:
+        logger.debug("Unable to get duration with start_time '%s' and finish_time '%s'", start_time, finish_time)
+        return ' '
