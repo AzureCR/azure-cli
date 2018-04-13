@@ -139,7 +139,7 @@ def _build_format_group(item):
         ('TASK', _get_value(item, 'buildTask')),
         ('PLATFORM', _get_value(item, 'platform', 'osType')),
         ('STATUS', _get_value(item, 'status')),
-        ("TRIGGER", _get_triggered(_get_value(item, 'imageUpdateTrigger'),
+        ("TRIGGER", _get_build_trigger(_get_value(item, 'imageUpdateTrigger'),
                                      _get_value(item, 'gitCommitTrigger'))),
         ('STARTED', _format_datetime(_get_value(item, 'startTime'))),
         ('DURATION', _get_duration(_get_value(
