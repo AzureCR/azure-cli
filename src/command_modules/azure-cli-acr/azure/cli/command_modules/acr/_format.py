@@ -159,7 +159,7 @@ def _get_value(item, *args):
         return ' '
 
 
-def _get_triggered(image_update_trigger, git_commit_trigger):
+def _get_build_trigger(image_update_trigger, git_commit_trigger):
     if git_commit_trigger.strip():
         return "Git Commit"
     if image_update_trigger.strip():
