@@ -156,13 +156,13 @@ def _format_datetime(date_string):
         return date_string or ' '
 
 
-def _get_duration(finishTime, startTime):
-    from datetime import datetime
-    temp = finishTime.replace("T", " ")[2:19]
-    date_finish = datetime.strptime(temp, "%y-%m-%d %H:%M:%S")
-    date_start = datetime.strptime(startTime.replace("T", " ")[2:19], "%y-%m-%d %H:%M:%S")
-    ret = date_finish - date_start
-    hours = "{0:02d}".format((24 * ret.days) + (ret.seconds // 3600))
-    minutes = "{0:02d}".format((ret.seconds % 3600) // 60)
-    seconds = "{0:02d}".format(ret.seconds % 60)
-    return "{0}:{1}:{2}".format(hours, minutes, seconds)
+def _get_duration(finish_time, start_time):
+    from dateutil.parser import parse
+    try:
+        duration = parse(finish_time) - parse(start_time)
+        hours = "{0:02d}".format((24 * duration.days) + (duration.seconds // 3600))
+        minutes = "{0:02d}".format((duration.seconds % 3600) // 60)
+        seconds = "{0:02d}".format(duration.seconds % 60)
+        return "{0}:{1}:{2}".format(hours, minutes, seconds)
+    except ValueError:
+        return ' '

@@ -323,7 +323,6 @@ helps['acr replication update'] = """
             az acr replication update -n MyReplication -r MyRegistry --tags key1=value1 key2=value2
 """
 
-# help for build-task
 helps['acr build-task create'] = """
     type: command
     short-summary: Creates a new build task with specified parameters.

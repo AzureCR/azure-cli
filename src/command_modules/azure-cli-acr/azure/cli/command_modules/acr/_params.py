@@ -25,7 +25,7 @@ from ._constants import (
     CLASSIC_REGISTRY_SKU,
     MANAGED_REGISTRY_SKU
 )
-from ._validators import validate_registry_name, validate_headers, validate_build_task_name, validate_image_names
+from ._validators import validate_registry_name, validate_headers, validate_build_task_name
 
 
 def load_arguments(self, _):
@@ -41,7 +41,7 @@ def load_arguments(self, _):
         c.argument('password', options_list=['--password', '-p'], help='The password used to log into a container registry')
         c.argument('build_id', help='The unique build identifier.')
         c.argument('image_names', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append') #TODO: ankheman add validator validate_image_name after variable tag support
-        c.argument('docker_file_path', options_list=['--file', '-f'], help="The relative path of the the docker file to the source code root folder.")        
+        c.argument('docker_file_path', options_list=['--file', '-f'], help="The relative path of the the docker file to the source code root folder.")
         c.argument('build_arg', help='Build argument in a format of <name>=<value>.', action='append')
         c.argument('secret_build_arg', help='Secret build argument in a format of <name>=<value>.', action='append')
         c.argument('no_logs', help="Do not show logs after successfully queuing the build.", action='store_true')
@@ -77,7 +77,7 @@ def load_arguments(self, _):
         c.argument('registry_name', completer=None)
 
     with self.argument_context('acr webhook') as c:
-        c.argument('registry_name', options_list=['--registry', '-r'], help='The name of the container registry. You can configure the default registry name using `az configure --defaults acr=<registry name>`', completer=get_resource_name_completion_list(REGISTRY_RESOURCE_TYPE), configured_default='acr')
+        c.argument('registry_name', options_list=['--registry', '-r'])
         c.argument('webhook_name', options_list=['--name', '-n'], help='The name of the webhook', completer=get_resource_name_completion_list(WEBHOOK_RESOURCE_TYPE))
         c.argument('uri', help='The service URI for the webhook to post notifications.')
         c.argument('headers', nargs='+', help="Space-separated custom headers in 'key[=value]' format that will be added to the webhook notifications. Use {} to clear existing headers.".format(quotes), validator=validate_headers)
@@ -89,7 +89,7 @@ def load_arguments(self, _):
         c.argument('webhook_name', completer=None)
 
     with self.argument_context('acr replication') as c:
-        c.argument('registry_name', options_list=['--registry', '-r'], help='The name of the container registry. You can configure the default registry name using `az configure --defaults acr=<registry name>`', completer=get_resource_name_completion_list(REGISTRY_RESOURCE_TYPE), configured_default='acr')
+        c.argument('registry_name', options_list=['--registry', '-r'])
         c.argument('replication_name', options_list=['--name', '-n'], help='The name of the replication.', completer=get_resource_name_completion_list(REPLICATION_RESOURCE_TYPE))
 
     with self.argument_context('acr replication create') as c:
@@ -110,4 +110,4 @@ def load_arguments(self, _):
         c.argument('cpu', help="The number of cpu cores to use for running builds.")
 
     with self.argument_context('acr build-task create') as c:
-        c.argument('build_task_name', completer=None, validator = validate_build_task_name)
+        c.argument('build_task_name', completer=None, validator=validate_build_task_name)
