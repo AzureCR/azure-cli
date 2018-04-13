@@ -15,22 +15,21 @@ from .sdk.models import BuildTaskBuildRequest
 BUILD_TASKS_NOT_SUPPORTED = 'Build Tasks are only supported for managed registries.'
 
 
-def acr_build_task_create(
-    cmd,
-    client,
-    build_task_name,
-    registry_name,
-    source_location,            
-    image_names,
-    git_access_token,
-    source_branch="master",  
-    docker_file_path="Dockerfile",
-    os_type="Linux",
-    cpu=1,
-    build_arg=None,
-    secret_build_arg=None,
-    resource_group_name=None):
-    
+def acr_build_task_create(cmd,
+                          client,
+                          build_task_name,
+                          registry_name,
+                          source_location,
+                          image_names,
+                          git_access_token,
+                          source_branch="master",
+                          docker_file_path="Dockerfile",
+                          os_type="Linux",
+                          cpu=1,
+                          build_arg=None,
+                          secret_build_arg=None,
+                          resource_group_name=None):
+
     registry, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
     build_arguments = []
