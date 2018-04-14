@@ -85,6 +85,10 @@ def _stream_logs(byte_size,
     end = byte_size - 1
     available = 0
     last_modified = None
+    sleepTime = 1
+    maxSleepTime = 15
+    numFails = 0
+    numFailsForBackoff = 3
 
     # Try to get the initial properties so there's no waiting.
     # If the storage call fails, we'll just sleep and try again after.
@@ -100,6 +104,10 @@ def _stream_logs(byte_size,
     while (_blob_is_not_complete(metadata) or start < available):
 
         while start < available:
+            # Success! Reset our polling backoff.
+            sleepTime = 1
+            numFails = 0
+
             try:
                 old_byte_size = len(stream.getvalue())
                 blob_service.get_blob_to_stream(
@@ -173,7 +181,14 @@ def _stream_logs(byte_size,
         # If no new data available but not complete, sleep before trying
         # to process additional data.
         if (_blob_is_not_complete(metadata) and start >= available):
-            time.sleep(1)
+            numFails += 1
+            
+            if numFails >= numFailsForBackoff:
+                numFails = 0
+                sleepTime = min(sleepTime * 2, maxSleepTime)
+            
+            logger.debug("Failed to find new content '{}' times in a row, sleeping for '{}' seconds".format(numFails, sleepTime))
+            time.sleep(sleepTime)
 
     # One final check to see if there's anything in the buffer to flush
     # E.g., metadata has been set and start == available, but the log file
