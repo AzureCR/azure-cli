@@ -173,7 +173,7 @@ def _stream_logs(byte_size,
         # If no new data available but not complete, sleep before trying
         # to process additional data.
         if (_blob_is_not_complete(metadata) and start >= available):
-            time.sleep(5)
+            time.sleep(1)
 
     # One final check to see if there's anything in the buffer to flush
     # E.g., metadata has been set and start == available, but the log file
