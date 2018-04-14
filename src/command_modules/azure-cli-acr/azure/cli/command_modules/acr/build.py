@@ -197,7 +197,7 @@ def _stream_logs(byte_size,
             total_sleep_time = sleep_time + rnd
             logger.debug("Base sleep time: '{}' random delay: '{}' total: '{}' seconds".format(
                 sleep_time, rnd, total_sleep_time))
-            time.sleep(sleep_time)
+            time.sleep(total_sleep_time)
 
     # One final check to see if there's anything in the buffer to flush
     # E.g., metadata has been set and start == available, but the log file
