@@ -183,11 +183,13 @@ def _stream_logs(byte_size,
         if (_blob_is_not_complete(metadata) and start >= available):
             num_fails += 1
             
+            logger.debug("Failed to find new content '{}' times in a row".format(num_fails))
             if num_fails >= num_fails_for_backoff:
                 num_fails = 0
                 sleep_time = min(sleep_time * 2, max_sleep_time)
+                logger.debug("Resetting failure count to '{}'".format(num_fails))
             
-            logger.debug("Failed to find new content '{}' times in a row, sleeping for '{}' seconds".format(num_fails, sleep_time))
+            logger.debug("Sleeping for '{}' seconds".format(sleep_time))
             time.sleep(sleep_time)
 
     # One final check to see if there's anything in the buffer to flush
