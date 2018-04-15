@@ -9,6 +9,7 @@ import sys
 import os
 import tarfile
 import requests
+from random import uniform
 from datetime import datetime, timedelta
 from io import BytesIO
 import time
@@ -58,7 +59,7 @@ def acr_build_show_logs(cmd,
     account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(
         log_file_sas)
 
-    byte_size = 1024*4
+    byte_size = 1024*1
     timeout_in_minutes = 30
     timeout_in_seconds = timeout_in_minutes * 60
 
@@ -182,15 +183,21 @@ def _stream_logs(byte_size,
         # to process additional data.
         if (_blob_is_not_complete(metadata) and start >= available):
             num_fails += 1
-            
-            logger.debug("Failed to find new content '{}' times in a row".format(num_fails))
+
+            logger.debug(
+                "Failed to find new content '{}' times in a row".format(num_fails))
             if num_fails >= num_fails_for_backoff:
                 num_fails = 0
                 sleep_time = min(sleep_time * 2, max_sleep_time)
-                logger.debug("Resetting failure count to '{}'".format(num_fails))
-            
-            logger.debug("Sleeping for '{}' seconds".format(sleep_time))
-            time.sleep(sleep_time)
+                logger.debug(
+                    "Resetting failure count to '{}'".format(num_fails))
+
+            # 1.0 <= x < 2.0
+            rnd = uniform(1, 2)
+            total_sleep_time = sleep_time + rnd
+            logger.debug("Base sleep time: '{}' random delay: '{}' total: '{}' seconds".format(
+                sleep_time, rnd, total_sleep_time))
+            time.sleep(total_sleep_time)
 
     # One final check to see if there's anything in the buffer to flush
     # E.g., metadata has been set and start == available, but the log file
