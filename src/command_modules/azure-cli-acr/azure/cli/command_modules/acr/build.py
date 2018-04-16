@@ -281,7 +281,8 @@ def acr_queue(cmd,
 
     build_arguments = []
     validate_and_append_build_arguments(build_arg, build_arguments, False)
-    validate_and_append_build_arguments(secret_build_arg, build_arguments, True)
+    validate_and_append_build_arguments(
+        secret_build_arg, build_arguments, True)
 
     build_request = QuickBuildRequest(
         source_location=source_location,
@@ -291,9 +292,6 @@ def acr_queue(cmd,
         is_push_enabled=is_push_enabled,
         timeout=timeout,
         build_arguments=build_arguments)
-
-    result = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
-        build_request=build_request, resource_group_name=resource_group_name, registry_name=registry_name))
 
     if is_local_file:
         try:
@@ -316,11 +314,15 @@ def acr_queue(cmd,
             size = size / 1024.0
         if unit == "":
             unit = "GiB"
-        print("Sending build context ({0: .3f} {1}) to ACR Build as Id: {2}".format(
-            size, unit, result.build_id))
+        print("Sending build context ({0:.3f} {1}) to ACR".format(size, unit))
     else:
-        print("Sending build context to ACR Build as Id: {0}".format(
-            result.build_id))
+        print("Sending build context to ACR")
+
+    result = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
+        build_request=build_request, resource_group_name=resource_group_name,
+        registry_name=registry_name))
+
+    print("Queued a build with ID: {0}".format(result.build_id))
 
     if no_logs == False:
         acr_build_show_logs(cmd, client, registry_name,
@@ -400,7 +402,8 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
         account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(
             source_upload_location.upload_url)
 
-        BlockBlobService(account_name=account_name, sas_token=sas_token, endpoint_suffix=endpoint_suffix).create_blob_from_path(
+        BlockBlobService(account_name=account_name, sas_token=sas_token, 
+        endpoint_suffix=endpoint_suffix).create_blob_from_path(
             container_name=container_name, blob_name=blob_name, file_path=tar_file_path)
 
         return source_upload_location.relative_path
