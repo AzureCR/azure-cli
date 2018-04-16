@@ -264,7 +264,7 @@ def acr_queue(cmd,
                 client_registries, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path)
         else:
             raise CLIError(
-                "'--source-location' should be a local directory path or remote url.")
+                "'--context -c' should be a local directory path or remote url.")
         is_local_file = True
     else:
         source_location = _check_remote_source_code(source_location)
