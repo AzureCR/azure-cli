@@ -316,7 +316,7 @@ def acr_queue(cmd,
             size = size / 1024.0
         if unit == "":
             unit = "GiB"
-        print("Sending build context ({0: .3f} {1}) to ACR Build as Id: {2}".format(
+        print("Sending build context ({0:.3f} {1}) to ACR Build as Id: {2}".format(
             size, unit, result.build_id))
     else:
         print("Sending build context to ACR Build as Id: {0}".format(
