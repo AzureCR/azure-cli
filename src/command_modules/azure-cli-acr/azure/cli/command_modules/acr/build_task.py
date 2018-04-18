@@ -137,6 +137,7 @@ def acr_build_task_logs(
     cmd,
     client,
     registry_name,
+    build_task_name=None,
     build_id=None,
     resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
@@ -144,7 +145,7 @@ def acr_build_task_logs(
 
     if build_id is None:
         # show logs for the last build
-        paged_builds = acr_build_task_list_builds(cmd, client, registry_name)
+        paged_builds = acr_build_task_list_builds(cmd, client, registry_name, build_task_name)
         if paged_builds:
             builds = paged_builds.get(0)
             if builds:
