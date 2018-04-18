@@ -382,7 +382,8 @@ def _invalid_sku_downgrade():
 
 def validate_and_append_build_arguments(build_arg,
                                         build_arguments,
-                                        is_secret):
+                                        is_secret,
+                                        is_template_deployment=False):
     """Returns a tuple of Registry object and resource group name.
     :param str[] build_arg: List of build arguments provided by user
     :param str[] build_arguments: Mutable list of build_arg and secret_build_arg.
@@ -393,4 +394,12 @@ def validate_and_append_build_arguments(build_arg,
             if "=" not in name_value:
                 raise CLIError("Accepted format for arg is <name>=<value>.")
             name, value = name_value.split('=', 1)
-            build_arguments.append(BuildArgument(name, value, is_secret))
+            if is_template_deployment:
+                build_arguments.append({
+                    "type": "DockerBuildArgument",
+                    "name": name,
+                    "value": value,
+                    "isSecret": is_secret
+                })
+            else:
+                build_arguments.append(BuildArgument(name, value, is_secret))

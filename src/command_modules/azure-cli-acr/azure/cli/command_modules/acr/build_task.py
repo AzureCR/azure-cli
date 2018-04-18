@@ -33,8 +33,8 @@ def acr_build_task_create(cmd,
     registry, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
     build_arguments = []
-    validate_and_append_build_arguments(build_arg, build_arguments, False)
-    validate_and_append_build_arguments(secret_build_arg, build_arguments, True)
+    validate_and_append_build_arguments(build_arg, build_arguments, False, True)
+    validate_and_append_build_arguments(secret_build_arg, build_arguments, True, True)
 
     LongRunningOperation(cmd.cli_ctx)(
             arm_deploy_template_build_task_create(
