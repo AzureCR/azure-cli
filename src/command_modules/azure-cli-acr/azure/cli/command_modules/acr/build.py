@@ -370,7 +370,14 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
 
         ignore_list = _load_dockerignore_file(source_location)
 
+        common_vcs_ignore_list = {'.git', '.gitignore', '.bzr', 'bzrignore', '.hg', '.hgignore', '.svn'}
+
         def _filter_file(tarinfo):
+            # ignore common vcs dir or file
+            if tarinfo.name in common_vcs_ignore_list:
+                logger.debug(
+                    ".dockerignore: ignore vcs file '{}'".format(tarinfo.name))
+                return None
 
             if ignore_list is None:
                 return tarinfo
