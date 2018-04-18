@@ -90,6 +90,7 @@ def _stream_logs(byte_size,
     max_sleep_time = 15
     num_fails = 0
     num_fails_for_backoff = 3
+    firstTime = True
 
     # Try to get the initial properties so there's no waiting.
     # If the storage call fails, we'll just sleep and try again after.
@@ -127,6 +128,10 @@ def _stream_logs(byte_size,
                 # Only scan what's newly read. If nothing is read,
                 # default to 0.
                 min_scan_range = max(new_byte_size - amount_read - 1, 0)
+
+                if firstTime:
+                    print("Build agent acquired, starting to stream logs...\n")
+                    firstTime = False
                 for i in range(new_byte_size - 1, min_scan_range, -1):
                     if curr_bytes[i-1:i+1] == b'\r\n':
                         flush = curr_bytes[:i]  # won't print \n
@@ -322,7 +327,7 @@ def acr_queue(cmd,
         build_request=build_request, resource_group_name=resource_group_name,
         registry_name=registry_name))
 
-    print("Queued a build with ID: {0}".format(result.build_id))
+    print("Queued a build with ID: {0}\nWaiting for a build agent...".format(result.build_id))
 
     if no_logs == False:
         acr_build_show_logs(cmd, client, registry_name,
