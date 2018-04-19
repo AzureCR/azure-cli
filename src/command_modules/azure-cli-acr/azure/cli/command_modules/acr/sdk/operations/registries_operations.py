@@ -11,6 +11,7 @@
 
 import uuid
 from msrest.pipeline import ClientRawResponse
+from msrestazure.azure_exceptions import CloudError
 from msrest.exceptions import DeserializationError
 from msrestazure.azure_operation import AzureOperationPoller
 
@@ -73,7 +74,9 @@ class RegistriesOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 202]:
-            raise models.ErrorResponseException(self._deserialize, response)
+            exp = CloudError(response)
+            exp.request_id = response.headers.get('x-ms-request-id')
+            raise exp
 
         deserialized = None
 
@@ -106,8 +109,7 @@ class RegistriesOperations(object):
         :rtype:
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.Build]
          or ~msrest.pipeline.ClientRawResponse
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         raw_result = self._queue_build_initial(
             resource_group_name=resource_group_name,
@@ -137,7 +139,9 @@ class RegistriesOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 202]:
-                raise models.ErrorResponseException(self._deserialize, response)
+                exp = CloudError(response)
+                exp.request_id = response.headers.get('x-ms-request-id')
+                raise exp
 
             deserialized = self._deserialize('Build', response)
 
@@ -172,8 +176,7 @@ class RegistriesOperations(object):
         :return: SourceUploadDefinition or ClientRawResponse if raw=true
         :rtype: ~containerregistrybuild.models.SourceUploadDefinition or
          ~msrest.pipeline.ClientRawResponse
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         # Construct URL
         url = self.get_build_source_upload_url.metadata['url']
@@ -203,7 +206,9 @@ class RegistriesOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200]:
-            raise models.ErrorResponseException(self._deserialize, response)
+            exp = CloudError(response)
+            exp.request_id = response.headers.get('x-ms-request-id')
+            raise exp
 
         deserialized = None
 

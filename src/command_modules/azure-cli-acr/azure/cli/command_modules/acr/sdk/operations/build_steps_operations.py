@@ -11,6 +11,7 @@
 
 import uuid
 from msrest.pipeline import ClientRawResponse
+from msrestazure.azure_exceptions import CloudError
 from msrest.exceptions import DeserializationError
 from msrestazure.azure_operation import AzureOperationPoller
 
@@ -57,8 +58,7 @@ class BuildStepsOperations(object):
         :return: An iterator like instance of BuildStep
         :rtype:
          ~containerregistrybuild.models.BuildStepPaged[~containerregistrybuild.models.BuildStep]
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
 
@@ -97,7 +97,9 @@ class BuildStepsOperations(object):
                 request, header_parameters, stream=False, **operation_config)
 
             if response.status_code not in [200]:
-                raise models.ErrorResponseException(self._deserialize, response)
+                exp = CloudError(response)
+                exp.request_id = response.headers.get('x-ms-request-id')
+                raise exp
 
             return response
 
@@ -134,8 +136,7 @@ class BuildStepsOperations(object):
         :return: BuildStep or ClientRawResponse if raw=true
         :rtype: ~containerregistrybuild.models.BuildStep or
          ~msrest.pipeline.ClientRawResponse
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         # Construct URL
         url = self.get.metadata['url']
@@ -167,7 +168,9 @@ class BuildStepsOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200]:
-            raise models.ErrorResponseException(self._deserialize, response)
+            exp = CloudError(response)
+            exp.request_id = response.headers.get('x-ms-request-id')
+            raise exp
 
         deserialized = None
 
@@ -220,7 +223,9 @@ class BuildStepsOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            raise models.ErrorResponseException(self._deserialize, response)
+            exp = CloudError(response)
+            exp.request_id = response.headers.get('x-ms-request-id')
+            raise exp
 
         deserialized = None
 
@@ -259,8 +264,7 @@ class BuildStepsOperations(object):
         :rtype:
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildStep]
          or ~msrest.pipeline.ClientRawResponse
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         raw_result = self._create_initial(
             resource_group_name=resource_group_name,
@@ -292,7 +296,9 @@ class BuildStepsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                raise models.ErrorResponseException(self._deserialize, response)
+                exp = CloudError(response)
+                exp.request_id = response.headers.get('x-ms-request-id')
+                raise exp
 
             deserialized = self._deserialize('BuildStep', response)
 
@@ -343,7 +349,9 @@ class BuildStepsOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200, 202]:
-            raise models.ErrorResponseException(self._deserialize, response)
+            exp = CloudError(response)
+            exp.request_id = response.headers.get('x-ms-request-id')
+            raise exp
 
         if raw:
             client_raw_response = ClientRawResponse(None, response)
@@ -370,8 +378,7 @@ class BuildStepsOperations(object):
          ClientRawResponse if raw=true
         :rtype: ~msrestazure.azure_operation.AzureOperationPoller[None] or
          ~msrest.pipeline.ClientRawResponse
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         raw_result = self._delete_initial(
             resource_group_name=resource_group_name,
@@ -402,7 +409,9 @@ class BuildStepsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 202]:
-                raise models.ErrorResponseException(self._deserialize, response)
+                exp = CloudError(response)
+                exp.request_id = response.headers.get('x-ms-request-id')
+                raise exp
 
             if raw:
                 client_raw_response = ClientRawResponse(None, response)
@@ -455,7 +464,9 @@ class BuildStepsOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            raise models.ErrorResponseException(self._deserialize, response)
+            exp = CloudError(response)
+            exp.request_id = response.headers.get('x-ms-request-id')
+            raise exp
 
         deserialized = None
 
@@ -497,8 +508,7 @@ class BuildStepsOperations(object):
         :rtype:
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildStep]
          or ~msrest.pipeline.ClientRawResponse
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         raw_result = self._update_initial(
             resource_group_name=resource_group_name,
@@ -531,7 +541,9 @@ class BuildStepsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                raise models.ErrorResponseException(self._deserialize, response)
+                exp = CloudError(response)
+                exp.request_id = response.headers.get('x-ms-request-id')
+                raise exp
 
             deserialized = self._deserialize('BuildStep', response)
 
@@ -571,8 +583,7 @@ class BuildStepsOperations(object):
         :return: An iterator like instance of BuildArgument
         :rtype:
          ~containerregistrybuild.models.BuildArgumentPaged[~containerregistrybuild.models.BuildArgument]
-        :raises:
-         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
+        :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
 
@@ -612,7 +623,9 @@ class BuildStepsOperations(object):
                 request, header_parameters, stream=False, **operation_config)
 
             if response.status_code not in [200]:
-                raise models.ErrorResponseException(self._deserialize, response)
+                exp = CloudError(response)
+                exp.request_id = response.headers.get('x-ms-request-id')
+                raise exp
 
             return response
 

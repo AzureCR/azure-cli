@@ -32,8 +32,6 @@ from .queue_build_request import QueueBuildRequest
 from .source_upload_definition import SourceUploadDefinition
 from .resource import Resource
 from .proxy_resource import ProxyResource
-from .error import Error
-from .error_response import ErrorResponse, ErrorResponseException
 from .base_image_dependency import BaseImageDependency
 from .docker_build_step import DockerBuildStep
 from .docker_build_step_update_parameters import DockerBuildStepUpdateParameters
@@ -79,8 +77,6 @@ __all__ = [
     'SourceUploadDefinition',
     'Resource',
     'ProxyResource',
-    'Error',
-    'ErrorResponse', 'ErrorResponseException',
     'BaseImageDependency',
     'DockerBuildStep',
     'DockerBuildStepUpdateParameters',
