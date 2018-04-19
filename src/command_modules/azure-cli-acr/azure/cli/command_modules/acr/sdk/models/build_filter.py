@@ -19,11 +19,11 @@ class BuildFilter(Model):
     :type build_id: str
     :param build_type: The type of build. Possible values include:
      'AutoBuild', 'QuickBuild'
-    :type build_type: str or ~containerregistrybuild.models.BuildType
+    :type build_type: str or ~containerregistry.models.BuildType
     :param status: The current status of the build. Possible values include:
      'Queued', 'Started', 'Running', 'Succeeded', 'Failed', 'Canceled',
      'AbandonedAsSystemError', 'Timeout'
-    :type status: str or ~containerregistrybuild.models.BuildStatus
+    :type status: str or ~containerregistry.models.BuildStatus
     :param create_time: The create time for a build.
     :type create_time: datetime
     :param finish_time: The time the build finished.

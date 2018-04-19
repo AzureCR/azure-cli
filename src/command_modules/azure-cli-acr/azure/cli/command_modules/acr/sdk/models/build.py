@@ -29,12 +29,12 @@ class Build(ProxyResource):
     :param status: The current status of the build. Possible values include:
      'Queued', 'Started', 'Running', 'Succeeded', 'Failed', 'Canceled',
      'AbandonedAsSystemError', 'Timeout'
-    :type status: str or ~containerregistrybuild.models.BuildStatus
+    :type status: str or ~containerregistry.models.BuildStatus
     :param last_updated_time: The last updated time for the build.
     :type last_updated_time: datetime
     :param build_type: The type of build. Possible values include:
      'AutoBuild', 'QuickBuild'
-    :type build_type: str or ~containerregistrybuild.models.BuildType
+    :type build_type: str or ~containerregistry.models.BuildType
     :param create_time: The time the build was created.
     :type create_time: datetime
     :param start_time: The time the build started.
@@ -43,26 +43,25 @@ class Build(ProxyResource):
     :type finish_time: datetime
     :param output_images: The list of all images that were generated from the
      build.
-    :type output_images: list[~containerregistrybuild.models.ImageDescriptor]
+    :type output_images: list[~containerregistry.models.ImageDescriptor]
     :param build_task: The build task with which the build was started.
     :type build_task: str
     :param image_update_trigger: The image update trigger that caused the
      build.
-    :type image_update_trigger:
-     ~containerregistrybuild.models.ImageUpdateTrigger
+    :type image_update_trigger: ~containerregistry.models.ImageUpdateTrigger
     :param git_commit_trigger: The git commit trigger that caused the build.
-    :type git_commit_trigger: ~containerregistrybuild.models.GitCommitTrigger
+    :type git_commit_trigger: ~containerregistry.models.GitCommitTrigger
     :param is_archive_enabled: The value that indicates whether archiving is
      enabled or not.
     :type is_archive_enabled: bool
     :param platform: The platform properties against which the build will
      happen.
-    :type platform: ~containerregistrybuild.models.PlatformProperties
+    :type platform: ~containerregistry.models.PlatformProperties
     :param provisioning_state: The provisioning state of a build. Possible
      values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed',
      'Canceled'
     :type provisioning_state: str or
-     ~containerregistrybuild.models.ProvisioningState
+     ~containerregistry.models.ProvisioningState
     """
 
     _validation = {

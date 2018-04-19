@@ -9,14 +9,20 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
+from .registries_operations import RegistriesOperations
+from .operations import Operations
+from .replications_operations import ReplicationsOperations
+from .webhooks_operations import WebhooksOperations
 from .builds_operations import BuildsOperations
 from .build_steps_operations import BuildStepsOperations
 from .build_tasks_operations import BuildTasksOperations
-from .registries_operations import RegistriesOperations
 
 __all__ = [
+    'RegistriesOperations',
+    'Operations',
+    'ReplicationsOperations',
+    'WebhooksOperations',
     'BuildsOperations',
     'BuildStepsOperations',
     'BuildTasksOperations',
-    'RegistriesOperations',
 ]

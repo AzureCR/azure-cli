@@ -18,7 +18,7 @@ class SourceRepositoryUpdateParameters(Model):
     :param source_control_auth_properties: The authorization properties for
      accessing the source code repository.
     :type source_control_auth_properties:
-     ~containerregistrybuild.models.SourceControlAuthInfo
+     ~containerregistry.models.SourceControlAuthInfo
     :param is_commit_trigger_enabled: The value of this property indicates
      whether the source control commit trigger is enabled or not. Default
      value: False .

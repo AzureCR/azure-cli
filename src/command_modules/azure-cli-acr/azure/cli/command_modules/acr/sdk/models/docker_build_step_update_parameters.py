@@ -36,11 +36,11 @@ class DockerBuildStepUpdateParameters(BuildStepPropertiesUpdateParameters):
      source.
     :type context_path: str
     :param build_arguments: The custom arguments for building this build step.
-    :type build_arguments: list[~containerregistrybuild.models.BuildArgument]
+    :type build_arguments: list[~containerregistry.models.BuildArgument]
     :param base_image_trigger: The type of the auto trigger for base image
      dependency updates. Possible values include: 'All', 'Runtime', 'None'
     :type base_image_trigger: str or
-     ~containerregistrybuild.models.BaseImageTriggerType
+     ~containerregistry.models.BaseImageTriggerType
     """
 
     _validation = {

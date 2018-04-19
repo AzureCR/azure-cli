@@ -25,7 +25,7 @@ class BuildStep(ProxyResource):
     :ivar type: The type of the resource.
     :vartype type: str
     :param properties: The properties of a build step.
-    :type properties: ~containerregistrybuild.models.BuildStepProperties
+    :type properties: ~containerregistry.models.BuildStepProperties
     """
 
     _validation = {

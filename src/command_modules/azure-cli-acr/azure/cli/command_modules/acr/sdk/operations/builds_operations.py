@@ -63,7 +63,7 @@ class BuildsOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of Build
         :rtype:
-         ~containerregistrybuild.models.BuildPaged[~containerregistrybuild.models.Build]
+         ~containerregistry.models.BuildPaged[~containerregistry.models.Build]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
@@ -142,7 +142,7 @@ class BuildsOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: Build or ClientRawResponse if raw=true
-        :rtype: ~containerregistrybuild.models.Build or
+        :rtype: ~containerregistry.models.Build or
          ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -266,7 +266,7 @@ class BuildsOperations(object):
         :return: An instance of AzureOperationPoller that returns Build or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.Build]
+         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistry.models.Build]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -336,7 +336,7 @@ class BuildsOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: BuildGetLogResult or ClientRawResponse if raw=true
-        :rtype: ~containerregistrybuild.models.BuildGetLogResult or
+        :rtype: ~containerregistry.models.BuildGetLogResult or
          ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """

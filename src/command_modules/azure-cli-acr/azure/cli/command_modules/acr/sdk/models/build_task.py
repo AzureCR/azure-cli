@@ -34,21 +34,21 @@ class BuildTask(Resource):
      Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded',
      'Failed', 'Canceled'
     :vartype provisioning_state: str or
-     ~containerregistrybuild.models.ProvisioningState
+     ~containerregistry.models.ProvisioningState
     :ivar creation_date: The creation date of build task.
     :vartype creation_date: datetime
     :param alias: The alternative updatable name for a build task.
     :type alias: str
     :param status: The current status of build task. Possible values include:
      'Disabled', 'Enabled'
-    :type status: str or ~containerregistrybuild.models.BuildTaskStatus
+    :type status: str or ~containerregistry.models.BuildTaskStatus
     :param source_repository: The properties that describes the source(code)
      for the build task.
     :type source_repository:
-     ~containerregistrybuild.models.SourceRepositoryProperties
+     ~containerregistry.models.SourceRepositoryProperties
     :param platform: The platform properties against which the build has to
      happen.
-    :type platform: ~containerregistrybuild.models.PlatformProperties
+    :type platform: ~containerregistry.models.PlatformProperties
     :param timeout: Build timeout in seconds. Default value: 3600 .
     :type timeout: int
     """

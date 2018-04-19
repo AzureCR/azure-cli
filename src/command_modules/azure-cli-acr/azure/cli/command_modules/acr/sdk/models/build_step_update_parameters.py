@@ -17,7 +17,7 @@ class BuildStepUpdateParameters(Model):
 
     :param properties: The properties for updating a build step.
     :type properties:
-     ~containerregistrybuild.models.BuildStepPropertiesUpdateParameters
+     ~containerregistry.models.BuildStepPropertiesUpdateParameters
     :param tags: The ARM resource tags.
     :type tags: dict[str, str]
     """

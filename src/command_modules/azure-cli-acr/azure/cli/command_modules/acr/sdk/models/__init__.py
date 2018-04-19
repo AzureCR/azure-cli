@@ -9,6 +9,36 @@
 # regenerated.
 # --------------------------------------------------------------------------
 
+from .registry_name_check_request import RegistryNameCheckRequest
+from .registry_name_status import RegistryNameStatus
+from .operation_display_definition import OperationDisplayDefinition
+from .operation_definition import OperationDefinition
+from .sku import Sku
+from .status import Status
+from .storage_account_properties import StorageAccountProperties
+from .registry import Registry
+from .registry_update_parameters import RegistryUpdateParameters
+from .registry_password import RegistryPassword
+from .registry_list_credentials_result import RegistryListCredentialsResult
+from .regenerate_credential_parameters import RegenerateCredentialParameters
+from .registry_usage import RegistryUsage
+from .registry_usage_list_result import RegistryUsageListResult
+from .replication import Replication
+from .replication_update_parameters import ReplicationUpdateParameters
+from .webhook import Webhook
+from .webhook_create_parameters import WebhookCreateParameters
+from .webhook_update_parameters import WebhookUpdateParameters
+from .event_info import EventInfo
+from .callback_config import CallbackConfig
+from .target import Target
+from .request import Request
+from .actor import Actor
+from .source import Source
+from .event_content import EventContent
+from .event_request_message import EventRequestMessage
+from .event_response_message import EventResponseMessage
+from .event import Event
+from .resource import Resource
 from .image_descriptor import ImageDescriptor
 from .image_update_trigger import ImageUpdateTrigger
 from .git_commit_trigger import GitCommitTrigger
@@ -30,22 +60,32 @@ from .source_repository_update_parameters import SourceRepositoryUpdateParameter
 from .build_task_update_parameters import BuildTaskUpdateParameters
 from .queue_build_request import QueueBuildRequest
 from .source_upload_definition import SourceUploadDefinition
-from .resource import Resource
 from .proxy_resource import ProxyResource
 from .base_image_dependency import BaseImageDependency
 from .docker_build_step import DockerBuildStep
 from .docker_build_step_update_parameters import DockerBuildStepUpdateParameters
 from .build_task_build_request import BuildTaskBuildRequest
 from .quick_build_request import QuickBuildRequest
+from .registry_paged import RegistryPaged
+from .operation_definition_paged import OperationDefinitionPaged
+from .replication_paged import ReplicationPaged
+from .webhook_paged import WebhookPaged
+from .event_paged import EventPaged
 from .build_paged import BuildPaged
 from .build_step_paged import BuildStepPaged
 from .build_argument_paged import BuildArgumentPaged
 from .build_task_paged import BuildTaskPaged
 from .container_registry_management_client_enums import (
+    SkuName,
+    SkuTier,
+    ProvisioningState,
+    PasswordName,
+    RegistryUsageUnit,
+    WebhookStatus,
+    WebhookAction,
     BuildStatus,
     BuildType,
     OsType,
-    ProvisioningState,
     BuildTaskStatus,
     SourceControlType,
     TokenType,
@@ -54,6 +94,36 @@ from .container_registry_management_client_enums import (
 )
 
 __all__ = [
+    'RegistryNameCheckRequest',
+    'RegistryNameStatus',
+    'OperationDisplayDefinition',
+    'OperationDefinition',
+    'Sku',
+    'Status',
+    'StorageAccountProperties',
+    'Registry',
+    'RegistryUpdateParameters',
+    'RegistryPassword',
+    'RegistryListCredentialsResult',
+    'RegenerateCredentialParameters',
+    'RegistryUsage',
+    'RegistryUsageListResult',
+    'Replication',
+    'ReplicationUpdateParameters',
+    'Webhook',
+    'WebhookCreateParameters',
+    'WebhookUpdateParameters',
+    'EventInfo',
+    'CallbackConfig',
+    'Target',
+    'Request',
+    'Actor',
+    'Source',
+    'EventContent',
+    'EventRequestMessage',
+    'EventResponseMessage',
+    'Event',
+    'Resource',
     'ImageDescriptor',
     'ImageUpdateTrigger',
     'GitCommitTrigger',
@@ -75,21 +145,31 @@ __all__ = [
     'BuildTaskUpdateParameters',
     'QueueBuildRequest',
     'SourceUploadDefinition',
-    'Resource',
     'ProxyResource',
     'BaseImageDependency',
     'DockerBuildStep',
     'DockerBuildStepUpdateParameters',
     'BuildTaskBuildRequest',
     'QuickBuildRequest',
+    'RegistryPaged',
+    'OperationDefinitionPaged',
+    'ReplicationPaged',
+    'WebhookPaged',
+    'EventPaged',
     'BuildPaged',
     'BuildStepPaged',
     'BuildArgumentPaged',
     'BuildTaskPaged',
+    'SkuName',
+    'SkuTier',
+    'ProvisioningState',
+    'PasswordName',
+    'RegistryUsageUnit',
+    'WebhookStatus',
+    'WebhookAction',
     'BuildStatus',
     'BuildType',
     'OsType',
-    'ProvisioningState',
     'BuildTaskStatus',
     'SourceControlType',
     'TokenType',

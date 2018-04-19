@@ -17,7 +17,7 @@ class BaseImageDependency(Model):
 
     :param type: The type of the base image dependency. Possible values
      include: 'BuildTime', 'RunTime'
-    :type type: str or ~containerregistrybuild.models.BaseImageDependencyType
+    :type type: str or ~containerregistry.models.BaseImageDependencyType
     :param registry: The registry login server.
     :type registry: str
     :param repository: The repository name.

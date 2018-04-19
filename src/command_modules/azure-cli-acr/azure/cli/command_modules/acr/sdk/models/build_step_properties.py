@@ -25,7 +25,7 @@ class BuildStepProperties(Model):
      Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded',
      'Failed', 'Canceled'
     :vartype provisioning_state: str or
-     ~containerregistrybuild.models.ProvisioningState
+     ~containerregistry.models.ProvisioningState
     :param type: Constant filled by server.
     :type type: str
     """

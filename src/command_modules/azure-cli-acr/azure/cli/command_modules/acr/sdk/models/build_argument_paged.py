@@ -14,7 +14,7 @@ from msrest.paging import Paged
 
 class BuildArgumentPaged(Paged):
     """
-    A paging container for iterating over a list of :class:`BuildArgument <containerregistrybuild.models.BuildArgument>` object
+    A paging container for iterating over a list of :class:`BuildArgument <containerregistry.models.BuildArgument>` object
     """
 
     _attribute_map = {

@@ -60,7 +60,7 @@ class BuildTasksOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of BuildTask
         :rtype:
-         ~containerregistrybuild.models.BuildTaskPaged[~containerregistrybuild.models.BuildTask]
+         ~containerregistry.models.BuildTaskPaged[~containerregistry.models.BuildTask]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
@@ -137,7 +137,7 @@ class BuildTasksOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: BuildTask or ClientRawResponse if raw=true
-        :rtype: ~containerregistrybuild.models.BuildTask or
+        :rtype: ~containerregistry.models.BuildTask or
          ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -254,14 +254,14 @@ class BuildTasksOperations(object):
         :param build_task_create_parameters: The parameters for creating a
          build task.
         :type build_task_create_parameters:
-         ~containerregistrybuild.models.BuildTask
+         ~containerregistry.models.BuildTask
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
         :return: An instance of AzureOperationPoller that returns BuildTask or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildTask]
+         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistry.models.BuildTask]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -485,14 +485,14 @@ class BuildTasksOperations(object):
         :param build_task_update_parameters: The parameters for updating a
          build task.
         :type build_task_update_parameters:
-         ~containerregistrybuild.models.BuildTaskUpdateParameters
+         ~containerregistry.models.BuildTaskUpdateParameters
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
         :return: An instance of AzureOperationPoller that returns BuildTask or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildTask]
+         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistry.models.BuildTask]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -562,7 +562,7 @@ class BuildTasksOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: SourceRepositoryProperties or ClientRawResponse if raw=true
-        :rtype: ~containerregistrybuild.models.SourceRepositoryProperties or
+        :rtype: ~containerregistry.models.SourceRepositoryProperties or
          ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """

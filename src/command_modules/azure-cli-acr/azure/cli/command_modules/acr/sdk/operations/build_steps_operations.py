@@ -57,7 +57,7 @@ class BuildStepsOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of BuildStep
         :rtype:
-         ~containerregistrybuild.models.BuildStepPaged[~containerregistrybuild.models.BuildStep]
+         ~containerregistry.models.BuildStepPaged[~containerregistry.models.BuildStep]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
@@ -134,7 +134,7 @@ class BuildStepsOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: BuildStep or ClientRawResponse if raw=true
-        :rtype: ~containerregistrybuild.models.BuildStep or
+        :rtype: ~containerregistry.models.BuildStep or
          ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -255,14 +255,14 @@ class BuildStepsOperations(object):
          build task.
         :type step_name: str
         :param properties: The properties of a build step.
-        :type properties: ~containerregistrybuild.models.BuildStepProperties
+        :type properties: ~containerregistry.models.BuildStepProperties
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
         :return: An instance of AzureOperationPoller that returns BuildStep or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildStep]
+         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistry.models.BuildStep]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -497,7 +497,7 @@ class BuildStepsOperations(object):
         :type step_name: str
         :param properties: The properties for updating a build step.
         :type properties:
-         ~containerregistrybuild.models.BuildStepPropertiesUpdateParameters
+         ~containerregistry.models.BuildStepPropertiesUpdateParameters
         :param tags: The ARM resource tags.
         :type tags: dict[str, str]
         :param dict custom_headers: headers that will be added to the request
@@ -506,7 +506,7 @@ class BuildStepsOperations(object):
         :return: An instance of AzureOperationPoller that returns BuildStep or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildStep]
+         ~msrestazure.azure_operation.AzureOperationPoller[~containerregistry.models.BuildStep]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -582,7 +582,7 @@ class BuildStepsOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of BuildArgument
         :rtype:
-         ~containerregistrybuild.models.BuildArgumentPaged[~containerregistrybuild.models.BuildArgument]
+         ~containerregistry.models.BuildArgumentPaged[~containerregistry.models.BuildArgument]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):

@@ -19,16 +19,16 @@ class BuildTaskUpdateParameters(Model):
     :type alias: str
     :param status: The current status of build task. Possible values include:
      'Disabled', 'Enabled'
-    :type status: str or ~containerregistrybuild.models.BuildTaskStatus
+    :type status: str or ~containerregistry.models.BuildTaskStatus
     :param platform: The platform properties against which the build has to
      happen.
-    :type platform: ~containerregistrybuild.models.PlatformProperties
+    :type platform: ~containerregistry.models.PlatformProperties
     :param timeout: Build timeout in seconds.
     :type timeout: int
     :param source_repository: The properties that describes the source(code)
      for the build task.
     :type source_repository:
-     ~containerregistrybuild.models.SourceRepositoryUpdateParameters
+     ~containerregistry.models.SourceRepositoryUpdateParameters
     :param tags: The ARM resource tags.
     :type tags: dict[str, str]
     """

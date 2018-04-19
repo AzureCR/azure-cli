@@ -17,7 +17,7 @@ class PlatformProperties(Model):
 
     :param os_type: The operating system type required for the build. Possible
      values include: 'Windows', 'Linux'
-    :type os_type: str or ~containerregistrybuild.models.OsType
+    :type os_type: str or ~containerregistry.models.OsType
     :param cpu: The CPU configuration in terms of number of cores required for
      the build.
     :type cpu: int

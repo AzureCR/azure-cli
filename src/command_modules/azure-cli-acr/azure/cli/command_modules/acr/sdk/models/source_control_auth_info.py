@@ -17,7 +17,7 @@ class SourceControlAuthInfo(Model):
 
     :param token_type: The type of Auth token. Possible values include: 'PAT',
      'OAuth'
-    :type token_type: str or ~containerregistrybuild.models.TokenType
+    :type token_type: str or ~containerregistry.models.TokenType
     :param token: The access token used to access the source control provider.
     :type token: str
     :param refresh_token: The refresh token used to refresh the access token.

@@ -27,7 +27,7 @@ class QuickBuildRequest(QueueBuildRequest):
      getSourceUploadUrl API.
     :type source_location: str
     :param build_arguments: The collection of build arguments to be used.
-    :type build_arguments: list[~containerregistrybuild.models.BuildArgument]
+    :type build_arguments: list[~containerregistry.models.BuildArgument]
     :param is_push_enabled: The value of this property indicates whether the
      image built should be pushed to the registry or not. Default value: False
      .
@@ -39,7 +39,7 @@ class QuickBuildRequest(QueueBuildRequest):
     :type timeout: int
     :param platform: The platform properties against which the build will
      happen.
-    :type platform: ~containerregistrybuild.models.PlatformProperties
+    :type platform: ~containerregistry.models.PlatformProperties
     :param docker_file_path: The Docker file path relative to the source
      location.
     :type docker_file_path: str

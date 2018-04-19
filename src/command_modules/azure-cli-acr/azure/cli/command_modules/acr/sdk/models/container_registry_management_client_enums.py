@@ -12,6 +12,56 @@
 from enum import Enum
 
 
+class SkuName(Enum):
+
+    classic = "Classic"
+    basic = "Basic"
+    standard = "Standard"
+    premium = "Premium"
+
+
+class SkuTier(Enum):
+
+    classic = "Classic"
+    basic = "Basic"
+    standard = "Standard"
+    premium = "Premium"
+
+
+class ProvisioningState(Enum):
+
+    creating = "Creating"
+    updating = "Updating"
+    deleting = "Deleting"
+    succeeded = "Succeeded"
+    failed = "Failed"
+    canceled = "Canceled"
+
+
+class PasswordName(Enum):
+
+    password = "password"
+    password2 = "password2"
+
+
+class RegistryUsageUnit(Enum):
+
+    count = "Count"
+    bytes = "Bytes"
+
+
+class WebhookStatus(Enum):
+
+    enabled = "enabled"
+    disabled = "disabled"
+
+
+class WebhookAction(Enum):
+
+    push = "push"
+    delete = "delete"
+
+
 class BuildStatus(Enum):
 
     queued = "Queued"
@@ -34,16 +84,6 @@ class OsType(Enum):
 
     windows = "Windows"
     linux = "Linux"
-
-
-class ProvisioningState(Enum):
-
-    creating = "Creating"
-    updating = "Updating"
-    deleting = "Deleting"
-    succeeded = "Succeeded"
-    failed = "Failed"
-    canceled = "Canceled"
 
 
 class BuildTaskStatus(Enum):
