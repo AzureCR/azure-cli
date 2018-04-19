@@ -23,7 +23,7 @@ class RegistriesOperations(object):
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
-    :param deserializer: An objec model deserializer.
+    :param deserializer: An object model deserializer.
     :ivar api_version: The client API version. Constant value: "2018-02-01-preview".
     """
 
@@ -42,7 +42,7 @@ class RegistriesOperations(object):
     def _queue_build_initial(
             self, resource_group_name, registry_name, build_request, custom_headers=None, raw=False, **operation_config):
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/queueBuild'
+        url = self.queue_build.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -73,7 +73,7 @@ class RegistriesOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 202]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -107,7 +107,7 @@ class RegistriesOperations(object):
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.Build]
          or ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         raw_result = self._queue_build_initial(
             resource_group_name=resource_group_name,
@@ -137,7 +137,7 @@ class RegistriesOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 202]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             deserialized = self._deserialize('Build', response)
 
@@ -153,6 +153,7 @@ class RegistriesOperations(object):
         return AzureOperationPoller(
             long_running_send, get_long_running_output,
             get_long_running_status, long_running_operation_timeout)
+    queue_build.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/queueBuild'}
 
     def get_build_source_upload_url(
             self, resource_group_name, registry_name, custom_headers=None, raw=False, **operation_config):
@@ -172,10 +173,10 @@ class RegistriesOperations(object):
         :rtype: ~containerregistrybuild.models.SourceUploadDefinition or
          ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/getBuildSourceUploadUrl'
+        url = self.get_build_source_upload_url.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -202,7 +203,7 @@ class RegistriesOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -214,3 +215,4 @@ class RegistriesOperations(object):
             return client_raw_response
 
         return deserialized
+    get_build_source_upload_url.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/getBuildSourceUploadUrl'}

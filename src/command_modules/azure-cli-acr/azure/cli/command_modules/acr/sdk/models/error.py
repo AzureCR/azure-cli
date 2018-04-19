@@ -10,32 +10,28 @@
 # --------------------------------------------------------------------------
 
 from msrest.serialization import Model
-from msrest.exceptions import HttpOperationError
 
 
 class Error(Model):
-    """Azure container registry build API error object.
+    """Azure container registry build API error body.
 
-    :param properties: Azure container registry build API error body.
-    :type properties: ~containerregistrybuild.models.ErrorBody
+    :param code: error code.
+    :type code: str
+    :param message: error message.
+    :type message: str
     """
 
-    _attribute_map = {
-        'properties': {'key': 'properties', 'type': 'ErrorBody'},
+    _validation = {
+        'code': {'required': True},
+        'message': {'required': True},
     }
 
-    def __init__(self, properties=None):
+    _attribute_map = {
+        'code': {'key': 'code', 'type': 'str'},
+        'message': {'key': 'message', 'type': 'str'},
+    }
+
+    def __init__(self, code, message):
         super(Error, self).__init__()
-        self.properties = properties
-
-
-class ErrorException(HttpOperationError):
-    """Server responsed with exception of type: 'Error'.
-
-    :param deserialize: A deserializer
-    :param response: Server response to be deserialized.
-    """
-
-    def __init__(self, deserialize, response, *args):
-
-        super(ErrorException, self).__init__(deserialize, response, 'Error', *args)
+        self.code = code
+        self.message = message

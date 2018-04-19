@@ -15,22 +15,19 @@ from msrest.serialization import Model
 class BuildStepUpdateParameters(Model):
     """The parameters for updating a build step.
 
-    :param type: Constant filled by server.
-    :type type: str
+    :param properties: The properties for updating a build step.
+    :type properties:
+     ~containerregistrybuild.models.BuildStepPropertiesUpdateParameters
     :param tags: The ARM resource tags.
     :type tags: dict[str, str]
     """
 
-    _validation = {
-        'type': {'required': True},
-    }
-
     _attribute_map = {
-        'type': {'key': 'properties.type', 'type': 'str'},
+        'properties': {'key': 'properties', 'type': 'BuildStepPropertiesUpdateParameters'},
         'tags': {'key': 'tags', 'type': '{str}'},
     }
 
-    def __init__(self, type, tags=None):
+    def __init__(self, properties=None, tags=None):
         super(BuildStepUpdateParameters, self).__init__()
-        self.type = type
+        self.properties = properties
         self.tags = tags

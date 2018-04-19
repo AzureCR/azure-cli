@@ -24,32 +24,23 @@ class BuildStep(ProxyResource):
     :vartype name: str
     :ivar type: The type of the resource.
     :vartype type: str
-    :ivar provisioning_state: The provisioning state of the build step.
-     Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded',
-     'Failed', 'Canceled'
-    :vartype provisioning_state: str or
-     ~containerregistrybuild.models.ProvisioningState
-    :param build_step_type: Constant filled by server.
-    :type build_step_type: str
+    :param properties: The properties of a build step.
+    :type properties: ~containerregistrybuild.models.BuildStepProperties
     """
 
     _validation = {
         'id': {'readonly': True},
         'name': {'readonly': True},
         'type': {'readonly': True},
-        'provisioning_state': {'readonly': True},
-        'build_step_type': {'required': True},
     }
 
     _attribute_map = {
         'id': {'key': 'id', 'type': 'str'},
         'name': {'key': 'name', 'type': 'str'},
         'type': {'key': 'type', 'type': 'str'},
-        'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
-        'build_step_type': {'key': 'properties.type', 'type': 'str'},
+        'properties': {'key': 'properties', 'type': 'BuildStepProperties'},
     }
 
-    def __init__(self, build_step_type):
+    def __init__(self, properties=None):
         super(BuildStep, self).__init__()
-        self.provisioning_state = None
-        self.build_step_type = build_step_type
+        self.properties = properties

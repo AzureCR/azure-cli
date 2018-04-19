@@ -10,7 +10,6 @@
 # --------------------------------------------------------------------------
 
 from .image_descriptor import ImageDescriptor
-from .image import Image
 from .image_update_trigger import ImageUpdateTrigger
 from .git_commit_trigger import GitCommitTrigger
 from .platform_properties import PlatformProperties
@@ -33,9 +32,8 @@ from .queue_build_request import QueueBuildRequest
 from .source_upload_definition import SourceUploadDefinition
 from .resource import Resource
 from .proxy_resource import ProxyResource
-from .error_body_properties import ErrorBodyProperties
-from .error_body import ErrorBody
-from .error import Error, ErrorException
+from .error import Error
+from .error_response import ErrorResponse, ErrorResponseException
 from .base_image_dependency import BaseImageDependency
 from .docker_build_step import DockerBuildStep
 from .docker_build_step_update_parameters import DockerBuildStepUpdateParameters
@@ -59,7 +57,6 @@ from .container_registry_management_client_enums import (
 
 __all__ = [
     'ImageDescriptor',
-    'Image',
     'ImageUpdateTrigger',
     'GitCommitTrigger',
     'PlatformProperties',
@@ -82,9 +79,8 @@ __all__ = [
     'SourceUploadDefinition',
     'Resource',
     'ProxyResource',
-    'ErrorBodyProperties',
-    'ErrorBody',
-    'Error', 'ErrorException',
+    'Error',
+    'ErrorResponse', 'ErrorResponseException',
     'BaseImageDependency',
     'DockerBuildStep',
     'DockerBuildStepUpdateParameters',

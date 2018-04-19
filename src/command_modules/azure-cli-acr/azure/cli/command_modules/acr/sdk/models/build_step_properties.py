@@ -13,7 +13,7 @@ from msrest.serialization import Model
 
 
 class BuildStepProperties(Model):
-    """Base properties for any  build step.
+    """Base properties for any build step.
 
     You probably want to use the sub-classes and not this class directly. Known
     sub-classes are: DockerBuildStep

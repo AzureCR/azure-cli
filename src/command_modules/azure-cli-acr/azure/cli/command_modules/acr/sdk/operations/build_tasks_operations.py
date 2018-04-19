@@ -23,7 +23,7 @@ class BuildTasksOperations(object):
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
-    :param deserializer: An objec model deserializer.
+    :param deserializer: An object model deserializer.
     :ivar api_version: The client API version. Constant value: "2018-02-01-preview".
     """
 
@@ -61,13 +61,13 @@ class BuildTasksOperations(object):
         :rtype:
          ~containerregistrybuild.models.BuildTaskPaged[~containerregistrybuild.models.BuildTask]
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         def internal_paging(next_link=None, raw=False):
 
             if not next_link:
                 # Construct URL
-                url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks'
+                url = self.list.metadata['url']
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -103,7 +103,7 @@ class BuildTasksOperations(object):
                 request, header_parameters, stream=False, **operation_config)
 
             if response.status_code not in [200]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             return response
 
@@ -116,6 +116,7 @@ class BuildTasksOperations(object):
             return client_raw_response
 
         return deserialized
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks'}
 
     def get(
             self, resource_group_name, registry_name, build_task_name, custom_headers=None, raw=False, **operation_config):
@@ -137,10 +138,10 @@ class BuildTasksOperations(object):
         :rtype: ~containerregistrybuild.models.BuildTask or
          ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'
+        url = self.get.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -168,7 +169,7 @@ class BuildTasksOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -180,12 +181,13 @@ class BuildTasksOperations(object):
             return client_raw_response
 
         return deserialized
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'}
 
 
     def _create_initial(
             self, resource_group_name, registry_name, build_task_name, build_task_create_parameters, custom_headers=None, raw=False, **operation_config):
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'
+        url = self.create.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -217,7 +219,7 @@ class BuildTasksOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -257,7 +259,7 @@ class BuildTasksOperations(object):
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildTask]
          or ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         raw_result = self._create_initial(
             resource_group_name=resource_group_name,
@@ -288,7 +290,7 @@ class BuildTasksOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             deserialized = self._deserialize('BuildTask', response)
 
@@ -304,12 +306,13 @@ class BuildTasksOperations(object):
         return AzureOperationPoller(
             long_running_send, get_long_running_output,
             get_long_running_status, long_running_operation_timeout)
+    create.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'}
 
 
     def _delete_initial(
             self, resource_group_name, registry_name, build_task_name, custom_headers=None, raw=False, **operation_config):
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'
+        url = self.delete.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -337,7 +340,7 @@ class BuildTasksOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200, 202, 204]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         if raw:
             client_raw_response = ClientRawResponse(None, response)
@@ -362,7 +365,7 @@ class BuildTasksOperations(object):
         :rtype: ~msrestazure.azure_operation.AzureOperationPoller[None] or
          ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         raw_result = self._delete_initial(
             resource_group_name=resource_group_name,
@@ -392,7 +395,7 @@ class BuildTasksOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 202, 204]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             if raw:
                 client_raw_response = ClientRawResponse(None, response)
@@ -404,12 +407,13 @@ class BuildTasksOperations(object):
         return AzureOperationPoller(
             long_running_send, get_long_running_output,
             get_long_running_status, long_running_operation_timeout)
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'}
 
 
     def _update_initial(
             self, resource_group_name, registry_name, build_task_name, build_task_update_parameters, custom_headers=None, raw=False, **operation_config):
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'
+        url = self.update.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -441,7 +445,7 @@ class BuildTasksOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -480,7 +484,7 @@ class BuildTasksOperations(object):
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildTask]
          or ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         raw_result = self._update_initial(
             resource_group_name=resource_group_name,
@@ -511,7 +515,7 @@ class BuildTasksOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             deserialized = self._deserialize('BuildTask', response)
 
@@ -527,6 +531,7 @@ class BuildTasksOperations(object):
         return AzureOperationPoller(
             long_running_send, get_long_running_output,
             get_long_running_status, long_running_operation_timeout)
+    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}'}
 
     def list_source_repository_properties(
             self, resource_group_name, registry_name, build_task_name, custom_headers=None, raw=False, **operation_config):
@@ -548,10 +553,10 @@ class BuildTasksOperations(object):
         :rtype: ~containerregistrybuild.models.SourceRepositoryProperties or
          ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/listSourceRepositoryProperties'
+        url = self.list_source_repository_properties.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -579,7 +584,7 @@ class BuildTasksOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -591,3 +596,4 @@ class BuildTasksOperations(object):
             return client_raw_response
 
         return deserialized
+    list_source_repository_properties.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/listSourceRepositoryProperties'}

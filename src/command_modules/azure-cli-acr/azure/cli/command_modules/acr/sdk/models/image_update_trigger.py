@@ -20,13 +20,13 @@ class ImageUpdateTrigger(Model):
     :param timestamp: The timestamp when the image update happened.
     :type timestamp: datetime
     :param images: The list of image updates that caused the build.
-    :type images: list[~containerregistrybuild.models.Image]
+    :type images: list[~containerregistrybuild.models.ImageDescriptor]
     """
 
     _attribute_map = {
         'id': {'key': 'id', 'type': 'str'},
         'timestamp': {'key': 'timestamp', 'type': 'iso-8601'},
-        'images': {'key': 'images', 'type': '[Image]'},
+        'images': {'key': 'images', 'type': '[ImageDescriptor]'},
     }
 
     def __init__(self, id=None, timestamp=None, images=None):

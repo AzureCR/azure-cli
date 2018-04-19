@@ -23,7 +23,7 @@ class BuildStepsOperations(object):
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
-    :param deserializer: An objec model deserializer.
+    :param deserializer: An object model deserializer.
     :ivar api_version: The client API version. Constant value: "2018-02-01-preview".
     """
 
@@ -58,13 +58,13 @@ class BuildStepsOperations(object):
         :rtype:
          ~containerregistrybuild.models.BuildStepPaged[~containerregistrybuild.models.BuildStep]
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         def internal_paging(next_link=None, raw=False):
 
             if not next_link:
                 # Construct URL
-                url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps'
+                url = self.list.metadata['url']
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -97,7 +97,7 @@ class BuildStepsOperations(object):
                 request, header_parameters, stream=False, **operation_config)
 
             if response.status_code not in [200]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             return response
 
@@ -110,6 +110,7 @@ class BuildStepsOperations(object):
             return client_raw_response
 
         return deserialized
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps'}
 
     def get(
             self, resource_group_name, registry_name, build_task_name, step_name, custom_headers=None, raw=False, **operation_config):
@@ -134,10 +135,10 @@ class BuildStepsOperations(object):
         :rtype: ~containerregistrybuild.models.BuildStep or
          ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'
+        url = self.get.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -166,7 +167,7 @@ class BuildStepsOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -178,14 +179,15 @@ class BuildStepsOperations(object):
             return client_raw_response
 
         return deserialized
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'}
 
 
     def _create_initial(
-            self, resource_group_name, registry_name, build_task_name, step_name, build_step_type, custom_headers=None, raw=False, **operation_config):
-        build_step_create_parameters = models.BuildStep(build_step_type=build_step_type)
+            self, resource_group_name, registry_name, build_task_name, step_name, properties=None, custom_headers=None, raw=False, **operation_config):
+        build_step_create_parameters = models.BuildStep(properties=properties)
 
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'
+        url = self.create.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -218,7 +220,7 @@ class BuildStepsOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -234,7 +236,7 @@ class BuildStepsOperations(object):
         return deserialized
 
     def create(
-            self, resource_group_name, registry_name, build_task_name, step_name, build_step_type, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, build_task_name, step_name, properties=None, custom_headers=None, raw=False, **operation_config):
         """Creates a build step for a build task.
 
         :param resource_group_name: The name of the resource group to which
@@ -247,8 +249,8 @@ class BuildStepsOperations(object):
         :param step_name: The name of a build step for a container registry
          build task.
         :type step_name: str
-        :param build_step_type: Constant filled by server.
-        :type build_step_type: str
+        :param properties: The properties of a build step.
+        :type properties: ~containerregistrybuild.models.BuildStepProperties
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
@@ -258,14 +260,14 @@ class BuildStepsOperations(object):
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildStep]
          or ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         raw_result = self._create_initial(
             resource_group_name=resource_group_name,
             registry_name=registry_name,
             build_task_name=build_task_name,
             step_name=step_name,
-            build_step_type=build_step_type,
+            properties=properties,
             custom_headers=custom_headers,
             raw=True,
             **operation_config
@@ -290,7 +292,7 @@ class BuildStepsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             deserialized = self._deserialize('BuildStep', response)
 
@@ -306,12 +308,13 @@ class BuildStepsOperations(object):
         return AzureOperationPoller(
             long_running_send, get_long_running_output,
             get_long_running_status, long_running_operation_timeout)
+    create.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'}
 
 
     def _delete_initial(
             self, resource_group_name, registry_name, build_task_name, step_name, custom_headers=None, raw=False, **operation_config):
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'
+        url = self.delete.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -340,7 +343,7 @@ class BuildStepsOperations(object):
         response = self._client.send(request, header_parameters, stream=False, **operation_config)
 
         if response.status_code not in [200, 202]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         if raw:
             client_raw_response = ClientRawResponse(None, response)
@@ -368,7 +371,7 @@ class BuildStepsOperations(object):
         :rtype: ~msrestazure.azure_operation.AzureOperationPoller[None] or
          ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         raw_result = self._delete_initial(
             resource_group_name=resource_group_name,
@@ -399,7 +402,7 @@ class BuildStepsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 202]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             if raw:
                 client_raw_response = ClientRawResponse(None, response)
@@ -411,14 +414,15 @@ class BuildStepsOperations(object):
         return AzureOperationPoller(
             long_running_send, get_long_running_output,
             get_long_running_status, long_running_operation_timeout)
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'}
 
 
     def _update_initial(
-            self, resource_group_name, registry_name, build_task_name, step_name, type, tags=None, custom_headers=None, raw=False, **operation_config):
-        build_step_update_parameters = models.BuildStepUpdateParameters(type=type, tags=tags)
+            self, resource_group_name, registry_name, build_task_name, step_name, properties=None, tags=None, custom_headers=None, raw=False, **operation_config):
+        build_step_update_parameters = models.BuildStepUpdateParameters(properties=properties, tags=tags)
 
         # Construct URL
-        url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'
+        url = self.update.metadata['url']
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -451,7 +455,7 @@ class BuildStepsOperations(object):
             request, header_parameters, body_content, stream=False, **operation_config)
 
         if response.status_code not in [200, 201]:
-            raise models.ErrorException(self._deserialize, response)
+            raise models.ErrorResponseException(self._deserialize, response)
 
         deserialized = None
 
@@ -467,7 +471,7 @@ class BuildStepsOperations(object):
         return deserialized
 
     def update(
-            self, resource_group_name, registry_name, build_task_name, step_name, type, tags=None, custom_headers=None, raw=False, **operation_config):
+            self, resource_group_name, registry_name, build_task_name, step_name, properties=None, tags=None, custom_headers=None, raw=False, **operation_config):
         """Updates a build step in a build task.
 
         :param resource_group_name: The name of the resource group to which
@@ -480,8 +484,9 @@ class BuildStepsOperations(object):
         :param step_name: The name of a build step for a container registry
          build task.
         :type step_name: str
-        :param type: Constant filled by server.
-        :type type: str
+        :param properties: The properties for updating a build step.
+        :type properties:
+         ~containerregistrybuild.models.BuildStepPropertiesUpdateParameters
         :param tags: The ARM resource tags.
         :type tags: dict[str, str]
         :param dict custom_headers: headers that will be added to the request
@@ -493,14 +498,14 @@ class BuildStepsOperations(object):
          ~msrestazure.azure_operation.AzureOperationPoller[~containerregistrybuild.models.BuildStep]
          or ~msrest.pipeline.ClientRawResponse
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         raw_result = self._update_initial(
             resource_group_name=resource_group_name,
             registry_name=registry_name,
             build_task_name=build_task_name,
             step_name=step_name,
-            type=type,
+            properties=properties,
             tags=tags,
             custom_headers=custom_headers,
             raw=True,
@@ -526,7 +531,7 @@ class BuildStepsOperations(object):
         def get_long_running_output(response):
 
             if response.status_code not in [200, 201]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             deserialized = self._deserialize('BuildStep', response)
 
@@ -542,6 +547,7 @@ class BuildStepsOperations(object):
         return AzureOperationPoller(
             long_running_send, get_long_running_output,
             get_long_running_status, long_running_operation_timeout)
+    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}'}
 
     def list_build_arguments(
             self, resource_group_name, registry_name, build_task_name, step_name, custom_headers=None, raw=False, **operation_config):
@@ -566,13 +572,13 @@ class BuildStepsOperations(object):
         :rtype:
          ~containerregistrybuild.models.BuildArgumentPaged[~containerregistrybuild.models.BuildArgument]
         :raises:
-         :class:`ErrorException<containerregistrybuild.models.ErrorException>`
+         :class:`ErrorResponseException<containerregistrybuild.models.ErrorResponseException>`
         """
         def internal_paging(next_link=None, raw=False):
 
             if not next_link:
                 # Construct URL
-                url = '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}/listBuildArguments'
+                url = self.list_build_arguments.metadata['url']
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self.config.subscription_id", self.config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -606,7 +612,7 @@ class BuildStepsOperations(object):
                 request, header_parameters, stream=False, **operation_config)
 
             if response.status_code not in [200]:
-                raise models.ErrorException(self._deserialize, response)
+                raise models.ErrorResponseException(self._deserialize, response)
 
             return response
 
@@ -619,3 +625,4 @@ class BuildStepsOperations(object):
             return client_raw_response
 
         return deserialized
+    list_build_arguments.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/buildTasks/{buildTaskName}/steps/{stepName}/listBuildArguments'}

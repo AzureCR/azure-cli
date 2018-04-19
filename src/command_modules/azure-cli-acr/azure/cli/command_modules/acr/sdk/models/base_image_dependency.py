@@ -18,35 +18,28 @@ class BaseImageDependency(Model):
     :param type: The type of the base image dependency. Possible values
      include: 'BuildTime', 'RunTime'
     :type type: str or ~containerregistrybuild.models.BaseImageDependencyType
-    :param is_auto_trigger_enabled: The value of this flag indicates if build
-     has to be auto triggered when this image is updated. Default value: False
-     .
-    :type is_auto_trigger_enabled: bool
-    :param repository_name: Name of the repository.
-    :type repository_name: str
+    :param registry: The registry login server.
+    :type registry: str
+    :param repository: The repository name.
+    :type repository: str
     :param tag: The tag name.
     :type tag: str
-    :param digest: The image digest. Example: SHA256 based digest.
+    :param digest: The sha256-based digest of the image manifest.
     :type digest: str
     """
 
-    _validation = {
-        'repository_name': {'required': True},
-        'digest': {'required': True},
-    }
-
     _attribute_map = {
         'type': {'key': 'type', 'type': 'str'},
-        'is_auto_trigger_enabled': {'key': 'isAutoTriggerEnabled', 'type': 'bool'},
-        'repository_name': {'key': 'repositoryName', 'type': 'str'},
+        'registry': {'key': 'registry', 'type': 'str'},
+        'repository': {'key': 'repository', 'type': 'str'},
         'tag': {'key': 'tag', 'type': 'str'},
         'digest': {'key': 'digest', 'type': 'str'},
     }
 
-    def __init__(self, repository_name, digest, type=None, is_auto_trigger_enabled=False, tag=None):
+    def __init__(self, type=None, registry=None, repository=None, tag=None, digest=None):
         super(BaseImageDependency, self).__init__()
         self.type = type
-        self.is_auto_trigger_enabled = is_auto_trigger_enabled
-        self.repository_name = repository_name
+        self.registry = registry
+        self.repository = repository
         self.tag = tag
         self.digest = digest
