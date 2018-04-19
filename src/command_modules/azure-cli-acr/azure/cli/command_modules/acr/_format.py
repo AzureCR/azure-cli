@@ -99,22 +99,17 @@ def _webhook_get_config_format_group(item):
 
 
 def _webhook_list_events_format_group(item):
-    repository = _get_value(item, 'eventRequestMessage',
-                            'content', 'target', 'repository').strip()
-    tag = _get_value(item, 'eventRequestMessage',
-                     'content', 'target', 'tag').strip()
+    repository = _get_value(item, 'eventRequestMessage', 'content', 'target', 'repository').strip()
+    tag = _get_value(item, 'eventRequestMessage', 'content', 'target', 'tag').strip()
     status = _get_value(item, 'eventResponseMessage', 'statusCode').strip()
     reason = _get_value(item, 'eventResponseMessage', 'reasonPhrase').strip()
 
     return OrderedDict([
         ('ID', _get_value(item, 'id')),
         ('ACTION', _get_value(item, 'eventRequestMessage', 'content', 'action')),
-        ('IMAGE', '{}:{}'.format(repository, tag)
-         if repository and tag else repository or ' '),
-        ('HTTP STATUS', '{} {}'.format(status, reason)
-         if status and reason else status or reason or ' '),
-        ('TIMESTAMP', _format_datetime(_get_value(
-            item, 'eventRequestMessage', 'content', 'timestamp')))
+        ('IMAGE', '{}:{}'.format(repository, tag) if repository and tag else repository or ' '),
+        ('HTTP STATUS', '{} {}'.format(status, reason) if status and reason else status or reason or ' '),
+        ('TIMESTAMP', _format_datetime(_get_value(item, 'eventRequestMessage', 'content', 'timestamp')))
     ])
 
 
@@ -180,8 +175,7 @@ def _get_duration(start_time, finish_time):
     from dateutil.parser import parse
     try:
         duration = parse(finish_time) - parse(start_time)
-        hours = "{0:02d}".format(
-            (24 * duration.days) + (duration.seconds // 3600))
+        hours = "{0:02d}".format((24 * duration.days) + (duration.seconds // 3600))
         minutes = "{0:02d}".format((duration.seconds % 3600) // 60)
         seconds = "{0:02d}".format(duration.seconds % 60)
         return "{0}:{1}:{2}".format(hours, minutes, seconds)
