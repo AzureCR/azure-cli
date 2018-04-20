@@ -5,12 +5,12 @@
 
 from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
+from .azure.mgmt.containerregistry.v2017_10_01.models import BuildTaskBuildRequest
 from ._utils import (
     arm_deploy_template_build_task_create,
     validate_managed_registry,
     validate_and_append_build_arguments
 )
-from .sdk.models import BuildTaskBuildRequest
 
 BUILD_TASKS_NOT_SUPPORTED = 'Build Tasks are only supported for managed registries.'
 

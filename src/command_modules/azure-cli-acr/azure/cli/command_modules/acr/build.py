@@ -22,7 +22,7 @@ from azure.storage.blob import (
     AppendBlobService,
     ContainerPermissions
 )
-from .sdk.models import (
+from .azure.mgmt.containerregistry.v2017_10_01.models import (
     QuickBuildRequest,
     PlatformProperties
 )
