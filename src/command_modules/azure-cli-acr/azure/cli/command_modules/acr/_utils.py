@@ -7,6 +7,7 @@ from knack.util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 
 from azure.mgmt.containerregistry.v2017_10_01.models import SkuName, Sku
+from .azure.mgmt.containerregistry.v2018_02_01_preview.models import BuildArgument
 
 from ._constants import (
     REGISTRY_RESOURCE_TYPE,
@@ -20,8 +21,6 @@ from ._client_factory import (
     get_storage_service_client,
     get_acr_service_client
 )
-
-from .sdk.models import BuildArgument
 
 
 def _arm_get_resource_by_name(cli_ctx, resource_name, resource_type):

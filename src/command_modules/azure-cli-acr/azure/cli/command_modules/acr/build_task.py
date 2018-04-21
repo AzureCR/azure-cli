@@ -5,12 +5,12 @@
 
 from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
+from .azure.mgmt.containerregistry.v2018_02_01_preview.models import BuildTaskBuildRequest
 from ._utils import (
     arm_deploy_template_build_task_create,
     validate_managed_registry,
     validate_and_append_build_arguments
 )
-from .sdk.models import BuildTaskBuildRequest
 
 BUILD_TASKS_NOT_SUPPORTED = 'Build Tasks are only supported for managed registries.'
 
@@ -118,8 +118,8 @@ def acr_build_task_run(
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
 
-    from ._client_factory import cf_acr_build_registries
-    client_registries = cf_acr_build_registries(cmd.cli_ctx)
+    from ._client_factory import cf_acr_registries
+    client_registries = cf_acr_registries(cmd.cli_ctx)
     buildTaskBuildRequest = BuildTaskBuildRequest(build_task_name=build_task_name)
 
     queued_build = LongRunningOperation(cmd.cli_ctx)(
