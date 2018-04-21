@@ -233,7 +233,7 @@ def _get_blob_info(blob_sas_url):
     return account_name, endpoint_suffix, container_name, blob_name, sas_token
 
 
-def acr_queue(cmd,
+def acr_build(cmd,
               client,
               registry_name,
               source_location,

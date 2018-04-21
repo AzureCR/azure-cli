@@ -41,6 +41,14 @@ def replication_output_format(result):
     return _output_format(result, _replication_format_group)
 
 
+def build_task_output_format(result):
+    return _output_format(result, _build_task_format_group)
+
+
+def build_step_output_format(result):
+    return _output_format(result, _build_step_format_group)
+
+
 def build_output_format(result):
     return _output_format(result, _build_format_group)
 
@@ -125,6 +133,27 @@ def _replication_format_group(item):
         ('LOCATION', _get_value(item, 'location')),
         ('PROVISIONING STATE', _get_value(item, 'provisioningState')),
         ('STATUS', _get_value(item, 'status', 'displayStatus'))
+    ])
+
+def _build_task_format_group(item):
+    return OrderedDict([
+        ('Name', _get_value(item, 'name')),
+        ('ALIAS', _get_value(item, 'alias')),
+        ('PLATFORM', _get_value(item, 'platform', 'osType')),
+        ('STATUS', _get_value(item, 'status')),
+        ('CREATION DATE', _format_datetime(_get_value(item, 'creationDate'))),
+        ('COMMIT TRIGGER ENABLED', _get_value(item, 'sourceRepository', 'isCommitTriggerEnabled')),
+        ('SOURCE REPOSITORY', _get_value(item, 'sourceRepository', 'repositoryUrl'))
+    ])
+
+
+def _build_step_format_group(item):
+    return OrderedDict([
+        ('Name', _get_value(item, 'name')),
+        ('BRANCH', _get_value(item, 'properties', 'branch')),
+        ('BASE IMAGE TRIGGER', _get_value(item, 'properties', 'baseImageTrigger')),
+        ('IMAGE NAMES', _get_value(item, 'properties', 'imageNames')),
+        ('PUSH ENABLED', _get_value(item, 'properties', 'isPushEnabled')),
     ])
 
 
