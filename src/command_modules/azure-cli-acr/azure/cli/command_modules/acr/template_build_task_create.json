@@ -52,7 +52,6 @@
             }
         },
         "sourceControlType": {
-            "defaultValue": "github",
             "type": "string",
             "metadata": {
                 "description": "The source control provider type."
@@ -71,7 +70,6 @@
             }
         },
         "sourceControlAuthTokenType": {
-            "defaultValue": "OAuth",
             "type": "string",
             "metadata": {
                 "description": "The type of source auth token."
@@ -101,6 +99,12 @@
                 "description": "the time in seconds when the access token expires."
             }
         },
+        "timeout": {
+            "type": "int",
+            "metadata": {
+                "description": "the build timeout."
+            }
+        },
         "stepName": {
             "type": "string",
             "metadata": {
@@ -115,7 +119,6 @@
         },
         "buildArguments": {
             "type": "array",
-            "defaultValue": [],
             "metadata": {
                 "description": "Build arguments"
             }
@@ -143,6 +146,12 @@
             "metadata": {
                 "description": "Flag indicating whether build will push image(s) to the registry."
             }
+        },
+        "noCache": {
+            "type": "bool",
+            "metadata": {
+                "description": "Flag indicating whether the image cache is enabled."
+            }
         }
     },
     "resources": [
@@ -169,7 +178,8 @@
                         "scope": "[parameters('sourceControlAuthScope')]",
                         "expiresIn": "[parameters('sourceControlAuthExpiresIn')]"
                     }
-                }
+                },
+                "timeout": "[parameters('timeout')]"
             }
         },
         {
@@ -185,6 +195,7 @@
                 "branch": "[parameters('sourceControlBranch')]",
                 "imageNames": "[parameters('imageNames')]",
                 "isPushEnabled": "[parameters('isPushEnabled')]",
+                "noCache": "[parameters('noCache')]",
                 "dockerFilePath": "[parameters('dockerFilePath')]",
                 "buildArguments": "[parameters('buildArguments')]",
                 "baseImageTrigger": "[parameters('baseImageTrigger')]"
