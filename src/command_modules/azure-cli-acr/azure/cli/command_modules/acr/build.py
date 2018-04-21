@@ -54,7 +54,7 @@ def acr_build_show_logs(cmd,
     log_file_sas = build_log_result.log_link
 
     if not log_file_sas:
-        return 'No logs found.'
+        raise CLIError("Failed to get log SAS to show logs")
 
     account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(
         log_file_sas)
@@ -206,6 +206,16 @@ def _stream_logs(byte_size,
     if curr_bytes:
         print(curr_bytes.decode('utf-8', errors='ignore'))
 
+    build_status = _get_build_status(metadata).lower()
+    logger.debug("Build status was: '{}'".format(build_status))
+
+    if build_status == 'internalerror' or build_status == 'failed':
+        raise CLIError("Build failed")
+    elif build_status == 'timedout':
+        raise CLIError("Build timed out")
+    elif build_status == 'canceled':
+        raise CLIError("Build was canceled")
+
 
 def _blob_is_not_complete(metadata):
     if metadata is None:
@@ -216,6 +226,17 @@ def _blob_is_not_complete(metadata):
             return False
 
     return True
+
+
+def _get_build_status(metadata):
+    if metadata is None:
+        return 'inprogress'
+
+    for key in metadata:
+        if key.lower() == 'complete':
+            return metadata[key]
+
+    return 'inprogress'
 
 
 def _get_blob_info(blob_sas_url):
