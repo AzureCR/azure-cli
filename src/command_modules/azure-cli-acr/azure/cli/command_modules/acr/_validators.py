@@ -6,6 +6,7 @@
 from knack.util import CLIError
 from ._client_factory import cf_acr_registries
 
+
 def validate_registry_name(cmd, namespace):
     if namespace.registry_name:
         client = cf_acr_registries(cmd.cli_ctx)
@@ -61,45 +62,42 @@ def validate_build_argument(string, is_secret):
 
 
 def validate_build_task_name(namespace):
-    """Validate the name of the build task name. """
-    import re
-    build_task_name = namespace.build_task_name
-    p = re.compile('^[a-zA-Z0-9]*$')
-    if p.match(build_task_name) is None:
-        raise CLIError(
-            "Build task name may contain alpha numeric characters only and must be between 5 and 50 characters.")
+    """Validate the name of the build task. """
+    if namespace.build_task_name:
+        import re
+        if not re.match('^[a-zA-Z0-9]*$', namespace.build_task_name):
+            raise CLIError(
+                "Build task name may contain alpha numeric characters only and must be between 5 and 50 characters.")
 
 
-#TODO: ankheman add variable tag support
-#TODO: re-evaluate this method
 def validate_image_names(namespace):
     # reference: https://github.com/docker/distribution/tree/master/reference
     if namespace.image_names:
-        image_names = namespace.image_names
-        for image_name in image_names:
+        for image_name in namespace.image_names:
             if not image_name:
                 raise CLIError("'--image -t' value should not be empty.")
 
             tokens = image_name.split(':')
             if len(tokens) > 2:
                 raise CLIError(
-                    "'--image -t' value should be repository and optionally a tag in the 'repository:tag' format")
-            import re
+                    "'--image -t' value should be repository and optionally a tag in the 'repository:tag' format.")
 
             # check repository
             repository = tokens[0]
             if len(repository) > 255:
+                raise CLIError("The repository of '--image -t' value should be no more than 255 characters.")
+
+            import re
+            # pylint: disable=line-too-long
+            if not re.match(r"^[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?$", repository):
                 raise CLIError(
-                    "The repository of '--image -t' value should be no more than 255 characters.")
-            else:
-                # TODO: Consider move the validation to server side
-                if re.match(r"^[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?$", repository) is None:
-                    raise CLIError(
-                        "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
+                    "The '--image -t' value is not valid." \
+                    " Please check https://docs.docker.com/engine/reference/commandline/tag/.")
 
             # check tag
             if len(tokens) == 2:
                 tag = tokens[1]
-                if re.match(r"^[\w][\w.-]{0,127}$", tag) is None:
+                if not re.match(r"^[\w][\w.-]{0,127}$", tag):
                     raise CLIError(
-                        "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
+                        "The '--image -t' value is not valid." \
+                        " Please check https://docs.docker.com/engine/reference/commandline/tag/.")
