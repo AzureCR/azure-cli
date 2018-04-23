@@ -127,11 +127,10 @@ def acr_build_task_run(
     if no_logs:
         return queued_build
     else:
-        if queued_build:
-            build_id = queued_build.build_id
-            print("Queued a build with build-id: {}.".format(build_id))
-            print("Starting to stream the logs...")
-            acr_build_task_logs(cmd, client, registry_name, build_id)
+        build_id = queued_build.build_id
+        print("Queued a build with build-id: {}".format(build_id))
+        print("Waiting for a build agent...")
+        acr_build_task_logs(cmd, client, registry_name, build_id)
 
 
 def acr_build_task_logs(
@@ -139,13 +138,14 @@ def acr_build_task_logs(
     client,
     registry_name,
     build_id=None,
+    build_task_name=None,
     resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
 
-    if build_id is None:     
+    if build_id is None:
         # show logs for the last build
-        paged_builds = acr_build_task_list_builds(cmd, client, registry_name)
+        paged_builds = acr_build_task_list_builds(cmd, client, registry_name, build_task_name)
         if paged_builds:
             builds = paged_builds.get(0)
             if builds:

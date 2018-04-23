@@ -318,15 +318,17 @@ def acr_queue(cmd,
     else:
         print("Sending build context to ACR")
 
-    result = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
+    queued_build = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
         build_request=build_request, resource_group_name=resource_group_name,
         registry_name=registry_name))
 
-    print("Queued a build with ID: {0}".format(result.build_id))
-
-    if no_logs == False:
-        acr_build_show_logs(cmd, client, registry_name,
-                            result.build_id, resource_group_name)
+    if no_logs:
+        return queued_build
+    else:
+        build_id = queued_build.build_id
+        print("Queued a build with ID: {0}".format(build_id))
+        print("Waiting for a build agent...")
+        acr_build_show_logs(cmd, client, registry_name, build_id, resource_group_name)
 
 
 def _check_local_docker_file(source_location, docker_file_path):
