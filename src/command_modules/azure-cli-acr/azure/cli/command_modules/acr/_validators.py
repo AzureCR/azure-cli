@@ -58,7 +58,6 @@ def validate_build_argument(string, is_secret):
         if len(comps) > 1:
             return {'name': comps[0], 'value': comps[1], 'isSecret': is_secret}
         return {'name': comps[0], 'value': '', 'isSecret': is_secret}
-    return {}
 
 
 def validate_build_task_name(namespace):
@@ -72,34 +71,35 @@ def validate_build_task_name(namespace):
 
 
 #TODO: ankheman add variable tag support
+#TODO: re-evaluate this method
 def validate_image_names(namespace):
     # reference: https://github.com/docker/distribution/tree/master/reference
+    if namespace.image_names:
+        image_names = namespace.image_names
+        for image_name in image_names:
+            if not image_name:
+                raise CLIError("'--image -t' value should not be empty.")
 
-    image_names = namespace.image_names
-    for image_name in image_names:
-        if not image_name:
-            raise CLIError("'--image -t' value should not be empty.")
-
-        tokens = image_name.split(':')
-        if(len(tokens) > 2):
-            raise CLIError(
-                "'--image -t' value should be repository and optionally a tag in the 'repository:tag' format")
-        import re
-
-        # check repository
-        repository = tokens[0]
-        if len(repository) > 255:
-            raise CLIError(
-                "The repository of '--image -t' value should be no more than 255 characters.")
-        else:
-            # TODO: Consider move the validation to server side
-            if re.match(r"^[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?$", repository) is None:
+            tokens = image_name.split(':')
+            if len(tokens) > 2:
                 raise CLIError(
-                    "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
+                    "'--image -t' value should be repository and optionally a tag in the 'repository:tag' format")
+            import re
 
-        # check tag
-        if len(tokens) == 2:
-            tag = tokens[1]
-            if re.match(r"^[\w][\w.-]{0,127}$", tag) is None:
+            # check repository
+            repository = tokens[0]
+            if len(repository) > 255:
                 raise CLIError(
-                    "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
+                    "The repository of '--image -t' value should be no more than 255 characters.")
+            else:
+                # TODO: Consider move the validation to server side
+                if re.match(r"^[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?$", repository) is None:
+                    raise CLIError(
+                        "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
+
+            # check tag
+            if len(tokens) == 2:
+                tag = tokens[1]
+                if re.match(r"^[\w][\w.-]{0,127}$", tag) is None:
+                    raise CLIError(
+                        "The '--image -t' value is not valid. Please check https://docs.docker.com/engine/reference/commandline/tag/.")
