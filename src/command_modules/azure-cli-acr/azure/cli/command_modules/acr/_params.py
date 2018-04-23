@@ -97,7 +97,7 @@ def load_arguments(self, _):
 
     with self.argument_context('acr build') as c:
         c.argument('registry_name', options_list=['--registry', '-r'])
-        c.argument('source_location', options_list=['--context', '-c'], help="The local source code directory path (eg, './src') or the url to a git repository (eg, 'https://github.com/docker/rootfs.git') or a remote tarball (eg, 'http://server/context.tar.gz').")
+        c.argument('source_location', options_list=['--context', '-c'], help="The local source code directory path (eg, './src') or the url to a git repository (eg, 'https://github.com/Azure-Samples/acr-build-helloworld-node.git') or a remote tarball (eg, 'http://server/context.tar.gz').")
         c.argument('timeout', help='The build timeout in seconds.')
 
     with self.argument_context('acr build-task') as c:
