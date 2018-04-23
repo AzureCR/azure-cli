@@ -63,7 +63,7 @@ def acr_build_task_create(cmd,
             push_enabled=push_enabled == 'true',
             no_cache=no_cache == 'true',
             docker_file_path=docker_file_path,
-            build_arguments=build_arg + secret_build_arg,
+            build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []),
             base_image_trigger=base_image_trigger
         )
     )
