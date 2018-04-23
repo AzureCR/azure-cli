@@ -50,15 +50,39 @@ def acr_build_step_update_set(cmd,
     return client.update(resource_group_name, registry_name, build_task_name, step_name, parameters)
 
 
-def acr_build_step_update_custom(cmd,
+def acr_build_step_update_custom(cmd, # pylint: disable=unused-argument
                                  instance,
                                  branch=None,
                                  image_names=None,
-                                 is_push_enabled=False,
-                                 no_cache=False,
+                                 is_push_enabled=None,
+                                 no_cache=None,
                                  docker_file_path=None,
                                  context_path=None,
-                                 build_arguments=None,
+                                 build_arg=None,
+                                 secret_build_arg=None,
                                  base_image_trigger=None):
-    # TODO: [doyou] Add custom update
+    if branch is not None:
+        instance.branch = branch
+
+    if image_names is not None:
+        instance.image_names = image_names
+
+    if is_push_enabled is not None:
+        instance.is_push_enabled = is_push_enabled
+
+    if no_cache is not None:
+        instance.no_cache = no_cache
+
+    if docker_file_path is not None:
+        instance.docker_file_path = docker_file_path
+
+    if context_path is not None:
+        instance.context_path = context_path
+
+    if build_arg is not None or secret_build_arg is not None:
+        instance.build_arguments = (build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else [])
+
+    if base_image_trigger is not None:
+        instance.base_image_trigger = base_image_trigger
+
     return instance

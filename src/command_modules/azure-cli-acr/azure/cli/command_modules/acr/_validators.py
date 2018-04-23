@@ -35,6 +35,32 @@ def validate_header(string):
     return result
 
 
+def validate_build_arg(namespace):
+    if isinstance(namespace.build_arg, list):
+        build_arguments_list = []
+        for item in namespace.build_arg:
+            build_arguments_list.append(validate_build_argument(item, False))
+        namespace.build_arg = build_arguments_list
+
+
+def validate_secret_build_arg(namespace):
+    if isinstance(namespace.secret_build_arg, list):
+        build_arguments_list = []
+        for item in namespace.secret_build_arg:
+            build_arguments_list.append(validate_build_argument(item, True))
+        namespace.secret_build_arg = build_arguments_list
+
+
+def validate_build_argument(string, is_secret):
+    """Extracts a single build argument in key[=value] format. """
+    if string:
+        comps = string.split('=', 1)
+        if len(comps) > 1:
+            return {'name': comps[0], 'value': comps[1], 'isSecret': is_secret}
+        return {'name': comps[0], 'value': '', 'isSecret': is_secret}
+    return {}
+
+
 def validate_build_task_name(namespace):
     """Validate the name of the build task name. """
     import re

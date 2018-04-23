@@ -25,7 +25,13 @@ from ._constants import (
     CLASSIC_REGISTRY_SKU,
     MANAGED_REGISTRY_SKU
 )
-from ._validators import validate_registry_name, validate_headers, validate_build_task_name
+from ._validators import (
+    validate_registry_name,
+    validate_headers,
+    validate_build_task_name,
+    validate_build_arg,
+    validate_secret_build_arg
+)
 
 
 def load_arguments(self, _):
@@ -42,8 +48,8 @@ def load_arguments(self, _):
         c.argument('build_id', help='The unique build identifier.')
         c.argument('image_names', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append') #TODO: ankheman add validator validate_image_name after variable tag support
         c.argument('docker_file_path', options_list=['--file', '-f'], help="The relative path of the the docker file to the source code root folder.")
-        c.argument('build_arg', help='Build argument in a format of <name>=<value>.', action='append')
-        c.argument('secret_build_arg', help='Secret build argument in a format of <name>=<value>.', action='append')
+        c.argument('build_arg', help='Build argument in a format of <name>=<value>.', action='append', validator=validate_build_arg)
+        c.argument('secret_build_arg', help='Secret build argument in a format of <name>=<value>.', action='append', validator=validate_secret_build_arg)
         c.argument('no_logs', help="Do not show logs after successfully queuing the build.", action='store_true')
 
     with self.argument_context('acr create') as c:

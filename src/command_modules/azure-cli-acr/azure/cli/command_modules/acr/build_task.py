@@ -9,7 +9,6 @@ from .azure.mgmt.containerregistry.v2018_02_01_preview.models import BuildTaskBu
 from ._utils import (
     arm_deploy_template_build_task_create,
     validate_managed_registry,
-    validate_and_append_build_arguments,
     get_resource_group_name_by_registry_name
 )
 
@@ -33,9 +32,6 @@ def acr_build_task_create(cmd,
 
     registry, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
-    build_arguments = []
-    validate_and_append_build_arguments(build_arg, build_arguments, False, True)
-    validate_and_append_build_arguments(secret_build_arg, build_arguments, True, True)
 
     LongRunningOperation(cmd.cli_ctx)(
         arm_deploy_template_build_task_create(
@@ -48,7 +44,7 @@ def acr_build_task_create(cmd,
             source_branch,
             image_names,
             docker_file_path,
-            build_arguments,
+            build_arg + secret_build_arg,
             git_access_token,
             os_type,
             cpu)
@@ -60,8 +56,7 @@ def acr_build_task_show(cmd,
                         client,
                         build_task_name,
                         registry_name,
-                        resource_group_name=None,
-                        detail=False):
+                        resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
     return client.get(resource_group_name, registry_name, build_task_name)
@@ -101,7 +96,7 @@ def acr_build_task_update_set(cmd,
     return client.update(resource_group_name, registry_name, build_task_name, parameters)
 
 
-def acr_build_task_update_custom(cmd,
+def acr_build_task_update_custom(cmd, # pylint: disable=unused-argument
                                  instance,
                                  alias=None,
                                  status=None,
@@ -109,7 +104,24 @@ def acr_build_task_update_custom(cmd,
                                  timeout=None,
                                  source_repository=None,
                                  tags=None):
-    # TODO: [doyou] Add custom update
+    if alias is not None:
+        instance.alias = alias
+
+    if status is not None:
+        instance.status = status
+
+    if platform is not None:
+        instance.platform = platform
+
+    if timeout is not None:
+        instance.timeout = timeout
+
+    if source_repository is not None:
+        instance.source_repository = source_repository
+
+    if tags is not None:
+        instance.tags = tags
+
     return instance
 
 
