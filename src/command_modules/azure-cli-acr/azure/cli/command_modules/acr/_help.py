@@ -28,7 +28,7 @@ helps['acr webhook'] = """
 
 helps['acr replication'] = """
     type: group
-    short-summary: Manage replications of Azure Container Registries across multiple regions
+    short-summary: Manage replications of Azure Container Registries across multiple regions.
     """
 
 helps['acr build-task'] = """
@@ -336,7 +336,7 @@ helps['acr build-task show'] = """
     type: command
     short-summary: Get the properties of a specified build task.
     examples:
-        - name: Get the details of a build task.
+        - name: Get the details of a build task, displaying the results in a table.
           text: >
             az acr build-task show -n MyBuildTask -r MyRegistry -o table
 """
