@@ -325,11 +325,10 @@ def acr_queue(cmd,
     if no_logs:
         return queued_build
     else:
-        if queued_build:
-            build_id = queued_build.build_id
-            print("Queued a build with ID: {0}".format(build_id))
-            print("Waiting for a build agent...")
-            acr_build_show_logs(cmd, client, registry_name, build_id, resource_group_name)
+        build_id = queued_build.build_id
+        print("Queued a build with ID: {0}".format(build_id))
+        print("Waiting for a build agent...")
+        acr_build_show_logs(cmd, client, registry_name, build_id, resource_group_name)
 
 
 def _check_local_docker_file(source_location, docker_file_path):
