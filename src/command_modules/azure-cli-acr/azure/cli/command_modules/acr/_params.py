@@ -121,7 +121,6 @@ def load_arguments(self, _):
         c.argument('os_type', options_list=['--os'], help='The operating system type required for the build.', choices=['Linux', 'Windows'])
         c.argument('cpu', help='The CPU configuration in terms of number of cores required for the build.')
         c.argument('timeout', help='Build timeout in seconds.')
-        c.argument('source_control_type', help='The type of source control service.', choices=['Github', 'VisualStudioTeamService'])
         c.argument('repository_url', options_list=['--context', '-c'], help="The full URL to the source code respository.")
         c.argument('commit_trigger_enabled', help="Indicates whether the source control commit trigger is enabled.", choices=['true', 'false'])
         c.argument('git_access_token', help="The access token used to access the source control provider.")

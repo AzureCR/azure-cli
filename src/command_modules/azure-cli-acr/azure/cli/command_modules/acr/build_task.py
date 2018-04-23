@@ -28,7 +28,7 @@ def acr_build_task_create(cmd,
                           alias=None,
                           status='Enabled',
                           os_type='Linux',
-                          cpu=2,
+                          cpu=1,
                           timeout=3600,
                           commit_trigger_enabled='true',
                           branch='master',
@@ -121,7 +121,6 @@ def acr_build_task_update_custom(cmd, # pylint: disable=unused-argument
                                  os_type=None,
                                  cpu=None,
                                  timeout=None,
-                                 source_control_type=None,
                                  repository_url=None,
                                  commit_trigger_enabled=None,
                                  git_access_token=None,
@@ -140,9 +139,6 @@ def acr_build_task_update_custom(cmd, # pylint: disable=unused-argument
 
     if timeout is not None:
         instance.timeout = timeout
-
-    if source_control_type is not None:
-        instance.source_repository.source_control_type = source_control_type
 
     if repository_url is not None:
         instance.source_repository.repository_url = repository_url

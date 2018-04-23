@@ -283,7 +283,7 @@ def acr_build(cmd,
         image_names=image_names,
         is_push_enabled=is_push_enabled,
         timeout=timeout,
-        build_arguments=build_arg + secret_build_arg)
+        build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []))
 
     if is_local_file:
         try:

@@ -7,8 +7,8 @@
 
 from azure.cli.core import AzCommandsLoader
 import azext_acrbuildext._help  # pylint: disable=unused-import
-from ._client_factory import cf_acr_builds, cf_acr_build_tasks
-from ._format import build_output_format
+from ._client_factory import cf_acr_builds, cf_acr_build_tasks, cf_acr_build_steps
+from ._format import build_output_format, build_task_output_format, build_step_output_format
 
 class AcrBuildCommandsLoader(AzCommandsLoader):
 
@@ -20,26 +20,53 @@ class AcrBuildCommandsLoader(AzCommandsLoader):
 
         acr_build_util = CliCommandType(
             operations_tmpl='azext_acrbuildext.build#{}',
+            table_transformer=build_output_format,
             client_factory=cf_acr_builds
         )
 
         acr_build_task_util = CliCommandType(
             operations_tmpl='azext_acrbuildext.build_task#{}',
+            table_transformer=build_task_output_format,
             client_factory=cf_acr_build_tasks
         )
 
-        with self.command_group('acr build', acr_build_util) as g:
-            g.command('show-logs', 'acr_build_show_logs')
-            g.command('', 'acr_queue') # TODO: it should be moved to acr command group once we can integrate the full sdk.
+        acr_build_step_util = CliCommandType(
+            operations_tmpl='azext_acrbuildext.build_step#{}',
+            table_transformer=build_step_output_format,
+            client_factory=cf_acr_build_steps
+        )
+
+        with self.command_group('acr', acr_build_util) as g:
+            g.command('build', 'acr_build', client_factory=cf_acr_registries)
 
         with self.command_group('acr build-task', acr_build_task_util) as g:
             g.command('create', 'acr_build_task_create')
             g.command('show', 'acr_build_task_show')
             g.command('list', 'acr_build_task_list')
             g.command('delete', 'acr_build_task_delete')
-            g.command('list-builds', 'acr_build_task_list_builds', table_transformer = build_output_format)
-            g.command('run', 'acr_build_task_run')
-            g.command('logs', 'acr_build_task_logs')
+            g.generic_update_command('update',
+                                     getter_name='acr_build_task_update_get',
+                                     setter_name='acr_build_task_update_set',
+                                     custom_func_name='acr_build_task_update_custom',
+                                     custom_func_type=acr_build_task_util,
+                                     client_factory=cf_acr_build_tasks,
+                                     table_transformer=build_task_output_format)
+            g.command('run', 'acr_build_task_run', client_factory=cf_acr_builds)
+            g.command('list-builds', 'acr_build_task_list_builds', client_factory=cf_acr_builds,
+                      table_transformer=build_output_format)
+            g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds)
+
+        with self.command_group('acr build-task step', acr_build_step_util) as g:
+            g.command('list', 'acr_build_step_list')
+            g.command('show', 'acr_build_step_show')
+            g.generic_update_command('update',
+                                     getter_name='acr_build_step_update_get',
+                                     setter_name='acr_build_step_update_set',
+                                     custom_func_name='acr_build_step_update_custom',
+                                     custom_func_type=acr_build_step_util,
+                                     client_factory=cf_acr_build_steps,
+                                     table_transformer=build_step_output_format)
+
         return self.command_table
 
     def load_arguments(self, _):
