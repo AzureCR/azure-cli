@@ -225,6 +225,10 @@ def arm_deploy_template_build_task_create(cli_ctx,
     from azure.cli.core.util import get_file_json
     import os
 
+    source_control_type = "VisualStudioTeamService"
+    if "GITHUB.COM" in context.upper():
+        source_control_type = "GitHub"
+
     # TODO ankheman remove hard-coded values
     parameters = {
         'registryName': {'value': registry_name},
@@ -233,12 +237,12 @@ def arm_deploy_template_build_task_create(cli_ctx,
         'buildTaskApiVersion': {'value': "2018-02-01-preview"},
         'buildTaskAlias': {'value': build_task_name},
         'status': {'value': "enabled"},
-        'osType': {'value':os_type},
+        'osType': {'value': os_type},
         'cpu': {'value': int(cpu)},
-        'sourceControlType': {'value': "Github"},
+        'sourceControlType': {'value': source_control_type},
         'sourceControlRepositoryUrl': {'value': context},
         'isCommitTriggerEnabled': {'value': True},
-        'sourceControlAuthTokenType': {'value': "pat"},
+        'sourceControlAuthTokenType': {'value': "PAT"},
         'sourceControlAuthToken': {'value': git_access_token},
         'sourceControlRefreshToken': {'value': ""},
         'sourceControlAuthScope': {'value': "repo"},
@@ -387,7 +391,7 @@ def validate_and_append_build_arguments(build_arg,
     :param str[] build_arg: List of build arguments provided by user
     :param str[] build_arguments: Mutable list of build_arg and secret_build_arg.
     :param bool is_secret: arguments in build_arg are secret.
-    """  
+    """
     if build_arg is not None:
         for name_value in build_arg:
             if "=" not in name_value:
