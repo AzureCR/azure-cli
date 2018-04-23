@@ -89,7 +89,8 @@ helps['acs kubernetes'] = """
 
 helps['acs kubernetes get-credentials'] = """
     type: command
-    short-summary: Download and install credentials to access a cluster.
+    short-summary: Download and install credentials to access a cluster.  This command requires
+                   the same private-key used to create the cluster.
 """
 
 helps['acs list-locations'] = """
@@ -247,7 +248,7 @@ helps['aks install-connector'] = """
           type: string
           short-summary: The resource group to create the ACI container groups. Use the MC_*
                          resource group if it is not specified.
-        - name: --location
+        - name: --location -l
           type: string
           short-summary: The location to create the ACI container groups. Use the location of the MC_*
                          resource group if it is not specified.
@@ -355,7 +356,7 @@ helps['aks upgrade-connector'] = """
           type: string
           short-summary: The resource group to create the ACI container groups. Use the MC_*
                          resource group if it is not specified.
-        - name: --location
+        - name: --location -l
           type: string
           short-summary: The location to create the ACI container groups. Use the location of the MC_*
                          resource group if it is not specified.
