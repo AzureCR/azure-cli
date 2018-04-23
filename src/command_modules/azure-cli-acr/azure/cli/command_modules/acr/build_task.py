@@ -5,7 +5,10 @@
 
 from knack.util import CLIError
 from azure.cli.core.commands import LongRunningOperation
-from .azure.mgmt.containerregistry.v2018_02_01_preview.models import BuildTaskBuildRequest, BuildTaskUpdateParameters
+from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
+    BuildTaskBuildRequest,
+    BuildTaskUpdateParameters
+)
 from ._utils import (
     arm_deploy_template_build_task_create,
     validate_managed_registry,
@@ -19,15 +22,22 @@ def acr_build_task_create(cmd,
                           client,
                           build_task_name,
                           registry_name,
-                          source_location,
+                          repository_url,
                           image_names,
                           git_access_token,
-                          source_branch="master",
+                          alias=None,
+                          status='Enabled',
+                          os_type='Linux',
+                          cpu=2,
+                          timeout=3600,
+                          commit_trigger_enabled='true',
+                          branch='master',
+                          push_enabled='true',
+                          no_cache='false',
                           docker_file_path="Dockerfile",
-                          os_type="Linux",
-                          cpu=1,
                           build_arg=None,
                           secret_build_arg=None,
+                          base_image_trigger='Runtime',
                           resource_group_name=None):
 
     registry, resource_group_name = validate_managed_registry(
@@ -35,20 +45,28 @@ def acr_build_task_create(cmd,
 
     LongRunningOperation(cmd.cli_ctx)(
         arm_deploy_template_build_task_create(
-            cmd.cli_ctx,
-            build_task_name,
-            registry_name,
-            registry.location,
-            resource_group_name,
-            source_location,
-            source_branch,
-            image_names,
-            docker_file_path,
-            build_arg + secret_build_arg,
-            git_access_token,
-            os_type,
-            cpu)
+            cli_ctx=cmd.cli_ctx,
+            resource_group_name=resource_group_name,
+            build_task_name=build_task_name,
+            registry_name=registry_name,
+            location=registry.location,
+            repository_url=repository_url,
+            image_names=image_names,
+            git_access_token=git_access_token,
+            alias=alias if alias else build_task_name,
+            status=status,
+            os_type=os_type,
+            cpu=cpu,
+            timeout=timeout,
+            commit_trigger_enabled=commit_trigger_enabled == 'true',
+            branch=branch,
+            push_enabled=push_enabled == 'true',
+            no_cache=no_cache == 'true',
+            docker_file_path=docker_file_path,
+            build_arguments=build_arg + secret_build_arg,
+            base_image_trigger=base_image_trigger
         )
+    )
     return client.get(resource_group_name, registry_name, build_task_name)
 
 
@@ -100,9 +118,13 @@ def acr_build_task_update_custom(cmd, # pylint: disable=unused-argument
                                  instance,
                                  alias=None,
                                  status=None,
-                                 platform=None,
+                                 os_type=None,
+                                 cpu=None,
                                  timeout=None,
-                                 source_repository=None,
+                                 source_control_type=None,
+                                 repository_url=None,
+                                 commit_trigger_enabled=None,
+                                 git_access_token=None,
                                  tags=None):
     if alias is not None:
         instance.alias = alias
@@ -110,14 +132,26 @@ def acr_build_task_update_custom(cmd, # pylint: disable=unused-argument
     if status is not None:
         instance.status = status
 
-    if platform is not None:
-        instance.platform = platform
+    if os_type is not None:
+        instance.platform.os_type = os_type
+
+    if cpu is not None:
+        instance.platform.cpu = cpu
 
     if timeout is not None:
         instance.timeout = timeout
 
-    if source_repository is not None:
-        instance.source_repository = source_repository
+    if source_control_type is not None:
+        instance.source_repository.source_control_type = source_control_type
+
+    if repository_url is not None:
+        instance.source_repository.repository_url = repository_url
+
+    if commit_trigger_enabled is not None:
+        instance.source_repository.is_commit_trigger_enabled = commit_trigger_enabled == 'true'
+
+    if git_access_token is not None:
+        instance.source_repository.source_control_auth_properties.git_access_token = git_access_token
 
     if tags is not None:
         instance.tags = tags
@@ -142,11 +176,11 @@ def acr_build_task_run(cmd,
 
     if no_logs:
         return queued_build
-    else:
-        build_id = queued_build.build_id
-        print("Queued a build with build-id: {}".format(build_id))
-        print("Waiting for a build agent...")
-        acr_build_task_logs(cmd, client, registry_name, build_id)
+
+    build_id = queued_build.build_id
+    print("Queued a build with build-id: {}".format(build_id))
+    print("Waiting for a build agent...")
+    acr_build_task_logs(cmd, client, registry_name, build_id)
 
 
 def acr_build_task_list_builds(cmd,

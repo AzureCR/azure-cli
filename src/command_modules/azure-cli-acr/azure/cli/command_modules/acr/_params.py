@@ -22,6 +22,7 @@ from ._constants import (
     WEBHOOK_RESOURCE_TYPE,
     REPLICATION_RESOURCE_TYPE,
     BUILD_TASK_RESOURCE_TYPE,
+    BUILD_STEP_RESOURCE_TYPE,
     CLASSIC_REGISTRY_SKU,
     MANAGED_REGISTRY_SKU
 )
@@ -30,7 +31,8 @@ from ._validators import (
     validate_headers,
     validate_build_task_name,
     validate_build_arg,
-    validate_secret_build_arg
+    validate_secret_build_arg,
+    validate_image_names
 )
 
 
@@ -46,10 +48,14 @@ def load_arguments(self, _):
         c.argument('username', options_list=['--username', '-u'], help='The username used to log into a container registry')
         c.argument('password', options_list=['--password', '-p'], help='The password used to log into a container registry')
         c.argument('build_id', help='The unique build identifier.')
-        c.argument('image_names', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append') #TODO: ankheman add validator validate_image_name after variable tag support
+        c.argument('branch', help="The source control branch name.")
+        c.argument('image_names', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append', validator=validate_image_names)
+        c.argument('push_enabled', help='Indicates whether the image built should be pushed to the registry.', choices=['true', 'false'])
+        c.argument('no_cache', help='Indicates whether the image cache is enabled.', choices=['true', 'false'])
         c.argument('docker_file_path', options_list=['--file', '-f'], help="The relative path of the the docker file to the source code root folder.")
-        c.argument('build_arg', help='Build argument in a format of <name>=<value>.', action='append', validator=validate_build_arg)
-        c.argument('secret_build_arg', help='Secret build argument in a format of <name>=<value>.', action='append', validator=validate_secret_build_arg)
+        c.argument('build_arg', help="Build argument in 'name[=value]' format.", action='append', validator=validate_build_arg)
+        c.argument('secret_build_arg', help="Secret build argument in 'name[=value]' format.", action='append', validator=validate_secret_build_arg)
+        c.argument('base_image_trigger', help="The type of the auto trigger for base image dependency updates.", choices=['All', 'Runtime', 'None'])
         c.argument('no_logs', help="Do not show logs after successfully queuing the build.", action='store_true')
 
     with self.argument_context('acr create') as c:
@@ -103,17 +109,22 @@ def load_arguments(self, _):
 
     with self.argument_context('acr build') as c:
         c.argument('registry_name', options_list=['--registry', '-r'])
-        c.argument('source_location', options_list=['--context', '-c'], help="The local source code directory path (eg, './src') or the url to a git repository (eg, 'https://github.com/docker/rootfs.git') or a remote tarball (eg, 'http://server/context.tar.gz').")
+        c.argument('source_location', options_list=['--context', '-c'], help="The local source code directory path (e.g., './src') or the url to a git repository (e.g., 'https://github.com/docker/rootfs.git') or a remote tarball (eg, 'http://server/context.tar.gz').")
         c.argument('timeout', help='The build timeout in seconds.')
 
     with self.argument_context('acr build-task') as c:
         c.argument('registry_name', options_list=['--registry', '-r'])
-        c.argument('build_task_name', options_list=['--name', '-n'], help='The name of the build task', completer=get_resource_name_completion_list(BUILD_TASK_RESOURCE_TYPE))
-        c.argument('source_location', options_list=['--context', '-c'], help="The URL to a git repository.")
-        c.argument('source_branch', options_list=['--branch'], help="The source control branch name")
-        c.argument('git_access_token', help="The git access token for configuring webhook.")
-        c.argument('os_type', options_list=['--os'], help="The platform OS that has to be used for build task.")
-        c.argument('cpu', help="The number of cpu cores to use for running builds.")
+        c.argument('build_task_name', options_list=['--name', '-n'], help='The name of the build task.', completer=get_resource_name_completion_list(BUILD_TASK_RESOURCE_TYPE))
+        c.argument('step_name', help='The name of the build step.', completer=get_resource_name_completion_list(BUILD_STEP_RESOURCE_TYPE))
+        c.argument('alias', help='The alternative name for build task.')
+        c.argument('status', help='The current status of build task.', choices=['Enabled', 'Disabled'])
+        c.argument('os_type', options_list=['--os'], help='The operating system type required for the build.', choices=['Linux', 'Windows'])
+        c.argument('cpu', help='The CPU configuration in terms of number of cores required for the build.')
+        c.argument('timeout', help='Build timeout in seconds.')
+        c.argument('source_control_type', help='The type of source control service.', choices=['Github', 'VisualStudioTeamService'])
+        c.argument('repository_url', options_list=['--context', '-c'], help="The full URL to the source code respository.")
+        c.argument('commit_trigger_enabled', help="Indicates whether the source control commit trigger is enabled.", choices=['true', 'false'])
+        c.argument('git_access_token', help="The access token used to access the source control provider.")
 
     with self.argument_context('acr build-task create') as c:
         c.argument('build_task_name', completer=None, validator=validate_build_task_name)

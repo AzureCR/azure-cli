@@ -192,67 +192,61 @@ def arm_deploy_template_existing_storage(cli_ctx,
 
 
 def arm_deploy_template_build_task_create(cli_ctx,
+                                          resource_group_name,
                                           build_task_name,
                                           registry_name,
-                                          registry_location,
-                                          resource_group_name,
-                                          context,
-                                          source_branch,
+                                          location,
+                                          repository_url,
                                           image_names,
-                                          docker_file_path,
-                                          build_arguments,
                                           git_access_token,
+                                          alias,
+                                          status,
                                           os_type,
                                           cpu,
+                                          timeout,
+                                          commit_trigger_enabled,
+                                          branch,
+                                          push_enabled,
+                                          no_cache,
+                                          docker_file_path,
+                                          build_arguments,
+                                          base_image_trigger,
                                           deployment_name=None):
     """Deploys ARM template to create a build task.
-    :param str build_task_name: The name of build task
-    :param str registry_name: The name of container registry
-    :param str registry_location: The registry location
-    :param str resource_group_name: The name of resource group
-    :param str context: The URL to a git repository.
-    :param str source_branch: The source control branch name.
-    :param str[] image_names: List of images that the build will push to registry.
-    :param str docker_file_path: The relative path of the the docker file to the source code root folder.
-    :param str[] build_arguments: List of build arguments.
-    :param str git_access_token: The git access token for configuring webhook.
-    :param str os_type: The platform OS that has to be used for build task.
-    :param str cpu: The number of cpu cores to use for running builds.
-    :param str deployment_name: The name of the deployment
     """
     from azure.mgmt.resource.resources.models import DeploymentProperties
     from azure.cli.core.util import get_file_json
     import os
 
-    source_control_type = "VisualStudioTeamService"
-    if "GITHUB.COM" in context.upper():
-        source_control_type = "GitHub"
+    source_control_type = 'VisualStudioTeamService'
+    if 'GITHUB.COM' in repository_url.upper():
+        source_control_type = 'GitHub'
 
-    # TODO ankheman remove hard-coded values
     parameters = {
-        'registryName': {'value': registry_name},
         'buildTaskName': {'value': build_task_name},
-        'buildTaskLocation': {'value': registry_location},
-        'buildTaskApiVersion': {'value': "2018-02-01-preview"},
-        'buildTaskAlias': {'value': build_task_name},
-        'status': {'value': "enabled"},
-        'osType': {'value': os_type},
-        'cpu': {'value': int(cpu)},
-        'sourceControlType': {'value': source_control_type},
-        'sourceControlRepositoryUrl': {'value': context},
-        'isCommitTriggerEnabled': {'value': True},
-        'sourceControlAuthTokenType': {'value': "PAT"},
+        'registryName': {'value': registry_name},
+        'buildTaskLocation': {'value': location},
+        'sourceControlRepositoryUrl': {'value': repository_url},
+        'imageNames': {'value': image_names},
         'sourceControlAuthToken': {'value': git_access_token},
+        'buildTaskAlias': {'value': alias},
+        'status': {'value': status},
+        'osType': {'value': os_type},
+        'cpu': {'value': cpu},
+        'timeout': {'value': timeout},
+        'sourceControlType': {'value': source_control_type},
+        'isCommitTriggerEnabled': {'value': commit_trigger_enabled},
+        'sourceControlBranch': {'value': branch},
+        'isPushEnabled': {'value': push_enabled},
+        'noCache': {'value': no_cache},
+        'dockerFilePath': {'value': docker_file_path},
+        'buildArguments': {'value': build_arguments},
+        'baseImageTrigger': {'value': base_image_trigger},
+        'stepName': {'value': build_task_name + "StepName"},
+        'sourceControlAuthTokenType': {'value': "PAT"},
         'sourceControlRefreshToken': {'value': ""},
         'sourceControlAuthScope': {'value': "repo"},
         'sourceControlAuthExpiresIn': {'value': 1313141},
-        'stepName': {'value': build_task_name + "StepName"},
-        'dockerFilePath': {'value': docker_file_path},
-        'buildArguments': {'value': build_arguments},
-        'SourceControlBranch': {'value': source_branch},
-        'imageNames': {'value': image_names},
-        'baseImageTrigger': {'value': "Runtime"},
-        'isPushEnabled': {'value': True},
     }
 
     file_path = os.path.join(os.path.dirname(__file__), 'template_build_task_create.json')
