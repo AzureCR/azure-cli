@@ -33,7 +33,7 @@ helps['acr replication'] = """
 
 helps['acr build-task'] = """
     type: group
-    short-summary: Manage a build definitions, which can be triggered by git commits or base image updates.
+    short-summary: Manage build definitions, which can be triggered by git commits or base image updates.
     """
 
 helps['acr check-name'] = """
@@ -373,7 +373,7 @@ helps['acr build-task list-builds'] = """
 
 helps['acr build-task run'] = """
     type: command
-    short-summary: Trigger a build task that might otherwise be wating for git commits or base image update triggers.
+    short-summary: Trigger a build task that might otherwise be waiting for git commits or base image update triggers.
     examples:
         - name: Trigger a build task.
           text: >
