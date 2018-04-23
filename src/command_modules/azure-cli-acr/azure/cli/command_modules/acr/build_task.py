@@ -174,9 +174,9 @@ def acr_build_task_run(cmd,
         return queued_build
 
     build_id = queued_build.build_id
-    print("Queued a build with build-id: {}".format(build_id))
+    print("Queued a build with build ID: {}".format(build_id))
     print("Waiting for a build agent...")
-    acr_build_task_logs(cmd, client, registry_name, build_id)
+    acr_build_task_logs(cmd, client, registry_name, build_id, build_task_name)
 
 
 def acr_build_task_list_builds(cmd,
@@ -190,8 +190,8 @@ def acr_build_task_list_builds(cmd,
     if build_task_name:
         filter_str = "BuildTaskName eq '{}'".format(build_task_name)
         return client.list(resource_group_name, registry_name, filter=filter_str)
-    else:
-        return client.list(resource_group_name, registry_name)
+
+    return client.list(resource_group_name, registry_name)
 
 
 def acr_build_task_logs(cmd,
