@@ -9,6 +9,7 @@ from ._utils import (
 )
 from .azure.mgmt.containerregistry.v2018_02_01_preview.models import DockerBuildStepUpdateParameters
 
+
 BUILD_STEPS_NOT_SUPPORTED = 'Build Steps are only supported for managed registries.'
 
 
