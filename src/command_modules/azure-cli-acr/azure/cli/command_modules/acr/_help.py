@@ -36,6 +36,11 @@ helps['acr build-task'] = """
     short-summary: Manage build definitions, which can be triggered by git commits or base image updates.
     """
 
+helps['acr build-task step'] = """
+    type: group
+    short-summary: Manage build steps for build tasks.
+    """
+
 helps['acr check-name'] = """
     type: command
     short-summary: Checks if a container registry name is valid and available for use.
@@ -359,6 +364,15 @@ helps['acr build-task delete'] = """
             az acr build-task delete -n MyBuildTask -r MyRegistry
 """
 
+helps['acr build-task update'] = """
+    type: command
+    short-summary: Update a build task for a container registry.
+    examples:
+        - name: Update the git access token for a build definition in a container registry.
+          text: >
+            az acr build-task update -n MyBuildTask -r MyRegistry --git-access-token $PAT
+"""
+
 helps['acr build-task list-builds'] = """
     type: command
     short-summary: List all of the executed builds for a registry, with the ability to filter by a specific build task.
@@ -409,7 +423,32 @@ helps['acr build'] = """
             az acr build -r MyRegistry -c .
 """
 
-helps['acr build show-logs'] = """
+helps['acr build-task step list'] = """
     type: command
-    short-summary: Shows logs for a particular build.
+    short-summary: List the build steps for a build task.
+    examples:
+        - name: List build steps and show the results in a table.
+          text: >
+            az acr build-task step list -n MyBuildTask -r MyRegistry -o table
+"""
+
+helps['acr build-task step show'] = """
+    type: command
+    short-summary: Get the properties of a specified build step.
+    examples:
+        - name: Get the details of a build step, displaying the results in a table.
+          text: >
+            az acr build-task step show -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName -o table
+"""
+
+helps['acr build-task step update'] = """
+    type: command
+    short-summary: Update a build step for a build task.
+    examples:
+        - name: Update the build argument for a build step in a build task.
+          text: >
+            az acr build-task update -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName --build-arg key=value
+        - name: Update the target image names for a build step in a build task.
+          text: >
+            az acr build-task update -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName -t helloworld:{{.Build.ID}}
 """

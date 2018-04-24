@@ -153,7 +153,7 @@ def _build_step_format_group(item):
         ('BRANCH', _get_value(item, 'properties', 'branch')),
         ('BASE IMAGE TRIGGER', _get_value(item, 'properties', 'baseImageTrigger')),
         ('IMAGE NAMES', _get_value(item, 'properties', 'imageNames')),
-        ('PUSH ENABLED', _get_value(item, 'properties', 'isPushEnabled')),
+        ('PUSH ENABLED', _get_value(item, 'properties', 'isPushEnabled'))
     ])
 
 
