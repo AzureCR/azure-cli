@@ -392,8 +392,6 @@ helps['acr build-task logs'] = """
             az acr build-task logs -r MyRegistry --build-id buildId
 """
 
-# help for build
-# TODO: bindu update the help and samples after we finalize the commands.
 helps['acr build'] = """
     type: command
     short-summary: Queues a quick docker build providing interactive feedback.
