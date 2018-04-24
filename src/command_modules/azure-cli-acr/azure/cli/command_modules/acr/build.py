@@ -5,32 +5,28 @@
 
 import re
 import time
-import sys
 import os
+from random import uniform
+from datetime import datetime
+from io import BytesIO
+import tempfile
 import tarfile
 import requests
-from random import uniform
-from datetime import datetime, timedelta
-from io import BytesIO
-import time
-import tempfile
 import colorama
 import pytz
+from knack.util import CLIError
+from knack.log import get_logger
 from azure.common import AzureHttpError
+from azure.cli.core.commands import LongRunningOperation
 from azure.storage.blob import (
     BlockBlobService,
     AppendBlobService,
-    ContainerPermissions
 )
 from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     QuickBuildRequest,
     PlatformProperties
 )
 from ._utils import get_resource_group_name_by_registry_name
-from azure.cli.core.commands import LongRunningOperation
-from knack.util import CLIError
-from knack.log import get_logger
-
 from ._client_factory import cf_acr_registries
 
 logger = get_logger(__name__)
@@ -61,13 +57,15 @@ def acr_build_show_logs(cmd,
     timeout_in_seconds = timeout_in_minutes * 60
 
     _stream_logs(byte_size, timeout_in_seconds,
-                 AppendBlobService(account_name=account_name, sas_token=sas_token, endpoint_suffix=endpoint_suffix), container_name, blob_name)
+                 AppendBlobService(
+                     account_name=account_name, sas_token=sas_token,
+                     endpoint_suffix=endpoint_suffix), container_name, blob_name)
 
 
 def _get_match(sas_url):
     return re.search(
         (r"http(s)?://(?P<account_name>.*?)\.blob\.(?P<endpoint_suffix>.*?)/(?P<container_name>.*?)/"
-            r"(?P<blob_name>.*?)\?(?P<sas_token>.*)"), sas_url)
+         r"(?P<blob_name>.*?)\?(?P<sas_token>.*)"), sas_url)
 
 
 def _stream_logs(byte_size,
@@ -90,13 +88,14 @@ def _stream_logs(byte_size,
 
     # Try to get the initial properties so there's no waiting.
     # If the storage call fails, we'll just sleep and try again after.
+    from msrestazure.azure_exceptions import CloudError
     try:
         props = blob_service.get_blob_properties(
             container_name=container_name, blob_name=blob_name)
         metadata = props.metadata
         available = props.properties.content_length
         last_modified = props.properties.last_modified
-    except:
+    except (AttributeError, TypeError, CloudError):
         pass
 
     while (_blob_is_not_complete(metadata) or start < available):
@@ -182,18 +181,18 @@ def _stream_logs(byte_size,
             num_fails += 1
 
             logger.debug(
-                "Failed to find new content '{}' times in a row".format(num_fails))
+                "Failed to find new content '%s' times in a row", num_fails)
             if num_fails >= num_fails_for_backoff:
                 num_fails = 0
                 sleep_time = min(sleep_time * 2, max_sleep_time)
                 logger.debug(
-                    "Resetting failure count to '{}'".format(num_fails))
+                    "Resetting failure count to '%s'", num_fails)
 
             # 1.0 <= x < 2.0
             rnd = uniform(1, 2)
             total_sleep_time = sleep_time + rnd
-            logger.debug("Base sleep time: '{}' random delay: '{}' total: '{}' seconds".format(
-                sleep_time, rnd, total_sleep_time))
+            logger.debug("Base sleep time: '%s' random delay: '%s' total: '%s' seconds",
+                         sleep_time, rnd, total_sleep_time)
             time.sleep(total_sleep_time)
 
     # One final check to see if there's anything in the buffer to flush
@@ -294,7 +293,7 @@ def acr_build(cmd,
         finally:
             try:
                 logger.debug(
-                    "Starting to delete the archived source code from '{}'.".format(tar_file_path))
+                    "Starting to delete the archived source code from '%s'.", tar_file_path)
                 os.remove(tar_file_path)
             except OSError:
                 pass
@@ -338,7 +337,9 @@ def _check_remote_source_code(source_location):
         return source_location
 
     # http
-    if lower_source_location.startswith("https://") or lower_source_location.startswith("http://") or lower_source_location.startswith("github.com/"):
+    if (lower_source_location.startswith("https://") or
+            lower_source_location.startswith("http://") or
+            lower_source_location.startswith("github.com/")):
         if re.search(r"\.git(?:#.+)?$", lower_source_location):
             # git url must contain ".git"
             return source_location
@@ -370,7 +371,7 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
             # ignore common vcs dir or file
             if tarinfo.name in common_vcs_ignore_list:
                 logger.debug(
-                    ".dockerignore: ignore vcs file '{}'".format(tarinfo.name))
+                    ".dockerignore: ignore vcs file '%s'", tarinfo.name)
                 return None
 
             if ignore_list is None:
@@ -380,38 +381,38 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
             # file path comparision is case-sensitive
             if tarinfo.name == docker_file_path:
                 logger.debug(
-                    ".dockerignore: skip checking '{}'".format(docker_file_path))
+                    ".dockerignore: skip checking '%s'", docker_file_path)
                 return tarinfo
 
             for item in ignore_list:
                 if re.match(item.pattern, tarinfo.name):
-                    logger.debug(".dockerignore: rule '{}' matches '{}'.".format(
-                        item.rule, tarinfo.name))
+                    logger.debug(".dockerignore: rule '%s' matches '%s'.", item.rule, tarinfo.name)
                     return None if item.ignore else tarinfo
 
             logger.debug(
-                ".dockerignore: no rule for '{}'.".format(tarinfo.name))
+                ".dockerignore: no rule for '%s'.", tarinfo.name)
             return tarinfo
 
         with tarfile.open(tar_file_path, "w:gz") as tar:
-            # NOTE: Need to set arcname to empty string otherwise the child item name will have a prefix (eg, ../) which can block unpacking.
+            # NOTE: Need to set arcname to empty string;
+            # otherwise the child item name will have a prefix (eg, ../) which can block unpacking.
             tar.add(source_location, arcname="", filter=_filter_file)
 
         logger.debug(
-            "Starting to upload the archived source code from '{}'.".format(tar_file_path))
+            "Starting to upload the archived source code from '%s'.", tar_file_path)
 
         account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(
             source_upload_location.upload_url)
 
-        BlockBlobService(account_name=account_name, sas_token=sas_token, 
-        endpoint_suffix=endpoint_suffix).create_blob_from_path(
-            container_name=container_name, blob_name=blob_name, file_path=tar_file_path)
+        BlockBlobService(account_name=account_name, sas_token=sas_token,
+                         endpoint_suffix=endpoint_suffix).create_blob_from_path(
+                             container_name=container_name, blob_name=blob_name, file_path=tar_file_path)
 
         return source_upload_location.relative_path
     except Exception as err:
         try:
             logger.debug(
-                "Starting to delete the archived source code from '{}'.".format(tar_file_path))
+                "Starting to delete the archived source code from '%s'.", tar_file_path)
             os.remove(tar_file_path)
         except OSError:
             pass
