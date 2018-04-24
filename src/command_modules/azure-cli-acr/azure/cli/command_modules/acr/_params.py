@@ -110,7 +110,7 @@ def load_arguments(self, _):
         c.argument('registry_name', options_list=['--registry', '-r'])
         # build task parameters
         c.argument('build_task_name', options_list=['--name', '-n'], help='The name of the build task.', completer=get_resource_name_completion_list(BUILD_TASK_RESOURCE_TYPE))
-        c.argument('alias', help='The alternative name for build task.')
+        c.argument('alias', help='The alternative name for build task. Default to the build task name.')
         c.argument('status', help='The current status of build task.', choices=['Enabled', 'Disabled'])
         c.argument('os_type', options_list=['--os'], help='The operating system type required for the build.', choices=['Linux', 'Windows'])
         c.argument('cpu', type=int, help='The CPU configuration in terms of number of cores required for the build.')
