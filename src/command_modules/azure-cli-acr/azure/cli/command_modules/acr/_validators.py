@@ -68,36 +68,3 @@ def validate_build_task_name(namespace):
         if not re.match('^[a-zA-Z0-9]*$', namespace.build_task_name):
             raise CLIError(
                 "Build task name may contain alpha numeric characters only and must be between 5 and 50 characters.")
-
-
-def validate_image_names(namespace):
-    # reference: https://github.com/docker/distribution/tree/master/reference
-    if namespace.image_names:
-        for image_name in namespace.image_names:
-            if not image_name:
-                raise CLIError("'--image -t' value should not be empty.")
-
-            tokens = image_name.split(':')
-            if len(tokens) > 2:
-                raise CLIError(
-                    "'--image -t' value should be repository and optionally a tag in the 'repository:tag' format.")
-
-            # check repository
-            repository = tokens[0]
-            if len(repository) > 255:
-                raise CLIError("The repository of '--image -t' value should be no more than 255 characters.")
-
-            import re
-            # pylint: disable=line-too-long
-            if not re.match(r"^[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?$", repository):
-                raise CLIError(
-                    "The '--image -t' value is not valid." \
-                    " Please check https://docs.docker.com/engine/reference/commandline/tag/.")
-
-            # check tag
-            if len(tokens) == 2:
-                tag = tokens[1]
-                if not re.match(r"^[\w][\w.-]{0,127}$", tag):
-                    raise CLIError(
-                        "The '--image -t' value is not valid." \
-                        " Please check https://docs.docker.com/engine/reference/commandline/tag/.")

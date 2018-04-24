@@ -31,8 +31,7 @@ from ._validators import (
     validate_headers,
     validate_build_task_name,
     validate_build_arg,
-    validate_secret_build_arg,
-    validate_image_names
+    validate_secret_build_arg
 )
 
 
@@ -47,7 +46,7 @@ def load_arguments(self, _):
         c.argument('password_name', help='The name of password to regenerate', choices=['password', 'password2'])
         c.argument('username', options_list=['--username', '-u'], help='The username used to log into a container registry')
         c.argument('password', options_list=['--password', '-p'], help='The password used to log into a container registry')
-        c.argument('image_names', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append', validator=validate_image_names)
+        c.argument('image_names', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append')
         c.argument('docker_file_path', options_list=['--file', '-f'], help="The relative path of the the docker file to the source code root folder.")
         c.argument('build_arg', help="Build argument in 'name[=value]' format.", action='append', validator=validate_build_arg)
         c.argument('secret_build_arg', help="Secret build argument in 'name[=value]' format.", action='append', validator=validate_secret_build_arg)
