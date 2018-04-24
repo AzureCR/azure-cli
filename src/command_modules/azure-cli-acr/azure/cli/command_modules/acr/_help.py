@@ -366,9 +366,9 @@ helps['acr build-task delete'] = """
 
 helps['acr build-task update'] = """
     type: command
-    short-summary: Update a build task from a container registry.
+    short-summary: Update a build task for a container registry.
     examples:
-        - name: Update the git access token for a build definition from a container registry.
+        - name: Update the git access token for a build definition in a container registry.
           text: >
             az acr build-task update -n MyBuildTask -r MyRegistry --git-access-token $PAT
 """
