@@ -133,7 +133,7 @@ def load_command_table(self, _):
                                  table_transformer=replication_output_format)
 
     with self.command_group('acr', acr_build_util) as g:
-        g.command('build', 'acr_build', client_factory=cf_acr_registries)
+        g.command('build', 'acr_build')
 
     with self.command_group('acr build-task', acr_build_task_util) as g:
         g.command('create', 'acr_build_task_create')
