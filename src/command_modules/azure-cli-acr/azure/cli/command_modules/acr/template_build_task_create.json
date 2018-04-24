@@ -119,7 +119,6 @@
         },
         "buildArguments": {
             "type": "array",
-            "defaultValue": [],
             "metadata": {
                 "description": "Build arguments"
             }
