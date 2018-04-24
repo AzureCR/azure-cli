@@ -163,11 +163,9 @@ def _build_format_group(item):
         ('TASK', _get_value(item, 'buildTask')),
         ('PLATFORM', _get_value(item, 'platform', 'osType')),
         ('STATUS', _get_value(item, 'status')),
-        ("TRIGGER", _get_build_trigger(_get_value(item, 'imageUpdateTrigger'),
-                                       _get_value(item, 'gitCommitTrigger'))),
+        ("TRIGGER", _get_build_trigger(_get_value(item, 'imageUpdateTrigger'), _get_value(item, 'gitCommitTrigger'))),
         ('STARTED', _format_datetime(_get_value(item, 'startTime'))),
-        ('DURATION', _get_duration(_get_value(
-            item, 'startTime'), _get_value(item, 'finishTime')))
+        ('DURATION', _get_duration(_get_value(item, 'startTime'), _get_value(item, 'finishTime')))
     ])
 
 
@@ -185,10 +183,10 @@ def _get_value(item, *args):
 
 def _get_build_trigger(image_update_trigger, git_commit_trigger):
     if git_commit_trigger.strip():
-        return "Git Commit"
+        return 'Git Commit'
     if image_update_trigger.strip():
-        return "Image Update"
-    return "Manual"
+        return 'Image Update'
+    return 'Manual'
 
 
 def _format_datetime(date_string):
@@ -209,6 +207,5 @@ def _get_duration(start_time, finish_time):
         seconds = "{0:02d}".format(duration.seconds % 60)
         return "{0}:{1}:{2}".format(hours, minutes, seconds)
     except ValueError:
-        logger.debug(
-            "Unable to get duration with start_time '%s' and finish_time '%s'", start_time, finish_time)
+        logger.debug("Unable to get duration with start_time '%s' and finish_time '%s'", start_time, finish_time)
         return ' '
