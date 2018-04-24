@@ -59,12 +59,3 @@ def validate_build_argument(string, is_secret):
         if len(comps) > 1:
             return {'type': 'DockerBuildArgument', 'name': comps[0], 'value': comps[1], 'isSecret': is_secret}
         return {'type': 'DockerBuildArgument', 'name': comps[0], 'value': '', 'isSecret': is_secret}
-
-
-def validate_build_task_name(namespace):
-    """Validate the name of the build task. """
-    if namespace.build_task_name:
-        import re
-        if not re.match('^[a-zA-Z0-9]*$', namespace.build_task_name):
-            raise CLIError(
-                "Build task name may contain alpha numeric characters only and must be between 5 and 50 characters.")

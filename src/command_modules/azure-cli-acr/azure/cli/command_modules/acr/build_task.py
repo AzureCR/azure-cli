@@ -3,6 +3,7 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
+from msrest.exceptions import ValidationError
 from knack.util import CLIError
 from azure.cli.core.commands import LongRunningOperation
 from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
@@ -43,7 +44,6 @@ def acr_build_task_create(cmd,
                           secret_build_arg=None,
                           base_image_trigger='Runtime',
                           resource_group_name=None):
-
     registry, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
 
@@ -70,7 +70,11 @@ def acr_build_task_create(cmd,
         status=status,
         timeout=timeout
     )
-    build_task = client.create(resource_group_name, registry_name, build_task_name, build_task_create_parameters)
+
+    try:
+        build_task = client.create(resource_group_name, registry_name, build_task_name, build_task_create_parameters)
+    except ValidationError as e:
+        raise CLIError(e)
 
     from ._client_factory import cf_acr_build_steps
     client_build_steps = cf_acr_build_steps(cmd.cli_ctx)
@@ -84,12 +88,16 @@ def acr_build_task_create(cmd,
         build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []),
         base_image_trigger=base_image_trigger
     )
-    client_build_steps.create(
-        resource_group_name=resource_group_name,
-        registry_name=registry_name,
-        build_task_name=build_task_name,
-        step_name=build_task_name + 'StepName',
-        properties=docker_build_step)
+
+    try:
+        client_build_steps.create(
+            resource_group_name=resource_group_name,
+            registry_name=registry_name,
+            build_task_name=build_task_name,
+            step_name=build_task_name + 'StepName',
+            properties=docker_build_step)
+    except ValidationError as e:
+        raise CLIError(e)
 
     return build_task
 

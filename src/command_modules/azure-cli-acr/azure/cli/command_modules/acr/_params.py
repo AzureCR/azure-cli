@@ -30,7 +30,6 @@ from ._constants import (
 from ._validators import (
     validate_registry_name,
     validate_headers,
-    validate_build_task_name,
     validate_build_arg,
     validate_secret_build_arg
 )
@@ -129,4 +128,4 @@ def load_arguments(self, _):
         c.argument('build_id', help='The unique build identifier.')
 
     with self.argument_context('acr build-task create') as c:
-        c.argument('build_task_name', completer=None, validator=validate_build_task_name)
+        c.argument('build_task_name', completer=None)
