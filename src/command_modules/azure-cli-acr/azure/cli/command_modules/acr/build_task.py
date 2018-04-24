@@ -248,3 +248,14 @@ def acr_build_task_logs(cmd,
 
     from .build import acr_build_show_logs
     return acr_build_show_logs(cmd, client, registry_name, build_id, resource_group_name)
+
+
+def acr_build_task_cancel(cmd,
+                          client,
+                          registry_name,
+                          build_id,
+                          resource_group_name=None):
+    _, resource_group_name = validate_managed_registry(
+        cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
+
+    return client.cancel(resource_group_name, registry_name, build_id)

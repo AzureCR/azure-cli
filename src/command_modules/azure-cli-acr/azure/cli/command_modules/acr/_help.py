@@ -396,14 +396,26 @@ helps['acr build-task run'] = """
 
 helps['acr build-task logs'] = """
     type: command
-    short-summary: Show logs for a particular build. If no build-id is supplied, it shows logs for the last, or currently executing build.
+    short-summary: Show logs for a particular build. If no build-id is supplied, it shows logs for the last updated build.
     examples:
-        - name: Show logs for the most current, or executing build.
+        - name: Show logs for the last updated build in the registry.
           text: >
             az acr build-task logs -r MyRegistry
+        - name: Show logs for the last updated build in the registry, filtered by build task.
+          text: >
+            az acr build-task logs -r MyRegistry -n MyBuildTask
         - name: Show logs for a particular build.
           text: >
             az acr build-task logs -r MyRegistry --build-id buildId
+"""
+
+helps['acr build-task cancel'] = """
+    type: command
+    short-summary: Send a cancellation request for a particular build.
+    examples:
+        - name: Send a cancellation request for a particular build.
+          text: >
+            az acr build-task cancel -r MyRegistry --build-id buildId
 """
 
 helps['acr build'] = """
