@@ -7,7 +7,6 @@ from knack.util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 
 from azure.mgmt.containerregistry.v2017_10_01.models import SkuName, Sku
-from .azure.mgmt.containerregistry.v2018_02_01_preview.models import BuildArgument
 
 from ._constants import (
     REGISTRY_RESOURCE_TYPE,
@@ -192,78 +191,6 @@ def arm_deploy_template_existing_storage(cli_ctx,
         get_arm_service_client(cli_ctx).deployments, resource_group_name, deployment_name, properties)
 
 
-def arm_deploy_template_build_task_create(cli_ctx,
-                                          build_task_name,
-                                          registry_name,
-                                          registry_location,
-                                          resource_group_name,
-                                          context,
-                                          source_branch,
-                                          image_names,
-                                          docker_file_path,
-                                          build_arguments,
-                                          git_access_token,
-                                          os_type,
-                                          cpu,
-                                          deployment_name=None):
-    """Deploys ARM template to create a build task.
-    :param str build_task_name: The name of build task
-    :param str registry_name: The name of container registry
-    :param str registry_location: The registry location
-    :param str resource_group_name: The name of resource group
-    :param str context: The URL to a git repository.
-    :param str source_branch: The source control branch name.
-    :param str[] image_names: List of images that the build will push to registry.
-    :param str docker_file_path: The relative path of the the docker file to the source code root folder.
-    :param str[] build_arguments: List of build arguments.
-    :param str git_access_token: The git access token for configuring webhook.
-    :param str os_type: The platform OS that has to be used for build task.
-    :param str cpu: The number of cpu cores to use for running builds.
-    :param str deployment_name: The name of the deployment
-    """
-    from azure.mgmt.resource.resources.models import DeploymentProperties
-    from azure.cli.core.util import get_file_json
-    import os
-
-    source_control_type = "VisualStudioTeamService"
-    if "GITHUB.COM" in context.upper():
-        source_control_type = "GitHub"
-
-    # TODO ankheman remove hard-coded values
-    parameters = {
-        'registryName': {'value': registry_name},
-        'buildTaskName': {'value': build_task_name},
-        'buildTaskLocation': {'value': registry_location},
-        'buildTaskApiVersion': {'value': "2018-02-01-preview"},
-        'buildTaskAlias': {'value': build_task_name},
-        'status': {'value': "enabled"},
-        'osType': {'value': os_type},
-        'cpu': {'value': int(cpu)},
-        'sourceControlType': {'value': source_control_type},
-        'sourceControlRepositoryUrl': {'value': context},
-        'isCommitTriggerEnabled': {'value': True},
-        'sourceControlAuthTokenType': {'value': "PAT"},
-        'sourceControlAuthToken': {'value': git_access_token},
-        'sourceControlRefreshToken': {'value': ""},
-        'sourceControlAuthScope': {'value': "repo"},
-        'sourceControlAuthExpiresIn': {'value': 1313141},
-        'stepName': {'value': build_task_name + "StepName"},
-        'dockerFilePath': {'value': docker_file_path},
-        'buildArguments': {'value': build_arguments},
-        'SourceControlBranch': {'value': source_branch},
-        'imageNames': {'value': image_names},
-        'baseImageTrigger': {'value': "Runtime"},
-        'isPushEnabled': {'value': True},
-    }
-
-    file_path = os.path.join(os.path.dirname(__file__), 'template_build_task_create.json')
-    template = get_file_json(file_path)
-    properties = DeploymentProperties(template=template, parameters=parameters, mode='incremental')
-
-    return _arm_deploy_template(
-        get_arm_service_client(cli_ctx).deployments, resource_group_name, deployment_name, properties)
-
-
 def _arm_deploy_template(deployments_client,
                          resource_group_name,
                          deployment_name,
@@ -381,28 +308,3 @@ def _invalid_sku_update():
 
 def _invalid_sku_downgrade():
     raise CLIError("Managed registries could not be downgraded to Classic SKU.")
-
-
-def validate_and_append_build_arguments(build_arg,
-                                        build_arguments,
-                                        is_secret,
-                                        is_template_deployment=False):
-    """Returns a tuple of Registry object and resource group name.
-    :param str[] build_arg: List of build arguments provided by user
-    :param str[] build_arguments: Mutable list of build_arg and secret_build_arg.
-    :param bool is_secret: arguments in build_arg are secret.
-    """
-    if build_arg is not None:
-        for name_value in build_arg:
-            if "=" not in name_value:
-                raise CLIError("Accepted format for arg is <name>=<value>.")
-            name, value = name_value.split('=', 1)
-            if is_template_deployment:
-                build_arguments.append({
-                    "type": "DockerBuildArgument",
-                    "name": name,
-                    "value": value,
-                    "isSecret": is_secret
-                })
-            else:
-                build_arguments.append(BuildArgument(name, value, is_secret))

@@ -26,10 +26,7 @@ from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     QuickBuildRequest,
     PlatformProperties
 )
-from ._utils import (
-    get_resource_group_name_by_registry_name,
-    validate_and_append_build_arguments
-)
+from ._utils import get_resource_group_name_by_registry_name
 from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
 from knack.log import get_logger
@@ -233,7 +230,7 @@ def _get_blob_info(blob_sas_url):
     return account_name, endpoint_suffix, container_name, blob_name, sas_token
 
 
-def acr_queue(cmd,
+def acr_build(cmd,
               client,
               registry_name,
               source_location,
@@ -279,11 +276,6 @@ def acr_queue(cmd,
     # hard-code platform to linux and cpu to 1
     platform = PlatformProperties("Linux")
 
-    build_arguments = []
-    validate_and_append_build_arguments(build_arg, build_arguments, False)
-    validate_and_append_build_arguments(
-        secret_build_arg, build_arguments, True)
-
     build_request = QuickBuildRequest(
         source_location=source_location,
         platform=platform,
@@ -291,7 +283,7 @@ def acr_queue(cmd,
         image_names=image_names,
         is_push_enabled=is_push_enabled,
         timeout=timeout,
-        build_arguments=build_arguments)
+        build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []))
 
     if is_local_file:
         try:

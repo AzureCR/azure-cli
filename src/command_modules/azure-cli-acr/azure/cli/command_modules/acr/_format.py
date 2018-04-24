@@ -41,6 +41,14 @@ def replication_output_format(result):
     return _output_format(result, _replication_format_group)
 
 
+def build_task_output_format(result):
+    return _output_format(result, _build_task_format_group)
+
+
+def build_step_output_format(result):
+    return _output_format(result, _build_step_format_group)
+
+
 def build_output_format(result):
     return _output_format(result, _build_format_group)
 
@@ -127,6 +135,27 @@ def _replication_format_group(item):
         ('STATUS', _get_value(item, 'status', 'displayStatus'))
     ])
 
+def _build_task_format_group(item):
+    return OrderedDict([
+        ('Name', _get_value(item, 'name')),
+        ('ALIAS', _get_value(item, 'alias')),
+        ('PLATFORM', _get_value(item, 'platform', 'osType')),
+        ('STATUS', _get_value(item, 'status')),
+        ('CREATION DATE', _format_datetime(_get_value(item, 'creationDate'))),
+        ('COMMIT TRIGGER ENABLED', _get_value(item, 'sourceRepository', 'isCommitTriggerEnabled')),
+        ('SOURCE REPOSITORY', _get_value(item, 'sourceRepository', 'repositoryUrl'))
+    ])
+
+
+def _build_step_format_group(item):
+    return OrderedDict([
+        ('Name', _get_value(item, 'name')),
+        ('BRANCH', _get_value(item, 'properties', 'branch')),
+        ('BASE IMAGE TRIGGER', _get_value(item, 'properties', 'baseImageTrigger')),
+        ('IMAGE NAMES', _get_value(item, 'properties', 'imageNames')),
+        ('PUSH ENABLED', _get_value(item, 'properties', 'isPushEnabled')),
+    ])
+
 
 def _build_format_group(item):
     return OrderedDict([
@@ -134,11 +163,9 @@ def _build_format_group(item):
         ('TASK', _get_value(item, 'buildTask')),
         ('PLATFORM', _get_value(item, 'platform', 'osType')),
         ('STATUS', _get_value(item, 'status')),
-        ("TRIGGER", _get_build_trigger(_get_value(item, 'imageUpdateTrigger'),
-                                       _get_value(item, 'gitCommitTrigger'))),
+        ("TRIGGER", _get_build_trigger(_get_value(item, 'imageUpdateTrigger'), _get_value(item, 'gitCommitTrigger'))),
         ('STARTED', _format_datetime(_get_value(item, 'startTime'))),
-        ('DURATION', _get_duration(_get_value(
-            item, 'startTime'), _get_value(item, 'finishTime')))
+        ('DURATION', _get_duration(_get_value(item, 'startTime'), _get_value(item, 'finishTime')))
     ])
 
 
@@ -156,10 +183,10 @@ def _get_value(item, *args):
 
 def _get_build_trigger(image_update_trigger, git_commit_trigger):
     if git_commit_trigger.strip():
-        return "Git Commit"
+        return 'Git Commit'
     if image_update_trigger.strip():
-        return "Image Update"
-    return "Manual"
+        return 'Image Update'
+    return 'Manual'
 
 
 def _format_datetime(date_string):
@@ -180,6 +207,5 @@ def _get_duration(start_time, finish_time):
         seconds = "{0:02d}".format(duration.seconds % 60)
         return "{0}:{1}:{2}".format(hours, minutes, seconds)
     except ValueError:
-        logger.debug(
-            "Unable to get duration with start_time '%s' and finish_time '%s'", start_time, finish_time)
+        logger.debug("Unable to get duration with start_time '%s' and finish_time '%s'", start_time, finish_time)
         return ' '
