@@ -84,7 +84,6 @@ def acr_build_task_create(cmd,
         build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []),
         base_image_trigger=base_image_trigger
     )
-
     client_build_steps.create(
         resource_group_name=resource_group_name,
         registry_name=registry_name,
