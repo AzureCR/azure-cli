@@ -411,9 +411,9 @@ helps['acr build-task logs'] = """
 
 helps['acr build-task cancel'] = """
     type: command
-    short-summary: Send a cancellation request for a particular build. If no build-id is supplied, it sends a cancellation request for the last updated build.
+    short-summary: Send a cancellation request for a particular build.
     examples:
-        - name: Send a request to cancel a particular build.
+        - name: Send a cancellation request for a particular build.
           text: >
             az acr build-task cancel -r MyRegistry --build-id buildId
 """

@@ -153,7 +153,8 @@ def load_command_table(self, _):
                   table_transformer=build_output_format)
         g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds,
                   table_transformer=None)
-        g.command('cancel', 'acr_build_task_cancel', client_factory=cf_acr_builds)
+        g.command('cancel', 'acr_build_task_cancel', client_factory=cf_acr_builds,
+                  table_transformer=None)
 
     with self.command_group('acr build-task step', acr_build_step_util) as g:
         g.command('list', 'acr_build_step_list')

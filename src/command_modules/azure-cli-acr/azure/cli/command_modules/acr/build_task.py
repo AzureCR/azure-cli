@@ -253,24 +253,9 @@ def acr_build_task_logs(cmd,
 def acr_build_task_cancel(cmd,
                           client,
                           registry_name,
-                          build_id=None,
-                          build_task_name=None,
+                          build_id,
                           resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
 
-    if build_id is None:
-        # cancel the last build
-        paged_builds = acr_build_task_list_builds(cmd, client, registry_name, build_task_name)
-        try:
-            build_id = paged_builds.get(0)[0].build_id
-            print("Cancellation requested for buildId {}".format(build_id))
-        except (AttributeError, KeyError, TypeError, IndexError):
-            raise CLIError('Unable to get the latest build information.')
-
-    print("Cancellation requested")
-    return client.cancel(
-        resource_group_name,
-        registry_name,
-        build_id
-    )
+    return client.cancel(resource_group_name, registry_name, build_id)
