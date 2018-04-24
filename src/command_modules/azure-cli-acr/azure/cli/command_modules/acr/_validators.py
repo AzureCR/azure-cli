@@ -57,8 +57,8 @@ def validate_build_argument(string, is_secret):
     if string:
         comps = string.split('=', 1)
         if len(comps) > 1:
-            return {'name': comps[0], 'value': comps[1], 'isSecret': is_secret}
-        return {'name': comps[0], 'value': '', 'isSecret': is_secret}
+            return {'type': 'DockerBuildArgument', 'name': comps[0], 'value': comps[1], 'isSecret': is_secret}
+        return {'type': 'DockerBuildArgument', 'name': comps[0], 'value': '', 'isSecret': is_secret}
 
 
 def validate_build_task_name(namespace):
