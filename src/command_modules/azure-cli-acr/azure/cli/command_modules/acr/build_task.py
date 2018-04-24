@@ -68,7 +68,7 @@ def acr_build_task_create(cmd,
         ),
         platform=PlatformProperties(os_type, cpu),
         status=status,
-        timeout=int(timeout)
+        timeout=timeout
     )
     build_task = client.create(resource_group_name, registry_name, build_task_name, build_task_create_parameters)
 
