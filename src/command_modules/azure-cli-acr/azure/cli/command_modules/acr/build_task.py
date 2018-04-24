@@ -6,11 +6,15 @@
 from knack.util import CLIError
 from azure.cli.core.commands import LongRunningOperation
 from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
+    BuildTask,
+    SourceRepositoryProperties,
+    SourceControlAuthInfo,
+    PlatformProperties,
+    DockerBuildStep,
     BuildTaskBuildRequest,
     BuildTaskUpdateParameters
 )
 from ._utils import (
-    arm_deploy_template_build_task_create,
     validate_managed_registry,
     get_resource_group_name_by_registry_name
 )
@@ -43,31 +47,52 @@ def acr_build_task_create(cmd,
     registry, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
 
-    LongRunningOperation(cmd.cli_ctx)(
-        arm_deploy_template_build_task_create(
-            cli_ctx=cmd.cli_ctx,
-            resource_group_name=resource_group_name,
-            build_task_name=build_task_name,
-            registry_name=registry_name,
-            location=registry.location,
+    source_control_type = 'VisualStudioTeamService'
+    if 'GITHUB.COM' in repository_url.upper():
+        source_control_type = 'GitHub'
+
+    build_task_create_parameters = BuildTask(
+        location=registry.location,
+        alias=alias if alias else build_task_name,
+        source_repository=SourceRepositoryProperties(
+            source_control_type=source_control_type,
             repository_url=repository_url,
-            image_names=image_names,
-            git_access_token=git_access_token,
-            alias=alias if alias else build_task_name,
-            status=status,
-            os_type=os_type,
-            cpu=cpu,
-            timeout=timeout,
-            commit_trigger_enabled=commit_trigger_enabled == 'true',
-            branch=branch,
-            push_enabled=push_enabled == 'true',
-            no_cache=no_cache == 'true',
-            docker_file_path=docker_file_path,
-            build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []),
-            base_image_trigger=base_image_trigger
-        )
+            is_commit_trigger_enabled=commit_trigger_enabled == 'true',
+            source_control_auth_properties=SourceControlAuthInfo(
+                token=git_access_token,
+                token_type='PAT',
+                refresh_token='',
+                scope='repo',
+                expires_in=1313141
+            )
+        ),
+        platform=PlatformProperties(os_type, cpu),
+        status=status,
+        timeout=int(timeout)
     )
-    return client.get(resource_group_name, registry_name, build_task_name)
+    build_task = client.create(resource_group_name, registry_name, build_task_name, build_task_create_parameters)
+
+    from ._client_factory import cf_acr_build_steps
+    client_build_steps = cf_acr_build_steps(cmd.cli_ctx)
+
+    docker_build_step = DockerBuildStep(
+        branch=branch,
+        image_names=image_names,
+        is_push_enabled=push_enabled == 'true',
+        no_cache=no_cache == 'true',
+        docker_file_path=docker_file_path,
+        build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []),
+        base_image_trigger=base_image_trigger
+    )
+
+    client_build_steps.create(
+        resource_group_name=resource_group_name,
+        registry_name=registry_name,
+        build_task_name=build_task_name,
+        step_name=build_task_name + 'StepName',
+        properties=docker_build_step)
+
+    return build_task
 
 
 def acr_build_task_show(cmd,
