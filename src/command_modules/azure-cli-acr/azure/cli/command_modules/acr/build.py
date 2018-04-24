@@ -88,13 +88,14 @@ def _stream_logs(byte_size,
 
     # Try to get the initial properties so there's no waiting.
     # If the storage call fails, we'll just sleep and try again after.
+    from msrestazure.azure_exceptions import CloudError
     try:
         props = blob_service.get_blob_properties(
             container_name=container_name, blob_name=blob_name)
         metadata = props.metadata
         available = props.properties.content_length
         last_modified = props.properties.last_modified
-    except (AttributeError, KeyError, TypeError):
+    except (AttributeError, TypeError, CloudError):
         pass
 
     while (_blob_is_not_complete(metadata) or start < available):
@@ -180,17 +181,17 @@ def _stream_logs(byte_size,
             num_fails += 1
 
             logger.debug(
-                "Failed to find new content '%d' times in a row", num_fails)
+                "Failed to find new content '%s' times in a row", num_fails)
             if num_fails >= num_fails_for_backoff:
                 num_fails = 0
                 sleep_time = min(sleep_time * 2, max_sleep_time)
                 logger.debug(
-                    "Resetting failure count to '%d'", num_fails)
+                    "Resetting failure count to '%s'", num_fails)
 
             # 1.0 <= x < 2.0
             rnd = uniform(1, 2)
             total_sleep_time = sleep_time + rnd
-            logger.debug("Base sleep time: '%d' random delay: '%d' total: '%d' seconds",
+            logger.debug("Base sleep time: '%s' random delay: '%s' total: '%s' seconds",
                          sleep_time, rnd, total_sleep_time)
             time.sleep(total_sleep_time)
 
@@ -394,7 +395,7 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
 
         with tarfile.open(tar_file_path, "w:gz") as tar:
             # NOTE: Need to set arcname to empty string;
-            #  otherwise the child item name will have a prefix (eg, ../) which can block unpacking.
+            # otherwise the child item name will have a prefix (eg, ../) which can block unpacking.
             tar.add(source_location, arcname="", filter=_filter_file)
 
         logger.debug(
