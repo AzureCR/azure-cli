@@ -38,7 +38,7 @@ helps['acr build-task'] = """
 
 helps['acr build-task step'] = """
     type: group
-    short-summary: Manage build steps from build tasks.
+    short-summary: Manage build steps for build tasks.
     """
 
 helps['acr check-name'] = """
@@ -425,11 +425,11 @@ helps['acr build'] = """
 
 helps['acr build-task step list'] = """
     type: command
-    short-summary: List the build steps from a build task.
+    short-summary: List the build steps for a build task.
     examples:
         - name: List build steps and show the results in a table.
           text: >
-            az acr build-task step list -n MyBuildTask -r MyRegistry
+            az acr build-task step list -n MyBuildTask -r MyRegistry -o table
 """
 
 helps['acr build-task step show'] = """
@@ -438,17 +438,17 @@ helps['acr build-task step show'] = """
     examples:
         - name: Get the details of a build step, displaying the results in a table.
           text: >
-            az acr build-task update -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName
+            az acr build-task step show -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName -o table
 """
 
 helps['acr build-task step update'] = """
     type: command
-    short-summary: Update a build step from a build task.
+    short-summary: Update a build step for a build task.
     examples:
-        - name: Update the build argument for a build step from a build task.
+        - name: Update the build argument for a build step in a build task.
           text: >
             az acr build-task update -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName --build-arg key=value
-        - name: Update the target image names for a build step from a build task.
+        - name: Update the target image names for a build step in a build task.
           text: >
             az acr build-task update -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName -t helloworld:{{.Build.ID}}
 """
