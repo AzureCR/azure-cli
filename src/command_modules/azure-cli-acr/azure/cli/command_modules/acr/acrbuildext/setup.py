@@ -5,9 +5,9 @@
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
-VERSION = "0.0.4"
+VERSION = "0.0.5"
 
 CLASSIFIERS = [
     'Development Status :: 1 - Beta',
@@ -32,10 +32,15 @@ setup(
     long_description='An Azure CLI Extension for ACR Build.',
     license='MIT',
     author='Microsoft.',
-    author_email='logger@microsoft.com',
+    author_email='kraterdev@microsoft.com',
     url='https://github.com/Azure/azure-cli',
     classifiers=CLASSIFIERS,
-    packages=find_packages(),
+    packages=[
+        'azext_acrbuildext',
+        'azext_acrbuildext.azure.mgmt.containerregistry.v2018_02_01_preview',
+        'azext_acrbuildext.azure.mgmt.containerregistry.v2018_02_01_preview.models',
+        'azext_acrbuildext.azure.mgmt.containerregistry.v2018_02_01_preview.operations',
+    ],
     install_requires=DEPENDENCIES,
     package_data={'azext_acrbuildext': ['*.json']},
     include_package_data=True
