@@ -7,7 +7,7 @@
 
 from azure.cli.core import AzCommandsLoader
 import azext_acrbuildext._help  # pylint: disable=unused-import
-from ._client_factory import cf_acr_builds, cf_acr_build_tasks, cf_acr_build_steps
+from ._client_factory import cf_acr_builds, cf_acr_build_tasks, cf_acr_build_steps, cf_acr_registries
 from ._format import build_output_format, build_task_output_format, build_step_output_format
 
 class AcrBuildCommandsLoader(AzCommandsLoader):
@@ -37,7 +37,7 @@ class AcrBuildCommandsLoader(AzCommandsLoader):
         )
 
         with self.command_group('acr', acr_build_util) as g:
-            g.command('build', 'acr_build', client_factory=cf_acr_registries)
+            g.command('build', 'acr_build')
 
         with self.command_group('acr build-task', acr_build_task_util) as g:
             g.command('create', 'acr_build_task_create')
@@ -51,10 +51,12 @@ class AcrBuildCommandsLoader(AzCommandsLoader):
                                      custom_func_type=acr_build_task_util,
                                      client_factory=cf_acr_build_tasks,
                                      table_transformer=build_task_output_format)
-            g.command('run', 'acr_build_task_run', client_factory=cf_acr_builds)
+            g.command('run', 'acr_build_task_run', client_factory=cf_acr_builds,
+                      table_transformer=build_output_format)
             g.command('list-builds', 'acr_build_task_list_builds', client_factory=cf_acr_builds,
                       table_transformer=build_output_format)
-            g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds)
+            g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds,
+                      table_transformer=None)
 
         with self.command_group('acr build-task step', acr_build_step_util) as g:
             g.command('list', 'acr_build_step_list')
