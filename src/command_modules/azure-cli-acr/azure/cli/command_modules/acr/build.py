@@ -88,14 +88,13 @@ def _stream_logs(byte_size,
 
     # Try to get the initial properties so there's no waiting.
     # If the storage call fails, we'll just sleep and try again after.
-    from msrestazure.azure_exceptions import CloudError
     try:
         props = blob_service.get_blob_properties(
             container_name=container_name, blob_name=blob_name)
         metadata = props.metadata
         available = props.properties.content_length
         last_modified = props.properties.last_modified
-    except (AttributeError, TypeError, CloudError):
+    except (AttributeError, AzureHttpError):
         pass
 
     while (_blob_is_not_complete(metadata) or start < available):
