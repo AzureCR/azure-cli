@@ -20,6 +20,7 @@ from ._utils import (
     get_resource_group_name_by_registry_name
 )
 
+
 BUILD_TASKS_NOT_SUPPORTED = 'Build Tasks are only supported for managed registries.'
 
 
@@ -209,7 +210,7 @@ def acr_build_task_run(cmd,
     print("Queued a build with build ID: {}".format(build_id))
     print("Waiting for a build agent...")
     from .build import acr_build_show_logs
-    return acr_build_show_logs(cmd, client, registry_name, build_id, resource_group_name)
+    return acr_build_show_logs(client, build_id, registry_name, resource_group_name)
 
 
 def acr_build_task_list_builds(cmd,
@@ -247,13 +248,13 @@ def acr_build_task_logs(cmd,
             raise CLIError('Unable to get the latest build information.')
 
     from .build import acr_build_show_logs
-    return acr_build_show_logs(cmd, client, registry_name, build_id, resource_group_name)
+    return acr_build_show_logs(client, build_id, registry_name, resource_group_name)
 
 
 def acr_build_task_cancel(cmd,
                           client,
-                          registry_name,
                           build_id,
+                          registry_name,
                           resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)

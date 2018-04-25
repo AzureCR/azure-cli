@@ -26,21 +26,20 @@ from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     QuickBuildRequest,
     PlatformProperties
 )
-from ._utils import get_resource_group_name_by_registry_name
+from ._utils import validate_managed_registry
 from ._client_factory import cf_acr_registries
+
 
 logger = get_logger(__name__)
 
 
-def acr_build_show_logs(cmd,
-                        client,
-                        registry_name,
+BUILD_NOT_SUPPORTED = 'Builds are only supported for managed registries.'
+
+
+def acr_build_show_logs(client,
                         build_id,
-                        resource_group_name=None):
-
-    resource_group_name = get_resource_group_name_by_registry_name(
-        cmd.cli_ctx, registry_name, resource_group_name)
-
+                        registry_name,
+                        resource_group_name):
     build_log_result = client.get_log_link(
         build_id=build_id, resource_group_name=resource_group_name,
         registry_name=registry_name)
@@ -239,17 +238,12 @@ def acr_build(cmd,
               secret_build_arg=None,
               docker_file_path="Dockerfile",
               no_logs=False):
-
-    resource_group_name = get_resource_group_name_by_registry_name(
-        cmd.cli_ctx, registry_name, resource_group_name)
+    _, resource_group_name = validate_managed_registry(
+        cmd.cli_ctx, registry_name, resource_group_name, BUILD_NOT_SUPPORTED)
 
     client_registries = cf_acr_registries(cmd.cli_ctx)
 
-    if source_location is None:
-        source_location = "."
-
-    tar_file_path = os.path.join(tempfile.gettempdir(),
-                                 "source_archive_{}.tar.gz".format(hash(os.times())))
+    tar_file_path = os.path.join(tempfile.gettempdir(),'source_archive_{}.tar.gz'.format(hash(os.times())))
 
     if os.path.exists(source_location):
         if os.path.isdir(source_location):
@@ -258,25 +252,21 @@ def acr_build(cmd,
             source_location = _upload_source_code(
                 client_registries, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path)
         else:
-            raise CLIError(
-                "'--context -c' should be a local directory path or remote url.")
+            raise CLIError("'--context -c' should be a local directory path or remote url.")
         is_local_file = True
     else:
         source_location = _check_remote_source_code(source_location)
         is_local_file = False
 
-    is_push_enabled = True
-
-    if image_names is None:
+    if image_names:
+        is_push_enabled = True
+    else:
         is_push_enabled = False
         print("'--image -t' is not provided. Skip image push after build.")
 
-    # hard-code platform to linux and cpu to 1
-    platform = PlatformProperties("Linux")
-
     build_request = QuickBuildRequest(
         source_location=source_location,
-        platform=platform,
+        platform=PlatformProperties('Linux'),
         docker_file_path=docker_file_path,
         image_names=image_names,
         is_push_enabled=is_push_enabled,
@@ -287,38 +277,35 @@ def acr_build(cmd,
         try:
             size = os.path.getsize(tar_file_path)
         except OSError:
-            raise CLIError(
-                "Get the size of file {0} failed.".format(tar_file_path))
+            raise CLIError("Get the size of file {0} failed.".format(tar_file_path))
         finally:
             try:
-                logger.debug(
-                    "Starting to delete the archived source code from '%s'.", tar_file_path)
+                logger.debug("Starting to delete the archived source code from '%s'.", tar_file_path)
                 os.remove(tar_file_path)
             except OSError:
                 pass
-        unit = ""
+        unit = 'GiB'
         for S in ['Bytes', 'KiB', 'MiB', 'GiB']:
             if size < 1024:
                 unit = S
                 break
             size = size / 1024.0
-        if unit == "":
-            unit = "GiB"
-        print("Sending build context ({0:.3f} {1}) to ACR".format(size, unit))
+        print("Sending build context ({0:.3f} {1}) to ACR.".format(size, unit))
     else:
-        print("Sending build context to ACR")
+        print("Sending build context to ACR.")
 
     queued_build = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
-        build_request=build_request, resource_group_name=resource_group_name,
-        registry_name=registry_name))
+        resource_group_name=resource_group_name,
+        registry_name=registry_name,
+        build_request=build_request))
 
     if no_logs:
         return queued_build
-    else:
-        build_id = queued_build.build_id
-        print("Queued a build with ID: {0}".format(build_id))
-        print("Waiting for a build agent...")
-        acr_build_show_logs(cmd, client, registry_name, build_id, resource_group_name)
+
+    build_id = queued_build.build_id
+    print("Queued a build with build ID: {}".format(build_id))
+    print("Waiting for a build agent...")
+    return acr_build_show_logs(client, build_id, registry_name, resource_group_name)
 
 
 def _check_local_docker_file(source_location, docker_file_path):
