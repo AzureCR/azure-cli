@@ -1,4 +1,4 @@
-xcopy ..\sdk\*.py azext_acrbuildext\sdk\ /sy
+xcopy ..\azure\*.py azext_acrbuildext\azure\ /sy
 xcopy ..\*.py azext_acrbuildext\ /y
 xcopy ..\*.json azext_acrbuildext\ /y
 xcopy __init__.py azext_acrbuildext\ /y
