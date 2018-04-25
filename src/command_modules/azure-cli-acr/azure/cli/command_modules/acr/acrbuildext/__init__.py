@@ -7,7 +7,7 @@
 
 from azure.cli.core import AzCommandsLoader
 import azext_acrbuildext._help  # pylint: disable=unused-import
-from ._client_factory import cf_acr_builds, cf_acr_build_tasks, cf_acr_build_steps, cf_acr_registries
+from ._client_factory import cf_acr_builds, cf_acr_build_tasks, cf_acr_build_steps
 from ._format import build_output_format, build_task_output_format, build_step_output_format
 
 class AcrBuildCommandsLoader(AzCommandsLoader):
