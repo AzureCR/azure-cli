@@ -32,7 +32,7 @@ setup(
     long_description='An Azure CLI Extension for ACR Build.',
     license='MIT',
     author='Microsoft.',
-    author_email='logger@microsoft.com',
+    author_email='kraterdev@microsoft.com',
     url='https://github.com/Azure/azure-cli',
     classifiers=CLASSIFIERS,
     packages=[
