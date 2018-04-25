@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------------------
 
 from codecs import open
-from setuptools import setup, find_packages
+from setuptools import setup
 try:
     from azure_bdist_wheel import cmdclass
 except ImportError:
@@ -51,7 +51,15 @@ setup(
     author_email='azpycli@microsoft.com',
     url='https://github.com/Azure/azure-cli',
     classifiers=CLASSIFIERS,
-    packages=find_packages(),
+    packages=[
+        'azure',
+        'azure.cli',
+        'azure.cli.command_modules',
+        'azure.cli.command_modules.acr',
+        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2018_02_01_preview',
+        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2018_02_01_preview.models',
+        'azure.cli.command_modules.acr.azure.mgmt.containerregistry.v2018_02_01_preview.operations',
+    ],
     install_requires=DEPENDENCIES,
     package_data={'azure.cli.command_modules.acr': ['*.json']},
     cmdclass=cmdclass
