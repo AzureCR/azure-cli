@@ -14,8 +14,9 @@ import tarfile
 import requests
 import colorama
 import pytz
-from knack.util import CLIError
 from knack.log import get_logger
+from knack.util import CLIError
+from msrestazure.azure_exceptions import CloudError
 from azure.common import AzureHttpError
 from azure.cli.core.commands import LongRunningOperation
 from azure.storage.blob import (
@@ -40,31 +41,36 @@ def acr_build_show_logs(client,
                         build_id,
                         registry_name,
                         resource_group_name):
-    build_log_result = client.get_log_link(
-        build_id=build_id, resource_group_name=resource_group_name,
-        registry_name=registry_name)
-    log_file_sas = build_log_result.log_link
+    log_file_sas = None
+    error_message = "Could not get build logs for build ID: {}.".format(build_id)
+    try:
+        build_log_result = client.get_log_link(
+            resource_group_name=resource_group_name,
+            registry_name=registry_name,
+            build_id=build_id)
+        log_file_sas = build_log_result.log_link
+    except (AttributeError, CloudError) as e:
+        logger.debug("%s Exception: %s", error_message, e)
+        raise CLIError(error_message)
 
     if not log_file_sas:
-        return 'No logs found.'
+        logger.debug("%s Empty SAS URL.", error_message)
+        raise CLIError(error_message)
 
-    account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(
-        log_file_sas)
+    account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(log_file_sas)
 
     byte_size = 1024*1
     timeout_in_minutes = 30
     timeout_in_seconds = timeout_in_minutes * 60
 
-    _stream_logs(byte_size, timeout_in_seconds,
-                 AppendBlobService(
-                     account_name=account_name, sas_token=sas_token,
-                     endpoint_suffix=endpoint_suffix), container_name, blob_name)
-
-
-def _get_match(sas_url):
-    return re.search(
-        (r"http(s)?://(?P<account_name>.*?)\.blob\.(?P<endpoint_suffix>.*?)/(?P<container_name>.*?)/"
-         r"(?P<blob_name>.*?)\?(?P<sas_token>.*)"), sas_url)
+    _stream_logs(byte_size=byte_size,
+                 timeout_in_seconds=timeout_in_seconds,
+                 blob_service=AppendBlobService(
+                     account_name=account_name,
+                     sas_token=sas_token,
+                     endpoint_suffix=endpoint_suffix),
+                 container_name=container_name,
+                 blob_name=blob_name)
 
 
 def _stream_logs(byte_size,
@@ -72,10 +78,9 @@ def _stream_logs(byte_size,
                  blob_service,
                  container_name,
                  blob_name):
-
     colorama.init()
     stream = BytesIO()
-    metadata = dict()
+    metadata = {}
     start = 0
     end = byte_size - 1
     available = 0
@@ -157,8 +162,7 @@ def _stream_logs(byte_size,
 
         # If we're still expecting data and we have a record for the last
         # modified date and the last modified date has timed out, exit
-        if ((last_modified is not None and _blob_is_not_complete(metadata)) or
-                start < available):
+        if ((last_modified is not None and _blob_is_not_complete(metadata)) or start < available):
 
             delta = datetime.utcnow().replace(tzinfo=pytz.utc) - last_modified
 
@@ -173,18 +177,15 @@ def _stream_logs(byte_size,
                 print("No additional logs found. Timing out...")
                 return
 
-        # If no new data available but not complete, sleep before trying
-        # to process additional data.
+        # If no new data available but not complete, sleep before trying to process additional data.
         if (_blob_is_not_complete(metadata) and start >= available):
             num_fails += 1
 
-            logger.debug(
-                "Failed to find new content '%s' times in a row", num_fails)
+            logger.debug("Failed to find new content '%s' times in a row", num_fails)
             if num_fails >= num_fails_for_backoff:
                 num_fails = 0
                 sleep_time = min(sleep_time * 2, max_sleep_time)
-                logger.debug(
-                    "Resetting failure count to '%s'", num_fails)
+                logger.debug("Resetting failure count to '%s'", num_fails)
 
             # 1.0 <= x < 2.0
             rnd = uniform(1, 2)
@@ -202,7 +203,7 @@ def _stream_logs(byte_size,
 
 
 def _blob_is_not_complete(metadata):
-    if metadata is None:
+    if not metadata:
         return True
 
     for key in metadata:
@@ -213,7 +214,8 @@ def _blob_is_not_complete(metadata):
 
 
 def _get_blob_info(blob_sas_url):
-    match = _get_match(blob_sas_url)
+    match = re.search((r"http(s)?://(?P<account_name>.*?)\.blob\.(?P<endpoint_suffix>.*?)/(?P<container_name>.*?)/"
+                       r"(?P<blob_name>.*?)\?(?P<sas_token>.*)"), blob_sas_url)
     account_name = match.group('account_name')
     endpoint_suffix = match.group('endpoint_suffix')
     container_name = match.group('container_name')
@@ -221,8 +223,7 @@ def _get_blob_info(blob_sas_url):
     sas_token = match.group('sas_token')
 
     if not account_name or not container_name or not blob_name or not sas_token:
-        raise CLIError("Failed to parse the sas url: '{!s}'."
-                       .format(blob_sas_url))
+        raise CLIError("Failed to parse the SAS url: '{!s}'.".format(blob_sas_url))
 
     return account_name, endpoint_suffix, container_name, blob_name, sas_token
 
@@ -243,7 +244,7 @@ def acr_build(cmd,
 
     client_registries = cf_acr_registries(cmd.cli_ctx)
 
-    tar_file_path = os.path.join(tempfile.gettempdir(),'source_archive_{}.tar.gz'.format(hash(os.times())))
+    tar_file_path = os.path.join(tempfile.gettempdir(), 'source_archive_{}.tar.gz'.format(hash(os.times())))
 
     if os.path.exists(source_location):
         if os.path.isdir(source_location):
@@ -310,12 +311,10 @@ def acr_build(cmd,
 
 def _check_local_docker_file(source_location, docker_file_path):
     if not os.path.isfile(os.path.join(source_location, docker_file_path)):
-        raise CLIError("Unable to find '{}' in '{}'.".format(
-            docker_file_path, source_location))
+        raise CLIError("Unable to find '{}' in '{}'.".format(docker_file_path, source_location))
 
 
 def _check_remote_source_code(source_location):
-
     lower_source_location = source_location.lower()
 
     # git
@@ -323,9 +322,8 @@ def _check_remote_source_code(source_location):
         return source_location
 
     # http
-    if (lower_source_location.startswith("https://") or
-            lower_source_location.startswith("http://") or
-            lower_source_location.startswith("github.com/")):
+    if lower_source_location.startswith("https://") or lower_source_location.startswith("http://") \
+        or lower_source_location.startswith("github.com/"):
         if re.search(r"\.git(?:#.+)?$", lower_source_location):
             # git url must contain ".git"
             return source_location
@@ -336,69 +334,71 @@ def _check_remote_source_code(source_location):
             else:
                 raise CLIError("'{}' doesn't exist.".format(source_location))
 
-    raise CLIError(
-        "'{}' is not a valid remote url for git or tarball.".format(source_location))
+    raise CLIError("'{}' is not a valid remote url for git or tarball.".format(source_location))
 
 
 def _upload_source_code(client, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path):
+    logger.debug("Starting to acquire the access token to upload the source code.")
+    ignore_list = _load_dockerignore_file(source_location)
+    common_vcs_ignore_list = {'.git', '.gitignore', '.bzr', 'bzrignore', '.hg', '.hgignore', '.svn'}
 
-    try:
-        logger.debug(
-            "Starting to acquire the access token to upload the source code.")
+    def _filter_file(tarinfo):
+        # ignore common vcs dir or file
+        if tarinfo.name in common_vcs_ignore_list:
+            logger.debug(".dockerignore: ignore vcs file '%s'", tarinfo.name)
+            return None
 
-        source_upload_location = client.get_build_source_upload_url(
-            resource_group_name=resource_group_name, registry_name=registry_name)
-
-        ignore_list = _load_dockerignore_file(source_location)
-
-        common_vcs_ignore_list = {'.git', '.gitignore', '.bzr', 'bzrignore', '.hg', '.hgignore', '.svn'}
-
-        def _filter_file(tarinfo):
-            # ignore common vcs dir or file
-            if tarinfo.name in common_vcs_ignore_list:
-                logger.debug(
-                    ".dockerignore: ignore vcs file '%s'", tarinfo.name)
-                return None
-
-            if ignore_list is None:
-                return tarinfo
-
-            # always include docker file
-            # file path comparision is case-sensitive
-            if tarinfo.name == docker_file_path:
-                logger.debug(
-                    ".dockerignore: skip checking '%s'", docker_file_path)
-                return tarinfo
-
-            for item in ignore_list:
-                if re.match(item.pattern, tarinfo.name):
-                    logger.debug(".dockerignore: rule '%s' matches '%s'.", item.rule, tarinfo.name)
-                    return None if item.ignore else tarinfo
-
-            logger.debug(
-                ".dockerignore: no rule for '%s'.", tarinfo.name)
+        if ignore_list is None:
             return tarinfo
 
-        with tarfile.open(tar_file_path, "w:gz") as tar:
-            # NOTE: Need to set arcname to empty string;
-            # otherwise the child item name will have a prefix (eg, ../) which can block unpacking.
-            tar.add(source_location, arcname="", filter=_filter_file)
+        # always include docker file
+        # file path comparision is case-sensitive
+        if tarinfo.name == docker_file_path:
+            logger.debug(".dockerignore: skip checking '%s'", docker_file_path)
+            return tarinfo
 
-        logger.debug(
-            "Starting to upload the archived source code from '%s'.", tar_file_path)
+        for item in ignore_list:
+            if re.match(item.pattern, tarinfo.name):
+                logger.debug(".dockerignore: rule '%s' matches '%s'.", item.rule, tarinfo.name)
+                return None if item.ignore else tarinfo
 
-        account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(
-            source_upload_location.upload_url)
+        logger.debug(".dockerignore: no rule for '%s'.", tarinfo.name)
+        return tarinfo
 
-        BlockBlobService(account_name=account_name, sas_token=sas_token,
+    with tarfile.open(tar_file_path, "w:gz") as tar:
+        # NOTE: Need to set arcname to empty string;
+        # otherwise the child item name will have a prefix (eg, ../) which can block unpacking.
+        tar.add(source_location, arcname="", filter=_filter_file)
+
+    logger.debug("Starting to upload the archived source code from '%s'.", tar_file_path)
+
+    upload_url = None
+    error_message = "Could not get build source upload URL."
+    try:
+        source_upload_location = client.get_build_source_upload_url(resource_group_name, registry_name)
+        upload_url = source_upload_location.upload_url
+    except (AttributeError, CloudError) as e:
+        logger.debug("%s Exception: %s", error_message, e)
+        raise CLIError(error_message)
+
+    if not upload_url:
+        logger.debug("%s Empty build source upload URL.", error_message)
+        raise CLIError(error_message)
+
+    account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(upload_url)
+
+    try:
+        BlockBlobService(account_name=account_name,
+                         sas_token=sas_token,
                          endpoint_suffix=endpoint_suffix).create_blob_from_path(
-                             container_name=container_name, blob_name=blob_name, file_path=tar_file_path)
+                             container_name=container_name,
+                             blob_name=blob_name,
+                             file_path=tar_file_path)
 
         return source_upload_location.relative_path
     except Exception as err:
         try:
-            logger.debug(
-                "Starting to delete the archived source code from '%s'.", tar_file_path)
+            logger.debug("Starting to delete the archived source code from '%s'.", tar_file_path)
             os.remove(tar_file_path)
         except OSError:
             pass
@@ -428,7 +428,6 @@ class IgnoreRule(object):
 
 
 def _load_dockerignore_file(source_location):
-
     # reference: https://docs.docker.com/engine/reference/builder/#dockerignore-file
     docker_ignore_file = os.path.join(source_location, ".dockerignore")
     if not os.path.exists(docker_ignore_file):
