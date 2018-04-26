@@ -434,33 +434,3 @@ helps['acr build'] = """
           text: >
             az acr build -r MyRegistry -c .
 """
-
-helps['acr build-task step list'] = """
-    type: command
-    short-summary: List the build steps for a build task.
-    examples:
-        - name: List build steps and show the results in a table.
-          text: >
-            az acr build-task step list -n MyBuildTask -r MyRegistry -o table
-"""
-
-helps['acr build-task step show'] = """
-    type: command
-    short-summary: Get the properties of a specified build step.
-    examples:
-        - name: Get the details of a build step, displaying the results in a table.
-          text: >
-            az acr build-task step show -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName -o table
-"""
-
-helps['acr build-task step update'] = """
-    type: command
-    short-summary: Update a build step for a build task.
-    examples:
-        - name: Update the build argument for a build step in a build task.
-          text: >
-            az acr build-task update -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName --build-arg key=value
-        - name: Update the target image names for a build step in a build task.
-          text: >
-            az acr build-task update -n MyBuildTask -r MyRegistry --step-name MyBuildTaskStepName -t helloworld:{{.Build.ID}}
-"""

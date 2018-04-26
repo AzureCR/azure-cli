@@ -266,7 +266,7 @@ def acr_build(cmd,
 
     build_request = QuickBuildRequest(
         source_location=source_location,
-        platform=PlatformProperties('Linux'),
+        platform=PlatformProperties(os_type='Linux'),
         docker_file_path=docker_file_path,
         image_names=image_names,
         is_push_enabled=is_push_enabled,

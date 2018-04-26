@@ -16,7 +16,7 @@ from ._format import (
     webhook_ping_output_format,
     replication_output_format,
     build_task_output_format,
-    build_step_output_format,
+    build_task_detail_output_format,
     build_output_format
 )
 from ._client_factory import(
@@ -24,7 +24,6 @@ from ._client_factory import(
     cf_acr_replications,
     cf_acr_webhooks,
     cf_acr_build_tasks,
-    cf_acr_build_steps,
     cf_acr_builds
 )
 
@@ -66,14 +65,8 @@ def load_command_table(self, _):
 
     acr_build_task_util = CliCommandType(
         operations_tmpl='azure.cli.command_modules.acr.build_task#{}',
-        table_transformer=build_task_output_format,
+        table_transformer=build_task_detail_output_format,
         client_factory=cf_acr_build_tasks
-    )
-
-    acr_build_step_util = CliCommandType(
-        operations_tmpl='azure.cli.command_modules.acr.build_step#{}',
-        table_transformer=build_step_output_format,
-        client_factory=cf_acr_build_steps
     )
 
     with self.command_group('acr', acr_custom_util) as g:
@@ -138,31 +131,12 @@ def load_command_table(self, _):
     with self.command_group('acr build-task', acr_build_task_util) as g:
         g.command('create', 'acr_build_task_create')
         g.command('show', 'acr_build_task_show')
-        g.command('list', 'acr_build_task_list')
+        g.command('list', 'acr_build_task_list', table_transformer=build_task_output_format)
         g.command('delete', 'acr_build_task_delete')
-        g.generic_update_command('update',
-                                 getter_name='acr_build_task_update_get',
-                                 setter_name='acr_build_task_update_set',
-                                 custom_func_name='acr_build_task_update_custom',
-                                 custom_func_type=acr_build_task_util,
-                                 client_factory=cf_acr_build_tasks,
-                                 table_transformer=build_task_output_format)
+        g.command('update', 'acr_build_task_update')
         g.command('run', 'acr_build_task_run', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
         g.command('list-builds', 'acr_build_task_list_builds', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
         g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds,
                   table_transformer=None)
-        # g.command('cancel', 'acr_build_task_cancel', client_factory=cf_acr_builds,
-        #           table_transformer=None)
-
-    with self.command_group('acr build-task step', acr_build_step_util) as g:
-        g.command('list', 'acr_build_step_list')
-        g.command('show', 'acr_build_step_show')
-        g.generic_update_command('update',
-                                 getter_name='acr_build_step_update_get',
-                                 setter_name='acr_build_step_update_set',
-                                 custom_func_name='acr_build_step_update_custom',
-                                 custom_func_type=acr_build_step_util,
-                                 client_factory=cf_acr_build_steps,
-                                 table_transformer=build_step_output_format)
