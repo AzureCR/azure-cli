@@ -6,7 +6,7 @@
 from knack.util import CLIError
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 
-from azure.mgmt.containerregistry.v2017_10_01.models import SkuName, Sku
+from azure.mgmt.containerregistry.v2017_10_01.models import Sku
 
 from ._constants import (
     REGISTRY_RESOURCE_TYPE,
@@ -241,7 +241,7 @@ def validate_premium_registry(cli_ctx, registry_name, resource_group_name=None, 
     """
     registry, resource_group_name = get_registry_by_name(cli_ctx, registry_name, resource_group_name)
 
-    if not registry.sku or registry.sku.name != SkuName.premium.value:
+    if not registry.sku or registry.sku.name != 'Premium':
         raise CLIError(message or "This operation is only supported for managed registries in Premium SKU.")
 
     return registry, resource_group_name
