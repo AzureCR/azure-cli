@@ -6,6 +6,7 @@
 from collections import OrderedDict
 from knack.log import get_logger
 
+
 logger = get_logger(__name__)
 
 
@@ -134,6 +135,7 @@ def _replication_format_group(item):
         ('PROVISIONING STATE', _get_value(item, 'provisioningState')),
         ('STATUS', _get_value(item, 'status', 'displayStatus'))
     ])
+
 
 def _build_task_format_group(item):
     return OrderedDict([

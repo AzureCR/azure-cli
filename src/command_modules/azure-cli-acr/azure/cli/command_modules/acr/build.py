@@ -22,7 +22,7 @@ from azure.storage.blob import (
     BlockBlobService,
     AppendBlobService,
 )
-from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
+from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     QuickBuildRequest,
     PlatformProperties
 )
