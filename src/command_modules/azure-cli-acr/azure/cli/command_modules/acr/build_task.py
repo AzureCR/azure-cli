@@ -4,6 +4,8 @@
 # --------------------------------------------------------------------------------------------
 
 from msrest.exceptions import ValidationError
+from msrestazure.azure_exceptions import CloudError
+from knack.log import get_logger
 from knack.util import CLIError
 from azure.cli.core.commands import LongRunningOperation
 from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
@@ -13,12 +15,14 @@ from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     PlatformProperties,
     DockerBuildStep,
     BuildTaskBuildRequest,
-    BuildTaskUpdateParameters
+    BuildTaskUpdateParameters,
+    SourceRepositoryUpdateParameters,
+    DockerBuildStepUpdateParameters
 )
-from ._utils import (
-    validate_managed_registry,
-    get_resource_group_name_by_registry_name
-)
+from ._utils import validate_managed_registry
+
+
+logger = get_logger(__name__)
 
 
 BUILD_TASKS_NOT_SUPPORTED = 'Build Tasks are only supported for managed registries.'
@@ -67,13 +71,17 @@ def acr_build_task_create(cmd,
                 expires_in=1313141
             )
         ),
-        platform=PlatformProperties(os_type, cpu),
+        platform=PlatformProperties(os_type=os_type, cpu=cpu),
         status=status,
         timeout=timeout
     )
 
     try:
-        build_task = client.create(resource_group_name, registry_name, build_task_name, build_task_create_parameters)
+        build_task = LongRunningOperation(cmd.cli_ctx)(
+            client.create(resource_group_name=resource_group_name,
+                          registry_name=registry_name,
+                          build_task_name=build_task_name,
+                          build_task_create_parameters=build_task_create_parameters))
     except ValidationError as e:
         raise CLIError(e)
 
@@ -91,12 +99,13 @@ def acr_build_task_create(cmd,
     )
 
     try:
-        client_build_steps.create(
-            resource_group_name=resource_group_name,
-            registry_name=registry_name,
-            build_task_name=build_task_name,
-            step_name=build_task_name + 'StepName',
-            properties=docker_build_step)
+        build_step = LongRunningOperation(cmd.cli_ctx)(
+            client_build_steps.create(resource_group_name=resource_group_name,
+                                      registry_name=registry_name,
+                                      build_task_name=build_task_name,
+                                      step_name=_get_build_step_name(build_task_name),
+                                      properties=docker_build_step))
+        setattr(build_task, 'properties', build_step.properties)
     except ValidationError as e:
         raise CLIError(e)
 
@@ -110,7 +119,23 @@ def acr_build_task_show(cmd,
                         resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
-    return client.get(resource_group_name, registry_name, build_task_name)
+    build_task = client.get(resource_group_name, registry_name, build_task_name)
+
+    from ._client_factory import cf_acr_build_steps
+    client_build_steps = cf_acr_build_steps(cmd.cli_ctx)
+
+    try:
+        build_step = client_build_steps.get(resource_group_name,
+                                            registry_name,
+                                            build_task_name,
+                                            _get_build_step_name(build_task_name))
+        setattr(build_task, 'properties', build_step.properties)
+    except CloudError as e:
+        if e.status_code != 404:
+            raise
+        logger.warning("Could not get build task details. Build task basic information is printed.")
+
+    return build_task
 
 
 def acr_build_task_list(cmd,
@@ -132,60 +157,97 @@ def acr_build_task_delete(cmd,
     return client.delete(resource_group_name, registry_name, build_task_name)
 
 
-def acr_build_task_update_get():
-    return BuildTaskUpdateParameters()
+def acr_build_task_update(cmd, # pylint: disable=unused-argument
+                          client,
+                          build_task_name,
+                          registry_name,
+                          resource_group_name=None,
+                          # build task parameters
+                          alias=None,
+                          status=None,
+                          os_type=None,
+                          cpu=None,
+                          timeout=None,
+                          repository_url=None,
+                          commit_trigger_enabled=None,
+                          git_access_token=None,
+                          # build step parameters
+                          branch=None,
+                          image_names=None,
+                          push_enabled=None,
+                          no_cache=None,
+                          docker_file_path=None,
+                          build_arg=None,
+                          secret_build_arg=None,
+                          base_image_trigger=None):
+    _, resource_group_name = validate_managed_registry(
+        cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
+
+    build_task = client.get(resource_group_name, registry_name, build_task_name)
+    if alias or status or os_type or cpu or timeout or repository_url or commit_trigger_enabled or git_access_token:
+        build_task_update_parameters = BuildTaskUpdateParameters()
+        build_task_update_parameters.alias = alias
+        build_task_update_parameters.status = status
+        build_task_update_parameters.platform = PlatformProperties(os_type=os_type or build_task.platform.os_type,
+                                                                   cpu=cpu)
+        build_task_update_parameters.timeout = timeout
+        build_task_update_parameters.source_repository = SourceRepositoryUpdateParameters(
+            source_control_auth_properties=SourceControlAuthInfo(token=git_access_token) if git_access_token else None,
+            is_commit_trigger_enabled=commit_trigger_enabled == 'true' if commit_trigger_enabled else None)
+        build_task = LongRunningOperation(cmd.cli_ctx)(
+            client.update(resource_group_name=resource_group_name,
+                          registry_name=registry_name,
+                          build_task_name=build_task_name,
+                          step_name=_get_build_step_name(build_task_name),
+                          build_task_update_parameters=build_task_update_parameters))
+
+    from ._client_factory import cf_acr_build_steps
+    client_build_steps = cf_acr_build_steps(cmd.cli_ctx)
+
+    build_step = None
+    if branch or image_names or push_enabled or no_cache or docker_file_path or \
+       build_arg or secret_build_arg or base_image_trigger:
+        build_step_update_parameters = DockerBuildStepUpdateParameters()
+        build_step_update_parameters.branch = branch
+        build_step_update_parameters.image_names = image_names
+        build_step_update_parameters.is_push_enabled = push_enabled == 'true' if push_enabled else None
+        build_step_update_parameters.no_cache = no_cache == 'true' if no_cache else None
+        build_step_update_parameters.docker_file_path = docker_file_path
+        build_step_update_parameters.build_arguments = build_arg + secret_build_arg if build_arg and secret_build_arg \
+                                                       else build_arg or secret_build_arg
+        build_step_update_parameters.base_image_trigger = base_image_trigger
+
+        try:
+            build_step = LongRunningOperation(cmd.cli_ctx)(
+                client_build_steps.update(resource_group_name=resource_group_name,
+                                          registry_name=registry_name,
+                                          build_task_name=build_task_name,
+                                          step_name=_get_build_step_name(build_task_name),
+                                          properties=build_step_update_parameters))
+        except CloudError as e:
+            if e.status_code != 404:
+                raise
+            logger.warning("Could not update build task details. Build task basic information is updated.")
+
+    # If build step is not updated, get it here
+    if not build_step:
+        try:
+            build_step = client_build_steps.get(resource_group_name,
+                                                registry_name,
+                                                build_task_name,
+                                                _get_build_step_name(build_task_name))
+        except CloudError as e:
+            if e.status_code != 404:
+                raise
+
+    if build_step:
+        setattr(build_task, 'properties', build_step.properties)
+
+    return build_task
 
 
-def acr_build_task_update_set(cmd,
-                              client,
-                              build_task_name,
-                              registry_name,
-                              resource_group_name=None,
-                              parameters=None):
-    resource_group_name = get_resource_group_name_by_registry_name(
-        cmd.cli_ctx, registry_name, resource_group_name)
-    return client.update(resource_group_name, registry_name, build_task_name, parameters)
-
-
-def acr_build_task_update_custom(cmd, # pylint: disable=unused-argument
-                                 instance,
-                                 alias=None,
-                                 status=None,
-                                 os_type=None,
-                                 cpu=None,
-                                 timeout=None,
-                                 repository_url=None,
-                                 commit_trigger_enabled=None,
-                                 git_access_token=None,
-                                 tags=None):
-    if alias is not None:
-        instance.alias = alias
-
-    if status is not None:
-        instance.status = status
-
-    if os_type is not None:
-        instance.platform.os_type = os_type
-
-    if cpu is not None:
-        instance.platform.cpu = cpu
-
-    if timeout is not None:
-        instance.timeout = timeout
-
-    if repository_url is not None:
-        instance.source_repository.repository_url = repository_url
-
-    if commit_trigger_enabled is not None:
-        instance.source_repository.is_commit_trigger_enabled = commit_trigger_enabled == 'true'
-
-    if git_access_token is not None:
-        instance.source_repository.source_control_auth_properties.git_access_token = git_access_token
-
-    if tags is not None:
-        instance.tags = tags
-
-    return instance
+def _get_build_step_name(build_task_name):
+    return '{}StepName'.format(build_task_name)
 
 
 def acr_build_task_run(cmd,
@@ -201,7 +263,9 @@ def acr_build_task_run(cmd,
     client_registries = cf_acr_registries(cmd.cli_ctx)
 
     queued_build = LongRunningOperation(cmd.cli_ctx)(
-        client_registries.queue_build(resource_group_name, registry_name, BuildTaskBuildRequest(build_task_name)))
+        client_registries.queue_build(resource_group_name,
+                                      registry_name,
+                                      BuildTaskBuildRequest(build_task_name=build_task_name)))
 
     if no_logs:
         return queued_build
@@ -249,14 +313,3 @@ def acr_build_task_logs(cmd,
 
     from .build import acr_build_show_logs
     return acr_build_show_logs(client, build_id, registry_name, resource_group_name)
-
-
-def acr_build_task_cancel(cmd,
-                          client,
-                          build_id,
-                          registry_name,
-                          resource_group_name=None):
-    _, resource_group_name = validate_managed_registry(
-        cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
-
-    return client.cancel(resource_group_name, registry_name, build_id)

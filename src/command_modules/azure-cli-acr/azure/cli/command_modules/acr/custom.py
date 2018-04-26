@@ -12,11 +12,10 @@ from azure.mgmt.containerregistry.v2017_10_01.models import (
     Registry,
     RegistryUpdateParameters,
     StorageAccountProperties,
-    SkuName,
     Sku
 )
 
-from ._constants import MANAGED_REGISTRY_SKU
+from ._constants import MANAGED_REGISTRY_SKU, CLASSIC_REGISTRY_SKU
 from ._utils import (
     arm_deploy_template_new_storage,
     arm_deploy_template_existing_storage,
@@ -51,14 +50,14 @@ def acr_create(cmd,
                storage_account_name=None,
                admin_enabled='false',
                deployment_name=None):
-    if sku == SkuName.basic.value and storage_account_name:
+    if sku in MANAGED_REGISTRY_SKU and storage_account_name:
         raise CLIError("Please specify '--sku Basic' without providing an existing storage account "
                        "to create a managed registry, or specify '--sku Classic --storage-account-name {}' "
                        "to create a Classic registry using storage account `{}`."
                        .format(storage_account_name, storage_account_name))
     admin_user_enabled = admin_enabled == 'true'
 
-    if sku == SkuName.classic.value:
+    if sku in CLASSIC_REGISTRY_SKU:
         logger.warning(
             "Due to the planned deprecation of the Classic registry SKU, we recommend using "
             "Basic, Standard, or Premium for all new registries. See https://aka.ms/acr/skus for details.")
@@ -122,7 +121,7 @@ def acr_update_custom(cmd,
 
     if storage_account_name is not None:
         instance.storage_account = StorageAccountProperties(
-            get_resource_id_by_storage_account_name(cmd.cli_ctx, storage_account_name))
+            id=get_resource_id_by_storage_account_name(cmd.cli_ctx, storage_account_name))
 
     if admin_enabled is not None:
         instance.admin_user_enabled = admin_enabled == 'true'
