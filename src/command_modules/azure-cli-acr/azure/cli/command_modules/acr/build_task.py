@@ -6,7 +6,7 @@
 from msrest.exceptions import ValidationError
 from knack.util import CLIError
 from azure.cli.core.commands import LongRunningOperation
-from .azure.mgmt.containerregistry.v2018_02_01_preview.models import (
+from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     BuildTask,
     SourceRepositoryProperties,
     SourceControlAuthInfo,

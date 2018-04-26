@@ -7,7 +7,7 @@ from ._utils import (
     validate_managed_registry,
     get_resource_group_name_by_registry_name
 )
-from .azure.mgmt.containerregistry.v2018_02_01_preview.models import DockerBuildStepUpdateParameters
+from azure.mgmt.containerregistry.v2018_02_01_preview.models import DockerBuildStepUpdateParameters
 
 
 BUILD_STEPS_NOT_SUPPORTED = 'Build Steps are only supported for managed registries.'
