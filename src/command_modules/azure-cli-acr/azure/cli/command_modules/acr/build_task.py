@@ -192,8 +192,14 @@ def acr_build_task_update(cmd, # pylint: disable=unused-argument
                                                                    cpu=cpu)
         build_task_update_parameters.timeout = timeout
         build_task_update_parameters.source_repository = SourceRepositoryUpdateParameters(
-            source_control_auth_properties=SourceControlAuthInfo(token=git_access_token),
+            source_control_auth_properties=SourceControlAuthInfo(token=git_access_token) if git_access_token else None,
             is_commit_trigger_enabled=commit_trigger_enabled == 'true' if commit_trigger_enabled else None)
+        build_task = LongRunningOperation(cmd.cli_ctx)(
+            client.update(resource_group_name=resource_group_name,
+                          registry_name=registry_name,
+                          build_task_name=build_task_name,
+                          step_name=_get_build_step_name(build_task_name),
+                          build_task_update_parameters=build_task_update_parameters))
 
     from ._client_factory import cf_acr_build_steps
     client_build_steps = cf_acr_build_steps(cmd.cli_ctx)
