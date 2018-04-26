@@ -237,7 +237,7 @@ def acr_build(cmd,
               timeout=None,
               build_arg=None,
               secret_build_arg=None,
-              docker_file_path="Dockerfile",
+              docker_file_path='Dockerfile',
               no_logs=False):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_NOT_SUPPORTED)
@@ -247,17 +247,35 @@ def acr_build(cmd,
     tar_file_path = os.path.join(tempfile.gettempdir(), 'source_archive_{}.tar.gz'.format(hash(os.times())))
 
     if os.path.exists(source_location):
-        if os.path.isdir(source_location):
-            _check_local_docker_file(source_location, docker_file_path)
+        if not os.path.isdir(source_location):
+            raise CLIError("'--context -c' should be a local directory path or remote url.")
 
+        _check_local_docker_file(source_location, docker_file_path)
+        size = 0
+
+        try:
             source_location = _upload_source_code(
                 client_registries, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path)
-        else:
-            raise CLIError("'--context -c' should be a local directory path or remote url.")
-        is_local_file = True
+            size = os.path.getsize(tar_file_path)
+        except Exception as err:
+            raise CLIError(err)
+        finally:
+            try:
+                logger.debug("Starting to delete the archived source code from '%s'.", tar_file_path)
+                os.remove(tar_file_path)
+            except OSError:
+                pass
+
+        unit = 'GiB'
+        for S in ['Bytes', 'KiB', 'MiB', 'GiB']:
+            if size < 1024:
+                unit = S
+                break
+            size = size / 1024.0
+        print("Sending build context ({0:.3f} {1}) to ACR.".format(size, unit))
     else:
         source_location = _check_remote_source_code(source_location)
-        is_local_file = False
+        print("Sending build context to ACR.")
 
     if image_names:
         is_push_enabled = True
@@ -273,27 +291,6 @@ def acr_build(cmd,
         is_push_enabled=is_push_enabled,
         timeout=timeout,
         build_arguments=(build_arg if build_arg else []) + (secret_build_arg if secret_build_arg else []))
-
-    if is_local_file:
-        try:
-            size = os.path.getsize(tar_file_path)
-        except OSError:
-            raise CLIError("Get the size of file {0} failed.".format(tar_file_path))
-        finally:
-            try:
-                logger.debug("Starting to delete the archived source code from '%s'.", tar_file_path)
-                os.remove(tar_file_path)
-            except OSError:
-                pass
-        unit = 'GiB'
-        for S in ['Bytes', 'KiB', 'MiB', 'GiB']:
-            if size < 1024:
-                unit = S
-                break
-            size = size / 1024.0
-        print("Sending build context ({0:.3f} {1}) to ACR.".format(size, unit))
-    else:
-        print("Sending build context to ACR.")
 
     queued_build = LongRunningOperation(cmd.cli_ctx)(client_registries.queue_build(
         resource_group_name=resource_group_name,
@@ -386,23 +383,13 @@ def _upload_source_code(client, registry_name, resource_group_name, source_locat
         raise CLIError(error_message)
 
     account_name, endpoint_suffix, container_name, blob_name, sas_token = _get_blob_info(upload_url)
-
-    try:
-        BlockBlobService(account_name=account_name,
-                         sas_token=sas_token,
-                         endpoint_suffix=endpoint_suffix).create_blob_from_path(
-                             container_name=container_name,
-                             blob_name=blob_name,
-                             file_path=tar_file_path)
-
-        return source_upload_location.relative_path
-    except Exception as err:
-        try:
-            logger.debug("Starting to delete the archived source code from '%s'.", tar_file_path)
-            os.remove(tar_file_path)
-        except OSError:
-            pass
-        raise CLIError(err)
+    BlockBlobService(account_name=account_name,
+                     sas_token=sas_token,
+                     endpoint_suffix=endpoint_suffix).create_blob_from_path(
+                         container_name=container_name,
+                         blob_name=blob_name,
+                         file_path=tar_file_path)
+    return source_upload_location.relative_path
 
 
 class IgnoreRule(object):
