@@ -223,7 +223,7 @@ def _get_blob_info(blob_sas_url):
     sas_token = match.group('sas_token')
 
     if not account_name or not container_name or not blob_name or not sas_token:
-        raise CLIError("Failed to parse the SAS url: '{!s}'.".format(blob_sas_url))
+        raise CLIError("Failed to parse the SAS URL: '{!s}'.".format(blob_sas_url))
 
     return account_name, endpoint_suffix, container_name, blob_name, sas_token
 
@@ -248,7 +248,7 @@ def acr_build(cmd,
 
     if os.path.exists(source_location):
         if not os.path.isdir(source_location):
-            raise CLIError("'--context -c' should be a local directory path or remote url.")
+            raise CLIError("'--context -c' should be a local directory path or remote URL.")
 
         _check_local_docker_file(source_location, docker_file_path)
         size = 0
@@ -331,7 +331,7 @@ def _check_remote_source_code(source_location):
             else:
                 raise CLIError("'{}' doesn't exist.".format(source_location))
 
-    raise CLIError("'{}' is not a valid remote url for git or tarball.".format(source_location))
+    raise CLIError("'{}' is not a valid remote URL for git or tarball.".format(source_location))
 
 
 def _upload_source_code(client, registry_name, resource_group_name, source_location, tar_file_path, docker_file_path):
