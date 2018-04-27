@@ -40,7 +40,8 @@ BUILD_NOT_SUPPORTED = 'Builds are only supported for managed registries.'
 def acr_build_show_logs(client,
                         build_id,
                         registry_name,
-                        resource_group_name):
+                        resource_group_name,
+                        raise_error_on_failure=False):
     log_file_sas = None
     error_message = "Could not get build logs for build ID: {}.".format(build_id)
     try:
@@ -70,14 +71,16 @@ def acr_build_show_logs(client,
                      sas_token=sas_token,
                      endpoint_suffix=endpoint_suffix),
                  container_name=container_name,
-                 blob_name=blob_name)
+                 blob_name=blob_name,
+                 raise_error_on_failure=raise_error_on_failure)
 
 
 def _stream_logs(byte_size,
                  timeout_in_seconds,
                  blob_service,
                  container_name,
-                 blob_name):
+                 blob_name,
+                 raise_error_on_failure):
     colorama.init()
     stream = BytesIO()
     metadata = {}
@@ -202,14 +205,15 @@ def _stream_logs(byte_size,
         print(curr_bytes.decode('utf-8', errors='ignore'))
 
     build_status = _get_build_status(metadata).lower()
-    logger.debug("Build status was: '{}'".format(build_status))
+    logger.debug("Build status was: '%s'", build_status)
 
-    if build_status == 'internalerror' or build_status == 'failed':
-        raise CLIError("Build failed")
-    elif build_status == 'timedout':
-        raise CLIError("Build timed out")
-    elif build_status == 'canceled':
-        raise CLIError("Build was canceled")
+    if raise_error_on_failure:
+        if build_status == 'internalerror' or build_status == 'failed':
+            raise CLIError("Build failed")
+        elif build_status == 'timedout':
+            raise CLIError("Build timed out")
+        elif build_status == 'canceled':
+            raise CLIError("Build was canceled")
 
 
 def _blob_is_not_complete(metadata):
@@ -324,7 +328,7 @@ def acr_build(cmd,
     build_id = queued_build.build_id
     print("Queued a build with build ID: {}".format(build_id))
     print("Waiting for a build agent...")
-    return acr_build_show_logs(client, build_id, registry_name, resource_group_name)
+    return acr_build_show_logs(client, build_id, registry_name, resource_group_name, True)
 
 
 def _check_local_docker_file(source_location, docker_file_path):
@@ -341,7 +345,7 @@ def _check_remote_source_code(source_location):
 
     # http
     if lower_source_location.startswith("https://") or lower_source_location.startswith("http://") \
-        or lower_source_location.startswith("github.com/"):
+            or lower_source_location.startswith("github.com/"):
         if re.search(r"\.git(?:#.+)?$", lower_source_location):
             # git url must contain ".git"
             return source_location

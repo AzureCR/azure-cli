@@ -274,7 +274,7 @@ def acr_build_task_run(cmd,
     print("Queued a build with build ID: {}".format(build_id))
     print("Waiting for a build agent...")
     from .build import acr_build_show_logs
-    return acr_build_show_logs(client, build_id, registry_name, resource_group_name)
+    return acr_build_show_logs(client, build_id, registry_name, resource_group_name, True)
 
 
 def acr_build_task_list_builds(cmd,
