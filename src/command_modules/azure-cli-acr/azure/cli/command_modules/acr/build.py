@@ -345,7 +345,7 @@ def _check_remote_source_code(source_location):
 
     # http
     if lower_source_location.startswith("https://") or lower_source_location.startswith("http://") \
-            or lower_source_location.startswith("github.com/"):
+        or lower_source_location.startswith("github.com/"):
         if re.search(r"\.git(?:#.+)?$", lower_source_location):
             # git url must contain ".git"
             return source_location
