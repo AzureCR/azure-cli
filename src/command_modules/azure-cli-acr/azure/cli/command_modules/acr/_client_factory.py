@@ -18,9 +18,9 @@ def get_storage_service_client(cli_ctx):
     return get_mgmt_service_client(cli_ctx, ResourceType.MGMT_STORAGE)
 
 
-def get_acr_service_client(cli_ctx, api_version=None):
+def get_acr_service_client(cli_ctx, api_version='2018-02-01-preview'):
     """Returns the client for managing container registries. """
-    from .azure.mgmt.containerregistry.v2018_02_01_preview import ContainerRegistryManagementClient
+    from azure.mgmt.containerregistry import ContainerRegistryManagementClient
     return get_mgmt_service_client(cli_ctx, ContainerRegistryManagementClient, api_version=api_version)
 
 
