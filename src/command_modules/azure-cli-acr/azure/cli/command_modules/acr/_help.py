@@ -437,5 +437,5 @@ helps['acr build'] = """
 
 helps['acr image import'] = """
     type: command
-    short-summary: Copies an image to the container registry from the specified container registry.
+    short-summary: Copies an image to the container registry from the specified container registry. Specify the source image either by login server or resource id.
 """

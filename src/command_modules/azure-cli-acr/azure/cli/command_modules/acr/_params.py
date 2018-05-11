@@ -63,11 +63,12 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
         c.argument('no_logs', help="Do not show logs after successfully queuing the build.", action='store_true')
 
     with self.argument_context('acr image') as c:
+        c.argument('image', help='Login server with repository and tag for the source image')
         c.argument('resource_id', help='The resource identifier of the target Azure Container Registry.')
         c.argument('source_image', help='Repository name of the source image.')
         c.argument('target_tags', help='List of strings of the form repo[:tag]. When tag is ommitted the source will be used.', action='append')
         c.argument('untagged_target_repositories', help='List of strings of repository names to do a manifest only copy.', action='append')
-        c.argument('mode', help='Possible values include \'NoForce\', \'Force\'.')
+        c.argument('mode', choices=['Force', 'Noforce'])
 
     with self.argument_context('acr repository delete') as c:
         c.argument('manifest', nargs='?', required=False, const='', default=None, help=argparse.SUPPRESS)
