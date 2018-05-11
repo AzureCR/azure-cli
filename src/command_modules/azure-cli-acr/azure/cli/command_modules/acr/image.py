@@ -34,6 +34,9 @@ def acr_image_import(cmd,
     image_source = ImportSource(
         resource_id=resource_id, source_image=source_image)
 
+    if target_tags is None:
+        target_tags = [source_image]
+
     import_parameters = ImportImageParameters(source=image_source,
                                               target_tags=target_tags,
                                               untagged_target_repositories=untagged_target_repositories,
