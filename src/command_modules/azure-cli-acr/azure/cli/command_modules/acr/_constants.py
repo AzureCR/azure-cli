@@ -14,3 +14,5 @@ BUILD_STEP_RESOURCE_TYPE = BUILD_TASK_RESOURCE_TYPE + '/steps'
 
 CLASSIC_REGISTRY_SKU = ['Classic']
 MANAGED_REGISTRY_SKU = ['Basic', 'Standard', 'Premium']
+
+MODE = ['Force', 'Noforce']

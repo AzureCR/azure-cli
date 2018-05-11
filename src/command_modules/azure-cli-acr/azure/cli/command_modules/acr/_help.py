@@ -38,7 +38,7 @@ helps['acr build-task'] = """
 
 helps['acr image'] = """
     type: group
-    short-summary: Manage image for registries.
+    short-summary: Manage container images for Azure Container Registries.
     """
 
 helps['acr check-name'] = """
@@ -437,5 +437,15 @@ helps['acr build'] = """
 
 helps['acr image import'] = """
     type: command
-    short-summary: Copies an image to the container registry from the specified container registry. Specify the source image either by login server or resource id.
+    short-summary: Copies an image to the container registry from the specified container registry.
+    examples:
+        - name: Import from the same registry.
+          text: >
+            az acr image import -n targetRegistry --source-image targetRegistry.azurecr.io/repo:tag --tags repo:tag .
+        - name: Import from a different registry in the subscription as the target registry.
+          text: >
+            az acr image import -n targetRegistry --source-image sourceRegistry.azurecr.io/repo:tag --tags repo:tag .
+        - name: Import from a registry in a different subscription from the one the target registry is in.
+          text: >
+            az acr image import -n targetRegistry --resource_id /subscriptions/resourceGroups/providers/Microsoft.ContainerRegistry/registries/ --source-image repo:tag --tags repo:tag .
 """

@@ -14,34 +14,35 @@ IMPORT_NOT_SUPPORTED = "Image imports are only supported for managed registries.
 def acr_image_import(cmd,
                      client,
                      registry_name,
-                     image=None,
+                     source_image,
                      resource_id=None,
-                     source_image=None,
-                     target_tags=None,
+                     tags=None,
                      resource_group_name=None,
-                     untagged_target_repositories=None,
+                     repositories=None,
                      mode='NoForce'):
-    registry, resource_group_name = validate_managed_registry(
+    _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, IMPORT_NOT_SUPPORTED)
 
-    if image is not None:
+    slash = source_image.find("/")
+    if slash < 0:
+        if not resource_id: raise CLIError("Source image not valid.")
+    else:
         try:
-            source_registry = image[:image.index(".")]
+            source_registry = source_image[:source_image.index(".")]
         except ValueError:
             raise CLIError("Source image not valid.")
         resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
-        source_image = image[image.index("/") + 1 :]
-    elif resource_id is None and source_image is None:
-        raise CLIError("Source image not valid.")
+        source_image = source_image[source_image.index("/") + 1 :]
 
     image_source = ImportSource(resource_id=resource_id, source_image=source_image)
 
-    if target_tags is None:
-        target_tags = [source_image]
+    #todo move to RP
+    if tags is None and repositories is None:
+        tags = [source_image]
 
     import_parameters = ImportImageParameters(source=image_source,
-                                              target_tags=target_tags,
-                                              untagged_target_repositories=untagged_target_repositories,
+                                              target_tags=tags,
+                                              untagged_target_repositories=repositories,
                                               mode=mode)
 
     return LongRunningOperation(cmd.cli_ctx)(client.import_image(
