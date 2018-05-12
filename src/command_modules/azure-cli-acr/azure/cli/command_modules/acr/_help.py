@@ -437,15 +437,12 @@ helps['acr build'] = """
 
 helps['acr image import'] = """
     type: command
-    short-summary: Copies an image to the container registry from the specified container registry.
+    short-summary: Imports an image to the container registry from the specified container registry.
     examples:
         - name: Import from the same registry.
           text: >
-            az acr image import -n targetRegistry --source-image targetRegistry.azurecr.io/repo:tag --tags repo:tag .
-        - name: Import from a different registry in the subscription as the target registry.
+            az acr image import -n targetRegistry --source-image targetregistry.azurecr.io/repository:tag -t repo:tag .
+        - name: Import from a different registry in the same subscription as the target registry.
           text: >
-            az acr image import -n targetRegistry --source-image sourceRegistry.azurecr.io/repo:tag --tags repo:tag .
-        - name: Import from a registry in a different subscription from the one the target registry is in.
-          text: >
-            az acr image import -n targetRegistry --resource_id /subscriptions/resourceGroups/providers/Microsoft.ContainerRegistry/registries/ --source-image repo:tag --tags repo:tag .
+            az acr image import -n targetRegistry --source-image sourceregistry.azurecr.io/repository:tag -t repo:tag .
 """

@@ -11,7 +11,8 @@ from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     BuildTaskStatus,
     OsType,
     BaseImageTriggerType,
-    BuildStatus
+    BuildStatus,
+    ImportMode
 )
 
 from azure.cli.core.commands.parameters import (
@@ -33,8 +34,7 @@ from ._constants import (
     BUILD_TASK_RESOURCE_TYPE,
     BUILD_STEP_RESOURCE_TYPE,
     CLASSIC_REGISTRY_SKU,
-    MANAGED_REGISTRY_SKU,
-    MODE
+    MANAGED_REGISTRY_SKU
 )
 from ._validators import (
     validate_registry_name,
@@ -64,11 +64,11 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
         c.argument('no_logs', help="Do not show logs after successfully queuing the build.", action='store_true')
 
     with self.argument_context('acr image') as c:
-        c.argument('resource_id', help='The resource identifier of the Azure Container Registry')
-        c.argument('source_image', help='A fully qualified image identifier')
-        c.argument('tags', nargs='+', help='Space-separated list of image repository with an optional tag in the form repo[:tag]. When tag is ommitted latest will be used.')
-        c.argument('repositories', nargs='+', help='Space-separated list of repository names to do a manifest only copy.')
-        c.argument('mode', choices=MODE)
+        c.argument('resource_id', help='The resource identifier of the container registry.')
+        c.argument('source_image', help='A fully qualified image identifier.')
+        c.argument('tags', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append')
+        c.argument('repository', help='The image repository without tag to do a manifest only copy.', action='append')
+        c.argument('force', help='Overwrite the existing target tag of the image to be imported.', action='store_true')
 
     with self.argument_context('acr repository delete') as c:
         c.argument('manifest', nargs='?', required=False, const='', default=None, help=argparse.SUPPRESS)

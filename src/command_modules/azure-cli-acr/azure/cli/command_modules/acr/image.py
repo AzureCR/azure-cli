@@ -1,9 +1,12 @@
-from azure.cli.core.commands import LongRunningOperation
 from knack.util import CLIError
 from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     ImportImageParameters,
-    ImportSource
+    ImportSource,
+    ImportMode
 )
+
+from azure.cli.core.commands import LongRunningOperation
+
 from ._utils import (
     validate_managed_registry,
     get_resource_id_by_registry_name
@@ -18,32 +21,34 @@ def acr_image_import(cmd,
                      resource_id=None,
                      tags=None,
                      resource_group_name=None,
-                     repositories=None,
-                     mode='NoForce'):
+                     repository=None,
+                     force=False):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, IMPORT_NOT_SUPPORTED)
 
+    dot = source_image.find(".")
     slash = source_image.find("/")
-    if slash < 0:
-        if not resource_id: raise CLIError("Source image not valid.")
-    else:
-        try:
-            source_registry = source_image[:source_image.index(".")]
-        except ValueError:
-            raise CLIError("Source image not valid.")
-        resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
-        source_image = source_image[source_image.index("/") + 1 :]
 
+    if dot < 0 or slash < 0:
+        #todo we might support import images from docker hub
+        raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
+
+    source_registry = source_image[:dot]
+    if not source_registry:
+        raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
+    resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
+    source_image = source_image[slash + 1 :]
+    if not source_image:
+        raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
     image_source = ImportSource(resource_id=resource_id, source_image=source_image)
 
-    #todo move to RP
-    if tags is None and repositories is None:
+    if tags is None and repository is None:
         tags = [source_image]
 
     import_parameters = ImportImageParameters(source=image_source,
                                               target_tags=tags,
-                                              untagged_target_repositories=repositories,
-                                              mode=mode)
+                                              untagged_target_repositories=repository,
+                                              mode=ImportMode.force.value if force else ImportMode.no_force.value)
 
     return LongRunningOperation(cmd.cli_ctx)(client.import_image(
         resource_group_name=resource_group_name,
