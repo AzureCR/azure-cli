@@ -13,6 +13,7 @@ from ._utils import (
 )
 
 IMPORT_NOT_SUPPORTED = "Image imports are only supported for managed registries."
+INVALID_SOURCE_IMAGE = "Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'."
 
 def acr_image_import(cmd,
                      client,
@@ -26,21 +27,21 @@ def acr_image_import(cmd,
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, IMPORT_NOT_SUPPORTED)
 
-    dot = source_image.find(".")
-    slash = source_image.find("/")
+    dot = source_image.find('.')
+    slash = source_image.find('/')
 
     if dot < 0 or slash < 0:
         #todo we might support import images from docker hub
-        raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
+        raise CLIError(INVALID_SOURCE_IMAGE)
 
     source_registry = source_image[:dot]
     if not source_registry:
-        raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
+        raise CLIError(INVALID_SOURCE_IMAGE)
     if not resource_id:
         resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
     source_image = source_image[slash + 1 :]
     if not source_image:
-        raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
+        raise CLIError(INVALID_SOURCE_IMAGE)
     image_source = ImportSource(resource_id=resource_id, source_image=source_image)
 
     if tags is None and repository is None:

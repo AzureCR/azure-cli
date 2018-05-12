@@ -11,8 +11,7 @@ from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     BuildTaskStatus,
     OsType,
     BaseImageTriggerType,
-    BuildStatus,
-    ImportMode
+    BuildStatus
 )
 
 from azure.cli.core.commands.parameters import (
@@ -64,10 +63,10 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
         c.argument('no_logs', help="Do not show logs after successfully queuing the build.", action='store_true')
 
     with self.argument_context('acr image') as c:
-        c.argument('resource_id', help='The resource identifier of the container registry.')
+        c.argument('resource_id', help='The ARM resource ID of the source container registry.')
         c.argument('source_image', help='A fully qualified image identifier.')
-        c.argument('tags', nargs='+', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.")
-        c.argument('repository', nargs='+', help='The image repository without tag to do a manifest only copy.')
+        c.argument('tags', nargs='+', options_list=['--image', '-t'], help="Space-separated list of images in the 'repository:tag' format where tag is optional.")
+        c.argument('repository', nargs='+', help='Space-separared list of image repository without tag to do a manifest only copy.')
         c.argument('force', help='Overwrite the existing target tag of the image to be imported.', action='store_true')
 
     with self.argument_context('acr repository delete') as c:
