@@ -36,7 +36,8 @@ def acr_image_import(cmd,
     source_registry = source_image[:dot]
     if not source_registry:
         raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
-    resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
+    if not resource_id:
+        resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
     source_image = source_image[slash + 1 :]
     if not source_image:
         raise CLIError("Please specify source image in the form of 'regsitry.azurecr.io/repository[:tag]'.")
