@@ -66,8 +66,8 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
     with self.argument_context('acr image') as c:
         c.argument('resource_id', help='The resource identifier of the container registry.')
         c.argument('source_image', help='A fully qualified image identifier.')
-        c.argument('tags', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.", action='append')
-        c.argument('repository', help='The image repository without tag to do a manifest only copy.', action='append')
+        c.argument('tags', nargs='+', options_list=['--image', '-t'], help="The image repository and optionally a tag in the 'repository:tag' format.")
+        c.argument('repository', nargs='+', help='The image repository without tag to do a manifest only copy.')
         c.argument('force', help='Overwrite the existing target tag of the image to be imported.', action='store_true')
 
     with self.argument_context('acr repository delete') as c:
