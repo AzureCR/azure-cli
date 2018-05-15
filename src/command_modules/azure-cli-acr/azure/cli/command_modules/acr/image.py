@@ -1,4 +1,5 @@
 from knack.util import CLIError
+from knack.prompting import prompt, NoTTYException
 from azure.cli.core.commands import LongRunningOperation
 from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     ImportImageParameters,
@@ -40,9 +41,14 @@ def acr_image_import(cmd,
         raise CLIError(INVALID_SOURCE_IMAGE)
 
     if not resource_id:
-        resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry, SOURCE_REGISTRY_NOT_FOUND)
-    registry_name_from_resource_id = get_registry_name_by_resource_id(
-        resource_id)
+        resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
+        if not resource_id:
+            try:
+                resource_id = prompt(SOURCE_REGISTRY_NOT_FOUND)
+            except NoTTYException:
+                raise CLIError("Unable to prompt for resource ID as no tty available.")
+
+    registry_name_from_resource_id = get_registry_name_by_resource_id(resource_id)
     if source_registry != registry_name_from_resource_id:
         raise CLIError(
             "Registry mismatch. Please check either source-image or resource ID " \
@@ -52,8 +58,7 @@ def acr_image_import(cmd,
     if not source_image:
         raise CLIError(INVALID_SOURCE_IMAGE)
 
-    image_source = ImportSource(
-        resource_id=resource_id, source_image=source_image)
+    image_source = ImportSource(resource_id=resource_id, source_image=source_image)
 
     if target_tags is None and repository is None:
         target_tags = [source_image]
