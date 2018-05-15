@@ -4,6 +4,7 @@
 # --------------------------------------------------------------------------------------------
 
 from knack.util import CLIError
+from knack.prompting import prompt, NoTTYException
 from azure.cli.core.commands.parameters import get_resources_in_subscription
 
 from azure.mgmt.containerregistry.v2017_10_01.models import SkuName, Sku
@@ -79,12 +80,34 @@ def get_resource_id_by_storage_account_name(cli_ctx, storage_account_name):
     return arm_resource.id
 
 
-def get_resource_id_by_registry_name(cli_ctx, registry_name):
-    """Returns the resource id for the registry.
+def get_resource_id_by_registry_name(cli_ctx, registry_name, msg):
+    """Returns the resource id for the registry. If the registry cannot be found in the current subscription
+    then we prompt user to input resource ID for the registry.
+    Otherwise we return the resource ID returned from the ARM.
     :param str registry_name: The name of the registry
+    :param str msg: Prompt message for user to input the resourse ID
     """
-    arm_resource = _arm_get_resource_by_name(cli_ctx, registry_name, REGISTRY_RESOURCE_TYPE)
-    return arm_resource.id
+    result = get_resources_in_subscription(cli_ctx, REGISTRY_RESOURCE_TYPE)
+    elements = [item for item in result if item.name.lower() == registry_name.lower()]
+
+    if not elements or len(elements) != 1:
+        try:
+            resource_id = prompt(msg)
+        except NoTTYException:
+            raise CLIError("Unable to prompt for resource id as tty available.")
+        return resource_id
+    else:
+        return elements[0].id
+
+
+def get_registry_name_by_resource_id(resource_id):
+    """Returns the regsitry name from parsing the resource id.
+    :param str resource_id: The resource id
+    """
+    resource_id = resource_id.lower()
+    registry_name_keyword = '/registries/'
+    return resource_id[resource_id.index(registry_name_keyword) + len(
+        registry_name_keyword):]
 
 
 def get_registry_by_name(cli_ctx, registry_name, resource_group_name=None):
