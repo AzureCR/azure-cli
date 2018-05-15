@@ -441,7 +441,7 @@ helps['acr image import'] = """
     examples:
         - name: Import from the same registry.
           text: >
-            az acr image import -n targetRegistry --source-image targetregistry.azurecr.io/reposiroty:tag -t repo:tag .
+            az acr image import -n targetRegistry --source-image targetregistry.azurecr.io/repository:tag -t repo:tag .
         - name: Import from a different registry in the same subscription as the target registry.
           text: >
             az acr image import -n targetRegistry --source-image sourceregistry.azurecr.io/repository:tag -t repo:tag .
