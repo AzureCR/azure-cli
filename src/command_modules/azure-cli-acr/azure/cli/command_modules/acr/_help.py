@@ -447,6 +447,6 @@ helps['acr image import'] = """
             az acr image import -n targetRegistry --source-image sourceregistry.azurecr.io/repository:tag -t repo:tag .
         - name: Import from a registry in a different subscription from the one the target registry is in
           text: >
-            az acr image import -n targetRegistry --resource-id /subscriptions/dfb63c8c-7c89-4ef8-af13-75c1d873c895/resourceGroups/yugong/providers/Microsoft.ContainerRegistry/registries/yugongeast --source-image yugongeast.azurecr.io/builder:latest
+            az acr image import -n targetRegistry --resource-id /subscriptions/{{.Subscription.ID}}/resourceGroups/{{.Resource.Group.Name}}/providers/{{.Provider}}/registries/{{.Registry.Name}} --source-image targetregistry.azurecr.io/repository:tag
             -t test:test
 """
