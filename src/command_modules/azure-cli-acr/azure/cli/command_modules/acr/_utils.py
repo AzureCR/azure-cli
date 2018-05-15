@@ -8,6 +8,8 @@ from azure.cli.core.commands.parameters import get_resources_in_subscription
 
 from azure.mgmt.containerregistry.v2017_10_01.models import SkuName, Sku
 
+#from .custom import acr_list
+
 from ._constants import (
     REGISTRY_RESOURCE_TYPE,
     ACR_RESOURCE_PROVIDER,
@@ -79,30 +81,6 @@ def get_resource_id_by_storage_account_name(cli_ctx, storage_account_name):
     return arm_resource.id
 
 
-def get_resource_id_by_registry_name(cli_ctx, registry_name):
-    """Returns the resource id for the registry. If the registry cannot be found in the current subscription
-    then we prompt user to input resource ID for the registry.
-    Otherwise we return the resource ID returned from the ARM.
-    :param str registry_name: The name of the registry
-    """
-    result = get_resources_in_subscription(cli_ctx, REGISTRY_RESOURCE_TYPE)
-    elements = [item for item in result if item.name.lower() == registry_name.lower()]
-
-    if not elements or len(elements) != 1:
-        return ""
-    return elements[0].id
-
-
-def get_registry_name_by_resource_id(resource_id):
-    """Returns the regsitry name from parsing the resource id.
-    :param str resource_id: The resource id
-    """
-    resource_id = resource_id.lower()
-    registry_name_keyword = '/registries/'
-    return resource_id[resource_id.index(registry_name_keyword) + len(
-        registry_name_keyword):]
-
-
 def get_registry_by_name(cli_ctx, registry_name, resource_group_name=None):
     """Returns a tuple of Registry object and resource group name.
     :param str registry_name: The name of container registry
@@ -113,6 +91,19 @@ def get_registry_by_name(cli_ctx, registry_name, resource_group_name=None):
     client = get_acr_service_client(cli_ctx).registries
 
     return client.get(resource_group_name, registry_name), resource_group_name
+
+
+def get_resource_id_by_login_server(client, login_server):
+    """Returns the resource ID for the container registry.
+    :param str login_server: The login server of the container registry.
+    """
+    from .custom import acr_list
+    registry_list = acr_list(client)
+    elements = [item for item in registry_list if item.login_server.lower() == login_server.lower()]
+
+    if not elements or len(elements) != 1:
+        return ""
+    return elements[0].id
 
 
 def arm_deploy_template_new_storage(cli_ctx,

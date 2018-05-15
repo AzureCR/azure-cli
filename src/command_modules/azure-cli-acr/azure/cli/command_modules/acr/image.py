@@ -8,8 +8,7 @@ from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
 )
 from ._utils import (
     validate_managed_registry,
-    get_resource_id_by_registry_name,
-    get_registry_name_by_resource_id
+    get_resource_id_by_login_server
 )
 
 IMPORT_NOT_SUPPORTED = "Image imports are only supported for managed registries."
@@ -30,29 +29,29 @@ def acr_image_import(cmd,
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, IMPORT_NOT_SUPPORTED)
 
-    dot = source_image.find('.')
     slash = source_image.find('/')
 
-    if dot < 0 or slash < 0:
+    if slash < 0:
         raise CLIError(INVALID_SOURCE_IMAGE)
 
-    source_registry = source_image[:dot]
-    if not source_registry:
+    source_registry_login_server = source_image[:slash]
+    if not source_registry_login_server:
         raise CLIError(INVALID_SOURCE_IMAGE)
+
+    resource_id_from_login_server = get_resource_id_by_login_server(client, source_registry_login_server)
+
+    if not resource_id and not resource_id_from_login_server:
+        try:
+            resource_id = prompt(SOURCE_REGISTRY_NOT_FOUND)
+        except NoTTYException:
+            raise CLIError("Unable to prompt for resource ID as no tty available.")
+
+    if resource_id and resource_id_from_login_server and resource_id_from_login_server != resource_id:
+        raise CLIError("Registry mismatch. Please check either source-image or resource ID " \
+                       "to make sure that they are referring to the same registry and give another try.")
 
     if not resource_id:
-        resource_id = get_resource_id_by_registry_name(cmd.cli_ctx, source_registry)
-        if not resource_id:
-            try:
-                resource_id = prompt(SOURCE_REGISTRY_NOT_FOUND)
-            except NoTTYException:
-                raise CLIError("Unable to prompt for resource ID as no tty available.")
-
-    registry_name_from_resource_id = get_registry_name_by_resource_id(resource_id)
-    if source_registry != registry_name_from_resource_id:
-        raise CLIError(
-            "Registry mismatch. Please check either source-image or resource ID " \
-            "to make sure that they are referring to the same registry and give another try.")
+        resource_id = resource_id_from_login_server
 
     source_image = source_image[slash + 1:]
     if not source_image:
