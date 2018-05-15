@@ -84,7 +84,6 @@ def get_resource_id_by_registry_name(cli_ctx, registry_name):
     then we prompt user to input resource ID for the registry.
     Otherwise we return the resource ID returned from the ARM.
     :param str registry_name: The name of the registry
-    :param str msg: Prompt message for user to input the resourse ID
     """
     result = get_resources_in_subscription(cli_ctx, REGISTRY_RESOURCE_TYPE)
     elements = [item for item in result if item.name.lower() == registry_name.lower()]
