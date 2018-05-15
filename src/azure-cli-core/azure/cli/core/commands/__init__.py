@@ -318,7 +318,7 @@ class AzCliCommandInvoker(CommandInvoker):
                 elif _is_paged(result):
                     result = list(result)
 
-                result = todict(result, AzCliCommandInvoker.remove_additional_prop_layer)
+                result = todict(result)
                 event_data = {'result': result}
                 self.cli_ctx.raise_event(EVENT_INVOKER_TRANSFORM_RESULT, event_data=event_data)
                 result = event_data['result']
