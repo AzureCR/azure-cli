@@ -8,8 +8,6 @@ from azure.cli.core.commands.parameters import get_resources_in_subscription
 
 from azure.mgmt.containerregistry.v2017_10_01.models import SkuName, Sku
 
-#from .custom import acr_list
-
 from ._constants import (
     REGISTRY_RESOURCE_TYPE,
     ACR_RESOURCE_PROVIDER,
@@ -93,17 +91,16 @@ def get_registry_by_name(cli_ctx, registry_name, resource_group_name=None):
     return client.get(resource_group_name, registry_name), resource_group_name
 
 
-def get_resource_id_by_login_server(client, login_server):
+def get_registry_by_login_server(client, login_server):
     """Returns the resource ID for the container registry.
     :param str login_server: The login server of the container registry.
     """
-    from .custom import acr_list
-    registry_list = acr_list(client)
+    registry_list = client.list()
     elements = [item for item in registry_list if item.login_server.lower() == login_server.lower()]
 
     if not elements or len(elements) != 1:
-        return ""
-    return elements[0].id
+        return None
+    return elements[0]
 
 
 def arm_deploy_template_new_storage(cli_ctx,

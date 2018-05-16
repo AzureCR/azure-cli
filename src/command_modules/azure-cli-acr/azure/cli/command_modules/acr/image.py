@@ -1,5 +1,4 @@
 from knack.util import CLIError
-from knack.prompting import prompt, NoTTYException
 from azure.cli.core.commands import LongRunningOperation
 from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
     ImportImageParameters,
@@ -8,13 +7,16 @@ from azure.mgmt.containerregistry.v2018_02_01_preview.models import (
 )
 from ._utils import (
     validate_managed_registry,
-    get_resource_id_by_login_server
+    get_registry_by_login_server
 )
 
 IMPORT_NOT_SUPPORTED = "Image imports are only supported for managed registries."
 INVALID_SOURCE_IMAGE = "Please specify source image in the form of 'registry.azurecr.io/repository[:tag]'."
 SOURCE_REGISTRY_NOT_FOUND = "Source registry cannot be found in the current subscription. " \
                             "Please specify the full resource ID for it: "
+NO_TTY_ERROR = "Unable to prompt for resource ID as no tty available."
+REGISTRY_MISMATCH = "Registry mismatch. Please check either source-image or resource ID " \
+                    "to make sure that they are referring to the same registry and try again."
 
 
 def acr_image_import(cmd,
@@ -38,20 +40,20 @@ def acr_image_import(cmd,
     if not source_registry_login_server:
         raise CLIError(INVALID_SOURCE_IMAGE)
 
-    resource_id_from_login_server = get_resource_id_by_login_server(client, source_registry_login_server)
+    registry_from_login_server = get_registry_by_login_server(client, source_registry_login_server)
 
-    if not resource_id and not resource_id_from_login_server:
-        try:
-            resource_id = prompt(SOURCE_REGISTRY_NOT_FOUND)
-        except NoTTYException:
-            raise CLIError("Unable to prompt for resource ID as no tty available.")
-
-    if resource_id and resource_id_from_login_server and resource_id_from_login_server != resource_id:
-        raise CLIError("Registry mismatch. Please check either source-image or resource ID " \
-                       "to make sure that they are referring to the same registry and give another try.")
-
-    if not resource_id:
-        resource_id = resource_id_from_login_server
+    if registry_from_login_server:
+        if resource_id and registry_from_login_server.resource_id != resource_id:
+            raise CLIError(REGISTRY_MISMATCH)
+        else:
+            resource_id = registry_from_login_server.resource_id
+    else:
+        if not resource_id:
+            from knack.prompting import prompt, NoTTYException
+            try:
+                resource_id = prompt(SOURCE_REGISTRY_NOT_FOUND)
+            except NoTTYException:
+                raise CLIError(NO_TTY_ERROR)
 
     source_image = source_image[slash + 1:]
     if not source_image:
