@@ -441,11 +441,11 @@ helps['acr image import'] = """
     examples:
         - name: Import from the same registry.
           text: >
-            az acr image import -n registry --source-image registry.azurecr.io/repository:tag -t targetRepository:targetTag
+            az acr image import -n registry --source-image registry.azurecr.io/repository:tag -t targetrepository:targettag
         - name: Import from a different registry in the same subscription as the target registry.
           text: >
-            az acr image import -n targetRegistry --source-image sourceregistry.azurecr.io/repository:tag -t targetRepository:targetTag
-        - name: Import from a registry in a different subscription from the one the target registry is in
+            az acr image import -n targetRegistry --source-image sourceregistry.azurecr.io/repository:tag -t targetrepository:targettag
+        - name: Import from a registry in a different subscription from the one the target registry is in.
           text: >
-            az acr image import -n targetRegistry --source-image sourceregistry.azurecr.io/repository:tag -t targetRepository:targetTag --resource-id /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry
+            az acr image import -n targetRegistry --source-image sourceregistry.azurecr.io/repository:tag -t targetrepository:targettag --resource-id /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry
 """
