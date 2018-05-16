@@ -43,10 +43,10 @@ def acr_image_import(cmd,
     registry_from_login_server = get_registry_by_login_server(client, source_registry_login_server)
 
     if registry_from_login_server:
-        if resource_id and registry_from_login_server.resource_id != resource_id:
+        if resource_id and registry_from_login_server.id != resource_id:
             raise CLIError(REGISTRY_MISMATCH)
         else:
-            resource_id = registry_from_login_server.resource_id
+            resource_id = registry_from_login_server.id
     else:
         if not resource_id:
             from knack.prompting import prompt, NoTTYException
