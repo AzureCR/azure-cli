@@ -403,29 +403,38 @@ class AcrCommandsTests(ScenarioTest):
 
     @ResourceGroupPreparer()
     def test_acr_image_import(self, resource_group):
-        '''There are six test cases in the function. To be able to run the tests, we are having the following resources before the test:
-        Current cloud and active subscription: AzureCloud ACR - Dev
-        Two source registries, one in the subscription other than the ACR - Dev and another in the subscription as the current subsciption.
-        Two source images each of which stays in a different source registries.
+        '''There are six test cases in the function. 
+        Case 1: Import image from a regsitry in a different subscription from the current one
+        Case 2: Import image from one regsitry to another where both registries belong to the same subscription
+        Case 3: Import image to the target regsitry and keep the repository:tag the same as that in the source
+        Case 4: Import image to enable multiple tags in the target registry
+        Case 5: Import image within the same registry
+        Case 6: Import image by manifest digest
         '''
 
         registry_name = self.create_random_name("targetregsitry", 20)
 
+        '''
+        To be able to run the tests, we are assuming the following resources before the test:
+        Current active cloud account and subscription.
+        Two source registries, one in the subscription other than the current one and another in the subscription the same as the current one.
+        Two source images each of which stays in a different source registries mentioned above.
+        '''
         self.kwargs.update({
             'registry_name': registry_name,
             'rg_loc': 'eastus',
             'sku': 'Standard',
-            'r_id': '/subscriptions/a7ee80a4-3d5e-45c2-9378-36e8d98f4d13/resourceGroups/yugongTest2/providers/Microsoft.ContainerRegistry/registries/yugongTest2',
-            's_image1': 'yugongtest2.azurecr.io/builder:latest',
-            's_image2': 'yugongeast.azurecr.io/builder:latest',
-            's_image3': '{}.azurecr.io/builder:latest'.format(registry_name),
-            's_image4': 'yugongeast.azurecr.io/builder@sha256:bc3842ba36fcc182317c07a8643daa4a8e4e7aed45958b1f7e2a2b30c2f5a64f',
-            'tags1': 'case1:case1',
-            'tags2': 'case2:case2',
-            'tags41': 'case41:case41',
-            'tags42': 'case42:case42',
-            'tags5': 'case5:case5',
-            'tags6': 'case6:case6'
+            'resource_id': '/subscriptions/a7ee80a4-3d5e-45c2-9378-36e8d98f4d13/resourceGroups/resourcegroup_diff_sub/providers/Microsoft.ContainerRegistry/registries/source_registry_diff_sub',
+            'source_image_diff_sub': 'source_registry_diff_sub.azurecr.io/builder:latest',
+            'source_image_same_sub': 'source_registry_same_sub.azurecr.io/builder:latest',
+            'source_image_same_registry': '{}.azurecr.io/builder:latest'.format(registry_name),
+            'source_image_by_digest': 'source_registry_same_sub.azurecr.io/builder@sha256:bc3842ba36fcc182317c07a8643daa4a8e4e7aed45958b1f7e2a2b30c2f5a64f',
+            'tag_diff_sub': 'repository_diff_sub:tag_diff_sub',
+            'tag_same_sub': 'repository_same_sub:tag_same_sub',
+            'tag_multitag1': 'repository_multi1:tag_multi1',
+            'tag_multitag2': 'repository_multi2:tag_multi2',
+            'tag_same_registry': 'repository_same_registry:tag_same_registry',
+            'tag_by_digest': 'repository_by_digest:tag_by_digest'
         })
 
         #create a target registry to hold the imported images
@@ -437,20 +446,20 @@ class AcrCommandsTests(ScenarioTest):
                          self.check('sku.tier', 'Standard'),
                          self.check('provisioningState', 'Succeeded')])
 
-        #Case 1: Import image from one regsitry from a different subscription from the current one
-        self.cmd('acr image import -n {registry_name} --resource-id {r_id} --source-image {s_image1} -t {tags1}', checks=[])
+        #Case 1: Import image from a regsitry in a different subscription from the current one
+        self.cmd('acr image import -n {registry_name} --resource-id {resource_id} --source-image {source_image_diff_sub} -t {tag_diff_sub}')
 
         #Case 2: Import image from one regsitry to another where both registries belong to the same subscription
-        self.cmd('acr image import -n {registry_name} --source-image {s_image2} -t {tags2}', checks=[])
+        self.cmd('acr image import -n {registry_name} --source-image {source_image_same_sub} -t {tag_same_sub}')
 
         #Case 3: Import image to the target regsitry and keep the repository:tag the same as that in the source
-        self.cmd('acr image import -n {registry_name} --source-image {s_image2}', checks=[])
+        self.cmd('acr image import -n {registry_name} --source-image {source_image_same_sub}')
 
-        #Case 4: Import image to enable multiple tags in the target registries
-        self.cmd('acr image import -n {registry_name} --source-image {s_image2} -t {tags41} -t {tags42}', checks=[])
+        #Case 4: Import image to enable multiple tags in the target registry
+        self.cmd('acr image import -n {registry_name} --source-image {source_image_same_sub} -t {tag_multitag1} -t {tag_multitag2}')
 
         #Case 5: Import image within the same registry
-        self.cmd('acr image import -n {registry_name} --source-image {s_image3} -t {tags5}', checks=[])
+        self.cmd('acr image import -n {registry_name} --source-image {source_image_same_registry} -t {tag_same_registry}')
 
-        #Case 6: Import image using digest
-        self.cmd('acr image import -n {registry_name} --source-image {s_image4} -t {tags6}', checks=[])
+        #Case 6: Import image by manifest digest
+        self.cmd('acr image import -n {registry_name} --source-image {source_image_by_digest} -t {tag_by_digest}')
