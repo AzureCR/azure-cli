@@ -382,6 +382,12 @@ helps['acr build-task list-builds'] = """
         - name: List all of the builds for a registry and show the results in a table.
           text: >
             az acr build-task list-builds -r MyRegistry -o table
+        - name: List the last 10 successful builds for a registry and show the results in a table.
+          text: >
+            az acr build-task list-builds -r MyRegistry --build-status Succeeded --top 10 -o table
+        - name: List all of the builds that built the image 'hello-world:latest' for a registry and show the results in a table.
+          text: >
+            az acr build-task list-builds -r MyRegistry --image hello-world:latest -o table
 """
 
 helps['acr build-task show-build'] = """
