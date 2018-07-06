@@ -140,7 +140,6 @@ def acr_build_task_show(cmd,
 
     return build_task
 
-
 def acr_build_task_list(cmd,
                         client,
                         registry_name,
@@ -280,16 +279,16 @@ def acr_build_task_update(cmd,  # pylint: disable=too-many-locals
 
     return build_task
 
-def acr_build_task_update_build(cmd,  # pylint: disable=too-many-locals
+def acr_build_task_update_build(cmd,
                                 client,
                                 build_id,
                                 registry_name,
                                 is_archive_enabled=None,
                                 resource_group_name=None):
-    if is_archive_enabled:
+    if is_archive_enabled is not None:
         return client.update(resource_group_name=resource_group_name,
                              registry_name=registry_name,
-                             build_id=build_task_name,
+                             build_id=build_id,
                              is_archive_enabled=is_archive_enabled)
 
 def _get_build_step_name(build_task_name):

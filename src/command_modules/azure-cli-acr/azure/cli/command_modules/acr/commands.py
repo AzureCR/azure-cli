@@ -143,17 +143,17 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         g.command('create', 'acr_build_task_create')
         g.show_command('show', 'acr_build_task_show')
         g.command('list', 'acr_build_task_list', table_transformer=build_task_output_format)
-        g.command('list-arguments', 'acr_build_arguments_list', client_factory=cf_acr_build_steps)
-        g.command('list-source-properties', 'acr_build_source_repository_properties_list')
+        g.command('show-build-arguments', 'acr_build_arguments_list', client_factory=cf_acr_build_steps)
+        g.command('show-source-repository', 'acr_build_source_repository_properties_list')
         g.command('delete', 'acr_build_task_delete')
         g.command('update', 'acr_build_task_update')
-        g.command('update-build', 'acr_build_task_update_build', client_factory=cf_acr_builds)
+        g.command('cancel', 'acr_build_task_cancel')
         g.command('run', 'acr_build_task_run', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
         g.command('list-builds', 'acr_build_task_list_builds', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
         g.command('show-build', 'acr_build_task_show_build', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
+        g.command('update-build', 'acr_build_task_update_build', client_factory=cf_acr_builds)
         g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds,
                   table_transformer=None)
-        g.command('cancel', 'acr_build_task_cancel', client_factory=cf_acr_builds)
