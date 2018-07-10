@@ -140,6 +140,7 @@ def acr_build_task_show(cmd,
 
     return build_task
 
+
 def acr_build_task_list(cmd,
                         client,
                         registry_name,
@@ -147,6 +148,7 @@ def acr_build_task_list(cmd,
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
     return client.list(resource_group_name, registry_name)
+
 
 def acr_build_arguments_list(cmd,
                              client,
@@ -160,6 +162,7 @@ def acr_build_arguments_list(cmd,
                                        build_task_name=build_task_name,
                                        step_name=_get_build_step_name(build_task_name))
 
+
 def acr_build_source_repository_properties_list(cmd,
                                                 client,
                                                 registry_name,
@@ -169,14 +172,6 @@ def acr_build_source_repository_properties_list(cmd,
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
     return client.list_source_repository_properties(resource_group_name, registry_name, build_task_name)
 
-def acr_build_task_cancel(cmd,
-                          client,
-                          registry_name,
-                          build_id,
-                          resource_group_name=None):
-    _, resource_group_name = validate_managed_registry(
-        cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
-    return client.list(resource_group_name, registry_name, build_id)
 
 def acr_build_task_delete(cmd,
                           client,
@@ -279,17 +274,18 @@ def acr_build_task_update(cmd,  # pylint: disable=too-many-locals
 
     return build_task
 
+
 def acr_build_task_update_build(cmd,
                                 client,
                                 build_id,
                                 registry_name,
-                                is_archive_enabled=None,
+                                no_archive=False,
                                 resource_group_name=None):
-    if is_archive_enabled is not None:
-        return client.update(resource_group_name=resource_group_name,
-                             registry_name=registry_name,
-                             build_id=build_id,
-                             is_archive_enabled=is_archive_enabled)
+    return client.update(resource_group_name=resource_group_name,
+                         registry_name=registry_name,
+                         build_id=build_id,
+                         is_archive_enabled=not no_archive)
+
 
 def _get_build_step_name(build_task_name):
     return '{}StepName'.format(build_task_name)

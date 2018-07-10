@@ -394,22 +394,22 @@ helps['acr build-task list'] = """
             az acr build-task list -r MyRegistry -o table
 """
 
-helps['acr build-task list-arguments'] = """
+helps['acr build-task show-build-arguments'] = """
     type: command
     short-summary: List the build arguments for a step including the secret arguments.
     examples:
         - name: List build arguments and show the results in a table.
           text: >
-            az acr build-task list-arguments -n MyBuildTask -r MyRegistry -o table
+            az acr build-task show-build-arguments -n MyBuildTask -r MyRegistry -o table
 """
 
-helps['acr build-task list-source-properties'] = """
+helps['acr build-task show-source-repository'] = """
     type: command
     short-summary: List the source control properties for a build task.
     examples:
         - name: List the source control properties for a build task in a table.
           text: >
-            az acr build-task list-source-properties -n MyBuildTask -r MyRegistry -o table
+            az acr build-task show-source-repository -n MyBuildTask -r MyRegistry -o table
 """
 
 helps['acr build-task delete'] = """
@@ -473,15 +473,6 @@ helps['acr build-task update-build'] = """
         - name: Update an existing build to be archived or not.
           text: >
             az acr build-task update-build -r MyRegistry --build-id MyBuild
-"""
-
-helps['acr build-task cancel'] = """
-    type: command
-    short-summary: Cancel an existing build.
-    examples:
-        - name: Cancel an existing build.
-          text: >
-            az acr build-task cancel -r MyRegistry --build-id MyBuild
 """
 
 helps['acr build-task logs'] = """

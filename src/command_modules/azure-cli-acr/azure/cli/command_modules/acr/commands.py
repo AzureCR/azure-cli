@@ -147,13 +147,13 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         g.command('show-source-repository', 'acr_build_source_repository_properties_list')
         g.command('delete', 'acr_build_task_delete')
         g.command('update', 'acr_build_task_update')
-        g.command('cancel', 'acr_build_task_cancel')
         g.command('run', 'acr_build_task_run', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
         g.command('list-builds', 'acr_build_task_list_builds', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
         g.command('show-build', 'acr_build_task_show_build', client_factory=cf_acr_builds,
                   table_transformer=build_output_format)
-        g.command('update-build', 'acr_build_task_update_build', client_factory=cf_acr_builds)
+        g.command('update-build', 'acr_build_task_update_build', client_factory=cf_acr_builds, 
+                  table_transformer=build_output_format)
         g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds,
                   table_transformer=None)
