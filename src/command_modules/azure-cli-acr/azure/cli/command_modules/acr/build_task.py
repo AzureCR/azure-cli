@@ -119,26 +119,45 @@ def acr_build_task_show(cmd,
                         client,
                         build_task_name,
                         registry_name,
+                        secret_details=False,
                         resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
-    build_task = client.get(resource_group_name, registry_name, build_task_name)
 
     from ._client_factory import cf_acr_build_steps
     client_build_steps = cf_acr_build_steps(cmd.cli_ctx)
 
+    if not secret_details:
+        build_task = client.get(resource_group_name, registry_name, build_task_name)
+
+        try:
+            build_step = client_build_steps.get(resource_group_name,
+                                                registry_name,
+                                                build_task_name,
+                                                _get_build_step_name(build_task_name))
+            setattr(build_task, 'properties', build_step.properties)
+        except CloudError as e:
+            if e.status_code != 404:
+                raise
+            logger.warning("Could not get build task details. Build task basic information is printed.")
+
+        return build_task
+
+    source_repository = client.list_source_repository_properties(resource_group_name, registry_name, build_task_name)
+    response = {}
+    response['sourceRepository'] = source_repository
+
     try:
-        build_step = client_build_steps.get(resource_group_name,
-                                            registry_name,
-                                            build_task_name,
-                                            _get_build_step_name(build_task_name))
-        setattr(build_task, 'properties', build_step.properties)
+        build_arguments = client_build_steps.list_build_arguments(resource_group_name=resource_group_name,
+                                                                  registry_name=registry_name,
+                                                                  build_task_name=build_task_name,
+                                                                  step_name=_get_build_step_name(build_task_name))
+        response['buildArguments'] = build_arguments
     except CloudError as e:
         if e.status_code != 404:
             raise
-        logger.warning("Could not get build task details. Build task basic information is printed.")
-
-    return build_task
+        logger.warning("Could not get build arguments. Source repository information is printed.")
+    return response
 
 
 def acr_build_task_list(cmd,
@@ -148,29 +167,6 @@ def acr_build_task_list(cmd,
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
     return client.list(resource_group_name, registry_name)
-
-
-def acr_build_arguments_list(cmd,
-                             client,
-                             registry_name,
-                             build_task_name,
-                             resource_group_name=None):
-    _, resource_group_name = validate_managed_registry(
-        cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
-    return client.list_build_arguments(resource_group_name=resource_group_name,
-                                       registry_name=registry_name,
-                                       build_task_name=build_task_name,
-                                       step_name=_get_build_step_name(build_task_name))
-
-
-def acr_build_source_repository_properties_list(cmd,
-                                                client,
-                                                registry_name,
-                                                build_task_name,
-                                                resource_group_name=None):
-    _, resource_group_name = validate_managed_registry(
-        cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
-    return client.list_source_repository_properties(resource_group_name, registry_name, build_task_name)
 
 
 def acr_build_task_delete(cmd,
@@ -279,8 +275,10 @@ def acr_build_task_update_build(cmd,
                                 client,
                                 build_id,
                                 registry_name,
-                                no_archive=False,
+                                no_archive,
                                 resource_group_name=None):
+    _, resource_group_name = validate_managed_registry(
+        cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
     return client.update(resource_group_name=resource_group_name,
                          registry_name=registry_name,
                          build_id=build_id,

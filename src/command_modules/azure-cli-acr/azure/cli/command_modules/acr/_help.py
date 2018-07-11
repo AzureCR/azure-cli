@@ -380,9 +380,13 @@ helps['acr build-task show'] = """
     type: command
     short-summary: Get the properties of a specified build task.
     examples:
-        - name: Get the details of a build task, displaying the results in a table.
+        - name: Get the non-secret details of a build task, displaying the results in a table.
           text: >
             az acr build-task show -n MyBuildTask -r MyRegistry -o table
+
+        - name: Get the secret details of a build task.
+          text: >
+            az acr build-task show -n MyBuildTask -r MyRegistry --secret
 """
 
 helps['acr build-task list'] = """
@@ -392,24 +396,6 @@ helps['acr build-task list'] = """
         - name: List build tasks and show the results in a table.
           text: >
             az acr build-task list -r MyRegistry -o table
-"""
-
-helps['acr build-task show-build-arguments'] = """
-    type: command
-    short-summary: List the build arguments for a step including the secret arguments.
-    examples:
-        - name: List build arguments and show the results in a table.
-          text: >
-            az acr build-task show-build-arguments -n MyBuildTask -r MyRegistry -o table
-"""
-
-helps['acr build-task show-source-repository'] = """
-    type: command
-    short-summary: List the source control properties for a build task.
-    examples:
-        - name: List the source control properties for a build task in a table.
-          text: >
-            az acr build-task show-source-repository -n MyBuildTask -r MyRegistry -o table
 """
 
 helps['acr build-task delete'] = """
