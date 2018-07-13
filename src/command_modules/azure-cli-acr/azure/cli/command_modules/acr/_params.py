@@ -147,7 +147,7 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
         c.argument('repository_url', options_list=['--context', '-c'], help="The full URL to the source code respository.")
         c.argument('commit_trigger_enabled', help="Indicates whether the source control commit trigger is enabled.", arg_type=get_three_state_flag())
         c.argument('git_access_token', help="The access token used to access the source control provider.")
-        c.argument('secret_details', options_list=['--secret'], help="Indicates whether the general information or secret details of builds should be returned.", action='store_true')
+        c.argument('secret', help="Indicates whether the general information or secret details of builds should be returned.", action='store_true')
         # build step parameters
         c.argument('step_name', help='The name of the build step.', completer=get_resource_name_completion_list(BUILD_STEP_RESOURCE_TYPE))
         c.argument('branch', help="The source control branch name.")

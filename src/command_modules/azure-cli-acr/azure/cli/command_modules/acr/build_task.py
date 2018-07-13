@@ -119,45 +119,51 @@ def acr_build_task_show(cmd,
                         client,
                         build_task_name,
                         registry_name,
-                        secret_details=False,
+                        secret=False,
                         resource_group_name=None):
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_TASKS_NOT_SUPPORTED)
+    build_task = client.get(resource_group_name, registry_name, build_task_name)
 
     from ._client_factory import cf_acr_build_steps
     client_build_steps = cf_acr_build_steps(cmd.cli_ctx)
 
-    if not secret_details:
-        build_task = client.get(resource_group_name, registry_name, build_task_name)
+    try:
+        build_step = client_build_steps.get(resource_group_name,
+                                            registry_name,
+                                            build_task_name,
+                                            _get_build_step_name(build_task_name))
+        setattr(build_task, 'properties', build_step.properties)
+    except CloudError as e:
+        if e.status_code != 404:
+            raise
+        logger.warning("Could not get build task details. Build task basic information is printed.")
 
-        try:
-            build_step = client_build_steps.get(resource_group_name,
-                                                registry_name,
-                                                build_task_name,
-                                                _get_build_step_name(build_task_name))
-            setattr(build_task, 'properties', build_step.properties)
-        except CloudError as e:
-            if e.status_code != 404:
-                raise
-            logger.warning("Could not get build task details. Build task basic information is printed.")
-
+    if not secret:
         return build_task
 
-    source_repository = client.list_source_repository_properties(resource_group_name, registry_name, build_task_name)
-    response = {}
-    response['sourceRepository'] = source_repository
+    try:
+        source_repository = client.list_source_repository_properties(resource_group_name,
+                                                                     registry_name,
+                                                                     build_task_name)
+        setattr(build_task, 'sourceRepository', source_repository)
+    except CloudError as e:
+        if e.status_code != 403:
+            raise
+        # pylint: disable=line-too-long
+        logger.warning("No permission to list source repository secret properties. Build task basic information is printed.")
 
     try:
         build_arguments = client_build_steps.list_build_arguments(resource_group_name=resource_group_name,
                                                                   registry_name=registry_name,
                                                                   build_task_name=build_task_name,
                                                                   step_name=_get_build_step_name(build_task_name))
-        response['buildArguments'] = build_arguments
+        setattr(getattr(build_task, 'properties'), 'buildArguments', list(build_arguments))
     except CloudError as e:
-        if e.status_code != 404:
+        if e.status_code != 403:
             raise
-        logger.warning("Could not get build arguments. Source repository information is printed.")
-    return response
+        logger.warning("No permission to list build arguments. Build task basic information is printed.")
+    return build_task
 
 
 def acr_build_task_list(cmd,

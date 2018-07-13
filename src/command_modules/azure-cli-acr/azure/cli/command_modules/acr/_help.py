@@ -380,11 +380,11 @@ helps['acr build-task show'] = """
     type: command
     short-summary: Get the properties of a specified build task.
     examples:
-        - name: Get the non-secret details of a build task, displaying the results in a table.
+        - name: Get the details of a build task, displaying the results in a table.
           text: >
             az acr build-task show -n MyBuildTask -r MyRegistry -o table
 
-        - name: Get the secret details of a build task.
+        - name: Get the details of a build task including secrets.
           text: >
             az acr build-task show -n MyBuildTask -r MyRegistry --secret
 """
@@ -456,9 +456,9 @@ helps['acr build-task update-build'] = """
     type: command
     short-summary: Patch the build properties.
     examples:
-        - name: Update an existing build to be archived or not.
+        - name: Update an existing build to be archived.
           text: >
-            az acr build-task update-build -r MyRegistry --build-id MyBuild
+            az acr build-task update-build -r MyRegistry --build-id MyBuild --no-archive false
 """
 
 helps['acr build-task logs'] = """
