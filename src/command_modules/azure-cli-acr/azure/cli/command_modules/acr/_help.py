@@ -47,6 +47,11 @@ helps['acr build-task'] = """
     short-summary: Manage build definitions, which can be triggered by git commits or base image updates.
     """
 
+helps['acr helm'] = """
+    type: group
+    short-summary: Manage helm charts for Azure Container Registries.
+    """
+
 helps['acr check-name'] = """
     type: command
     short-summary: Checks if a container registry name is valid and available for use.
@@ -118,7 +123,7 @@ helps['acr login'] = """
     short-summary: Log in to a container registry through the Docker CLI.
     long-summary: Docker must be installed on your machine.
     examples:
-        - name: Log in to a container registry
+        - name: Log in to a container registry to manage container images.
           text: >
             az acr login -n MyRegistry
 """
@@ -534,4 +539,24 @@ helps['acr import'] = """
         - name: Import an image from a registry in a different subscription.
           text: >
             az acr import -n MyRegistry --source sourcerepository:sourcetag -t targetrepository:targettag -r /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry
+"""
+
+helps['acr helm login'] = """
+    type: command
+    short-summary: Log in to a container registry through the Helm CLI.
+    long-summary: Helm must be installed on your machine.
+    examples:
+        - name: Log in to a container registry to manage helm charts.
+          text: >
+            az acr helm login -n MyRegistry
+"""
+
+helps['acr helm push'] = """
+    type: command
+    short-summary: Push a helm chart package to a container registry.
+    long-summary: Helm must be installed on your machine.
+    examples:
+        - name: Push a chart package to a container registry.
+          text: >
+            az acr helm push mychart-0.3.2.tgz -n MyRegistry
 """
