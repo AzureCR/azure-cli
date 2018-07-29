@@ -171,5 +171,5 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         g.command('update', 'acr_config_content_trust_update')
 
     with self.command_group('acr helm', acr_helm_util) as g:
-        g.command('login', 'acr_helm_login')
+        g.command('init', 'acr_helm_init')
         g.command('push', 'acr_helm_push')

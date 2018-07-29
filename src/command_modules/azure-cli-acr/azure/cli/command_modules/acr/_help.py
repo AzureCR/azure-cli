@@ -541,14 +541,14 @@ helps['acr import'] = """
             az acr import -n MyRegistry --source sourcerepository:sourcetag -t targetrepository:targettag -r /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry
 """
 
-helps['acr helm login'] = """
+helps['acr helm init'] = """
     type: command
-    short-summary: Log in to a container registry through the Helm CLI.
+    short-summary: Initialize a helm repo from a container registry through the Helm CLI.
     long-summary: Helm must be installed on your machine.
     examples:
-        - name: Log in to a container registry to manage helm charts.
+        - name: Initialize a helm repo from a container registry to manage helm charts.
           text: >
-            az acr helm login -n MyRegistry
+            az acr helm init -n MyRegistry
 """
 
 helps['acr helm push'] = """

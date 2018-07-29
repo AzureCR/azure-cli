@@ -42,7 +42,7 @@ def acr_helm_push(cmd,
         raise CLIError(e)
 
 
-def acr_helm_login(cmd, registry_name, resource_group_name=None, username=None, password=None):
+def acr_helm_init(cmd, registry_name, resource_group_name=None, username=None, password=None):
     from subprocess import Popen
     helm_command = _get_helm_command()
 
@@ -60,7 +60,7 @@ def acr_helm_login(cmd, registry_name, resource_group_name=None, username=None, 
 
 
 def _get_url(path=None):
-    base_url = 'http://localhost:8080/'
+    base_url = 'https://wus2df-helm.azurecr-test.io/'
     return '{}{}'.format(base_url, path) if path else base_url
 
 
