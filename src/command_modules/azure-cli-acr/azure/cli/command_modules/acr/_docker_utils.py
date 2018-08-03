@@ -269,8 +269,4 @@ def get_authorization_header(username, password):
         auth = _get_basic_auth_str(username, password)
     else:
         auth = _get_bearer_auth_str(password)
-<<<<<<< HEAD
-=======
-
->>>>>>> Add helm commands
     return {'Authorization': auth}
