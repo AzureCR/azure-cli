@@ -132,7 +132,7 @@ def _get_credentials(cli_ctx,
         return login_server, username, password
 
     # 2. if we don't yet have credentials, attempt to get a refresh token
-    if not password and registry.sku.name in MANAGED_REGISTRY_SKU:
+    if False and not password and registry.sku.name in MANAGED_REGISTRY_SKU:
         try:
             username = '00000000-0000-0000-0000-000000000000' if only_refresh_token else None
             password = _get_aad_token(cli_ctx, login_server, only_refresh_token, repository, permission)
