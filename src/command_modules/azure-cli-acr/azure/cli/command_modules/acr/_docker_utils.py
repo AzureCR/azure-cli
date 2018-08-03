@@ -109,6 +109,7 @@ def _get_credentials(cli_ctx,
                      resource_group_name,
                      username,
                      password,
+                     use_bearer,
                      only_refresh_token,
                      repository=None,
                      permission=None):
@@ -117,6 +118,7 @@ def _get_credentials(cli_ctx,
     :param str resource_group_name: The name of resource group
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
+    :param bool use_bearer: Whether to try bearer auth or jump directly to basic auth
     :param bool only_refresh_token: Whether to ask for only refresh token, or for both refresh and access tokens
     :param str repository: Repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
@@ -145,7 +147,7 @@ def _get_credentials(cli_ctx,
     login_server = registry.login_server
 
     # 2. if we don't yet have credentials, attempt to get a refresh token
-    if not password and registry.sku.name in MANAGED_REGISTRY_SKU:
+    if use_bearer and not password and registry.sku.name in MANAGED_REGISTRY_SKU:
         try:
             username = '00000000-0000-0000-0000-000000000000' if only_refresh_token else None
             password = _get_aad_token(cli_ctx, login_server, only_refresh_token, repository, permission)
@@ -181,18 +183,21 @@ def get_login_credentials(cli_ctx,
                           registry_name,
                           resource_group_name=None,
                           username=None,
-                          password=None):
+                          password=None,
+                          use_bearer=True):
     """Try to get AAD authorization tokens or admin user credentials to log into a registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
+    :param bool use_bearer: Whether to try bearer auth or jump directly to basic auth
     """
     return _get_credentials(cli_ctx,
                             registry_name,
                             resource_group_name,
                             username,
                             password,
+                            use_bearer=use_bearer,
                             only_refresh_token=True)
 
 
@@ -201,6 +206,7 @@ def get_access_credentials(cli_ctx,
                            resource_group_name=None,
                            username=None,
                            password=None,
+                           use_bearer=True,
                            repository=None,
                            permission=None):
     """Try to get AAD authorization tokens or admin user credentials to access a registry.
@@ -208,6 +214,7 @@ def get_access_credentials(cli_ctx,
     :param str resource_group_name: The name of resource group
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
+    :param bool use_bearer: Whether to try bearer auth or jump directly to basic auth
     :param str repository: Repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
@@ -220,6 +227,7 @@ def get_access_credentials(cli_ctx,
                             resource_group_name,
                             username,
                             password,
+                            use_bearer=use_bearer,
                             only_refresh_token=False,
                             repository=repository,
                             permission=permission)
