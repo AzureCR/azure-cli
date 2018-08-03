@@ -120,6 +120,8 @@ def _get_credentials(cli_ctx,
     :param str repository: Repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
+    # Try to use the predefined login server suffix to construct login server from registry name.
+    # This is to avoid mamagement requests if username/password are already provided.
     login_server_suffix = get_acr_login_server_suffix(cli_ctx)
     login_server = '{}{}'.format(registry_name, login_server_suffix)
 
