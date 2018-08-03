@@ -74,6 +74,10 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         client_factory=cf_acr_build_tasks
     )
 
+    acr_helm_util = CliCommandType(
+        operations_tmpl='azure.cli.command_modules.acr.helm#{}'
+    )
+
     with self.command_group('acr', acr_custom_util) as g:
         g.command('check-name', 'acr_check_name', table_transformer=None)
         g.command('list', 'acr_list')
@@ -154,3 +158,7 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
                   table_transformer=build_output_format)
         g.command('logs', 'acr_build_task_logs', client_factory=cf_acr_builds,
                   table_transformer=None)
+
+    with self.command_group('acr helm', acr_helm_util) as g:
+        g.command('init', 'acr_helm_init')
+        g.command('push', 'acr_helm_push')
