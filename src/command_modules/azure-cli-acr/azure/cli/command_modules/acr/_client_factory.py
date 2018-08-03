@@ -4,6 +4,7 @@
 # --------------------------------------------------------------------------------------------
 
 from azure.cli.core.commands.client_factory import get_mgmt_service_client
+from azure.cli.core.cloud import get_active_cloud
 
 
 def get_arm_service_client(cli_ctx):
@@ -46,3 +47,8 @@ def cf_acr_build_tasks(cli_ctx, *_):
 
 def cf_acr_build_steps(cli_ctx, *_):
     return get_acr_service_client(cli_ctx).build_steps
+
+
+def get_acr_login_server_suffix(cli_ctx):
+    cloud = get_active_cloud(cli_ctx)
+    return cloud.suffixes.acr_login_server_endpoint
