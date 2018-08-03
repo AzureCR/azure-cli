@@ -38,7 +38,8 @@ def acr_helm_push(cmd,
         registry_name=registry_name,
         resource_group_name=resource_group_name,
         username=username,
-        password=password)
+        password=password,
+        use_bearer=False)
 
     try:
         with open(chart_package, 'rb') as input_file:
@@ -69,7 +70,8 @@ def acr_helm_init(cmd, registry_name, resource_group_name=None, username=None, p
         registry_name=registry_name,
         resource_group_name=resource_group_name,
         username=username,
-        password=password)
+        password=password,
+        use_bearer=False)
 
     p = Popen([helm_command, 'repo', 'add', registry_name,
                'https://{}/'.format(login_server),

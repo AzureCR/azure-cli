@@ -19,7 +19,7 @@ from knack.log import get_logger
 
 from azure.cli.core.util import should_disable_connection_verify
 
-from ._client_factory import cf_acr_registries
+from ._client_factory import cf_acr_registries, get_acr_login_server_suffix
 from ._constants import MANAGED_REGISTRY_SKU
 from ._utils import get_registry_by_name
 
@@ -107,6 +107,7 @@ def _get_credentials(cli_ctx,
                      username,
                      password,
                      only_refresh_token,
+                     use_bearer,
                      repository=None,
                      permission=None):
     """Try to get AAD authorization tokens or admin user credentials.
@@ -115,11 +116,12 @@ def _get_credentials(cli_ctx,
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     :param bool only_refresh_token: Whether to ask for only refresh token, or for both refresh and access tokens
+    :param bool use_bearer: Whether to try bearer auth or jump directly to basic auth
     :param str repository: Repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
-    registry, resource_group_name = get_registry_by_name(cli_ctx, registry_name, resource_group_name)
-    login_server = registry.login_server
+    login_server_suffix = get_acr_login_server_suffix(cli_ctx)
+    login_server = '{}{}'.format(registry_name, login_server_suffix)
 
     # 1. if username was specified, verify that password was also specified
     if username:
@@ -131,8 +133,11 @@ def _get_credentials(cli_ctx,
 
         return login_server, username, password
 
+    registry, resource_group_name = get_registry_by_name(cli_ctx, registry_name, resource_group_name)
+    login_server = registry.login_server
+
     # 2. if we don't yet have credentials, attempt to get a refresh token
-    if False and not password and registry.sku.name in MANAGED_REGISTRY_SKU:
+    if use_bearer and not password and registry.sku.name in MANAGED_REGISTRY_SKU:
         try:
             username = '00000000-0000-0000-0000-000000000000' if only_refresh_token else None
             password = _get_aad_token(cli_ctx, login_server, only_refresh_token, repository, permission)
@@ -168,7 +173,8 @@ def get_login_credentials(cli_ctx,
                           registry_name,
                           resource_group_name=None,
                           username=None,
-                          password=None):
+                          password=None,
+                          use_bearer=True):
     """Try to get AAD authorization tokens or admin user credentials to log into a registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
@@ -180,7 +186,8 @@ def get_login_credentials(cli_ctx,
                             resource_group_name,
                             username,
                             password,
-                            only_refresh_token=True)
+                            only_refresh_token=True,
+                            use_bearer=use_bearer)
 
 
 def get_access_credentials(cli_ctx,
@@ -188,6 +195,7 @@ def get_access_credentials(cli_ctx,
                            resource_group_name=None,
                            username=None,
                            password=None,
+                           use_bearer=True,
                            repository=None,
                            permission=None):
     """Try to get AAD authorization tokens or admin user credentials to access a registry.
@@ -208,6 +216,7 @@ def get_access_credentials(cli_ctx,
                             username,
                             password,
                             only_refresh_token=False,
+                            use_bearer=use_bearer,
                             repository=repository,
                             permission=permission)
 
