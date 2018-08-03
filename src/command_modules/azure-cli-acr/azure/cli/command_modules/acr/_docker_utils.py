@@ -10,7 +10,9 @@ except ImportError:
     from urlparse import urlparse, urlunparse
 
 from json import loads
+from base64 import b64encode
 import requests
+from requests.utils import to_native_string
 from msrest.http_logger import log_request, log_response
 
 from knack.util import CLIError
@@ -19,7 +21,7 @@ from knack.log import get_logger
 
 from azure.cli.core.util import should_disable_connection_verify
 
-from ._client_factory import cf_acr_registries
+from ._client_factory import cf_acr_registries, get_acr_login_server_suffix
 from ._constants import MANAGED_REGISTRY_SKU
 from ._utils import get_registry_by_name
 
@@ -106,6 +108,7 @@ def _get_credentials(cli_ctx,
                      resource_group_name,
                      username,
                      password,
+                     use_bearer,
                      only_refresh_token,
                      repository=None,
                      permission=None):
@@ -114,12 +117,16 @@ def _get_credentials(cli_ctx,
     :param str resource_group_name: The name of resource group
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
+    :param bool use_bearer: Whether to try bearer auth or jump directly to basic auth
     :param bool only_refresh_token: Whether to ask for only refresh token, or for both refresh and access tokens
     :param str repository: Repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
-    registry, resource_group_name = get_registry_by_name(cli_ctx, registry_name, resource_group_name)
-    login_server = registry.login_server
+    # Try to use the pre-defined login server suffix to construct login server from registry name.
+    # This is to avoid mamagement requests if username/password are already provided.
+    # In all other cases, login server will be obtained from server.
+    login_server_suffix = get_acr_login_server_suffix(cli_ctx)
+    login_server = '{}{}'.format(registry_name, login_server_suffix)
 
     # 1. if username was specified, verify that password was also specified
     if username:
@@ -131,8 +138,11 @@ def _get_credentials(cli_ctx,
 
         return login_server, username, password
 
+    registry, resource_group_name = get_registry_by_name(cli_ctx, registry_name, resource_group_name)
+    login_server = registry.login_server
+
     # 2. if we don't yet have credentials, attempt to get a refresh token
-    if not password and registry.sku.name in MANAGED_REGISTRY_SKU:
+    if use_bearer and not password and registry.sku.name in MANAGED_REGISTRY_SKU:
         try:
             username = '00000000-0000-0000-0000-000000000000' if only_refresh_token else None
             password = _get_aad_token(cli_ctx, login_server, only_refresh_token, repository, permission)
@@ -168,18 +178,21 @@ def get_login_credentials(cli_ctx,
                           registry_name,
                           resource_group_name=None,
                           username=None,
-                          password=None):
+                          password=None,
+                          use_bearer=True):
     """Try to get AAD authorization tokens or admin user credentials to log into a registry.
     :param str registry_name: The name of container registry
     :param str resource_group_name: The name of resource group
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
+    :param bool use_bearer: Whether to try bearer auth or jump directly to basic auth
     """
     return _get_credentials(cli_ctx,
                             registry_name,
                             resource_group_name,
                             username,
                             password,
+                            use_bearer=use_bearer,
                             only_refresh_token=True)
 
 
@@ -188,6 +201,7 @@ def get_access_credentials(cli_ctx,
                            resource_group_name=None,
                            username=None,
                            password=None,
+                           use_bearer=True,
                            repository=None,
                            permission=None):
     """Try to get AAD authorization tokens or admin user credentials to access a registry.
@@ -195,6 +209,7 @@ def get_access_credentials(cli_ctx,
     :param str resource_group_name: The name of resource group
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
+    :param bool use_bearer: Whether to try bearer auth or jump directly to basic auth
     :param str repository: Repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
@@ -207,6 +222,7 @@ def get_access_credentials(cli_ctx,
                             resource_group_name,
                             username,
                             password,
+                            use_bearer=use_bearer,
                             only_refresh_token=False,
                             repository=repository,
                             permission=permission)
@@ -223,3 +239,26 @@ def log_registry_response(response):
 def get_login_server_suffix(cli_ctx):
     """Get the Azure Container Registry login server suffix in the current cloud."""
     return cli_ctx.cloud.suffixes.acr_login_server_endpoint
+
+
+def _get_basic_auth_str(username, password):
+    return 'Basic ' + to_native_string(
+        b64encode(('%s:%s' % (username, password)).encode('latin1')).strip()
+    )
+
+
+def _get_bearer_auth_str(token):
+    return 'Bearer ' + token
+
+
+def get_authorization_header(username, password):
+    """Get the authorization header as Basic auth if username is provided, or Bearer auth otherwise
+    :param str username: The username used to log into the container registry
+    :param str password: The password used to log into the container registry
+    """
+    if username:
+        auth = _get_basic_auth_str(username, password)
+    else:
+        auth = _get_bearer_auth_str(password)
+
+    return {'Authorization': auth}
