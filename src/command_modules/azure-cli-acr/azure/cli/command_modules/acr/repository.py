@@ -19,7 +19,7 @@ from knack.log import get_logger
 from azure.cli.core.util import should_disable_connection_verify
 
 from ._utils import validate_managed_registry
-from ._docker_utils import get_login_credentials, get_authorization_header, log_registry_response
+from ._docker_utils import get_access_credentials, get_authorization_header, log_registry_response
 
 
 logger = get_logger(__name__)
