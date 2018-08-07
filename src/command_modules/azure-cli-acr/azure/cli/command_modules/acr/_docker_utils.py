@@ -237,3 +237,26 @@ def log_registry_response(response):
 def get_login_server_suffix(cli_ctx):
     """Get the Azure Container Registry login server suffix in the current cloud."""
     return cli_ctx.cloud.suffixes.acr_login_server_endpoint
+
+
+def _get_basic_auth_str(username, password):
+    return 'Basic ' + to_native_string(
+        b64encode(('%s:%s' % (username, password)).encode('latin1')).strip()
+    )
+
+
+def _get_bearer_auth_str(token):
+    return 'Bearer ' + token
+
+
+def get_authorization_header(username, password):
+    """Get the authorization header as Basic auth if username is provided, or Bearer auth otherwise
+    :param str username: The username used to log into the container registry
+    :param str password: The password used to log into the container registry
+    """
+    if username:
+        auth = _get_basic_auth_str(username, password)
+    else:
+        auth = _get_bearer_auth_str(password)
+
+    return {'Authorization': auth}

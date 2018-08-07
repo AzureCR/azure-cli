@@ -19,7 +19,7 @@ from knack.log import get_logger
 from azure.cli.core.util import should_disable_connection_verify
 
 from ._utils import validate_managed_registry
-from ._docker_utils import get_access_credentials, log_registry_response
+from ._docker_utils import get_login_credentials, get_authorization_header, log_registry_response
 
 
 logger = get_logger(__name__)
@@ -41,25 +41,6 @@ MANIFEST_V2_HEADER = {
     'Accept': 'application/vnd.docker.distribution.manifest.v2+json'
 }
 DEFAULT_PAGINATION = 20
-
-
-def _get_basic_auth_str(username, password):
-    return 'Basic ' + to_native_string(
-        b64encode(('%s:%s' % (username, password)).encode('latin1')).strip()
-    )
-
-
-def _get_bearer_auth_str(token):
-    return 'Bearer ' + token
-
-
-def _get_authorization_header(username, password):
-    if username is None:
-        auth = _get_bearer_auth_str(password)
-    else:
-        auth = _get_basic_auth_str(username, password)
-
-    return {'Authorization': auth}
 
 
 def _parse_error_message(error_message, response):

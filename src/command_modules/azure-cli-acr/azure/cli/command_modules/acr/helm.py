@@ -12,16 +12,10 @@ from knack.util import CLIError
 from knack.log import get_logger
 from azure.cli.core.util import should_disable_connection_verify
 
-from ._docker_utils import get_login_credentials, log_registry_response
+from ._docker_utils import get_login_credentials, get_authorization_header, log_registry_response
 
 
 logger = get_logger(__name__)
-
-
-def _get_basic_auth_str(username, password):
-    return 'Basic ' + to_native_string(
-        b64encode(('%s:%s' % (username, password)).encode('latin1')).strip()
-    )
 
 
 def acr_helm_push(cmd,
@@ -46,9 +40,7 @@ def acr_helm_push(cmd,
             response = requests.request(
                 method='post',
                 url='https://{}/api/charts'.format(login_server),
-                headers={
-                    'Authorization': _get_basic_auth_str(username, password)
-                },
+                headers=get_authorization_header(username, password),
                 files={
                     'chart': input_file
                 },
