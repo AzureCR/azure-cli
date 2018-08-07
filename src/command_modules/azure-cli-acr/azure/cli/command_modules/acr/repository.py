@@ -4,9 +4,7 @@
 # --------------------------------------------------------------------------------------------
 
 import time
-from base64 import b64encode
 import requests
-from requests.utils import to_native_string
 try:
     from urllib.parse import unquote
 except ImportError:
@@ -81,7 +79,7 @@ def _request_data_from_registry(http_method,
         raise ValueError("Non-empty json payload is required for http method: {}".format(http_method))
 
     url = 'https://{}{}'.format(login_server, path)
-    headers = _get_authorization_header(username, password)
+    headers = get_authorization_header(username, password)
 
     for i in range(0, retry_times):
         errorMessage = None
@@ -127,7 +125,7 @@ def _request_data_from_registry(http_method,
 
 def _get_manifest_digest(login_server, repository, tag, username, password, retry_times=3, retry_interval=5):
     url = 'https://{}/v2/{}/manifests/{}'.format(login_server, repository, tag)
-    headers = _get_authorization_header(username, password)
+    headers = get_authorization_header(username, password)
     headers.update(MANIFEST_V2_HEADER)
 
     for i in range(0, retry_times):

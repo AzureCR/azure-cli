@@ -10,7 +10,9 @@ except ImportError:
     from urlparse import urlparse, urlunparse
 
 from json import loads
+from base64 import b64encode
 import requests
+from requests.utils import to_native_string
 from msrest.http_logger import log_request, log_response
 
 from knack.util import CLIError
