@@ -39,7 +39,7 @@ def acr_helm_push(cmd,
         with open(chart_package, 'rb') as input_file:
             response = requests.request(
                 method='post',
-                url='https://{}/api/charts'.format(login_server),
+                url='https://{}/helm/v1/api/charts'.format(login_server),
                 headers=get_authorization_header(username, password),
                 files={
                     'chart': input_file
@@ -66,7 +66,7 @@ def acr_helm_repo_add(cmd, registry_name, resource_group_name=None, username=Non
         use_bearer=False)
 
     p = Popen([helm_command, 'repo', 'add', registry_name,
-               'https://{}/'.format(login_server),
+               'https://{}/helm/v1/'.format(login_server),
                '--username', username, '--password', password])
     p.wait()
 
