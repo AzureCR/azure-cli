@@ -92,7 +92,8 @@ def _request_helm_data_from_registry(http_method,
             elif response.status_code == 404:
                 raise CLIError(_parse_helm_error_message('The requested data does not exist.', response))
             else:
-                raise Exception(_parse_helm_error_message('Could not {} the requested data.'.format(http_method), response))
+                raise Exception(_parse_helm_error_message(
+                    'Could not {} the requested data.'.format(http_method), response))
         except CLIError:
             raise
         except Exception as e:  # pylint: disable=broad-except
@@ -189,7 +190,7 @@ def acr_helm_push(cmd,
         use_bearer=False)
 
     with open(chart_package, 'rb') as input_file:
-        result, _ = _request_helm_data_from_registry(
+        return _request_helm_data_from_registry(
             http_method='post',
             login_server=login_server,
             path='api/charts',
@@ -197,8 +198,7 @@ def acr_helm_push(cmd,
             password=password,
             files_payload={
                 'chart': input_file
-            })
-        return result
+            })[0]
 
 
 def acr_helm_repo_add(cmd, registry_name, resource_group_name=None, username=None, password=None):

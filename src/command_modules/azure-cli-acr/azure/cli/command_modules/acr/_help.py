@@ -555,7 +555,7 @@ helps['acr helm list'] = """
             az acr helm list -n MyRegistry
         - name: List all versions of a helm chart in a container registry
           text: >
-            az acr helm list -n MyRegistry --chart-name mychart
+            az acr helm list -n MyRegistry --chart mychart
 """
 
 helps['acr helm show'] = """
@@ -564,7 +564,7 @@ helps['acr helm show'] = """
     examples:
         - name: Describe a helm chart version in a container registry.
           text: >
-            az acr helm show -n MyRegistry --chart-name mychart --chart-version 0.3.2
+            az acr helm show -n MyRegistry --chart mychart --version 0.3.2
 """
 
 helps['acr helm delete'] = """
@@ -573,7 +573,16 @@ helps['acr helm delete'] = """
     examples:
         - name: Delete a helm chart version in a container registry.
           text: >
-            az acr helm delete -n MyRegistry --chart-name mychart --chart-version 0.3.2
+            az acr helm delete -n MyRegistry --chart mychart --version 0.3.2
+"""
+
+helps['acr helm push'] = """
+    type: command
+    short-summary: Push a helm chart package to a container registry.
+    examples:
+        - name: Push a chart package to a container registry.
+          text: >
+            az acr helm push mychart-0.3.2.tgz -n MyRegistry
 """
 
 helps['acr helm repo add'] = """
@@ -584,13 +593,4 @@ helps['acr helm repo add'] = """
         - name: Add a helm chart repository from a container registry to manage helm charts.
           text: >
             az acr helm repo add -n MyRegistry
-"""
-
-helps['acr helm push'] = """
-    type: command
-    short-summary: Push a helm chart package to a container registry.
-    examples:
-        - name: Push a chart package to a container registry.
-          text: >
-            az acr helm push mychart-0.3.2.tgz -n MyRegistry
 """
