@@ -169,4 +169,5 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
         c.argument('build_task_name', completer=None)
 
     with self.argument_context('acr helm push') as c:
+        c.argument('registry_name', options_list=['--registry', '-r'])
         c.positional('chart_package', help="The helm chart package.", completer=FilesCompleter())

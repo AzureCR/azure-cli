@@ -546,6 +546,36 @@ helps['acr import'] = """
             az acr import -n MyRegistry --source sourcerepository:sourcetag -t targetrepository:targettag -r /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry
 """
 
+helps['acr helm list'] = """
+    type: command
+    short-summary: List all helm charts in a container registry.
+    examples:
+        - name: List all helm charts in a container registry
+          text: >
+            az acr helm list -n MyRegistry
+        - name: List all versions of a helm chart in a container registry
+          text: >
+            az acr helm list -n MyRegistry --chart-name mychart
+"""
+
+helps['acr helm show'] = """
+    type: command
+    short-summary: Describe a helm chart version in a container registry.
+    examples:
+        - name: Describe a helm chart version in a container registry.
+          text: >
+            az acr helm show -n MyRegistry --chart-name mychart --chart-version 0.3.2
+"""
+
+helps['acr helm delete'] = """
+    type: command
+    short-summary: Delete a helm chart version in a container registry.
+    examples:
+        - name: Delete a helm chart version in a container registry.
+          text: >
+            az acr helm delete -n MyRegistry --chart-name mychart --chart-version 0.3.2
+"""
+
 helps['acr helm repo add'] = """
     type: command
     short-summary: Add a helm chart repository from a container registry through the Helm CLI.
