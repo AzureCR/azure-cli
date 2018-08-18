@@ -105,7 +105,7 @@ def _request_helm_data_from_registry(http_method,
 
 def acr_helm_list(cmd,
                   registry_name,
-                  chart_name=None,
+                  chart=None,
                   resource_group_name=None,
                   username=None,
                   password=None):
@@ -120,15 +120,15 @@ def acr_helm_list(cmd,
     return _request_helm_data_from_registry(
         http_method='get',
         login_server=login_server,
-        path='api/charts/{}'.format(chart_name) if chart_name else 'api/charts',
+        path='api/charts/{}'.format(chart) if chart else 'api/charts',
         username=username,
         password=password)[0]
 
 
 def acr_helm_show(cmd,
                   registry_name,
-                  chart_name,
-                  chart_version,
+                  chart,
+                  version,
                   resource_group_name=None,
                   username=None,
                   password=None):
@@ -143,15 +143,15 @@ def acr_helm_show(cmd,
     return _request_helm_data_from_registry(
         http_method='get',
         login_server=login_server,
-        path='api/charts/{}/{}'.format(chart_name, chart_version),
+        path='api/charts/{}/{}'.format(chart, version),
         username=username,
         password=password)[0]
 
 
 def acr_helm_delete(cmd,
                     registry_name,
-                    chart_name,
-                    chart_version,
+                    chart,
+                    version,
                     resource_group_name=None,
                     username=None,
                     password=None):
@@ -166,7 +166,7 @@ def acr_helm_delete(cmd,
     return _request_helm_data_from_registry(
         http_method='delete',
         login_server=login_server,
-        path='api/charts/{}/{}'.format(chart_name, chart_version),
+        path='api/charts/{}/{}'.format(chart, version),
         username=username,
         password=password)[0]
 
