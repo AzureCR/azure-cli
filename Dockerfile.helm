@@ -1,0 +1,25 @@
+FROM azurecr/azure-cli
+
+ENV VERSION v2.9.0
+
+# Enable SSL
+RUN apk --update add ca-certificates wget python curl tar
+
+# Install Kubectl
+RUN az aks install-cli 
+
+# Install Helm
+ENV FILENAME helm-${VERSION}-linux-amd64.tar.gz
+ENV HELM_URL https://storage.googleapis.com/kubernetes-helm/${FILENAME}
+
+RUN curl -o /tmp/$FILENAME ${HELM_URL} \
+  && tar -zxvf /tmp/${FILENAME} -C /tmp \
+  && mv /tmp/linux-amd64/helm /bin/helm \
+  && rm -rf /tmp
+
+RUN helm init; exit 0
+
+USER root
+
+RUN az cloud register -n dogfood --endpoint-active-directory https://login.windows-ppe.net --endpoint-active-directory-graph-resource-id https://graph.ppe.windows.net/ --endpoint-active-directory-resource-id https://management.core.windows.net/ --endpoint-gallery https://current.gallery.azure-test.net/ --endpoint-management https://management.core.windows.net/ --endpoint-resource-manager https://api-dogfood.resources.windows-int.net/ --suffix-storage-endpoint core.test-cint.azure-test.net --suffix-acr-login-server .azurecr-test.io
+RUN az cloud set -n dogfood
