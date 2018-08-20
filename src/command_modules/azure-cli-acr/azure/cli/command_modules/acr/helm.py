@@ -189,16 +189,19 @@ def acr_helm_push(cmd,
         password=password,
         use_bearer=False)
 
-    with open(chart_package, 'rb') as input_file:
-        return _request_helm_data_from_registry(
-            http_method='post',
-            login_server=login_server,
-            path='api/charts',
-            username=username,
-            password=password,
-            files_payload={
-                'chart': input_file
-            })[0]
+    try:
+        with open(chart_package, 'rb') as input_file:
+            return _request_helm_data_from_registry(
+                http_method='post',
+                login_server=login_server,
+                path='api/charts',
+                username=username,
+                password=password,
+                files_payload={
+                    'chart': input_file
+                })[0]
+    except OSError as e:
+        raise CLIError(e)
 
 
 def acr_helm_repo_add(cmd, registry_name, resource_group_name=None, username=None, password=None):
