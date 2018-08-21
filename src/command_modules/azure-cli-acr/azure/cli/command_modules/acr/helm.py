@@ -78,7 +78,7 @@ def _request_helm_data_from_registry(http_method,
                 result = response.json()[result_index] if result_index else response.json()
                 next_link = response.headers['link'] if 'link' in response.headers else None
                 return result, next_link
-            elif response.status_code == 202:
+            elif response.status_code == 201 or response.status_code == 202:
                 result = None
                 try:
                     result = response.json()[result_index] if result_index else response.json()
