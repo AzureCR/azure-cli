@@ -245,7 +245,7 @@ def _get_value(item, *args):
         return ' '
 
 def _get_value_arr(item, *args):
-    """Recursively get a nested value from a dict.
+    """Recursively get a nested array from a dict.
     :param dict item: The dict object
     """
     try:
