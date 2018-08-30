@@ -15,9 +15,12 @@ from ._format import (
     webhook_list_events_output_format,
     webhook_ping_output_format,
     replication_output_format,
+    build_task_output_format,
+    build_task_detail_output_format,
     task_output_format,
     task_detail_output_format,
-    build_output_format
+    build_output_format,
+    run_output_format
 )
 from ._client_factory import (
     cf_acr_registries,
@@ -86,7 +89,7 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
 
     acr_build_task_util = CliCommandType(
         operations_tmpl='azure.cli.command_modules.acr.build_task#{}',
-        table_transformer=task_detail_output_format,
+        table_transformer=build_task_detail_output_format,
         client_factory=cf_acr_build_tasks
     )
 
@@ -158,7 +161,7 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
     with self.command_group('acr build-task', acr_build_task_util) as g:
         g.command('create', 'acr_build_task_create')
         g.show_command('show', 'acr_build_task_show')
-        g.command('list', 'acr_build_task_list', table_transformer=task_output_format)
+        g.command('list', 'acr_build_task_list', table_transformer=build_task_output_format)
         g.command('delete', 'acr_build_task_delete')
         g.command('update', 'acr_build_task_update')
         g.command('run', 'acr_build_task_run', client_factory=cf_acr_builds,
@@ -179,13 +182,13 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         g.command('delete', 'acr_task_delete')
         g.command('update', 'acr_task_update')
         g.command('run', 'acr_task_run', client_factory=cf_acr_runs,
-                  table_transformer=build_output_format)
+                  table_transformer=run_output_format)
         g.command('list-runs', 'acr_task_list_runs', client_factory=cf_acr_runs,
-                  table_transformer=build_output_format)
+                  table_transformer=run_output_format)
         g.command('show-run', 'acr_task_show_run', client_factory=cf_acr_runs,
-                  table_transformer=build_output_format)
+                  table_transformer=run_output_format)
         g.command('update-run', 'acr_task_update_run', client_factory=cf_acr_runs,
-                  table_transformer=build_output_format)
+                  table_transformer=run_output_format)
         g.command('logs', 'acr_task_logs', client_factory=cf_acr_runs,
                   table_transformer=None)
 
