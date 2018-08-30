@@ -149,7 +149,6 @@ def acr_task_create(cmd,  # pylint: disable=too-many-locals
     return task
 
 
-#TODO: fix table_transformer
 def acr_task_show(cmd,
                   client,
                   task_name,
@@ -165,7 +164,6 @@ def acr_task_show(cmd,
         return client.list_details(resource_group_name, registry_name, task_name)
 
 
-#TODO: fix table_transformer
 def acr_task_list(cmd,
                   client,
                   registry_name,
@@ -335,7 +333,6 @@ def acr_task_run(cmd,
     return acr_build_show_logs(client, run_id, registry_name, resource_group_name, True)
 
 
-#TODO: table_transformer
 def acr_task_show_run(cmd,
                       client,  # cf_acr_runs
                       run_id,
@@ -346,7 +343,6 @@ def acr_task_show_run(cmd,
     return client.get(resource_group_name, registry_name, run_id)
 
 
-#TODO: table_transformer
 def acr_task_list_runs(cmd,
                        client,  # cf_acr_runs
                        registry_name,
