@@ -159,7 +159,7 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
     # Deprecated (for backward compatibility).
     with self.command_group('acr build-task', acr_build_task_util) as g:
         g.command('create', 'acr_build_task_create')
-        g.show_command('show', 'acr_build_task_show')
+        g.show_command('show', 'acr_build_task_show', table_transformer=build_task_output_format)
         g.command('list', 'acr_build_task_list', table_transformer=build_task_output_format)
         g.command('delete', 'acr_build_task_delete')
         g.command('update', 'acr_build_task_update')
@@ -176,7 +176,7 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
 
     with self.command_group('acr task', acr_task_util) as g:
         g.command('create', 'acr_task_create')
-        g.show_command('show', 'acr_task_show')
+        g.show_command('show', 'acr_task_show', table_transformer=task_output_format)
         g.command('list', 'acr_task_list', table_transformer=task_output_format)
         g.command('delete', 'acr_task_delete')
         g.command('update', 'acr_task_update')
