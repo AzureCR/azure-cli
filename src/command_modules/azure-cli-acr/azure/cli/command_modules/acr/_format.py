@@ -233,19 +233,19 @@ def _run_format_group(item):
 
 
 def _get_value(item, *args):
-    """Recursively get a nested value from a dict.
+    """Get a nested value from a dict.
     :param dict item: The dict object
     """
 
     try:
         for arg in args:
-            item = item[arg]          
+            item = item[arg]
         return str(item) if item else ' '
     except (KeyError, TypeError, IndexError):
         return ' '
 
 def _get_value_arr(item, *args):
-    """Recursively get a nested array from a dict.
+    """Get a nested array from a dict.
     :param dict item: The dict object
     """
     try:
