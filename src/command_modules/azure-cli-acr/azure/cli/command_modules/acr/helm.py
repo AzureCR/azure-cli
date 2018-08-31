@@ -19,6 +19,7 @@ logger = get_logger(__name__)
 
 
 ALLOWED_HTTP_METHOD = ['get', 'post', 'delete']
+ROUTE_PREFIX = '/artifact/v1/repo/_helm'
 
 
 def _parse_helm_error_message(error_message, response):
@@ -58,7 +59,7 @@ def _request_helm_data_from_registry(http_method,
     if http_method in ['post'] and not files_payload:
         raise ValueError("Non-empty files payload is required for http method: {}".format(http_method))
 
-    url = 'https://{}/helm/v1/{}'.format(login_server, path)
+    url = 'https://{}{}{}'.format(login_server, ROUTE_PREFIX, path)
     headers = get_authorization_header(username, password)
 
     for i in range(0, retry_times):
@@ -121,7 +122,7 @@ def acr_helm_list(cmd,
     return _request_helm_data_from_registry(
         http_method='get',
         login_server=login_server,
-        path='api/charts/{}'.format(chart) if chart else 'api/charts',
+        path='/api/charts/{}'.format(chart) if chart else '/api/charts',
         username=username,
         password=password)[0]
 
@@ -144,7 +145,7 @@ def acr_helm_show(cmd,
     return _request_helm_data_from_registry(
         http_method='get',
         login_server=login_server,
-        path='api/charts/{}/{}'.format(chart, version),
+        path='/api/charts/{}/{}'.format(chart, version),
         username=username,
         password=password)[0]
 
@@ -167,7 +168,7 @@ def acr_helm_delete(cmd,
     return _request_helm_data_from_registry(
         http_method='delete',
         login_server=login_server,
-        path='api/charts/{}/{}'.format(chart, version),
+        path='/api/charts/{}/{}'.format(chart, version),
         username=username,
         password=password)[0]
 
@@ -194,7 +195,7 @@ def acr_helm_push(cmd,
             return _request_helm_data_from_registry(
                 http_method='post',
                 login_server=login_server,
-                path='api/charts',
+                path='/api/charts',
                 username=username,
                 password=password,
                 files_payload={
@@ -218,7 +219,7 @@ def acr_helm_repo_add(cmd, registry_name, resource_group_name=None, username=Non
         use_bearer=False)
 
     p = Popen([helm_command, 'repo', 'add', registry_name,
-               'https://{}/helm/v1/'.format(login_server),
+               'https://{}{}'.format(login_server, ROUTE_PREFIX),
                '--username', username, '--password', password])
     p.wait()
 
