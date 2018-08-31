@@ -266,17 +266,19 @@ def acr_build(cmd,
     from ._client_factory import cf_acr_registries_build
     client_registries = cf_acr_registries_build(cmd.cli_ctx)
 
-    tar_file_path = os.path.join(tempfile.gettempdir(), 'source_archive_{}.tar.gz'.format(uuid.uuid4().hex))
-
     if os.path.exists(source_location):
         if not os.path.isdir(source_location):
             raise CLIError("Source location should be a local directory path or remote URL.")
 
         _check_local_docker_file(source_location, docker_file_path)
 
+        tar_file_path = os.path.join(tempfile.gettempdir(), 'source_archive_{}.tar.gz'.format(uuid.uuid4().hex))
+
         try:
+            # NOTE: os.path.basename is unable to parse "\" in the file path
             original_docker_file_name = os.path.basename(docker_file_path.replace("\\", "/"))
             docker_file_in_tar = '{}_{}'.format(uuid.uuid4().hex, original_docker_file_name)
+
             source_location = _upload_source_code(
                 client_registries, registry_name, resource_group_name,
                 source_location, tar_file_path,
