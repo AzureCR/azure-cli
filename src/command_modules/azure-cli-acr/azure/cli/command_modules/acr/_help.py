@@ -576,6 +576,18 @@ helps['acr helm delete'] = """
             az acr helm delete -n MyRegistry --chart mychart --version 0.3.2
 """
 
+helps['acr helm fetch'] = """
+    type: command
+    short-summary: Fetch a helm chart package from a container registry.
+    examples:
+        - name: Fetch a chart package with the latest version from a container registry.
+          text: >
+            az acr helm fetch mychart-0.3.2.tgz -n MyRegistry
+        - name: Fetch a chart package with the latest version from a container registry.
+          text: >
+            az acr helm push mychart-0.3.2.tgz -n MyRegistry
+"""
+
 helps['acr helm push'] = """
     type: command
     short-summary: Push a helm chart package to a container registry.

@@ -173,5 +173,8 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
         c.argument('chart', help='The helm chart name.')
         c.argument('version', help='The helm chart version.')
 
+    with self.argument_context('acr helm fetch') as c:
+        c.positional('chart', help="The helm chart name.")
+
     with self.argument_context('acr helm push') as c:
         c.positional('chart_package', help="The helm chart package.", completer=FilesCompleter())

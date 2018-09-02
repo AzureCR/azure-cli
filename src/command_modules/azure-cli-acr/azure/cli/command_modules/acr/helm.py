@@ -12,7 +12,12 @@ from knack.util import CLIError
 from knack.log import get_logger
 from azure.cli.core.util import should_disable_connection_verify
 
-from ._docker_utils import get_login_credentials, get_authorization_header, log_registry_response
+from ._docker_utils import (
+    get_login_credentials,
+    get_access_credentials,
+    get_authorization_header,
+    log_registry_response
+)
 
 
 logger = get_logger(__name__)
@@ -47,6 +52,7 @@ def _request_helm_data_from_registry(http_method,
                                      password,
                                      result_index=None,
                                      files_payload=None,
+                                     output_file=None,
                                      params=None,
                                      retry_times=3,
                                      retry_interval=5):
@@ -76,6 +82,11 @@ def _request_helm_data_from_registry(http_method,
             log_registry_response(response)
 
             if response.status_code == 200:
+                if output_file:
+                    with open(output_file, 'wb') as f:
+                        f.write(response.content)
+                    logger.warning("Fetched helm chart '%s'.", output_file)
+                    return None, None
                 result = response.json()[result_index] if result_index else response.json()
                 next_link = response.headers['link'] if 'link' in response.headers else None
                 return result, next_link
@@ -111,13 +122,14 @@ def acr_helm_list(cmd,
                   resource_group_name=None,
                   username=None,
                   password=None):
-    login_server, username, password = get_login_credentials(
+    login_server, username, password = get_access_credentials(
         cli_ctx=cmd.cli_ctx,
         registry_name=registry_name,
         resource_group_name=resource_group_name,
         username=username,
         password=password,
-        use_bearer=False)
+        repository='',
+        permission='pull')
 
     return _request_helm_data_from_registry(
         http_method='get',
@@ -134,13 +146,14 @@ def acr_helm_show(cmd,
                   resource_group_name=None,
                   username=None,
                   password=None):
-    login_server, username, password = get_login_credentials(
+    login_server, username, password = get_access_credentials(
         cli_ctx=cmd.cli_ctx,
         registry_name=registry_name,
         resource_group_name=resource_group_name,
         username=username,
         password=password,
-        use_bearer=False)
+        repository='',
+        permission='pull')
 
     return _request_helm_data_from_registry(
         http_method='get',
@@ -157,18 +170,56 @@ def acr_helm_delete(cmd,
                     resource_group_name=None,
                     username=None,
                     password=None):
-    login_server, username, password = get_login_credentials(
+    login_server, username, password = get_access_credentials(
         cli_ctx=cmd.cli_ctx,
         registry_name=registry_name,
         resource_group_name=resource_group_name,
         username=username,
         password=password,
-        use_bearer=False)
+        repository='',
+        permission='*')
 
     return _request_helm_data_from_registry(
         http_method='delete',
         login_server=login_server,
         path='/api/charts/{}/{}'.format(chart, version),
+        username=username,
+        password=password)[0]
+
+
+def acr_helm_fetch(cmd,
+                   registry_name,
+                   chart,
+                   version=None,
+                   resource_group_name=None,
+                   username=None,
+                   password=None):
+    login_server, username, password = get_access_credentials(
+        cli_ctx=cmd.cli_ctx,
+        registry_name=registry_name,
+        resource_group_name=resource_group_name,
+        username=username,
+        password=password,
+        repository='',
+        permission='pull')
+
+    version = _request_helm_data_from_registry(
+        http_method='get',
+        login_server=login_server,
+        path='/api/charts/{}/{}'.format(chart, version) if version else '/api/charts/{}'.format(chart),
+        username=username,
+        password=password)[0]
+
+    if isinstance(version, list):
+        version = version[0]
+
+    url = version['urls'][0]
+
+    return _request_helm_data_from_registry(
+        http_method='get',
+        login_server=login_server,
+        path='/{}'.format(url),
+        output_file=url.split('/')[-1],
         username=username,
         password=password)[0]
 
@@ -182,13 +233,14 @@ def acr_helm_push(cmd,
     if isdir(chart_package):
         raise CLIError("Please run 'helm package {}' to generate a chart package first.".format(chart_package))
 
-    login_server, username, password = get_login_credentials(
+    login_server, username, password = get_access_credentials(
         cli_ctx=cmd.cli_ctx,
         registry_name=registry_name,
         resource_group_name=resource_group_name,
         username=username,
         password=password,
-        use_bearer=False)
+        repository='',
+        permission='*')
 
     try:
         with open(chart_package, 'rb') as input_file:

@@ -174,5 +174,6 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         g.command('list', 'acr_helm_list')
         g.command('show', 'acr_helm_show')
         g.command('delete', 'acr_helm_delete')
+        g.command('fetch', 'acr_helm_fetch')
         g.command('push', 'acr_helm_push')
         g.command('repo add', 'acr_helm_repo_add')
