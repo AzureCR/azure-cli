@@ -582,10 +582,10 @@ helps['acr helm fetch'] = """
     examples:
         - name: Fetch a chart package with the latest version from a container registry.
           text: >
-            az acr helm fetch mychart-0.3.2.tgz -n MyRegistry
-        - name: Fetch a chart package with the latest version from a container registry.
+            az acr helm fetch mychart -n MyRegistry
+        - name: Fetch a chart package with the specific version from a container registry.
           text: >
-            az acr helm push mychart-0.3.2.tgz -n MyRegistry
+            az acr helm fetch mychart -n MyRegistry --version 0.3.2
 """
 
 helps['acr helm push'] = """
