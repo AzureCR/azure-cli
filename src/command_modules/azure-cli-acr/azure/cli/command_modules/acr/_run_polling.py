@@ -47,7 +47,7 @@ def get_run_with_polling(client,
 
 class RunPolling(PollingMethod):  # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, registry_name, id, timeout=15):
+    def __init__(self, registry_name, id, timeout=30):
         self._registry_name = registry_name
         self._id = id
         self._timeout = timeout
