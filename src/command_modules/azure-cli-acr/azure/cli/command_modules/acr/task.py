@@ -45,7 +45,7 @@ logger = get_logger(__name__)
 TASK_NOT_SUPPORTED = 'Task is only supported for managed registries.'
 DEFAULT_TOKEN_TYPE = 'PAT'
 
-DEFAULT_TIMEOUT = 60*60  # 60 minutes
+DEFAULT_TIMEOUT_IN_SEC = 60*60  # 60 minutes
 DEFAULT_CPU = 2
 
 
@@ -59,7 +59,7 @@ def acr_task_create(cmd,  # pylint: disable=too-many-locals
                     status='Enabled',
                     os_type=OS.linux,
                     cpu=DEFAULT_CPU,
-                    timeout=DEFAULT_TIMEOUT,
+                    timeout=DEFAULT_TIMEOUT_IN_SEC,
                     docker_file=None,
                     task_file=None,
                     values_file=None,
