@@ -87,8 +87,7 @@ def acr_build(cmd,
                 pass
     else:
         source_location = check_remote_source_code(source_location)
-        logger.warning(
-            "Sending context to {}.azurecr.io...".format(registry_name))
+        logger.warning("Sending context to %s.azurecr.io...", registry_name)
 
     if no_push:
         is_push_enabled = False
