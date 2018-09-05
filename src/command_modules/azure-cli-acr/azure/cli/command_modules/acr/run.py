@@ -34,8 +34,8 @@ def acr_run(cmd,
             client,
             registry_name,
             source_location,
-            task_file='acb.yaml',
-            values_file=None,
+            task='acb.yaml',
+            values=None,
             encoded_task=None,
             encoded_values=None,
             set_value=None,
@@ -85,11 +85,11 @@ def acr_run(cmd,
             values=(set_value if set_value else []),
             timeout=timeout,
             platform=PlatformProperties(os=os_type)
-        )
+            )
     else:
         request = FileTaskRunRequest(
-            task_file_path=task_file,
-            values_file_path=values_file,
+            task_file_path=task,
+            values_file_path=values,
             values=(set_value if set_value else []),
             source_location=source_location,
             timeout=timeout,
