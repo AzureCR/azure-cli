@@ -221,8 +221,8 @@ def acr_task_update(cmd,  # pylint: disable=too-many-locals
     step = task.step
     if isinstance(step, DockerBuildStep):
         if file.endswith(ALLOWED_TASK_FILE_TYPES):
-            raise CLIError("File for docker build step cannot have folliwng suffix: {} "
-                           .format(ALLOWED_TASK_FILE_TYPES))
+            raise CLIError("File for docker build step has an invalid suffix: {}." \
+             " The following suffixes are not allowed: {}".format(file, ALLOWED_TASK_FILE_TYPES))
         if arg is None and secret_arg is None:
             arguments = None
         else:
@@ -235,10 +235,10 @@ def acr_task_update(cmd,  # pylint: disable=too-many-locals
             arguments=arguments,
             context_path=context_path
         )
-    if isinstance(step, FileTaskStep):
+    elif isinstance(step, FileTaskStep):
         if not file.endswith(ALLOWED_TASK_FILE_TYPES):
-            raise CLIError("File for task step must have one of the folliwng suffix: {} "
-                           .format(ALLOWED_TASK_FILE_TYPES))
+            raise CLIError("File for task build step has an invalid suffix: {}." \
+             " It must have one of the following suffixes: {}".format(file, ALLOWED_TASK_FILE_TYPES))
         if set_value is None and set_secret is None:
             values = None
         else:
