@@ -47,7 +47,6 @@ helps['acr build-task'] = """
     short-summary: Manage build definitions, which can be triggered by git commits or base image updates for OS & Framework Patching.
     """
 
-# TODO: Update help for all task commands
 helps['acr task'] = """
     type: group
     short-summary: Manage a collection of steps for building, testing and OS & Framework patching container images using Azure Container Registries.
@@ -554,7 +553,7 @@ helps['acr build-task create'] = """
         - name: Create a build definition without git commits and base image updates.
           text: >
             az acr build-task create -t hello-world:{{.Build.ID}} -n hello-world -r myregistry -c https://github.com/Azure-Samples/acr-build-helloworld-node.git --commit-trigger-enabled false
-        - name: Create a build definition which updates on git commits and base image updates. Note: the --git-access-token must have permissions to create github webhooks.
+        - name: Create a build definition which updates on git commits and base image updates (--git-access-token must have permissions to create github webhooks).
           text: >
             az acr build-task create -t hello-world:{{.Build.ID}} -n hello-world -r myregistry -c https://github.com/Azure-Samples/acr-build-helloworld-node.git --git-access-token 0000000000000000000000000000000000000000
 """
@@ -663,7 +662,7 @@ helps['acr build-task logs'] = """
 
 helps['acr import'] = """
     type: command
-    short-summary: Imports an image to an Azure Container Registry from another Container Registry. Import removes the need to: docker pull, docker tag, docker push.
+    short-summary: Imports an image to an Azure Container Registry from another Container Registry. Import removes the need to docker pull, docker tag, docker push.
     examples:
         - name: Import an image to the target registry and inherits sourcerepository:sourcetag from the source registry.
           text: >
