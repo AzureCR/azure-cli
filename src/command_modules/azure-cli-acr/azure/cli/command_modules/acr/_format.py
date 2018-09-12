@@ -201,7 +201,7 @@ def _task_detail_format_group(item):
         ('STATUS', _get_value(item, 'status')),
         ('COMMIT TRIGGER', _get_value(item, 'trigger', 'sourceTriggers', 0, 'status')),
         ('SOURCE REPOSITORY', _get_value(item, 'step', 'contextPath')),
-        ('BRANCH',_get_value(item, 'trigger', 'sourceTriggers', 0, 'sourceRepository', 'branch')),
+        ('BRANCH', _get_value(item, 'trigger', 'sourceTriggers', 0, 'sourceRepository', 'branch')),
         ('BASE IMAGE TRIGGER', _get_value(item, 'trigger', 'baseImageTrigger', 'baseImageTriggerType')),
         ('IMAGE NAMES', _get_value(item, 'step', 'imageNames')),
         ('PUSH ENABLED', _get_value(item, 'step', 'isPushEnabled'))
