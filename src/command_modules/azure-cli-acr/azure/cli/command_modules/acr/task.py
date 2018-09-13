@@ -262,7 +262,7 @@ def acr_task_update(cmd,  # pylint: disable=too-many-locals
             )
 
     source_control_type = None
-    if context_path is not None:
+    if context_path:
         if 'GITHUB.COM' in context_path.upper():
             source_control_type = SourceControlType.github.value
         else:
