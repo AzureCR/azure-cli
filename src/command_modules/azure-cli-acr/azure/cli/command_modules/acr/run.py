@@ -19,6 +19,7 @@ from ._stream_utils import stream_logs
 from ._utils import validate_managed_registry
 from ._client_factory import cf_acr_registries
 from ._archive_utils import upload_source_code, check_remote_source_code
+from ._constants import ALLOWED_TASK_FILE_TYPES
 
 RUN_NOT_SUPPORTED = 'Run is only available for managed registries.'
 
@@ -38,7 +39,10 @@ def acr_run(cmd,
             timeout=None,
             resource_group_name=None,
             os_type=OS.linux.value):
-
+    if not file.endswith(ALLOWED_TASK_FILE_TYPES):
+        raise CLIError("Task file has an invalid suffix: {}."
+                       "It must have one of the following suffixes: {}"
+                       .format(file, ALLOWED_TASK_FILE_TYPES))
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, RUN_NOT_SUPPORTED)
 

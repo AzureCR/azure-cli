@@ -37,7 +37,7 @@ from azure.mgmt.containerregistry.v2018_09_01.models import (
 from ._utils import validate_managed_registry
 from ._stream_utils import stream_logs
 from ._run_polling import get_run_with_polling
-
+from ._constants import ALLOWED_TASK_FILE_TYPES
 
 logger = get_logger(__name__)
 
@@ -47,8 +47,6 @@ DEFAULT_TOKEN_TYPE = 'PAT'
 
 DEFAULT_TIMEOUT_IN_SEC = 60 * 60  # 60 minutes
 DEFAULT_CPU = 2
-ALLOWED_TASK_FILE_TYPES = ('.yaml', '.toml', '.json', '.sh', '.bash', '.zsh', '.ps1', '.ps',
-                           '.cmd', '.bat', '.ts', '.js', '.php', '.py', '.rb', '.lua')
 
 
 def acr_task_create(cmd,  # pylint: disable=too-many-locals
@@ -234,7 +232,7 @@ def acr_task_update(cmd,  # pylint: disable=too-many-locals
         )
     elif isinstance(step, FileTaskStep):
         if file and not file.endswith(ALLOWED_TASK_FILE_TYPES):
-            raise CLIError("File for task build step has an invalid suffix: {}."
+            raise CLIError("File for task step has an invalid suffix: {}."
                            " It must have one of the following suffixes: {}"
                            .format(file, ALLOWED_TASK_FILE_TYPES))
         if set_value is None and set_secret is None:
