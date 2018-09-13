@@ -18,3 +18,6 @@ TASK_RESOURCE_TYPE = REGISTRY_RESOURCE_TYPE + '/tasks'
 
 CLASSIC_REGISTRY_SKU = [SkuName.classic.value]
 MANAGED_REGISTRY_SKU = [SkuName.basic.value, SkuName.standard.value, SkuName.premium.value]
+
+ALLOWED_TASK_FILE_TYPES = ('.yaml', '.toml', '.json', '.sh', '.bash', '.zsh', '.ps1', '.ps',
+                           '.cmd', '.bat', '.ts', '.js', '.php', '.py', '.rb', '.lua')

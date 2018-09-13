@@ -24,6 +24,7 @@ from ._utils import validate_managed_registry
 from ._run_polling import get_run_with_polling
 from ._stream_utils import stream_logs
 from ._archive_utils import upload_source_code, check_remote_source_code
+from ._constants import ALLOWED_TASK_FILE_TYPES
 
 logger = get_logger(__name__)
 
@@ -45,6 +46,10 @@ def acr_build(cmd,
               no_push=False,
               no_logs=False,
               os_type=OS.linux.value):
+    if docker_file_path.endswith(ALLOWED_TASK_FILE_TYPES):
+        raise CLIError("Docker file has an invalid suffix: {}."
+                       " The following suffixes are not allowed for docker build: {}"
+                       .format(docker_file_path, ALLOWED_TASK_FILE_TYPES))
     _, resource_group_name = validate_managed_registry(
         cmd.cli_ctx, registry_name, resource_group_name, BUILD_NOT_SUPPORTED)
 
