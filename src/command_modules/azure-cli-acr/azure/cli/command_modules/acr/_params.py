@@ -245,3 +245,7 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
     with self.argument_context('acr helm push') as c:
         c.positional('chart_package', help="The helm chart package.", completer=FilesCompleter())
         c.argument('force', help='Overwrite the existing chart package.', action='store_true')
+
+    with self.argument_context('acr network-rule') as c:
+        c.argument('subnet', help='Name or ID of subnet. If name is supplied, `--vnet-name` must be supplied.')
+        c.argument('vnet_name', help='Name of a virtual network.')
