@@ -51,10 +51,10 @@ def acr_network_rule_remove(cmd,
                             resource_group_name=None):
     registry, resource_group_name = validate_premium_registry(
         cmd.cli_ctx, registry_name, resource_group_name, NETWORK_RULE_NOT_SUPPORTED)
-    subnet_id = validate_subnet(cmd.cli_ctx, subnet, vnet_name, resource_group_name)
+    subnet_id = validate_subnet(cmd.cli_ctx, subnet, vnet_name, resource_group_name).lower()
     rules = registry.network_rule_set
 
-    rules.virtual_network_rules = [x for x in rules.virtual_network_rules if x.id != subnet_id]
+    rules.virtual_network_rules = [x for x in rules.virtual_network_rules if x.id.lower() != subnet_id]
 
     parameters = RegistryUpdateParameters(network_rule_set=rules)
     return client.update(resource_group_name, registry_name, parameters)
