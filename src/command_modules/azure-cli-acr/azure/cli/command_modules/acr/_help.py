@@ -768,7 +768,7 @@ helps['acr network-rule add'] = """
     examples:
         - name: Add a rule to allow access for a subnet in the same resource group as the registry.
           text: >
-            az acr network-rule add -n MyRegistry --vnet myvnet --subnet mysubnet
+            az acr network-rule add -n MyRegistry --vnet-name myvnet --subnet mysubnet
         - name: Add a rule to allow access for a subnet in a different subscription or resource group.
           text: >
             az acr network-rule add -n MyRegistry --subnet /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/myvnet/subnets/mysubnet
@@ -780,7 +780,7 @@ helps['acr network-rule remove'] = """
     examples:
         - name: Remove a rule to deny access for a subnet in the same resource group as the registry.
           text: >
-            az acr network-rule remove -n MyRegistry --vnet myvnet --subnet mysubnet
+            az acr network-rule remove -n MyRegistry --vnet-name myvnet --subnet mysubnet
         - name: Remove a rule to deny access for a subnet in a different subscription or resource group.
           text: >
             az acr network-rule remove -n MyRegistry --subnet /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/myvnet/subnets/mysubnet
