@@ -119,7 +119,7 @@ def acr_helm_push(cmd,
         username=username,
         password=password,
         artifact_repository=repository,
-        permission='push')
+        permission='push,pull')
 
     path = _get_blobs_path(repository, basename(chart_package))
 
