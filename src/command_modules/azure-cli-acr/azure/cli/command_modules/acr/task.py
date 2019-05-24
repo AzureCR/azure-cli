@@ -13,7 +13,8 @@ from ._utils import (
     validate_managed_registry,
     get_validate_platform,
     get_custom_registry_credentials,
-    get_yaml_and_values
+    get_yaml_and_values,
+    get_task_id_from_task_name
 )
 from ._stream_utils import stream_logs
 
@@ -59,6 +60,8 @@ def acr_task_create(cmd,  # pylint: disable=too-many-locals
                     base_image_trigger_name='defaultBaseimageTriggerName',
                     base_image_trigger_enabled=True,
                     base_image_trigger_type='Runtime',
+                    update_trigger_endpoint=None,
+                    no_trigger_metadata=False,
                     resource_group_name=None,
                     assign_identity=None,
                     target=None,
@@ -152,15 +155,20 @@ def acr_task_create(cmd,  # pylint: disable=too-many-locals
                 name=source_trigger_name
             )
         ]
-
+    logger.warning("update_trigger_endpoint: %s", update_trigger_endpoint)
     base_image_trigger = None
     if base_image_trigger_enabled:
-        BaseImageTrigger, TriggerStatus = cmd.get_models(
-            'BaseImageTrigger', 'TriggerStatus')
+        # BaseImageTrigger, TriggerStatus = cmd.get_models(
+        #     'BaseImageTrigger', 'TriggerStatus')
+        
+        from .sdk.models import BaseImageTrigger, TriggerStatus
+
         base_image_trigger = BaseImageTrigger(
             base_image_trigger_type=base_image_trigger_type,
             status=TriggerStatus.enabled.value if base_image_trigger_enabled else TriggerStatus.disabled.value,
-            name=base_image_trigger_name
+            name=base_image_trigger_name,
+            update_trigger_endpoint=update_trigger_endpoint,
+            include_trigger_metadata=not no_trigger_metadata
         )
 
     platform_os, platform_arch, platform_variant = get_validate_platform(cmd, platform)
@@ -264,6 +272,8 @@ def acr_task_update(cmd,  # pylint: disable=too-many-locals
                     set_secret=None,
                     base_image_trigger_enabled=None,
                     base_image_trigger_type=None,
+                    update_trigger_endpoint=None,
+                    no_trigger_metadata=None,
                     target=None,
                     auth_mode=None):
     _, resource_group_name = validate_managed_registry(
@@ -361,17 +371,26 @@ def acr_task_update(cmd,  # pylint: disable=too-many-locals
             ]
 
         if base_image_trigger_enabled or base_image_trigger is not None:
-            BaseImageTriggerUpdateParameters = cmd.get_models(
-                'BaseImageTriggerUpdateParameters')
+            #BaseImageTriggerUpdateParameters = cmd.get_models(
+                #'BaseImageTriggerUpdateParameters')
+
+            from .sdk.models import BaseImageTriggerUpdateParameters, TriggerStatus
 
             status = None
             if base_image_trigger_enabled is not None:
                 status = TriggerStatus.enabled.value if base_image_trigger_enabled else TriggerStatus.disabled.value
+            logger.warning("no_trigger_metadata: %s", no_trigger_metadata)
+
             base_image_trigger_update_params = BaseImageTriggerUpdateParameters(
                 base_image_trigger_type=base_image_trigger_type,
                 status=status,
-                name=base_image_trigger.name if base_image_trigger else "defaultBaseimageTriggerName"
+                name=base_image_trigger.name if base_image_trigger else "defaultBaseimageTriggerName",
+                update_trigger_endpoint=update_trigger_endpoint,
+                include_trigger_metadata=None if no_trigger_metadata is None else not no_trigger_metadata
             )
+            logger.warning("update_trigger_endpoint: %s", base_image_trigger_update_params.update_trigger_endpoint)
+            logger.warning("include_trigger_metadata: %s", base_image_trigger_update_params.include_trigger_metadata)
+
 
     platform_os, platform_arch, platform_variant = None, None, None
     if platform:
@@ -604,6 +623,12 @@ def acr_task_run(cmd,
                  registry_name,
                  set_value=None,
                  set_secret=None,
+                 file=None,
+                 context=None,
+                 arguments=None,
+                 secret_arguments=None,
+                 target=None,
+                 continuation_token=None,
                  no_logs=False,
                  no_wait=False,
                  resource_group_name=None):
@@ -612,15 +637,35 @@ def acr_task_run(cmd,
 
     from ._client_factory import cf_acr_registries
     client_registries = cf_acr_registries(cmd.cli_ctx)
-    TaskRunRequest = cmd.get_models('TaskRunRequest')
+
+    #TaskRunRequest = cmd.get_models('TaskRunRequest')
+    from .sdk.models import TaskRunRequest, OverrideTaskStepProperties
+
+    import base64
+
+    if continuation_token:
+        continuation_token = base64.b64encode(continuation_token.encode()).decode()
+
+    task_id=get_task_id_from_task_name(cmd.cli_ctx, resource_group_name, registry_name, task_name)
+    logger.warning("taskid: %s", task_id)
+    logger.warning("continuation_token: %s", continuation_token)
+
+    override_task_step_properties = OverrideTaskStepProperties(
+        context_path=context,
+        file=file,
+        arguments=(arguments if arguments else []) + (secret_arguments if secret_arguments else []),
+        target=target,
+        values=(set_value if set_value else []) + (set_secret if set_secret else [])
+    )
 
     queued_run = LongRunningOperation(cmd.cli_ctx)(
         client_registries.schedule_run(
             resource_group_name,
             registry_name,
             TaskRunRequest(
-                task_name=task_name,
-                values=(set_value if set_value else []) + (set_secret if set_secret else [])
+                task_id=task_id,
+                override_task_step_properties=override_task_step_properties,
+                continuation_token=continuation_token
             )
         )
     )
