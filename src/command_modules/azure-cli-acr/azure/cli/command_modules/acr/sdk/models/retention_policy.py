@@ -12,19 +12,35 @@
 from msrest.serialization import Model
 
 
-class QuarantinePolicy(Model):
-    """The quarantine policy for a container registry.
+class RetentionPolicy(Model):
+    """The retention policy for a container registry.
 
+    Variables are only populated by the server, and will be ignored when
+    sending a request.
+
+    :param days: The number of days to retain manifest before it expires.
+    :type days: int
+    :ivar last_updated_time: The timestamp when the the policy was last
+     updated.
+    :vartype last_updated_time: datetime
     :param status: The value that indicates whether the policy is enabled or
      not. Possible values include: 'enabled', 'disabled'
     :type status: str or
      ~azure.mgmt.containerregistry.v2019_06_01.models.PolicyStatus
     """
 
+    _validation = {
+        'last_updated_time': {'readonly': True},
+    }
+
     _attribute_map = {
+        'days': {'key': 'days', 'type': 'int'},
+        'last_updated_time': {'key': 'lastUpdatedTime', 'type': 'iso-8601'},
         'status': {'key': 'status', 'type': 'str'},
     }
 
-    def __init__(self, status=None):
-        super(QuarantinePolicy, self).__init__()
+    def __init__(self, days=None, status=None):
+        super(RetentionPolicy, self).__init__()
+        self.days = days
+        self.last_updated_time = None
         self.status = status

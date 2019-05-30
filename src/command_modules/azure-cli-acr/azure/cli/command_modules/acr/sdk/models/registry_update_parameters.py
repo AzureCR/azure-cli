@@ -22,29 +22,25 @@ class RegistryUpdateParameters(Model):
     :param admin_user_enabled: The value that indicates whether the admin user
      is enabled.
     :type admin_user_enabled: bool
-    :param storage_account: The parameters of a storage account for the
-     container registry. Only applicable to Classic SKU. If specified, the
-     storage account must be in the same physical location as the container
-     registry.
-    :type storage_account:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.StorageAccountProperties
     :param network_rule_set: The network rule set for a container registry.
     :type network_rule_set:
      ~azure.mgmt.containerregistry.v2019_06_01.models.NetworkRuleSet
+    :param policies: The policies for a container registry.
+    :type policies: ~azure.mgmt.containerregistry.v2019_06_01.models.Policies
     """
 
     _attribute_map = {
         'tags': {'key': 'tags', 'type': '{str}'},
         'sku': {'key': 'sku', 'type': 'Sku'},
         'admin_user_enabled': {'key': 'properties.adminUserEnabled', 'type': 'bool'},
-        'storage_account': {'key': 'properties.storageAccount', 'type': 'StorageAccountProperties'},
         'network_rule_set': {'key': 'properties.networkRuleSet', 'type': 'NetworkRuleSet'},
+        'policies': {'key': 'properties.policies', 'type': 'Policies'},
     }
 
-    def __init__(self, tags=None, sku=None, admin_user_enabled=None, storage_account=None, network_rule_set=None):
+    def __init__(self, tags=None, sku=None, admin_user_enabled=None, network_rule_set=None, policies=None):
         super(RegistryUpdateParameters, self).__init__()
         self.tags = tags
         self.sku = sku
         self.admin_user_enabled = admin_user_enabled
-        self.storage_account = storage_account
         self.network_rule_set = network_rule_set
+        self.policies = policies

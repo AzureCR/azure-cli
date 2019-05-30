@@ -12,25 +12,28 @@
 from msrest.serialization import Model
 
 
-class RegistryPolicies(Model):
-    """An object that represents policies for a container registry.
+class Policies(Model):
+    """The policies for a container registry.
 
-    :param quarantine_policy: An object that represents quarantine policy for
-     a container registry.
+    :param quarantine_policy: The quarantine policy for a container registry.
     :type quarantine_policy:
      ~azure.mgmt.containerregistry.v2019_06_01.models.QuarantinePolicy
-    :param trust_policy: An object that represents content trust policy for a
-     container registry.
+    :param trust_policy: The content trust policy for a container registry.
     :type trust_policy:
      ~azure.mgmt.containerregistry.v2019_06_01.models.TrustPolicy
+    :param retention_policy: The retention policy for a container registry.
+    :type retention_policy:
+     ~azure.mgmt.containerregistry.v2019_06_01.models.RetentionPolicy
     """
 
     _attribute_map = {
         'quarantine_policy': {'key': 'quarantinePolicy', 'type': 'QuarantinePolicy'},
         'trust_policy': {'key': 'trustPolicy', 'type': 'TrustPolicy'},
+        'retention_policy': {'key': 'retentionPolicy', 'type': 'RetentionPolicy'},
     }
 
-    def __init__(self, quarantine_policy=None, trust_policy=None):
-        super(RegistryPolicies, self).__init__()
+    def __init__(self, quarantine_policy=None, trust_policy=None, retention_policy=None):
+        super(Policies, self).__init__()
         self.quarantine_policy = quarantine_policy
         self.trust_policy = trust_policy
+        self.retention_policy = retention_policy

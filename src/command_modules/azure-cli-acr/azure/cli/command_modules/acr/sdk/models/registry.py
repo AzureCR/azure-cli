@@ -55,6 +55,8 @@ class Registry(Resource):
     :param network_rule_set: The network rule set for a container registry.
     :type network_rule_set:
      ~azure.mgmt.containerregistry.v2019_06_01.models.NetworkRuleSet
+    :param policies: The policies for a container registry.
+    :type policies: ~azure.mgmt.containerregistry.v2019_06_01.models.Policies
     """
 
     _validation = {
@@ -83,9 +85,10 @@ class Registry(Resource):
         'admin_user_enabled': {'key': 'properties.adminUserEnabled', 'type': 'bool'},
         'storage_account': {'key': 'properties.storageAccount', 'type': 'StorageAccountProperties'},
         'network_rule_set': {'key': 'properties.networkRuleSet', 'type': 'NetworkRuleSet'},
+        'policies': {'key': 'properties.policies', 'type': 'Policies'},
     }
 
-    def __init__(self, location, sku, tags=None, admin_user_enabled=False, storage_account=None, network_rule_set=None):
+    def __init__(self, location, sku, tags=None, admin_user_enabled=False, storage_account=None, network_rule_set=None, policies=None):
         super(Registry, self).__init__(location=location, tags=tags)
         self.sku = sku
         self.login_server = None
@@ -95,3 +98,4 @@ class Registry(Resource):
         self.admin_user_enabled = admin_user_enabled
         self.storage_account = storage_account
         self.network_rule_set = network_rule_set
+        self.policies = policies

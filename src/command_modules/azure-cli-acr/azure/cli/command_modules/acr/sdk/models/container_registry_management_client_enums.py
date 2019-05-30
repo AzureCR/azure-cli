@@ -55,6 +55,17 @@ class Action(Enum):
     allow = "Allow"
 
 
+class PolicyStatus(Enum):
+
+    enabled = "enabled"
+    disabled = "disabled"
+
+
+class TrustPolicyType(Enum):
+
+    notary = "Notary"
+
+
 class PasswordName(Enum):
 
     password = "password"
@@ -65,17 +76,6 @@ class RegistryUsageUnit(Enum):
 
     count = "Count"
     bytes = "Bytes"
-
-
-class PolicyStatus(Enum):
-
-    enabled = "enabled"
-    disabled = "disabled"
-
-
-class TrustPolicyType(Enum):
-
-    notary = "Notary"
 
 
 class WebhookStatus(Enum):
@@ -182,6 +182,12 @@ class BaseImageTriggerType(Enum):
 
     all = "All"
     runtime = "Runtime"
+
+
+class UpdateTriggerPayloadType(Enum):
+
+    default = "Default"
+    token = "Token"
 
 
 class SourceRegistryLoginMode(Enum):

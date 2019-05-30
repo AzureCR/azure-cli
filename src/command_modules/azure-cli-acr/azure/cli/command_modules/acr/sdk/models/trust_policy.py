@@ -13,7 +13,7 @@ from msrest.serialization import Model
 
 
 class TrustPolicy(Model):
-    """An object that represents content trust policy for a container registry.
+    """The content trust policy for a container registry.
 
     :param type: The type of trust policy. Possible values include: 'Notary'
     :type type: str or

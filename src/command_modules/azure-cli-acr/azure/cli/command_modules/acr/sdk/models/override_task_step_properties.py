@@ -31,6 +31,9 @@ class OverrideTaskStepProperties(Model):
      when running a Task.
     :type values:
      list[~azure.mgmt.containerregistry.v2019_06_01.models.SetValue]
+    :param update_trigger_token: Base64 encoded update trigger token that will
+     be attached with the base image trigger webhook.
+    :type update_trigger_token: str
     """
 
     _attribute_map = {
@@ -39,12 +42,14 @@ class OverrideTaskStepProperties(Model):
         'arguments': {'key': 'arguments', 'type': '[Argument]'},
         'target': {'key': 'target', 'type': 'str'},
         'values': {'key': 'values', 'type': '[SetValue]'},
+        'update_trigger_token': {'key': 'updateTriggerToken', 'type': 'str'},
     }
 
-    def __init__(self, context_path=None, file=None, arguments=None, target=None, values=None):
+    def __init__(self, context_path=None, file=None, arguments=None, target=None, values=None, update_trigger_token=None):
         super(OverrideTaskStepProperties, self).__init__()
         self.context_path = context_path
         self.file = file
         self.arguments = arguments
         self.target = target
         self.values = values
+        self.update_trigger_token = update_trigger_token

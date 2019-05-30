@@ -22,9 +22,10 @@ class BaseImageTriggerUpdateParameters(Model):
     :param update_trigger_endpoint: The endpoint URL for receiving update
      triggers.
     :type update_trigger_endpoint: str
-    :param include_trigger_metadata: Include Trigger metadata on Base image
-     update triggers.
-    :type include_trigger_metadata: bool
+    :param update_trigger_payload_type: Type of Payload body for Base image
+     update triggers. Possible values include: 'Default', 'Token'
+    :type update_trigger_payload_type: str or
+     ~azure.mgmt.containerregistry.v2019_06_01.models.UpdateTriggerPayloadType
     :param status: The current status of trigger. Possible values include:
      'Disabled', 'Enabled'. Default value: "Enabled" .
     :type status: str or
@@ -40,15 +41,15 @@ class BaseImageTriggerUpdateParameters(Model):
     _attribute_map = {
         'base_image_trigger_type': {'key': 'baseImageTriggerType', 'type': 'str'},
         'update_trigger_endpoint': {'key': 'updateTriggerEndpoint', 'type': 'str'},
-        'include_trigger_metadata': {'key': 'includeTriggerMetadata', 'type': 'bool'},
+        'update_trigger_payload_type': {'key': 'updateTriggerPayloadType', 'type': 'str'},
         'status': {'key': 'status', 'type': 'str'},
         'name': {'key': 'name', 'type': 'str'},
     }
 
-    def __init__(self, name, base_image_trigger_type=None, update_trigger_endpoint=None, include_trigger_metadata=None, status="Enabled"):
+    def __init__(self, name, base_image_trigger_type=None, update_trigger_endpoint=None, update_trigger_payload_type=None, status="Enabled"):
         super(BaseImageTriggerUpdateParameters, self).__init__()
         self.base_image_trigger_type = base_image_trigger_type
         self.update_trigger_endpoint = update_trigger_endpoint
-        self.include_trigger_metadata = include_trigger_metadata
+        self.update_trigger_payload_type = update_trigger_payload_type
         self.status = status
         self.name = name

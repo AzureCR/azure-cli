@@ -24,6 +24,10 @@ from .storage_account_properties import StorageAccountProperties
 from .virtual_network_rule import VirtualNetworkRule
 from .ip_rule import IPRule
 from .network_rule_set import NetworkRuleSet
+from .quarantine_policy import QuarantinePolicy
+from .trust_policy import TrustPolicy
+from .retention_policy import RetentionPolicy
+from .policies import Policies
 from .registry import Registry
 from .registry_update_parameters import RegistryUpdateParameters
 from .registry_password import RegistryPassword
@@ -31,9 +35,6 @@ from .registry_list_credentials_result import RegistryListCredentialsResult
 from .regenerate_credential_parameters import RegenerateCredentialParameters
 from .registry_usage import RegistryUsage
 from .registry_usage_list_result import RegistryUsageListResult
-from .quarantine_policy import QuarantinePolicy
-from .trust_policy import TrustPolicy
-from .registry_policies import RegistryPolicies
 from .replication import Replication
 from .replication_update_parameters import ReplicationUpdateParameters
 from .webhook import Webhook
@@ -113,10 +114,10 @@ from .container_registry_management_client_enums import (
     ProvisioningState,
     DefaultAction,
     Action,
-    PasswordName,
-    RegistryUsageUnit,
     PolicyStatus,
     TrustPolicyType,
+    PasswordName,
+    RegistryUsageUnit,
     WebhookStatus,
     WebhookAction,
     RunStatus,
@@ -132,6 +133,7 @@ from .container_registry_management_client_enums import (
     TokenType,
     SourceTriggerEvent,
     BaseImageTriggerType,
+    UpdateTriggerPayloadType,
     SourceRegistryLoginMode,
     SecretObjectType,
 )
@@ -152,6 +154,10 @@ __all__ = [
     'VirtualNetworkRule',
     'IPRule',
     'NetworkRuleSet',
+    'QuarantinePolicy',
+    'TrustPolicy',
+    'RetentionPolicy',
+    'Policies',
     'Registry',
     'RegistryUpdateParameters',
     'RegistryPassword',
@@ -159,9 +165,6 @@ __all__ = [
     'RegenerateCredentialParameters',
     'RegistryUsage',
     'RegistryUsageListResult',
-    'QuarantinePolicy',
-    'TrustPolicy',
-    'RegistryPolicies',
     'Replication',
     'ReplicationUpdateParameters',
     'Webhook',
@@ -240,10 +243,10 @@ __all__ = [
     'ProvisioningState',
     'DefaultAction',
     'Action',
-    'PasswordName',
-    'RegistryUsageUnit',
     'PolicyStatus',
     'TrustPolicyType',
+    'PasswordName',
+    'RegistryUsageUnit',
     'WebhookStatus',
     'WebhookAction',
     'RunStatus',
@@ -259,6 +262,7 @@ __all__ = [
     'TokenType',
     'SourceTriggerEvent',
     'BaseImageTriggerType',
+    'UpdateTriggerPayloadType',
     'SourceRegistryLoginMode',
     'SecretObjectType',
 ]

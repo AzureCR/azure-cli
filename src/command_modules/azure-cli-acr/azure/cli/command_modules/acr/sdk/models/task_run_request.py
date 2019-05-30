@@ -27,9 +27,6 @@ class TaskRunRequest(RunRequest):
      can be passed when running a Task.
     :type override_task_step_properties:
      ~azure.mgmt.containerregistry.v2019_06_01.models.OverrideTaskStepProperties
-    :param continuation_token: Base64 encoded continuation token that will be
-     attached with the base image trigger webhook.
-    :type continuation_token: str
     """
 
     _validation = {
@@ -42,12 +39,10 @@ class TaskRunRequest(RunRequest):
         'type': {'key': 'type', 'type': 'str'},
         'task_id': {'key': 'taskId', 'type': 'str'},
         'override_task_step_properties': {'key': 'overrideTaskStepProperties', 'type': 'OverrideTaskStepProperties'},
-        'continuation_token': {'key': 'continuationToken', 'type': 'str'},
     }
 
-    def __init__(self, task_id, is_archive_enabled=False, override_task_step_properties=None, continuation_token=None):
+    def __init__(self, task_id, is_archive_enabled=False, override_task_step_properties=None):
         super(TaskRunRequest, self).__init__(is_archive_enabled=is_archive_enabled)
         self.task_id = task_id
         self.override_task_step_properties = override_task_step_properties
-        self.continuation_token = continuation_token
         self.type = 'TaskRunRequest'
