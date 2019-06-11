@@ -2,6 +2,12 @@
 
 Release History
 ===============
+2.6.3
++++++
+* Minor fixes.
+
+2.6.2
++++++
 * role assignment: support scope of management group
 
 2.6.1

@@ -3,6 +3,11 @@
 Release History
 ===============
 
+4.0.2
++++++
+* Improve error handling in `az batch account show` when not logged in to an account. see #9180
+* Improve general error handling when not logged in to an account. see #9180
+
 4.0.1
 +++++
 * Fix bug in validator for --application-package-references options.

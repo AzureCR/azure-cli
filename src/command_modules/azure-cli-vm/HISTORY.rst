@@ -3,6 +3,11 @@
 Release History
 ===============
 
+2.2.22
+++++++
+* vm create: can now create a vm from a managed image with data-disk luns that do not start from 0 or that skip numbers.
+  Does not assume data-disk lun from the number of data disks in source managed image.
+
 2.2.21
 ++++++
 * vm create: Added --computer-name for setting a vm's computer name.

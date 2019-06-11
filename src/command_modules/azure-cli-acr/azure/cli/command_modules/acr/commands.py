@@ -87,6 +87,12 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         client_factory=cf_acr_runs
     )
 
+    acr_pack_util = CliCommandType(
+        operations_tmpl='azure.cli.command_modules.acr.pack#{}',
+        table_transformer=run_output_format,
+        client_factory=cf_acr_runs
+    )
+
     acr_task_util = CliCommandType(
         operations_tmpl='azure.cli.command_modules.acr.task#{}',
         table_transformer=task_output_format,
@@ -100,6 +106,10 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
     acr_network_rule_util = CliCommandType(
         operations_tmpl='azure.cli.command_modules.acr.network_rule#{}',
         client_factory=cf_acr_registries
+    )
+
+    acr_check_health_util = CliCommandType(
+        operations_tmpl='azure.cli.command_modules.acr.check_health#{}'
     )
 
     with self.command_group('acr', acr_custom_util) as g:
@@ -168,6 +178,9 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
     with self.command_group('acr', acr_run_util) as g:
         g.command('run', 'acr_run', supports_no_wait=True)
 
+    with self.command_group('acr pack', acr_pack_util, is_preview=True) as g:
+        g.command('build', 'acr_pack_build', supports_no_wait=True)
+
     with self.command_group('acr task', acr_task_util) as g:
         g.command('create', 'acr_task_create')
         g.show_command('show', 'acr_task_show')
@@ -209,3 +222,6 @@ def load_command_table(self, _):  # pylint: disable=too-many-statements
         g.command('list', 'acr_network_rule_list')
         g.command('add', 'acr_network_rule_add')
         g.command('remove', 'acr_network_rule_remove')
+
+    with self.command_group('acr', acr_check_health_util) as g:
+        g.command('check-health', 'acr_check_health')

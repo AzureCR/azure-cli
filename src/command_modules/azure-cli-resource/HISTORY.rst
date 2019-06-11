@@ -3,6 +3,12 @@
 Release History
 ===============
 
+* `policy assignment list`: Fix error when using a resource group or subscription level `--scope`.
+
+2.1.15
+++++++
+* `deployment create`: Improve error message when there is no TTY available
+
 2.1.14
 ++++++
 * `resource link`: Deprecate `--link-id`, `--target-id` and `--filter-string` in favor of
