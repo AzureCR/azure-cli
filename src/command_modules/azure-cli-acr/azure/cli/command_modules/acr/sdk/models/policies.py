@@ -17,13 +17,13 @@ class Policies(Model):
 
     :param quarantine_policy: The quarantine policy for a container registry.
     :type quarantine_policy:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.QuarantinePolicy
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.QuarantinePolicy
     :param trust_policy: The content trust policy for a container registry.
     :type trust_policy:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TrustPolicy
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TrustPolicy
     :param retention_policy: The retention policy for a container registry.
     :type retention_policy:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.RetentionPolicy
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.RetentionPolicy
     """
 
     _attribute_map = {

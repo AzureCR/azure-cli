@@ -32,7 +32,7 @@ class FileTaskStepUpdateParameters(TaskStepUpdateParameters):
     :param values: The collection of overridable values that can be passed
      when running a task.
     :type values:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.SetValue]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.SetValue]
     """
 
     _validation = {

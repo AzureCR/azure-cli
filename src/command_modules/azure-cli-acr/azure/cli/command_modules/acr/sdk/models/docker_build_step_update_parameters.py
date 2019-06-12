@@ -38,7 +38,7 @@ class DockerBuildStepUpdateParameters(TaskStepUpdateParameters):
     :param arguments: The collection of override arguments to be used when
      executing this build step.
     :type arguments:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.Argument]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Argument]
     :param target: The name of the target build stage for the docker build.
     :type target: str
     """

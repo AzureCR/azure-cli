@@ -17,14 +17,14 @@ class TriggerProperties(Model):
 
     :param timer_triggers: The collection of timer triggers.
     :type timer_triggers:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.TimerTrigger]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.TimerTrigger]
     :param source_triggers: The collection of triggers based on source code
      repository.
     :type source_triggers:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.SourceTrigger]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.SourceTrigger]
     :param base_image_trigger: The trigger based on base image dependencies.
     :type base_image_trigger:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.BaseImageTrigger
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.BaseImageTrigger
     """
 
     _attribute_map = {

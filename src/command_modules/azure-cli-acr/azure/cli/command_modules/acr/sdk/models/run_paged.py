@@ -14,7 +14,7 @@ from msrest.paging import Paged
 
 class RunPaged(Paged):
     """
-    A paging container for iterating over a list of :class:`Run <azure.mgmt.containerregistry.v2019_06_01.models.Run>` object
+    A paging container for iterating over a list of :class:`Run <azure.mgmt.containerregistry.v2019_06_01_preview.models.Run>` object
     """
 
     _attribute_map = {

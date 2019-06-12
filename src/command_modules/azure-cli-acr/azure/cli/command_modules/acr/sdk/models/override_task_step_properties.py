@@ -24,13 +24,13 @@ class OverrideTaskStepProperties(Model):
      used when
      executing a build step.
     :type arguments:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.Argument]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Argument]
     :param target: The name of the target build stage for the docker build.
     :type target: str
     :param values: The collection of overridable values that can be passed
      when running a Task.
     :type values:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.SetValue]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.SetValue]
     :param update_trigger_token: Base64 encoded update trigger token that will
      be attached with the base image trigger webhook.
     :type update_trigger_token: str

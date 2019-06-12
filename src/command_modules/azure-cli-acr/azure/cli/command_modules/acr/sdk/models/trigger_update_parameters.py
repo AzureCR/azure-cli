@@ -17,14 +17,14 @@ class TriggerUpdateParameters(Model):
 
     :param timer_triggers: The collection of timer triggers.
     :type timer_triggers:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.TimerTriggerUpdateParameters]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.TimerTriggerUpdateParameters]
     :param source_triggers: The collection of triggers based on source code
      repository.
     :type source_triggers:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.SourceTriggerUpdateParameters]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.SourceTriggerUpdateParameters]
     :param base_image_trigger: The trigger based on base image dependencies.
     :type base_image_trigger:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.BaseImageTriggerUpdateParameters
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.BaseImageTriggerUpdateParameters
     """
 
     _attribute_map = {

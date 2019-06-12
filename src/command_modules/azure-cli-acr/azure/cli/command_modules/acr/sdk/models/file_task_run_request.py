@@ -29,16 +29,16 @@ class FileTaskRunRequest(RunRequest):
     :param values: The collection of overridable values that can be passed
      when running a task.
     :type values:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.SetValue]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.SetValue]
     :param timeout: Run timeout in seconds. Default value: 3600 .
     :type timeout: int
     :param platform: The platform properties against which the run has to
      happen.
     :type platform:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.PlatformProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.PlatformProperties
     :param agent_configuration: The machine configuration of the run agent.
     :type agent_configuration:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.AgentProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.AgentProperties
     :param source_location: The URL(absolute or relative) of the source
      context. It can be an URL to a tar or git repository.
      If it is relative URL, the relative path should be obtained from calling
@@ -47,7 +47,7 @@ class FileTaskRunRequest(RunRequest):
     :param credentials: The properties that describes a set of credentials
      that will be used when this run is invoked.
     :type credentials:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.Credentials
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Credentials
     """
 
     _validation = {

@@ -18,7 +18,7 @@ class IPRule(Model):
     :param action: The action of IP ACL rule. Possible values include:
      'Allow'. Default value: "Allow" .
     :type action: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.Action
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Action
     :param ip_address_or_range: Specifies the IP or IP range in CIDR format.
      Only IPV4 address is allowed.
     :type ip_address_or_range: str

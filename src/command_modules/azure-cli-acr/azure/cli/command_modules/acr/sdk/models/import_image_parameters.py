@@ -17,7 +17,7 @@ class ImportImageParameters(Model):
 
     :param source: The source of the image.
     :type source:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.ImportSource
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.ImportSource
     :param target_tags: List of strings of the form repo[:tag]. When tag is
      omitted the source will be used (or 'latest' if source tag is also
      omitted).
@@ -30,7 +30,7 @@ class ImportImageParameters(Model):
      copying begins. Possible values include: 'NoForce', 'Force'. Default
      value: "NoForce" .
     :type mode: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.ImportMode
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.ImportMode
     """
 
     _validation = {

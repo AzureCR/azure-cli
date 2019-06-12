@@ -20,7 +20,7 @@ class EncodedTaskStep(TaskStepProperties):
 
     :ivar base_image_dependencies: List of base image dependencies for a step.
     :vartype base_image_dependencies:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.BaseImageDependency]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.BaseImageDependency]
     :param context_path: The URL(absolute or relative) of the source context
      for the task step.
     :type context_path: str
@@ -38,7 +38,7 @@ class EncodedTaskStep(TaskStepProperties):
     :param values: The collection of overridable values that can be passed
      when running a task.
     :type values:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.SetValue]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.SetValue]
     """
 
     _validation = {

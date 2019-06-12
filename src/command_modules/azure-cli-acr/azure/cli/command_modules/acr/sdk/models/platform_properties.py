@@ -17,15 +17,16 @@ class PlatformProperties(Model):
 
     :param os: The operating system type required for the run. Possible values
      include: 'Windows', 'Linux'
-    :type os: str or ~azure.mgmt.containerregistry.v2019_06_01.models.OS
+    :type os: str or
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.OS
     :param architecture: The OS architecture. Possible values include:
      'amd64', 'x86', 'arm', 'arm64'
     :type architecture: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.Architecture
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Architecture
     :param variant: Variant of the CPU. Possible values include: 'v6', 'v7',
      'v8'
     :type variant: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.Variant
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Variant
     """
 
     _validation = {

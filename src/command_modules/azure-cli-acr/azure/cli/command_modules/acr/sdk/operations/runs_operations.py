@@ -25,7 +25,7 @@ class RunsOperations(object):
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
     :param deserializer: An object model deserializer.
-    :ivar api_version: The client API version. Constant value: "2019-06-01".
+    :ivar api_version: The client API version. Constant value: "2019-06-01-preview".
     """
 
     models = models
@@ -35,7 +35,7 @@ class RunsOperations(object):
         self._client = client
         self._serialize = serializer
         self._deserialize = deserializer
-        self.api_version = "2019-06-01"
+        self.api_version = "2019-06-01-preview"
 
         self.config = config
 
@@ -63,7 +63,7 @@ class RunsOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of Run
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.RunPaged[~azure.mgmt.containerregistry.v2019_06_01.models.Run]
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.RunPaged[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Run]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
@@ -140,8 +140,8 @@ class RunsOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: Run or ClientRawResponse if raw=true
-        :rtype: ~azure.mgmt.containerregistry.v2019_06_01.models.Run or
-         ~msrest.pipeline.ClientRawResponse
+        :rtype: ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Run
+         or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         # Construct URL
@@ -264,7 +264,7 @@ class RunsOperations(object):
         :return: An instance of AzureOperationPoller that returns Run or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01.models.Run]
+         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Run]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -335,8 +335,8 @@ class RunsOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: RunGetLogResult or ClientRawResponse if raw=true
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.RunGetLogResult or
-         ~msrest.pipeline.ClientRawResponse
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.RunGetLogResult
+         or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         # Construct URL

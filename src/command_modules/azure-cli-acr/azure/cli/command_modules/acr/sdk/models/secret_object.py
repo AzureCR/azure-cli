@@ -25,7 +25,7 @@ class SecretObject(Model):
      of the secret object has to be
      interpreted. Possible values include: 'Opaque', 'Vaultsecret'
     :type type: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SecretObjectType
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SecretObjectType
     """
 
     _attribute_map = {

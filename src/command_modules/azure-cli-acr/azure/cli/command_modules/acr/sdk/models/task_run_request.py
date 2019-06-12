@@ -26,7 +26,7 @@ class TaskRunRequest(RunRequest):
     :param override_task_step_properties: Set of overridable parameters that
      can be passed when running a Task.
     :type override_task_step_properties:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.OverrideTaskStepProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.OverrideTaskStepProperties
     """
 
     _validation = {

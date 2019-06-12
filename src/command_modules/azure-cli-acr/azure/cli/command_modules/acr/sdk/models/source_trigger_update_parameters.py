@@ -18,15 +18,15 @@ class SourceTriggerUpdateParameters(Model):
     :param source_repository: The properties that describes the source(code)
      for the task.
     :type source_repository:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SourceUpdateParameters
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SourceUpdateParameters
     :param source_trigger_events: The source event corresponding to the
      trigger.
     :type source_trigger_events: list[str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SourceTriggerEvent]
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SourceTriggerEvent]
     :param status: The current status of trigger. Possible values include:
      'Disabled', 'Enabled'. Default value: "Enabled" .
     :type status: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TriggerStatus
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TriggerStatus
     :param name: The name of the trigger.
     :type name: str
     """

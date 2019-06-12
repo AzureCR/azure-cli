@@ -19,13 +19,13 @@ class NetworkRuleSet(Model):
      rules match. Possible values include: 'Allow', 'Deny'. Default value:
      "Allow" .
     :type default_action: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.DefaultAction
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.DefaultAction
     :param virtual_network_rules: The virtual network rules.
     :type virtual_network_rules:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.VirtualNetworkRule]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.VirtualNetworkRule]
     :param ip_rules: The IP ACL rules.
     :type ip_rules:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.IPRule]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.IPRule]
     """
 
     _validation = {

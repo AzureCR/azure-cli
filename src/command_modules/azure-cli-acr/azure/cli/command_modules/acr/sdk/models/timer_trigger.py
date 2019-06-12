@@ -20,7 +20,7 @@ class TimerTrigger(Model):
     :param status: The current status of trigger. Possible values include:
      'Disabled', 'Enabled'. Default value: "Enabled" .
     :type status: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TriggerStatus
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TriggerStatus
     :param name: The name of the trigger.
     :type name: str
     """

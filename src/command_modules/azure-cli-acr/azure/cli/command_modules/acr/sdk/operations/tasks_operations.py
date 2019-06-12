@@ -25,7 +25,7 @@ class TasksOperations(object):
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
     :param deserializer: An object model deserializer.
-    :ivar api_version: The client API version. Constant value: "2019-06-01".
+    :ivar api_version: The client API version. Constant value: "2019-06-01-preview".
     """
 
     models = models
@@ -35,7 +35,7 @@ class TasksOperations(object):
         self._client = client
         self._serialize = serializer
         self._deserialize = deserializer
-        self.api_version = "2019-06-01"
+        self.api_version = "2019-06-01-preview"
 
         self.config = config
 
@@ -55,7 +55,7 @@ class TasksOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of Task
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.TaskPaged[~azure.mgmt.containerregistry.v2019_06_01.models.Task]
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TaskPaged[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Task]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
@@ -128,8 +128,8 @@ class TasksOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: Task or ClientRawResponse if raw=true
-        :rtype: ~azure.mgmt.containerregistry.v2019_06_01.models.Task or
-         ~msrest.pipeline.ClientRawResponse
+        :rtype: ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Task
+         or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         # Construct URL
@@ -243,14 +243,14 @@ class TasksOperations(object):
         :type task_name: str
         :param task_create_parameters: The parameters for creating a task.
         :type task_create_parameters:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.Task
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Task
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
         :return: An instance of AzureOperationPoller that returns Task or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01.models.Task]
+         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Task]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -473,14 +473,14 @@ class TasksOperations(object):
         :type task_name: str
         :param task_update_parameters: The parameters for updating a task.
         :type task_update_parameters:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.TaskUpdateParameters
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TaskUpdateParameters
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
         :return: An instance of AzureOperationPoller that returns Task or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01.models.Task]
+         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Task]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -550,8 +550,8 @@ class TasksOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: Task or ClientRawResponse if raw=true
-        :rtype: ~azure.mgmt.containerregistry.v2019_06_01.models.Task or
-         ~msrest.pipeline.ClientRawResponse
+        :rtype: ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Task
+         or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         # Construct URL

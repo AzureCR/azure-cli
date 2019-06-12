@@ -61,17 +61,17 @@ class ContainerRegistryManagementClient(object):
     :vartype config: ContainerRegistryManagementClientConfiguration
 
     :ivar registries: Registries operations
-    :vartype registries: azure.mgmt.containerregistry.v2019_06_01.operations.RegistriesOperations
+    :vartype registries: azure.mgmt.containerregistry.v2019_06_01_preview.operations.RegistriesOperations
     :ivar operations: Operations operations
-    :vartype operations: azure.mgmt.containerregistry.v2019_06_01.operations.Operations
+    :vartype operations: azure.mgmt.containerregistry.v2019_06_01_preview.operations.Operations
     :ivar replications: Replications operations
-    :vartype replications: azure.mgmt.containerregistry.v2019_06_01.operations.ReplicationsOperations
+    :vartype replications: azure.mgmt.containerregistry.v2019_06_01_preview.operations.ReplicationsOperations
     :ivar webhooks: Webhooks operations
-    :vartype webhooks: azure.mgmt.containerregistry.v2019_06_01.operations.WebhooksOperations
+    :vartype webhooks: azure.mgmt.containerregistry.v2019_06_01_preview.operations.WebhooksOperations
     :ivar runs: Runs operations
-    :vartype runs: azure.mgmt.containerregistry.v2019_06_01.operations.RunsOperations
+    :vartype runs: azure.mgmt.containerregistry.v2019_06_01_preview.operations.RunsOperations
     :ivar tasks: Tasks operations
-    :vartype tasks: azure.mgmt.containerregistry.v2019_06_01.operations.TasksOperations
+    :vartype tasks: azure.mgmt.containerregistry.v2019_06_01_preview.operations.TasksOperations
 
     :param credentials: Credentials needed for the client to connect to Azure.
     :type credentials: :mod:`A msrestazure Credentials

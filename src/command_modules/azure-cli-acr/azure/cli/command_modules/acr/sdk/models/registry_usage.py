@@ -24,7 +24,7 @@ class RegistryUsage(Model):
     :param unit: The unit of measurement. Possible values include: 'Count',
      'Bytes'
     :type unit: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.RegistryUsageUnit
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.RegistryUsageUnit
     """
 
     _attribute_map = {

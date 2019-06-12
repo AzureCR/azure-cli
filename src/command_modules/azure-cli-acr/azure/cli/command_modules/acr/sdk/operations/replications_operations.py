@@ -56,7 +56,8 @@ class ReplicationsOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: Replication or ClientRawResponse if raw=true
-        :rtype: ~azure.mgmt.containerregistry.v2019_06_01.models.Replication
+        :rtype:
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Replication
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -183,7 +184,7 @@ class ReplicationsOperations(object):
         :return: An instance of AzureOperationPoller that returns Replication
          or ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01.models.Replication]
+         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Replication]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -416,7 +417,7 @@ class ReplicationsOperations(object):
         :return: An instance of AzureOperationPoller that returns Replication
          or ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01.models.Replication]
+         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Replication]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -485,7 +486,7 @@ class ReplicationsOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of Replication
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.ReplicationPaged[~azure.mgmt.containerregistry.v2019_06_01.models.Replication]
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.ReplicationPaged[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Replication]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):

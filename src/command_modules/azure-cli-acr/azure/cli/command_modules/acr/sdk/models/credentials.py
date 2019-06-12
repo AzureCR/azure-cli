@@ -19,7 +19,7 @@ class Credentials(Model):
     :param source_registry: Describes the credential parameters for accessing
      the source registry.
     :type source_registry:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SourceRegistryCredentials
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SourceRegistryCredentials
     :param custom_registries: Describes the credential parameters for
      accessing other custom registries. The key
      for the dictionary item will be the registry login server
@@ -27,7 +27,7 @@ class Credentials(Model):
      the value of the item will be the registry credentials for accessing the
      registry.
     :type custom_registries: dict[str,
-     ~azure.mgmt.containerregistry.v2019_06_01.models.CustomRegistryCredentials]
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.CustomRegistryCredentials]
     """
 
     _attribute_map = {

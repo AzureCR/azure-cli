@@ -22,15 +22,19 @@ class EventContent(Model):
     :param action: The action that encompasses the provided event.
     :type action: str
     :param target: The target of the event.
-    :type target: ~azure.mgmt.containerregistry.v2019_06_01.models.Target
+    :type target:
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Target
     :param request: The request that generated the event.
-    :type request: ~azure.mgmt.containerregistry.v2019_06_01.models.Request
+    :type request:
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Request
     :param actor: The agent that initiated the event. For most situations,
      this could be from the authorization context of the request.
-    :type actor: ~azure.mgmt.containerregistry.v2019_06_01.models.Actor
+    :type actor:
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Actor
     :param source: The registry node that generated the event. Put
      differently, while the actor initiates the event, the source generates it.
-    :type source: ~azure.mgmt.containerregistry.v2019_06_01.models.Source
+    :type source:
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Source
     """
 
     _attribute_map = {

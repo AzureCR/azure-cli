@@ -23,7 +23,7 @@ class ImportSource(Model):
     :type registry_uri: str
     :param credentials: Credentials used when importing from a registry uri.
     :type credentials:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.ImportSourceCredentials
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.ImportSourceCredentials
     :param source_image: Repository name of the source image.
      Specify an image by repository ('hello-world'). This will use the 'latest'
      tag.

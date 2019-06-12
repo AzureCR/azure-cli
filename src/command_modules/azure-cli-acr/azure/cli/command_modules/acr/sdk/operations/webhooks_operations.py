@@ -56,7 +56,8 @@ class WebhooksOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: Webhook or ClientRawResponse if raw=true
-        :rtype: ~azure.mgmt.containerregistry.v2019_06_01.models.Webhook or
+        :rtype:
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Webhook or
          ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -173,14 +174,14 @@ class WebhooksOperations(object):
         :param webhook_create_parameters: The parameters for creating a
          webhook.
         :type webhook_create_parameters:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.WebhookCreateParameters
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.WebhookCreateParameters
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
         :return: An instance of AzureOperationPoller that returns Webhook or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01.models.Webhook]
+         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Webhook]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -404,14 +405,14 @@ class WebhooksOperations(object):
         :param webhook_update_parameters: The parameters for updating a
          webhook.
         :type webhook_update_parameters:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.WebhookUpdateParameters
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.WebhookUpdateParameters
         :param dict custom_headers: headers that will be added to the request
         :param bool raw: returns the direct response alongside the
          deserialized response
         :return: An instance of AzureOperationPoller that returns Webhook or
          ClientRawResponse if raw=true
         :rtype:
-         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01.models.Webhook]
+         ~msrestazure.azure_operation.AzureOperationPoller[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Webhook]
          or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -480,7 +481,7 @@ class WebhooksOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of Webhook
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.WebhookPaged[~azure.mgmt.containerregistry.v2019_06_01.models.Webhook]
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.WebhookPaged[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Webhook]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):
@@ -553,7 +554,8 @@ class WebhooksOperations(object):
         :param operation_config: :ref:`Operation configuration
          overrides<msrest:optionsforoperations>`.
         :return: EventInfo or ClientRawResponse if raw=true
-        :rtype: ~azure.mgmt.containerregistry.v2019_06_01.models.EventInfo or
+        :rtype:
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.EventInfo or
          ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
@@ -621,8 +623,8 @@ class WebhooksOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: CallbackConfig or ClientRawResponse if raw=true
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.CallbackConfig or
-         ~msrest.pipeline.ClientRawResponse
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.CallbackConfig
+         or ~msrest.pipeline.ClientRawResponse
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         # Construct URL
@@ -688,7 +690,7 @@ class WebhooksOperations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of Event
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.EventPaged[~azure.mgmt.containerregistry.v2019_06_01.models.Event]
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.EventPaged[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Event]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):

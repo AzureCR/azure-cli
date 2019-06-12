@@ -18,7 +18,7 @@ class VirtualNetworkRule(Model):
     :param action: The action of virtual network rule. Possible values
      include: 'Allow'. Default value: "Allow" .
     :type action: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.Action
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Action
     :param virtual_network_resource_id: Resource ID of a subnet, for example:
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
     :type virtual_network_resource_id: str

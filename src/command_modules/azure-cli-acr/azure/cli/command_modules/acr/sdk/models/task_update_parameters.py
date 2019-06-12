@@ -17,30 +17,30 @@ class TaskUpdateParameters(Model):
 
     :param identity: Identity for the resource.
     :type identity:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.IdentityProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.IdentityProperties
     :param status: The current status of task. Possible values include:
      'Disabled', 'Enabled'
     :type status: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TaskStatus
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TaskStatus
     :param platform: The platform properties against which the run has to
      happen.
     :type platform:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.PlatformUpdateParameters
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.PlatformUpdateParameters
     :param agent_configuration: The machine configuration of the run agent.
     :type agent_configuration:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.AgentProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.AgentProperties
     :param timeout: Run timeout in seconds.
     :type timeout: int
     :param step: The properties for updating a task step.
     :type step:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TaskStepUpdateParameters
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TaskStepUpdateParameters
     :param trigger: The properties for updating trigger properties.
     :type trigger:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TriggerUpdateParameters
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TriggerUpdateParameters
     :param credentials: The parameters that describes a set of credentials
      that will be used when this run is invoked.
     :type credentials:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.Credentials
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Credentials
     :param tags: The ARM resource tags.
     :type tags: dict[str, str]
     """

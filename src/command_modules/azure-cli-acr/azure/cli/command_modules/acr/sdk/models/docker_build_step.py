@@ -20,7 +20,7 @@ class DockerBuildStep(TaskStepProperties):
 
     :ivar base_image_dependencies: List of base image dependencies for a step.
     :vartype base_image_dependencies:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.BaseImageDependency]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.BaseImageDependency]
     :param context_path: The URL(absolute or relative) of the source context
      for the task step.
     :type context_path: str
@@ -46,7 +46,7 @@ class DockerBuildStep(TaskStepProperties):
     :param arguments: The collection of override arguments to be used when
      executing this build step.
     :type arguments:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.Argument]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.Argument]
     """
 
     _validation = {

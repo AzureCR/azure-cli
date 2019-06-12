@@ -49,7 +49,7 @@ class Operations(object):
          overrides<msrest:optionsforoperations>`.
         :return: An iterator like instance of OperationDefinition
         :rtype:
-         ~azure.mgmt.containerregistry.v2019_06_01.models.OperationDefinitionPaged[~azure.mgmt.containerregistry.v2019_06_01.models.OperationDefinition]
+         ~azure.mgmt.containerregistry.v2019_06_01_preview.models.OperationDefinitionPaged[~azure.mgmt.containerregistry.v2019_06_01_preview.models.OperationDefinition]
         :raises: :class:`CloudError<msrestazure.azure_exceptions.CloudError>`
         """
         def internal_paging(next_link=None, raw=False):

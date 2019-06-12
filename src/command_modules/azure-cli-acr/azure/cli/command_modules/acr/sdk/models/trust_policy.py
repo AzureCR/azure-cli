@@ -17,11 +17,11 @@ class TrustPolicy(Model):
 
     :param type: The type of trust policy. Possible values include: 'Notary'
     :type type: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TrustPolicyType
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TrustPolicyType
     :param status: The value that indicates whether the policy is enabled or
      not. Possible values include: 'enabled', 'disabled'
     :type status: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.PolicyStatus
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.PolicyStatus
     """
 
     _attribute_map = {

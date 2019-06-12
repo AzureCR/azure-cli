@@ -22,14 +22,14 @@ class IdentityProperties(Model):
     :param type: The identity type. Possible values include: 'SystemAssigned',
      'UserAssigned', 'SystemAssigned, UserAssigned', 'None'
     :type type: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.ResourceIdentityType
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated
      with the resource. The user identity
      dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/
      providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
     :type user_assigned_identities: dict[str,
-     ~azure.mgmt.containerregistry.v2019_06_01.models.UserIdentityProperties]
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.UserIdentityProperties]
     """
 
     _attribute_map = {

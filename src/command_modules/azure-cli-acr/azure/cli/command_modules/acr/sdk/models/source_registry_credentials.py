@@ -22,7 +22,7 @@ class SourceRegistryCredentials(Model):
      the source registry during the run. Possible values include: 'None',
      'Default'
     :type login_mode: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SourceRegistryLoginMode
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SourceRegistryLoginMode
     """
 
     _attribute_map = {

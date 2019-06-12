@@ -18,18 +18,18 @@ class BaseImageTriggerUpdateParameters(Model):
     :param base_image_trigger_type: The type of the auto trigger for base
      image dependency updates. Possible values include: 'All', 'Runtime'
     :type base_image_trigger_type: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.BaseImageTriggerType
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.BaseImageTriggerType
     :param update_trigger_endpoint: The endpoint URL for receiving update
      triggers.
     :type update_trigger_endpoint: str
     :param update_trigger_payload_type: Type of Payload body for Base image
      update triggers. Possible values include: 'Default', 'Token'
     :type update_trigger_payload_type: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.UpdateTriggerPayloadType
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.UpdateTriggerPayloadType
     :param status: The current status of trigger. Possible values include:
      'Disabled', 'Enabled'. Default value: "Enabled" .
     :type status: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TriggerStatus
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TriggerStatus
     :param name: The name of the trigger.
     :type name: str
     """

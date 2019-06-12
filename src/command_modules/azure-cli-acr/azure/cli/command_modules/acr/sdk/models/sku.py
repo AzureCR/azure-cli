@@ -22,11 +22,11 @@ class Sku(Model):
      creation. Possible values include: 'Classic', 'Basic', 'Standard',
      'Premium'
     :type name: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SkuName
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SkuName
     :ivar tier: The SKU tier based on the SKU name. Possible values include:
      'Classic', 'Basic', 'Standard', 'Premium'
     :vartype tier: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SkuTier
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SkuTier
     """
 
     _validation = {

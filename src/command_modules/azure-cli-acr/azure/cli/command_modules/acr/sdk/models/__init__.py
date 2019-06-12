@@ -55,6 +55,7 @@ from .run_request import RunRequest
 from .image_descriptor import ImageDescriptor
 from .image_update_trigger import ImageUpdateTrigger
 from .source_trigger_descriptor import SourceTriggerDescriptor
+from .timer_trigger_descriptor import TimerTriggerDescriptor
 from .platform_properties import PlatformProperties
 from .agent_properties import AgentProperties
 from .run import Run
@@ -185,6 +186,7 @@ __all__ = [
     'ImageDescriptor',
     'ImageUpdateTrigger',
     'SourceTriggerDescriptor',
+    'TimerTriggerDescriptor',
     'PlatformProperties',
     'AgentProperties',
     'Run',

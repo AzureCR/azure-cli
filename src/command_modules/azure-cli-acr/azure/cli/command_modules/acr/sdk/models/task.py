@@ -32,37 +32,37 @@ class Task(Resource):
     :type tags: dict[str, str]
     :param identity: Identity for the resource.
     :type identity:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.IdentityProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.IdentityProperties
     :ivar provisioning_state: The provisioning state of the task. Possible
      values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed',
      'Canceled'
     :vartype provisioning_state: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.ProvisioningState
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.ProvisioningState
     :ivar creation_date: The creation date of task.
     :vartype creation_date: datetime
     :param status: The current status of task. Possible values include:
      'Disabled', 'Enabled'
     :type status: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TaskStatus
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TaskStatus
     :param platform: The platform properties against which the run has to
      happen.
     :type platform:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.PlatformProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.PlatformProperties
     :param agent_configuration: The machine configuration of the run agent.
     :type agent_configuration:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.AgentProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.AgentProperties
     :param timeout: Run timeout in seconds. Default value: 3600 .
     :type timeout: int
     :param step: The properties of a task step.
     :type step:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TaskStepProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TaskStepProperties
     :param trigger: The properties that describe all triggers for the task.
     :type trigger:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.TriggerProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.TriggerProperties
     :param credentials: The properties that describes a set of credentials
      that will be used when this run is invoked.
     :type credentials:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.Credentials
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Credentials
     """
 
     _validation = {

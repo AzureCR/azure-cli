@@ -18,12 +18,12 @@ class CustomRegistryCredentials(Model):
 
     :param user_name: The username for logging into the custom registry.
     :type user_name:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SecretObject
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SecretObject
     :param password: The password for logging into the custom registry. The
      password is a secret
      object that allows multiple ways of providing the value for it.
     :type password:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SecretObject
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SecretObject
     :param identity: Indicates the managed identity assigned to the custom
      credential. If a user-assigned identity
      this value is the Client ID. If a system-assigned identity, the value will

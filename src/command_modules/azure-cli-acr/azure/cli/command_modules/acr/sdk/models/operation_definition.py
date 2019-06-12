@@ -22,10 +22,10 @@ class OperationDefinition(Model):
     :param display: The display information for the container registry
      operation.
     :type display:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.OperationDisplayDefinition
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.OperationDisplayDefinition
     :param service_specification: The definition of Azure Monitoring service.
     :type service_specification:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.OperationServiceSpecificationDefinition
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.OperationServiceSpecificationDefinition
     """
 
     _attribute_map = {

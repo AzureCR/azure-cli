@@ -18,7 +18,7 @@ class OperationServiceSpecificationDefinition(Model):
     :param metric_specifications: A list of Azure Monitoring metrics
      definition.
     :type metric_specifications:
-     list[~azure.mgmt.containerregistry.v2019_06_01.models.OperationMetricSpecificationDefinition]
+     list[~azure.mgmt.containerregistry.v2019_06_01_preview.models.OperationMetricSpecificationDefinition]
     """
 
     _attribute_map = {

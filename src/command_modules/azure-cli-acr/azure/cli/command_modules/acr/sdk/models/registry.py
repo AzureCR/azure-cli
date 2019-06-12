@@ -30,7 +30,7 @@ class Registry(Resource):
     :param tags: The tags of the resource.
     :type tags: dict[str, str]
     :param sku: The SKU of the container registry.
-    :type sku: ~azure.mgmt.containerregistry.v2019_06_01.models.Sku
+    :type sku: ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Sku
     :ivar login_server: The URL that can be used to log into the container
      registry.
     :vartype login_server: str
@@ -41,22 +41,24 @@ class Registry(Resource):
      at the time the operation was called. Possible values include: 'Creating',
      'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
     :vartype provisioning_state: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.ProvisioningState
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.ProvisioningState
     :ivar status: The status of the container registry at the time the
      operation was called.
-    :vartype status: ~azure.mgmt.containerregistry.v2019_06_01.models.Status
+    :vartype status:
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Status
     :param admin_user_enabled: The value that indicates whether the admin user
      is enabled. Default value: False .
     :type admin_user_enabled: bool
     :param storage_account: The properties of the storage account for the
      container registry. Only applicable to Classic SKU.
     :type storage_account:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.StorageAccountProperties
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.StorageAccountProperties
     :param network_rule_set: The network rule set for a container registry.
     :type network_rule_set:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.NetworkRuleSet
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.NetworkRuleSet
     :param policies: The policies for a container registry.
-    :type policies: ~azure.mgmt.containerregistry.v2019_06_01.models.Policies
+    :type policies:
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Policies
     """
 
     _validation = {

@@ -18,15 +18,16 @@ class RegistryUpdateParameters(Model):
     :param tags: The tags for the container registry.
     :type tags: dict[str, str]
     :param sku: The SKU of the container registry.
-    :type sku: ~azure.mgmt.containerregistry.v2019_06_01.models.Sku
+    :type sku: ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Sku
     :param admin_user_enabled: The value that indicates whether the admin user
      is enabled.
     :type admin_user_enabled: bool
     :param network_rule_set: The network rule set for a container registry.
     :type network_rule_set:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.NetworkRuleSet
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.NetworkRuleSet
     :param policies: The policies for a container registry.
-    :type policies: ~azure.mgmt.containerregistry.v2019_06_01.models.Policies
+    :type policies:
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.Policies
     """
 
     _attribute_map = {

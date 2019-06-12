@@ -18,7 +18,7 @@ class SourceProperties(Model):
     :param source_control_type: The type of source control service. Possible
      values include: 'Github', 'VisualStudioTeamService'
     :type source_control_type: str or
-     ~azure.mgmt.containerregistry.v2019_06_01.models.SourceControlType
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.SourceControlType
     :param repository_url: The full URL to the source code repository
     :type repository_url: str
     :param branch: The branch name of the source code.
@@ -27,7 +27,7 @@ class SourceProperties(Model):
      accessing the source code repository and to set up
      webhooks for notifications.
     :type source_control_auth_properties:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.AuthInfo
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.AuthInfo
     """
 
     _validation = {

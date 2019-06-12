@@ -17,7 +17,7 @@ class EventRequestMessage(Model):
 
     :param content: The content of the event request message.
     :type content:
-     ~azure.mgmt.containerregistry.v2019_06_01.models.EventContent
+     ~azure.mgmt.containerregistry.v2019_06_01_preview.models.EventContent
     :param headers: The headers of the event request message.
     :type headers: dict[str, str]
     :param method: The HTTP method used to send the event request message.
