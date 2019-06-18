@@ -40,7 +40,8 @@ def get_valid_os(cmd):
 
 
 def get_valid_architecture(cmd):
-    Architecture = cmd.get_models('Architecture')
+    from .sdk.models import Architecture
+    # Architecture = cmd.get_models('Architecture')
     return [item.value.lower() for item in Architecture]
 
 
