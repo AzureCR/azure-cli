@@ -155,7 +155,6 @@ def acr_task_create(cmd,  # pylint: disable=too-many-locals
                 name=source_trigger_name
             )
         ]
-    logger.warning("update_trigger_endpoint: %s", update_trigger_endpoint)
     base_image_trigger = None
     if base_image_trigger_enabled:
         # BaseImageTrigger, TriggerStatus = cmd.get_models(
@@ -379,18 +378,13 @@ def acr_task_update(cmd,  # pylint: disable=too-many-locals
             status = None
             if base_image_trigger_enabled is not None:
                 status = TriggerStatus.enabled.value if base_image_trigger_enabled else TriggerStatus.disabled.value
-            logger.warning("update_trigger_payload_type: %s", update_trigger_payload_type)
-
             base_image_trigger_update_params = BaseImageTriggerUpdateParameters(
                 base_image_trigger_type=base_image_trigger_type,
                 status=status,
                 name=base_image_trigger.name if base_image_trigger else "defaultBaseimageTriggerName",
                 update_trigger_endpoint=update_trigger_endpoint,
-                update_trigger_payload_type=update_trigger_payload_type if update_trigger_payload_type else None
+                update_trigger_payload_type=update_trigger_payload_type
             )
-            logger.warning("update_trigger_endpoint: %s", base_image_trigger_update_params.update_trigger_endpoint)
-            logger.warning("include_trigger_metadata: %s", base_image_trigger_update_params.include_trigger_metadata)
-
 
     platform_os, platform_arch, platform_variant = None, None, None
     if platform:
@@ -642,13 +636,10 @@ def acr_task_run(cmd,
     from .sdk.models import TaskRunRequest, OverrideTaskStepProperties
 
     import base64
-
     if update_trigger_token:
         update_trigger_token = base64.b64encode(update_trigger_token.encode()).decode()
 
     task_id=get_task_id_from_task_name(cmd.cli_ctx, resource_group_name, registry_name, task_name)
-    logger.warning("taskid: %s", task_id)
-    logger.warning("update_trigger_token: %s", update_trigger_token)
 
     override_task_step_properties = OverrideTaskStepProperties(
         context_path=context,

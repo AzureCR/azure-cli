@@ -3,6 +3,11 @@
 Release History
 ===============
 
+2.3.0
++++++
+* Add '--update-trigger-token', '--file', '--context', '--arguments', '--secret-arguments' for 'az acr task run'.
+* Add '--update-trigger-endpoint' and '--update-trigger-payload' for 'az acr task create' and 'az acr task update'
+
 2.2.9
 +++++
 * Add 'az acr check-health' command.
