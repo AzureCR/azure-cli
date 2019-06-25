@@ -3,6 +3,11 @@
 Release History
 ===============
 
+2.2.10
++++++
+* 'az acr check-health' now displays a human friendly Helm version.
+* 'az acr check-health' raises a warning if an obsolete Helm version is detected.
+
 2.2.9
 +++++
 * Add 'az acr check-health' command.
