@@ -12,6 +12,7 @@ from ._constants import (
     REGISTRY_RESOURCE_TYPE,
     ACR_RESOURCE_PROVIDER,
     STORAGE_RESOURCE_TYPE,
+    TASK_RESOURCE_ID_TEMPLATE,
     ACR_TASK_YAML_DEFAULT_NAME,
     get_classic_sku,
     get_managed_sku,
@@ -549,6 +550,16 @@ def is_vault_secret(cmd, credential):
         return False
     return keyvault_dns.upper() in credential.upper()
 
+
+def get_task_id_from_task_name(cli_ctx, resource_group, registry_name, task_name):
+    from azure.cli.core.commands.client_factory import get_subscription_id
+    subscription_id = get_subscription_id(cli_ctx)
+    return TASK_RESOURCE_ID_TEMPLATE.format(
+        sub_id=subscription_id,
+        rg=resource_group,
+        reg=registry_name,
+        name=task_name
+    )
 
 class ResourceNotFound(CLIError):
     """For exceptions that a resource couldn't be found in user's subscription
