@@ -18,6 +18,7 @@ from ._docker_utils import (
     get_access_credentials,
     request_data_from_registry,
     RegistryException,
+    PackageType,
     HelmAccessTokenPermission
 )
 
@@ -38,7 +39,8 @@ def acr_helm_list(cmd,
         tenant_suffix=tenant_suffix,
         username=username,
         password=password,
-        artifact_repository=repository,
+        package_type=PackageType.ARTIFACT,
+        repository=repository,
         permission=HelmAccessTokenPermission.PULL.value)
 
     return request_data_from_registry(
@@ -64,7 +66,8 @@ def acr_helm_show(cmd,
         tenant_suffix=tenant_suffix,
         username=username,
         password=password,
-        artifact_repository=repository,
+        package_type=PackageType.ARTIFACT,
+        repository=repository,
         permission=HelmAccessTokenPermission.PULL.value)
 
     return request_data_from_registry(
@@ -99,7 +102,8 @@ def acr_helm_delete(cmd,
         tenant_suffix=tenant_suffix,
         username=username,
         password=password,
-        artifact_repository=repository,
+        package_type=PackageType.ARTIFACT,
+        repository=repository,
         permission=HelmAccessTokenPermission.DELETE.value)
 
     return request_data_from_registry(
@@ -130,7 +134,8 @@ def acr_helm_push(cmd,
         tenant_suffix=tenant_suffix,
         username=username,
         password=password,
-        artifact_repository=repository,
+        package_type=PackageType.ARTIFACT,
+        repository=repository,
         permission=HelmAccessTokenPermission.PUSH_PULL.value)
 
     path = _get_blobs_path(repository, basename(chart_package))
@@ -172,7 +177,8 @@ def acr_helm_repo_add(cmd,
         tenant_suffix=tenant_suffix,
         username=username,
         password=password,
-        artifact_repository=repository,
+        package_type=PackageType.ARTIFACT,
+        repository=repository,
         permission=HelmAccessTokenPermission.PULL.value)
 
     from subprocess import Popen

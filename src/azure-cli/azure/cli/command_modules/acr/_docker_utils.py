@@ -42,6 +42,12 @@ ADMIN_USER_BASE_ERROR_MESSAGE = "Unable to get admin user credentials with messa
 ALLOWS_BASIC_AUTH = "allows_basic_auth"
 
 
+class PackageType(Enum):
+    OCI = 'oci'
+    ARTIFACT = 'artifact'
+    PYPI = 'pypi'
+
+
 class RepoAccessTokenPermission(Enum):
     METADATA_READ = 'metadata_read'
     METADATA_WRITE = 'metadata_write'
@@ -58,27 +64,31 @@ class HelmAccessTokenPermission(Enum):
     DELETE_PULL = 'delete,pull'
 
 
+class PackageAccessTokenPermission(Enum):
+    METADATA_READ = 'metadata_read'
+    PULL = 'pull'
+    PUSH = 'push'
+    DELETE = 'delete'
+
+
 def _handle_challenge_phase(login_server,
-                            repository,
-                            artifact_repository,
+                            package_type,
                             permission,
                             is_aad_token=True,
                             is_diagnostics_context=False):
 
-    if repository and artifact_repository:
-        raise ValueError("Only one of repository and artifact_repository can be provided.")
-
-    repo_permissions = {permission.value for permission in RepoAccessTokenPermission}
-    if repository and permission not in repo_permissions:
-        raise ValueError(
-            "Permission is required for a repository. Allowed access token permission: {}"
-            .format(repo_permissions))
-
-    helm_permissions = {permission.value for permission in HelmAccessTokenPermission}
-    if artifact_repository and permission not in helm_permissions:
-        raise ValueError(
-            "Permission is required for an artifact_repository. Allowed access token permission: {}"
-            .format(helm_permissions))
+    if package_type is PackageType.OCI:
+        repo_permissions = {permission.value for permission in RepoAccessTokenPermission}
+        if permission not in repo_permissions:
+            raise ValueError(
+                "Permission is required for a repository. Allowed access token permission: {}"
+                .format(repo_permissions))
+    elif package_type is PackageType.ARTIFACT:
+        helm_permissions = {permission.value for permission in HelmAccessTokenPermission}
+        if permission not in helm_permissions:
+            raise ValueError(
+                "Permission is required for an artifact repository. Allowed access token permission: {}"
+                .format(helm_permissions))
 
     login_server = login_server.rstrip('/')
 
@@ -110,12 +120,27 @@ def _handle_challenge_phase(login_server,
     return token_params
 
 
+def _get_scope(package_type,
+               repository=None,
+               permission=None):
+    if package_type is PackageType.OCI:
+        # catalog only has * as permission, even for a read operation
+        return 'repository:{}:{}'.format(repository, permission) if repository else 'registry:catalog:*'
+    elif package_type is PackageType.ARTIFACT:
+        return 'artifact-repository:{}:{}'.format(repository, permission)
+    elif package_type is PackageType.PYPI:
+        return 'pypi-package:{}:{}'.format(repository, permission) if repository else 'pypi-registry:catalog:metadata_read'
+    else:
+        allowed_package_types = {package_type.value for package_type in PackageType}
+        raise ValueError('Invalid package type {}. Allowed package types: {}'.format(package_type, allowed_package_types))
+
+
 def _get_aad_token_after_challenge(cli_ctx,
                                    token_params,
                                    login_server,
                                    only_refresh_token,
+                                   package_type,
                                    repository,
-                                   artifact_repository,
                                    permission,
                                    is_diagnostics_context):
     authurl = urlparse(token_params['realm'])
@@ -152,13 +177,7 @@ def _get_aad_token_after_challenge(cli_ctx,
 
     authhost = urlunparse((authurl[0], authurl[1], '/oauth2/token', '', '', ''))
 
-    if repository:
-        scope = 'repository:{}:{}'.format(repository, permission)
-    elif artifact_repository:
-        scope = 'artifact-repository:{}:{}'.format(artifact_repository, permission)
-    else:
-        # catalog only has * as permission, even for a read operation
-        scope = 'registry:catalog:*'
+    scope = _get_scope(package_type, repository, permission)
 
     content = {
         'grant_type': 'refresh_token',
@@ -182,19 +201,19 @@ def _get_aad_token_after_challenge(cli_ctx,
 def _get_aad_token(cli_ctx,
                    login_server,
                    only_refresh_token,
+                   package_type=None,
                    repository=None,
-                   artifact_repository=None,
                    permission=None,
                    is_diagnostics_context=False):
     """Obtains refresh and access tokens for an AAD-enabled registry.
     :param str login_server: The registry login server URL to log in to
     :param bool only_refresh_token: Whether to ask for only refresh token, or for both refresh and access tokens
+    :param PackageType package_type: Package type for which the access token is requested
     :param str repository: Repository for which the access token is requested
-    :param str artifact_repository: Artifact repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
     token_params = _handle_challenge_phase(
-        login_server, repository, artifact_repository, permission, True, is_diagnostics_context
+        login_server, package_type, permission, True, is_diagnostics_context
     )
 
     from ._errors import ErrorClass
@@ -207,8 +226,8 @@ def _get_aad_token(cli_ctx,
                                           token_params,
                                           login_server,
                                           only_refresh_token,
+                                          package_type,
                                           repository,
-                                          artifact_repository,
                                           permission,
                                           is_diagnostics_context)
 
@@ -216,8 +235,8 @@ def _get_aad_token(cli_ctx,
 def _get_token_with_username_and_password(login_server,
                                           username,
                                           password,
+                                          package_type=None,
                                           repository=None,
-                                          artifact_repository=None,
                                           permission=None,
                                           is_login_context=False,
                                           is_diagnostics_context=False):
@@ -225,8 +244,8 @@ def _get_token_with_username_and_password(login_server,
        To be used for scoped access credentials.
     :param str login_server: The registry login server URL to log in to
     :param bool only_refresh_token: Whether to ask for only refresh token, or for both refresh and access tokens
+    :param PackageType package_type: Package type for which the access token is requested
     :param str repository: Repository for which the access token is requested
-    :param str artifact_repository: Artifact repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
 
@@ -234,7 +253,7 @@ def _get_token_with_username_and_password(login_server,
         return username, password
 
     token_params = _handle_challenge_phase(
-        login_server, repository, artifact_repository, permission, False, is_diagnostics_context
+        login_server, package_type, permission, False, is_diagnostics_context
     )
 
     from ._errors import ErrorClass
@@ -246,13 +265,7 @@ def _get_token_with_username_and_password(login_server,
     if ALLOWS_BASIC_AUTH in token_params:
         return username, password
 
-    if repository:
-        scope = 'repository:{}:{}'.format(repository, permission)
-    elif artifact_repository:
-        scope = 'artifact-repository:{}:{}'.format(artifact_repository, permission)
-    else:
-        # catalog only has * as permission, even for a read operation
-        scope = 'registry:catalog:*'
+    scope = _get_scope(package_type, repository, permission)
 
     authurl = urlparse(token_params['realm'])
     authhost = urlunparse((authurl[0], authurl[1], '/oauth2/token', '', '', ''))
@@ -286,8 +299,8 @@ def _get_credentials(cmd,  # pylint: disable=too-many-statements
                      username,
                      password,
                      only_refresh_token,
+                     package_type=None,
                      repository=None,
-                     artifact_repository=None,
                      permission=None,
                      is_login_context=False):
     """Try to get AAD authorization tokens or admin user credentials.
@@ -296,8 +309,8 @@ def _get_credentials(cmd,  # pylint: disable=too-many-statements
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
     :param bool only_refresh_token: Whether to ask for only refresh token, or for both refresh and access tokens
+    :param PackageType package_type: Package type for which the access token is requested
     :param str repository: Repository for which the access token is requested
-    :param str artifact_repository: Artifact repository for which the access token is requested
     :param str permission: The requested permission on the repository, '*' or 'pull'
     """
     # Raise an error if password is specified but username isn't
@@ -355,7 +368,7 @@ def _get_credentials(cmd,  # pylint: disable=too-many-statements
                 raise CLIError('Please specify both username and password in non-interactive mode.')
 
         username, password = _get_token_with_username_and_password(
-            login_server, username, password, repository, artifact_repository, permission, is_login_context
+            login_server, username, password, package_type, repository, permission, is_login_context
         )
         return login_server, username, password
 
@@ -364,7 +377,7 @@ def _get_credentials(cmd,  # pylint: disable=too-many-statements
         logger.info("Attempting to retrieve AAD refresh token...")
         try:
             return login_server, EMPTY_GUID, _get_aad_token(
-                cli_ctx, login_server, only_refresh_token, repository, artifact_repository, permission)
+                cli_ctx, login_server, only_refresh_token, package_type, repository, permission)
         except CLIError as e:
             logger.warning("%s: %s", AAD_TOKEN_BASE_ERROR_MESSAGE, str(e))
 
@@ -387,7 +400,7 @@ def _get_credentials(cmd,  # pylint: disable=too-many-statements
         username = prompt('Username: ')
         password = prompt_pass(msg='Password: ')
         username, password = _get_token_with_username_and_password(
-            login_server, username, password, repository, artifact_repository, permission, is_login_context
+            login_server, username, password, package_type, repository, permission, is_login_context
         )
         return login_server, username, password
     except NoTTYException:
@@ -422,15 +435,15 @@ def get_access_credentials(cmd,
                            tenant_suffix=None,
                            username=None,
                            password=None,
+                           package_type=PackageType.OCI,
                            repository=None,
-                           artifact_repository=None,
                            permission=None):
     """Try to get AAD authorization tokens or admin user credentials to access a registry.
     :param str registry_name: The name of container registry
     :param str username: The username used to log into the container registry
     :param str password: The password used to log into the container registry
+    :param PackageType package_type: Package type for which the access token is requested
     :param str repository: Repository for which the access token is requested
-    :param str artifact_repository: Artifact repository for which the access token is requested
     :param str permission: The requested permission on the repository
     """
     return _get_credentials(cmd,
@@ -439,8 +452,8 @@ def get_access_credentials(cmd,
                             username,
                             password,
                             only_refresh_token=False,
+                            package_type=package_type,
                             repository=repository,
-                            artifact_repository=artifact_repository,
                             permission=permission)
 
 
@@ -539,9 +552,12 @@ def request_data_from_registry(http_method,
             log_registry_response(response)
 
             if response.status_code == 200:
-                result = response.json()[result_index] if result_index else response.json()
-                next_link = response.headers['link'] if 'link' in response.headers else None
-                return result, next_link
+                try:
+                    result = response.json()[result_index] if result_index else response.json()
+                    next_link = response.headers['link'] if 'link' in response.headers else None
+                    return result, next_link
+                except ValueError:
+                    return response.text, None
             if response.status_code == 201 or response.status_code == 202:
                 result = None
                 try:

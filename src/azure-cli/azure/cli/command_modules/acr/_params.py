@@ -36,7 +36,8 @@ from ._validators import (
     validate_set_secret,
     validate_retention_days,
     validate_registry_name,
-    validate_expiration_time
+    validate_expiration_time,
+    validate_package_type
 )
 from .scope_map import ScopeMapActions
 
@@ -75,6 +76,9 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
         # Overwrite default shorthand of cmd to make availability for acr usage
         c.argument('cmd', options_list=['--__cmd__'])
         c.argument('cmd_value', help="Commands to execute.", options_list=['--cmd'])
+        c.argument('package_type', help='The package type.', arg_type=get_enum_type(['pypi']), validator=validate_package_type)
+        c.argument('package_name', help='The package name.')
+        c.argument('permissions', nargs='+', help='Space-separated list of permissions.', arg_type=get_enum_type(['pull', 'push', 'delete']))
 
     for scope in ['acr create', 'acr update']:
         with self.argument_context(scope, arg_group='Network Rule') as c:
@@ -380,6 +384,9 @@ def load_arguments(self, _):  # pylint: disable=too-many-statements
     with self.argument_context('acr encryption') as c:
         c.argument('key_encryption_key', help="key vault key uri")
         c.argument('identity', help="client id of managed identity, resource name or id of user assigned identity. Use '[system]' to refer to the system assigned identity")
+
+    with self.argument_context('acr package upload') as c:
+        c.positional('file_path', help='The package file path')
 
 
 def _get_helm_default_install_location():

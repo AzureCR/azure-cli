@@ -192,10 +192,33 @@ def acr_login(cmd,
               tenant_suffix=None,
               username=None,
               password=None,
-              expose_token=False):
+              expose_token=False,
+              package_type=None,
+              package_name=None,
+              permissions=None):
     if expose_token:
         if username or password:
             raise CLIError("`--expose-token` cannot be combined with `--username` or `--password`.")
+
+        if package_type:
+            if not package_name or not permissions:
+                raise CLIError("`--package-name` and `--permissions` are required with `--package-type`.")
+
+            from ._docker_utils import get_access_credentials, PackageAccessTokenPermission
+            login_server, username, password = get_access_credentials(
+                cmd=cmd,
+                registry_name=registry_name,
+                tenant_suffix=tenant_suffix,
+                package_type=package_type,
+                repository=package_name,
+                # always add metadata read
+                permission='{},{}'.format(','.join(permissions), PackageAccessTokenPermission.METADATA_READ.value))
+
+            return {
+                "endpoint": '{}/pkg/v1/pypi'.format(login_server), # TODO: get the endpoint from RP
+                "username": username,
+                "password": password
+            }
 
         login_server, _, password = get_login_credentials(
             cmd=cmd,
@@ -213,6 +236,13 @@ def acr_login(cmd,
         }
 
         return token_info
+
+    if package_type:
+        raise CLIError("`--package-type` must be used with `--expose-token`.")
+    if package_name:
+        raise CLIError("`--package-name` must be used with `--expose-token`.")
+    if permissions:
+        raise CLIError("`--permissions` must be used with `--expose-token`.")
 
     tips = "You may want to use 'az acr login -n {} --expose-token' to get an access token, " \
            "which does not require Docker to be installed.".format(registry_name)

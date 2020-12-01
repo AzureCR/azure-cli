@@ -112,3 +112,12 @@ def validate_expiration_time(namespace):
         except ValueError:
             raise CLIError("Input '{}' is not valid datetime. Valid example: 2025-12-31T12:59:59Z".format(
                 namespace.expiration))
+
+
+def validate_package_type(namespace):
+    if namespace.package_type:
+        from ._docker_utils import PackageType
+        if namespace.package_type == PackageType.PYPI.value:
+            namespace.package_type = PackageType.PYPI
+        else:
+            raise CLIError("Invalid package type '{}'".format(namespace.package_type))
